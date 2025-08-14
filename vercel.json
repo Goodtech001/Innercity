@@ -5,18 +5,16 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "next/dist"
+        "buildCommand": "npm run build",
+        "outputDirectory": "next/dist",
+        "installCommand": "npm install"
       }
     }
   ],
   "routes": [
     {
-      "src": "/",
-      "dest": "page.tsx"
-    },
-    {
       "src": "/(.*)",
-      "dest": "page.tsx"
+      "dest": "next/dist/$1"
     }
   ]
 }
