@@ -6,6 +6,7 @@ import Gem from "@/components/Gem";
 import Hero from "@/components/Hero";
 import Par from "@/components/par";
 import { CarouselDemo } from "@/components/PartnersCorner";
+import { Analytics } from "@vercel/analytics/next";
 import Image from "next/image";
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
      <Category/>
      <Gem />
      <CarouselDemo />
+     <Analytics/>
     </div>
   );
 }
