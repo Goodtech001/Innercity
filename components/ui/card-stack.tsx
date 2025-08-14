@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { motion } from 'framer-motion';
 import Image from "next/image";
 
-let interval: unknown;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let interval: any;
 
 type Card = {
   id: number;

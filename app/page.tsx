@@ -17,7 +17,6 @@ export default function Home() {
      <Category/>
      <Gem />
      <CarouselDemo />
-     <Par />
     </div>
   );
 }

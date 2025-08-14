@@ -3,6 +3,7 @@ import { IconArrowNarrowRight } from "@tabler/icons-react";
 import { LocateFixedIcon, LocateIcon, MapIcon } from "lucide-react";
 import Image from "next/image";
 import { useState, useRef, useId, useEffect } from "react";
+import CornerTitle from "../CornerTitle";
 
 interface SlideData {
   title: string;
@@ -22,11 +23,11 @@ interface SlideProps {
 }
 
 const Slide = ({ slide, index, current, handleSlideClick }: SlideProps) => {
-  const slideRef = useRef<HTMLLIElement>(null);
+  const slideRef = useRef<HTMLLIElement | null>(null);
 
   const xRef = useRef(0);
   const yRef = useRef(0);
-  const frameRef = useRef<number>();
+  const frameRef = useRef<number | null>(null);
 
   useEffect(() => {
     const animate = () => {
@@ -71,10 +72,12 @@ const Slide = ({ slide, index, current, handleSlideClick }: SlideProps) => {
   const { src, button, title, location, donation, donated  } = slide;
 
   return (
+    <div>
+    
     <div className="[perspective:1200px] [transform-style:preserve-3d] gap-10">
       <li
         ref={slideRef}
-        className="flex flex-1 flex-col items-center justify-center relative text-center text-white opacity-100 transition-all duration-300 ease-in-out w-[70vmin] h-[70vmin] mx-[4vmin] z-10 "
+        className="flex flex-1 flex-col items-center justify-center relative text-center text-white opacity-100 transition-all duration-300 ease-in-out w-[70vmin] h-[60vmin] mx-[4vmin] z-10 "
         onClick={() => handleSlideClick(index)}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -128,7 +131,7 @@ const Slide = ({ slide, index, current, handleSlideClick }: SlideProps) => {
         </article> */}
         <div className='bg-[#C8974D] rounded w-110  text-white justify-center m-8 ml-7'>
                 <div className='flex p-4  gap-4'>
-                    <Image src={src} alt={title} width={120} height={120} className='rounded absolute top-30 right-40 mr-40' onLoad={imageLoaded}
+                    <Image src={src} alt={title} width={120} height={120} className='rounded absolute top-20 right-40 mr-40' onLoad={imageLoaded}
             loading="eager"
             decoding="sync" />
                     <div className=''>
@@ -147,6 +150,7 @@ const Slide = ({ slide, index, current, handleSlideClick }: SlideProps) => {
                 </div>
             </div>
       </li>
+    </div>
     </div>
   );
 };
