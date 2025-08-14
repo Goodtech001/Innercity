@@ -1,3 +1,4 @@
+"use client";
 import Body from "@/components/Body";
 import { Camp } from "@/components/Campaigns";
 import Category from "@/components/Category";
