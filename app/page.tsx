@@ -1,5 +1,6 @@
 "use client";
 import Body from "@/components/Body";
+import Campaign2 from "@/components/campaign2";
 import { Camp } from "@/components/Campaigns";
 import Category from "@/components/Category";
 import CornerTitle from "@/components/CornerTitle";
@@ -20,6 +21,7 @@ export default function Home() {
      <Gem />
      <CarouselDemo />
      <Analytics/>
+     <Campaign2 />
     </div>
   );
 }
