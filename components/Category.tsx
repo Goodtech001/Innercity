@@ -12,7 +12,7 @@ function Category() {
 
         <div className="flex justify-between px-20 font-bold ">
             <Link href="./">
-           <svg width="230" height="230" className="rounded grow" viewBox="0 0 1280 1280" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+           <svg width="230" height="230" className="rounded grow brightness-75" viewBox="0 0 1280 1280" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
 <rect width="1280" height="1280" fill="url(#pattern0_256_72)"/>
 <defs>
 <pattern id="pattern0_256_72" patternContentUnits="objectBoundingBox" width="1" height="1">
@@ -25,7 +25,7 @@ function Category() {
             <p>Food Campaigns</p>
             </Link>
             <Link href="">
-            <svg width="230" height="230" className="rounded" viewBox="0 0 1280 1280" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+            <svg width="230" height="230" className="rounded brightness-75" viewBox="0 0 1280 1280" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
 <rect width="1280" height="1280" fill="url(#pattern0_256_72)"/>
 <defs>
 <pattern id="pattern0_256_72" patternContentUnits="objectBoundingBox" width="1" height="1">
@@ -37,7 +37,7 @@ function Category() {
             <p>Education Campaign</p>
             </Link>
             <Link href="">
-            <svg width="230" height="230" className="rounded" viewBox="0 0 1280 1280" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+            <svg width="230" height="230" className="rounded brightness-75" viewBox="0 0 1280 1280" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
 <rect width="1280" height="1280" fill="url(#pattern0_256_72)"/>
 <defs>
 <pattern id="pattern0_256_72" patternContentUnits="objectBoundingBox" width="1" height="1">
@@ -49,7 +49,7 @@ function Category() {
             <p>Women Empowerment <br /> campaign</p>
             </Link>
             <Link href="">
-            <svg width="230" height="230" className="rounded" viewBox="0 0 1280 1280" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+            <svg width="230" height="230" className="rounded brightness-75" viewBox="0 0 1280 1280" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
 <rect width="1280" height="1280" fill="url(#pattern0_256_72)"/>
 <defs>
 <pattern id="pattern0_256_72" patternContentUnits="objectBoundingBox" width="1" height="1">

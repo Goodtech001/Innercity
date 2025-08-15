@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button } from './ui/button'
 
+
 function Campaign2() {
   return (
     <div>
@@ -16,7 +17,7 @@ function Campaign2() {
 </svg>
         </div>
 
-        <div className='justify-center text-center px-20 py-16 bg-white rounded absolute top-[480%] ml-73'>
+        <div className='justify-center text-center px-20 py-16 bg-white rounded absolute top-[499%] ml-74'>
             <h1 className='font-bold text-2xl text-center'>You Can Be The Reason Someone Smiles Today.</h1>
             <p>Start a fundraiser or support one — every action helps <br /> change a life.</p>
              <span className="space-x-5 mt-8 ">
