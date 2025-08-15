@@ -32,7 +32,7 @@ export default function TopNavbar({ menus = defaultmenu }) {
   return (
     <>
       <nav className="relative pb-16 md:pb-16 bg-white gap-5">
-        <div className="fixed left-20 right-20 top-0 z-20 w-full bg-white border-b-2  py-2">
+        <div className="fixed left-0 right-0 top-0 z-20 w-full bg-white border-b-2 py-2 px-10">
           <div className="wrapper flex items-center justify-between gap-3">
 
             <div className="hidden md:inline-block ">
@@ -90,7 +90,7 @@ export default function TopNavbar({ menus = defaultmenu }) {
               />
             </Link>
 
-            <div className="flex items-center justify-between gap-10 mr-20">
+            <div className="flex items-center justify-between gap-10 mr-0">
               <NavigationMenu viewport={false}>
               <NavigationMenuList>
         <NavigationMenuItem>

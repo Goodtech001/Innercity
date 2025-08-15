@@ -4,11 +4,11 @@ import { Button } from "./ui/button"
 
 function Gem() {
   return (
-    <div className="flex justify-center px-10 py-20 bg-[#D8F1FF] gap-20 mt-15">
+    <div className="md:flex justify-center px-10 py-20 bg-[#D8F1FF] gap-20 mt-15">
         <div>
             <p className="text-[#5F5F5F]">OTHER SPONSORED EVENTS</p>
             <h1 className="text-4xl font-bold">The Innercity Mission  Give <br /> Every Month Initiative (GEM) </h1>
-            <p className="text-[#5F5F5F]">The InnerCity Mission GEMs [Giving Every Month] Initiative is a <br /> Monthly Giving Program for Partners who commit to make a regular <br /> financial donation to the InnerCity Mission for Children. It affords <br /> partners the opportunity to partner with The InnerCity Mission in a <br /> consistent and structured manner.</p>
+            <p className="text-[#5F5F5F] md:text-0 text-sm">The InnerCity Mission GEMs [Giving Every Month] Initiative is a <br /> Monthly Giving Program for Partners who commit to make a regular <br /> financial donation to the InnerCity Mission for Children. It affords <br /> partners the opportunity to partner with The InnerCity Mission in a <br /> consistent and structured manner.</p>
             <div className="flex gap-4 mt-8">
                 <Button className="px-8 py-4 bg-[#0074E6]">Visit GEM</Button>
                 <Link href="" className="underline">Learn More</Link>
@@ -16,7 +16,7 @@ function Gem() {
         </div>
 
         <div>
-            <svg width="300" height="300" className="rounded" viewBox="0 0 1280 1280" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+            <svg width="300" height="300" className="rounded w-100 h-100 md:mt-0 mt-10" viewBox="0 0 1280 1280" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
 <rect width="1280" height="1280" fill="url(#pattern0_256_72)"/>
 <defs>
 <pattern id="pattern0_256_72" patternContentUnits="objectBoundingBox" width="1" height="1">

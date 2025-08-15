@@ -6,7 +6,7 @@ function Campaign2() {
   return (
     <div>
         <div>
-            <svg width="1280" height="563" className='brightness-60' viewBox="0 0 1280 463" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+            <svg width="1280" height="563" className='brightness-60 mr-30' viewBox="0 0 1280 463" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
 <rect width="1280" height="563" fill="url(#pattern0_256_69)"/>
 <defs>
 <pattern id="pattern0_256_69" patternContentUnits="objectBoundingBox" width="1" height="1">
@@ -17,9 +17,9 @@ function Campaign2() {
 </svg>
         </div>
 
-        <div className='justify-center text-center px-20 py-16 bg-white rounded absolute top-[499%] ml-74'>
-            <h1 className='font-bold text-2xl text-center'>You Can Be The Reason Someone Smiles Today.</h1>
-            <p>Start a fundraiser or support one — every action helps <br /> change a life.</p>
+        <div className='justify-center text-center px-20 py-16 bg-white rounded absolute md:top-[561%] top-[1000%] md:ml-74 ml-0'>
+            <h1 className='font-bold md:text-2xl text-center'>You Can Be The Reason Someone Smiles Today.</h1>
+            <p className='text-xs'>Start a fundraiser or support one — every action helps <br /> change a life.</p>
              <span className="space-x-5 mt-8 ">
                 <Button  className="bg-gray-200 p-4 rounded border-1 border-blue-700 text-blue-700 space-x-10"> Support a campaign</Button>
        <Button  className="bg-blue-700 p-4 rounded mt-8"> Create Your Campaign</Button>

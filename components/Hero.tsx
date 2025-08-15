@@ -5,12 +5,13 @@ function Hero() {
   return (
     <div>
       <svg
-        width="1280"
+        width="780"
         height="519"
         viewBox="0 0 1280 719"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
+        
       >
         <rect width="1280" height="719" fill="url(#pattern0_76_115)" />
         <defs>
@@ -35,24 +36,24 @@ function Hero() {
         </defs>
       </svg>
 
-      <div className="md:flex space-x-25 absolute top-25 bottom-0 justify-center ml-30 ">
+      <div className="md:flex space-x-25 absolute top-5 bottom-0 justify-center md:ml-30 ml-15 ">
         <div className="mt-25">
           <p className="text-gray-600 font-medium">Share love.Spread change</p>
-          <h1 className="text-5xl font-extrabold">
+          <h1 className="md:text-5xl text-4xl font-bold">
             Fundraise Your <br /> Moments, Uplift a Child
           </h1>
-          <p className="text-gray-600 font-medium mt-3">
+          <p className="text-gray-600 font-medium mt-3 md:text-0 text-xs">
             Fundrise turns your special days into meaningful action. From <br />{" "}
             birthdays to “just because,” every campaign helps a child eat,
             learn,
             <br /> and thrive.
           </p>
-          <span className="space-x-5 mt-4">
-            <Button className="bg-blue-700 p-4 rounded mt-4">
+          <span className="space-x-5 mt-4 md:ml-0 ">
+            <Button className="bg-blue-700 md:p-4 px-10 rounded mt-4 ">
               {" "}
               Create Your Campaign
             </Button>
-            <Button className="bg-gray-200 p-4 rounded border-1 border-blue-700 text-blue-700 space-x-10">
+            <Button className="bg-gray-200 md:p-4 px-10 rounded border-1 border-blue-700 text-blue-700 space-x-10">
               {" "}
               Support a campaign
             </Button>
