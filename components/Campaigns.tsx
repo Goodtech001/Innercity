@@ -8,7 +8,7 @@ export function Camp() {
   return (
     <div>
         <div className="flex justify-between p-8">
-            <h1 className="text-4xl font-bold">Latest Fundraising Campaigns</h1>
+            <h1 className="md:text-4xl text-2xl font-bold">Latest Fundraising Campaigns</h1>
             <Link href="" className="underline">See more</Link>
         </div>
       <CampaignDemo items={CAMPAIGN} />

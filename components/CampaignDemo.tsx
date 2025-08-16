@@ -31,21 +31,20 @@ export const CampaignDemo = ({items} : {
   }, [])
     const [campaigns] = useState<Campaign[]>(items);
   return (
-    <div className="flex p-4 justify-between gap-2 ">
+    <div className="md:flex p-4 justify-between gap-2">
     {campaigns.map((campaign) => {
         return(
             <div
             key={campaign.id}
             className="p-4 border-1 shadow-lg bg-white justify-between gap-2 rounded"
             >
-                <Image src={camp} alt="" width={400} height={700} className="rounded"/>
+                <Image src={camp} alt="" width={400} height={700} className="rounded  w-600 h-100"/>
                 <p className="font-bold p-3">{campaign.title}</p>
                 <p>Created by: <span className="text-[#0074E6] font-medium">{campaign.creator}</span></p>
                 <Progress value={progress} className="w-[80%] mt-2" />
                 <p>Target: <span className="text-[#0074E6] font-medium">${campaign.Target}</span></p>
                 <Button className="py-4 px-8 bg-[#0074E6] mt-8">Donate Now.</Button>
-                <p className="flex text-[#0074E6] gap-1 border-1 border-[#0074E6] h-7 w-65 rounded bg-white absolute top-195 ml-3"><Tag className="w-4 h-4 mt-1 ml-5"/> {campaign.Tag}</p>
-                
+                <p className="flex text-[#0074E6] gap-1 border-1 border-[#0074E6] h-7 w-65 rounded bg-white absolute md:top-195 top-280 ml-3"><Tag className="w-4 h-4 mt-1 ml-5"/> {campaign.Tag}</p>
             </div>
         )
     })}
