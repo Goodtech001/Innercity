@@ -67,7 +67,7 @@ body {
   height: 100vh;
   box-sizing: border-box;
   scroll-behavior: smooth;
-  font-size: 18px;
+  font-size: 16px;
   color: rgba(var(--textcolor));
   overflow-x: hidden;
 }
