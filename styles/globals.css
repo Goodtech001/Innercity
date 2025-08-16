@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap');
+
+:root {
+  --dark: 0, 0, 0; /* #000000 */
+  --white: 255, 255, 255; /* #FFFFFF */
+  --light: 244, 244, 244; /* #F4F4F4 */
+  --ghost-white: 232, 232, 232; /* #E8E8E8 */
+
+  --primary: 0, 116, 230; /* #0074E6 */
+  --secondary: 200, 151, 77; /* #C8974D */
+  --complementary: 216, 241, 255; /* #D8F1FF */
+  --textcolor: 95, 95, 95; /* #5F5F5F*/
+
+  --error: 237, 76, 92; /* #ED4C5C */
+  --fade-error: 255, 242, 242; /* #FFF2F2 */
+  --warning: 253, 176, 34; /* Amber */
+  --success: 5, 79, 49; /* Deep green */
+  --info: 14, 54, 255; /* Rich blue */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  transition: all 0.1s ease-in-out;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(var(--light));
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(var(--primary));
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--primary), 0.6);
+}
+
+html {
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  background: rgba(var(--white));
+  color: rgba(var(--textcolor));
+}
+
+html[class] body {
+  display: block;
+  overflow-x: hidden;
+}
+
+#root {
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+body {
+  font-family: 'Commissioner', sans-serif;
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  font-size: 18px;
+  color: rgba(var(--textcolor));
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-commissioner {
+  font-family: 'Commissioner', sans-serif;
+}
+
+.wrapper,
+.container {
+  width: 98%;
+  max-width: 1250px;
+  margin: auto;
+  height: 100%;
+}
+
+.sub-header {
+  position: relative;
+}
+
+.sub-header::before {
+  content: '';
+  top: 50%;
+  left: -45px;
+  position: absolute;
+  width: 40px;
+  height: 1.5px;
+  background: rgba(var(--textcolor));
+  display: block;
+  border-radius: 10px;
+}
+
+@media only screen and (max-width: 650px) {
+  body {
+    font-size: 16px;
+  }
+
+  .sub-header::before {
+    left: -25%;
+    width: 30px;
+  }
+}

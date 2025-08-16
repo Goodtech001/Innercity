@@ -5,7 +5,7 @@ import Link from 'next/link'
 import logo from '../public/logo-white.png'
 import logoBlue from '../public/logo-black-text.png'
 import { ChevronDownIcon, CloseXIcon, MenuFriesIcon, SearchMagnifierIcon } from '../svgs'
-import useTopnavbar, { menus as defaultmenu } from '../topnavbar/useTopnavbar'
+import useTopnavbar, { menus as defaultmenu } from '../layouts/topnavbar/useTopnavbar'
 
 export default function TopNavbar({ menus = defaultmenu }) {
   const {

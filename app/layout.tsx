@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
-import './globals.css'
+import '@/styles/globals.css'
+import '@/styles/tailwind.css'
+import '@/styles/bg.css'
 import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
@@ -22,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`hidden scroll-smooth antialiased`}>
+      <body id="root" className={`scroll-smooth antialiased`}>
         {children}
         <Footer />
         <div id="modal-root"></div>

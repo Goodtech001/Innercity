@@ -1,0 +1,5 @@
+bg-hero-blue-specs-pattern {
+  background-image:
+    linear-gradient(rgba(var(--primary), 0.6), rgba(var(--primary), 0.6)),
+    url('/assets/svg/randomized-blue-specs-pattern.svg');
+}

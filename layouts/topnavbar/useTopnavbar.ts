@@ -13,16 +13,28 @@ export type menu_type = {
   }[]
 }
 
-export const menus: menu_type[] = [
+export const leftMenu: menu_type[] = [
   {
     title: 'About Fundraiser',
-    path: 'https://theinnercitymission.ngo/',
+    path: '/about',
   },
   {
     title: 'Resources',
-    path: 'https://theinnercitymission.ngo/about',
+    path: '/resources',
   },
- 
+]
+
+export const rightMenu: menu_type[] = [
+  {
+    title: 'Campaigns',
+    subPath: '/campaigns',
+    subMenus: [
+      {
+        title: 'Food Campaigns',
+        path: '/food',
+      },
+    ],
+  },
 ]
 
 export default function useTopnavbar() {
@@ -46,7 +58,7 @@ export default function useTopnavbar() {
   }
 
   useEffect(() => {
-    const activeMenuObj = menus.find(
+    const activeMenuObj = [...leftMenu, ...rightMenu].find(
       (menu) =>
         getActiveUrl(menu.path || '', menu.subPath) ||
         (menu.subMenus && menu.subMenus.some((subMenu) => getActiveUrl(subMenu.path))),
