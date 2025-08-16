@@ -4,7 +4,7 @@ import React from 'react'
 
 export default function HeroSection() {
   return (
-    <main className="bg-hero-blue-specs-pattern min-h-96 bg-[100%,100%] py-16 md:py-28">
+    <main className="bg-hero-blue-specs-pattern min-h-96 bg-[100%,100%] py-16 md:pb-36 md:pt-28">
       <div className="container flex flex-col gap-6 gap-y-10 md:grid md:grid-cols-2">
         <div className="flex flex-col gap-2">
           <p className="font-medium">Share love. Spread change</p>

@@ -17,12 +17,12 @@
     @apply disabled:bg-gray-100 block w-full rounded-md border-2 bg-light px-3 py-2.5 text-base text-textcolor -outline-offset-1 outline-primary ring-primary/25 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:ring-2 disabled:cursor-not-allowed disabled:text-gray-500 disabled:ring-0 sm:text-sm/6 md:text-sm;
   }
   .ellipsis {
-    @apply line-clamp-1 max-h-20 overflow-hidden text-ellipsis whitespace-break-spaces leading-relaxed [-webkit-box-orient:vertical] [display:-webkit-box];
+    @apply line-clamp-1 max-h-20 overflow-hidden text-ellipsis whitespace-break-spaces !leading-relaxed [-webkit-box-orient:vertical] [display:-webkit-box];
   }
   .ellipsis-2 {
-    @apply line-clamp-2 max-h-20 overflow-hidden text-ellipsis whitespace-break-spaces leading-relaxed [-webkit-box-orient:vertical] [display:-webkit-box];
+    @apply line-clamp-2 max-h-20 overflow-hidden text-ellipsis whitespace-break-spaces !leading-relaxed [-webkit-box-orient:vertical] [display:-webkit-box];
   }
   .ellipsis-3 {
-    @apply line-clamp-3 max-h-20 overflow-hidden text-ellipsis whitespace-break-spaces leading-relaxed [-webkit-box-orient:vertical] [display:-webkit-box];
+    @apply line-clamp-3 max-h-20 overflow-hidden text-ellipsis whitespace-break-spaces !leading-relaxed [-webkit-box-orient:vertical] [display:-webkit-box];
   }
 }
