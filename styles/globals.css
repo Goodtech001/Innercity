@@ -88,6 +88,7 @@ h6,
   max-width: 1250px;
   margin: auto;
   height: 100%;
+  padding-inline: 0.2rem;
 }
 
 .sub-header {

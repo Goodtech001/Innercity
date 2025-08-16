@@ -107,12 +107,12 @@ export default function TopNavbar() {
                     {menu.subMenus.map((subMenu, index) => (
                       <li key={index}>
                         <Link
-                          className="text-text flex w-full flex-col gap-1.5 border-transparent px-3 py-2 text-textcolor hover:border-b-primary hover:bg-textcolor/10 hover:text-primary"
+                          className="flex w-full flex-col gap-1.5 border-transparent px-3 py-2 hover:border-b-primary hover:bg-textcolor/10 hover:text-primary"
                           href={subMenu.external ? subMenu.path : menu.subPath + subMenu.path}
                           target={subMenu.external ? '_blank' : '_self'}
                         >
-                          <h4>{subMenu.title}</h4>
-                          <small className="ellipsis rounded-md bg-ghost-white/50 p-1 pt-1 text-xs">
+                          <h4 className="text-dark/75">{subMenu.title}</h4>
+                          <small className="ellipsis rounded-md bg-ghost-white/50 p-1 pt-1 text-xs text-textcolor">
                             {subMenu.description}
                           </small>
                         </Link>

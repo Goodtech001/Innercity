@@ -1,10 +1,10 @@
-import { HeroCardStack } from '@/components/hero-card-stack'
-import Link from 'next/link'
 import React from 'react'
+import Link from 'next/link'
+import HeroCardStack from '@/components/hero-card-stack'
 
 export default function HeroSection() {
   return (
-    <main className="bg-hero-blue-specs-pattern min-h-96 bg-[100%,100%] py-16 md:pb-36 md:pt-28">
+    <main className="bg-hero-blue-specs-pattern min-h-96 bg-[100%,100%] py-16 pb-0 md:py-28 md:pb-36">
       <div className="container flex flex-col gap-6 gap-y-10 md:grid md:grid-cols-2">
         <div className="flex flex-col gap-2">
           <p className="font-medium">Share love. Spread change</p>
@@ -15,7 +15,7 @@ export default function HeroSection() {
             Fundrise turns your special days into meaningful action. From birthdays to “just
             because,” every campaign helps a child eat, learn, and thrive.
           </p>
-          <div className="mt-8 flex items-center gap-6">
+          <div className="mt-8 flex flex-wrap items-center gap-6">
             <Link className="btn-primary w-fit" href={'/create-campaign'}>
               Create your campaign
             </Link>

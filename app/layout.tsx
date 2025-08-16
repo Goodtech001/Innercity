@@ -3,6 +3,7 @@ import '@/styles/globals.css'
 import '@/styles/tailwind.css'
 import '@/styles/bg.css'
 import Footer from '@/components/Footer'
+import { Analytics } from '@vercel/analytics/next'
 
 export const metadata: Metadata = {
   title: 'The InnerCity Mission Gifting Platform',
@@ -28,6 +29,7 @@ export default function RootLayout({
         {children}
         <Footer />
         <div id="modal-root"></div>
+        <Analytics />
       </body>
     </html>
   )

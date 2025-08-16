@@ -50,10 +50,15 @@ const CARDS = [
   },
 ]
 
-export function HeroCardStack({ items = CARDS, offset = 15, scaleFactor = 0.06 }: CardStackProp) {
+export default function HeroCardStack({
+  items = CARDS,
+  offset = 15,
+  scaleFactor = 0.06,
+}: CardStackProp) {
   const CARD_OFFSET = offset
   const SCALE_FACTOR = scaleFactor
   const [cards, setCards] = useState<Card[]>(items)
+  const [isMobile, setIsMobile] = useState(false)
 
   const startFlipping = () => {
     interval = setInterval(() => {
@@ -68,19 +73,29 @@ export function HeroCardStack({ items = CARDS, offset = 15, scaleFactor = 0.06 }
   useEffect(() => {
     startFlipping()
 
-    return () => clearInterval(interval)
+    const handleResize = () => {
+      const width = window.innerWidth
+      setIsMobile(width <= 768)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      clearInterval(interval)
+    }
   }, [])
 
   return (
-    <div className="relative w-full">
+    <div className="relative h-80 w-full md:h-auto">
       {cards.map((card, index) => {
         // First 2 go upward, next 2 go downward, rest stay hidden far
         let yPos = 0
 
         if (index === 1) yPos = -CARD_OFFSET // 1st behind → top
         if (index === 2) yPos = -CARD_OFFSET * 2 // 2nd behind → top
-        if (index === 3) yPos = CARD_OFFSET * 4.5 // 1st bottom
-        if (index === 4) yPos = CARD_OFFSET * 7 // 2nd bottom
+        if (index === 3) yPos = CARD_OFFSET * (isMobile ? 3.5 : 4.5) // 1st bottom
+        if (index === 4) yPos = CARD_OFFSET * (isMobile ? 5.25 : 6.5) // 2nd bottom
 
         return (
           <motion.div
