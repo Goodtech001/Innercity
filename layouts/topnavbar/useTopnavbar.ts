@@ -34,13 +34,24 @@ export const rightMenu: menu_type[] = [
         title: 'Food Campaigns',
         path: '/food',
         description:
-          'Feed an indigent in Africa, Sponsor school meals for children in Malawi, Sponsor Family food Parcels',
+          'Feed an indigent in africa, Sponsor school meals for children in malawi, Sponsor family food parcels',
       },
       {
         title: 'Education Campaigns',
         path: '/education',
         description:
-          "Sponsor a child's Education, Sponsor Uniform kit, Sponsor Stationery, Build a school,",
+          "Sponsor a child's education, Sponsor uniform kit, Sponsor stationery, Build a school",
+      },
+      {
+        title: 'Women Empowerment',
+        path: '/women-empowerment',
+        description: 'Sponsor skill acquisition program, Support a family',
+      },
+      {
+        title: 'Community Development',
+        path: '/community-development',
+        description:
+          'Sponsor clean water (borehole), Sponsor toilet building projects, Build a learning center, Build a library',
       },
     ],
   },
