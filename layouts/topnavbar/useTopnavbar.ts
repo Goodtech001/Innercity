@@ -9,6 +9,7 @@ export type menu_type = {
   subMenus?: {
     title: string
     path: string
+    description?: string
     external?: boolean
   }[]
 }
@@ -32,6 +33,14 @@ export const rightMenu: menu_type[] = [
       {
         title: 'Food Campaigns',
         path: '/food',
+        description:
+          'Feed an indigent in Africa, Sponsor school meals for children in Malawi, Sponsor Family food Parcels',
+      },
+      {
+        title: 'Education Campaigns',
+        path: '/education',
+        description:
+          "Sponsor a child's Education, Sponsor Uniform kit, Sponsor Stationery, Build a school,",
       },
     ],
   },

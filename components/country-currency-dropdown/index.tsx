@@ -69,10 +69,7 @@ export default function CountryCurrencyDropdown({
   return (
     <div className={`relative flex h-fit w-fit min-w-24 flex-col ${className}`}>
       <button
-        onClick={() => {
-          setIsOpen(!isOpen)
-          console.log(isOpen)
-        }}
+        onClick={() => setIsOpen(!isOpen)}
         className="z-10 inline-flex items-center gap-1 rounded-full px-1.5 py-1.5 text-center text-sm font-medium focus:outline-none focus:ring-2"
       >
         <p>{selectedValue ? selectedValue.abv : 'Choose Currency'}</p>
