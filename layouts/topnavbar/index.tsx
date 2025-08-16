@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import logoBlue from '@/public/assets/icons/logo-black-text.png'
 import useTopnavbar, { leftMenu, rightMenu } from './useTopnavbar'
-import CustomCountryDropdownSelect from '@/components/currency'
+import CountryCurrencyDropdown from '@/components/country-currency-dropdown'
 import Logo from '@/components/logo'
 import { Icon } from '@iconify/react'
 
@@ -21,10 +21,10 @@ export default function TopNavbar() {
 
   return (
     <>
-      <nav className="fixed left-0 top-0 z-20 w-full border-b-2 bg-transparent py-2 backdrop-blur-sm">
+      <nav className="fixed left-0 top-0 z-20 w-full border-b-2 bg-light/25 py-2 backdrop-blur-sm">
         <div className="wrapper flex items-center justify-between gap-3">
           <ul className="hidden items-center gap-10 text-sm md:flex">
-            <CustomCountryDropdownSelect />
+            <CountryCurrencyDropdown />
             {leftMenu.map((menu, index) => (
               <li
                 onMouseEnter={() => setSubMenuClicked(menu.subPath || '')}
@@ -118,8 +118,8 @@ export default function TopNavbar() {
 
           <button onClick={() => setNavOpen((p) => !p)} className="inline-block md:hidden">
             <Icon
-              icon={'clarity:menu-line'}
-              className="btn h-12 w-12 rotate-180 px-2 text-5xl font-bold text-light ring-light"
+              icon={'eva:menu-fill'}
+              className="btn size-11 border border-textcolor/25 px-2 text-5xl"
             />
           </button>
         </div>
@@ -140,8 +140,11 @@ export default function TopNavbar() {
         >
           <div className="flex items-center justify-between">
             <Image src={logoBlue.src} alt="logo" className="w-24 md:w-28" width={100} height={50} />
-            <button onClick={() => setNavOpen((p) => !p)} className="ml-auto block md:hidden">
-              <Icon icon={'material-symbols-light:close-rounded'} className="ml-auto h-4 w-4" />
+            <button onClick={() => setNavOpen((p) => !p)} className="inline-block md:hidden">
+              <Icon
+                icon={'eva:menu-fill'}
+                className="btn size-11 border border-textcolor/25 px-2 text-5xl"
+              />
             </button>
           </div>
 

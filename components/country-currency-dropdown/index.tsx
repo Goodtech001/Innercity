@@ -54,15 +54,15 @@ type TCountryCurrency = {
   icon: React.JSX.Element
 }
 
-type TCustomCountryDropdownSelectProps = {
+type TCountryCurrencyDropdownProps = {
   onChange?: (value: TCountryCurrency) => void
   className?: string
 }
 
-export default function CustomCountryDropdownSelect({
+export default function CountryCurrencyDropdown({
   onChange,
   className,
-}: Readonly<TCustomCountryDropdownSelectProps>) {
+}: Readonly<TCountryCurrencyDropdownProps>) {
   const [isOpen, setIsOpen] = useState(false)
   const [selectedValue, setSelectedValue] = useState<TCountryCurrency>(countryCurrencyList[0])
 
