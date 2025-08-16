@@ -24,6 +24,10 @@ export default function TopNavbar() {
     <>
       <nav className="fixed left-0 top-0 z-20 w-full border-b-2 bg-light/25 py-2 backdrop-blur-sm">
         <div className="wrapper flex items-center justify-between gap-3">
+          <span className="block md:hidden">
+            <UserProfileDropdown direction="left" />
+          </span>
+
           <ul className="hidden items-center gap-10 text-sm md:flex">
             <CountryCurrencyDropdown />
             {leftMenu.map((menu, index) => (
@@ -43,8 +47,9 @@ export default function TopNavbar() {
 
                 {menu.subMenus && (
                   <ol
-                    className={`absolute left-0 h-0 min-w-60 gap-4 overflow-hidden rounded-md bg-light text-sm shadow ${subMenuClicked == menu.subPath && '!h-fit'
-                      }`}
+                    className={`absolute left-0 h-0 min-w-60 gap-4 overflow-hidden rounded-md bg-light text-sm shadow ${
+                      subMenuClicked == menu.subPath && '!h-fit'
+                    }`}
                   >
                     {menu.subMenus.map((subMenu, index) => (
                       <li key={index}>
@@ -84,26 +89,30 @@ export default function TopNavbar() {
                   href={menu.path || ''}
                 >
                   <p className="space-x-5">{menu.title}</p>
-                  {menu.subMenus && <Icon icon={'mynaui:chevron-down-solid'} className={`h-4 w-4 ${subMenuClicked && "rotate-180"}`} />}
+                  {menu.subMenus && (
+                    <Icon
+                      icon={'mynaui:chevron-down-solid'}
+                      className={`h-4 w-4 ${subMenuClicked && 'rotate-180'}`}
+                    />
+                  )}
                 </Link>
 
                 {menu.subMenus && (
                   <ol
                     // right-0 if the menu is more on the right side
-                    className={`absolute divide-y mt-4 right-0 h-0 min-w-96 gap-4 overflow-hidden rounded-md bg-white text-sm shadow ${subMenuClicked == menu.subPath && '!h-fit'
-                      }`}
+                    className={`absolute right-0 mt-4 h-0 min-w-96 gap-4 divide-y overflow-hidden rounded-md bg-white text-sm shadow ${
+                      subMenuClicked == menu.subPath && '!h-fit'
+                    }`}
                   >
                     {menu.subMenus.map((subMenu, index) => (
                       <li key={index}>
                         <Link
-                          className="flex divide-y divide-primary/10 gap-1.5 w-full flex-col px-3 py-2 text-text hover:bg-textcolor/10 hover:text-primary border-4 border-transparent text-textcolor hover:border-b-primary"
+                          className="text-text flex w-full flex-col gap-1.5 divide-y divide-primary/10 border-4 border-transparent px-3 py-2 text-textcolor hover:border-b-primary hover:bg-textcolor/10 hover:text-primary"
                           href={subMenu.external ? subMenu.path : menu.subPath + subMenu.path}
-                          target={subMenu.external ? "_blank" : "_self"}
+                          target={subMenu.external ? '_blank' : '_self'}
                         >
                           <h4>{subMenu.title}</h4>
-                          <small className="text-xs ellipsis pt-1">
-                            {subMenu.description}
-                          </small>
+                          <small className="ellipsis pt-1 text-xs">{subMenu.description}</small>
                         </Link>
                       </li>
                     ))}
@@ -123,7 +132,6 @@ export default function TopNavbar() {
               className="btn size-11 border border-textcolor/25 px-2 text-5xl"
             />
           </button>
-
         </div>
       </nav>
       {/*?? THISLINE BELOW JUST HELPS TO MAKE THE LOWER SECTION OF THE PAGE NOT CLASH WOTH THE FIXED TOP NAVBAR */}
@@ -131,12 +139,14 @@ export default function TopNavbar() {
 
       {/* _____________ Slide navbar for mobile _____________ */}
       <div
-        className={`fixed inset-0 z-20 bg-dark/50 text-textcolor backdrop-blur-sm transition-all duration-500 ease-in-out md:hidden ${navOpen ? 'visible clip-path-slide-top-down' : 'invisible delay-200 clip-path-close'
-          }`}
+        className={`fixed inset-0 z-20 bg-dark/50 text-textcolor backdrop-blur-sm transition-all duration-500 ease-in-out md:hidden ${
+          navOpen ? 'visible clip-path-slide-top-down' : 'invisible delay-200 clip-path-close'
+        }`}
       >
         <div
-          className={`${navOpen ? 'delay-200 clip-path-slide-top-down' : 'clip-path-close'
-            } h-full w-full bg-light px-2 py-3 duration-500`}
+          className={`${
+            navOpen ? 'delay-200 clip-path-slide-top-down' : 'clip-path-close'
+          } h-full w-full bg-light px-2 py-3 duration-500`}
         >
           <div className="flex items-center justify-between">
             <Image src={logoBlue.src} alt="logo" className="w-24 md:w-28" width={100} height={50} />
@@ -153,9 +163,10 @@ export default function TopNavbar() {
               {[...leftMenu, ...rightMenu].map((menu, index) => (
                 <li
                   key={index}
-                  className={`overflow-hidden border-b hover:border-primary hover:bg-primary/20 hover:text-primary ${getActiveUrl(menu.path || '', menu.subPath || '') &&
+                  className={`overflow-hidden border-b hover:border-primary hover:bg-primary/20 hover:text-primary ${
+                    getActiveUrl(menu.path || '', menu.subPath || '') &&
                     'border-primary bg-primary/15 text-primary'
-                    }`}
+                  }`}
                 >
                   <Link
                     onClick={() => setSubMenuClicked(menu.subPath || '')}
@@ -170,15 +181,17 @@ export default function TopNavbar() {
 
                   {menu.subMenus && (
                     <ul
-                      className={`mb-0 h-0 w-full overflow-hidden bg-white px-3 transition-all ${subMenuClicked == menu.subPath && 'mb-2 h-auto'
-                        }`}
+                      className={`mb-0 h-0 w-full overflow-hidden bg-white px-3 transition-all ${
+                        subMenuClicked == menu.subPath && 'mb-2 h-auto'
+                      }`}
                     >
                       {menu.subMenus.map((subMenu, index) => (
                         <li key={index}>
                           <Link
-                            className={`flex w-full items-center justify-between border-2 border-transparent px-3 py-2 hover:border-l-primary hover:bg-secondary/50 hover:font-semibold ${pathName === menu.subPath + subMenu.path &&
+                            className={`flex w-full items-center justify-between border-2 border-transparent px-3 py-2 hover:border-l-primary hover:bg-secondary/50 hover:font-semibold ${
+                              pathName === menu.subPath + subMenu.path &&
                               'border-l-primary bg-secondary/50 font-semibold'
-                              }`}
+                            }`}
                             // href={subMenu.external ? subMenu.path : menu.subPath + subMenu.path}
                             href={subMenu.path}
                             target={subMenu.external ? '_blank' : '_self'}
