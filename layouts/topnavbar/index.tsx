@@ -1,8 +1,6 @@
 'use client'
 import React from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
-import logoBlue from '@/public/assets/icons/logo-black-text.png'
 import useTopnavbar, { leftMenu, rightMenu } from './useTopnavbar'
 import CountryCurrencyDropdown from '@/components/country-currency-dropdown'
 import Logo from '@/components/logo'
@@ -151,7 +149,7 @@ export default function TopNavbar() {
           } h-full w-full bg-light px-2 py-3 duration-500`}
         >
           <div className="flex items-center justify-between">
-            <Image src={logoBlue.src} alt="logo" className="w-24 md:w-28" width={100} height={50} />
+            <Logo variant="alt" className="w-24 md:w-28" />
             <button onClick={() => setNavOpen((p) => !p)} className="inline-block md:hidden">
               <Icon
                 icon={'eva:menu-fill'}

@@ -40,7 +40,12 @@ export default function FundraiseCampaignCard() {
         <p className="-mt-2 text-sm font-medium">
           Target: <span className="text-primary">$1,000,000</span>
         </p>
-        <Link className="btn-primary mt-3 w-fit px-10 text-sm" href={'/'}>
+
+        <Link className="inline-block text-sm underline md:hidden" href={'/'}>
+          Donate now
+        </Link>
+
+        <Link className="btn-primary mt-3 hidden w-fit px-10 text-sm md:inline-block" href={'/'}>
           Donate now
         </Link>
       </div>

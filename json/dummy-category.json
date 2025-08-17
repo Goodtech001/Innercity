@@ -2,7 +2,7 @@
   {
     "id": 1,
     "banner": "/assets/images/food-7bmc.jpg",
-    "category": "Food Campaigns",
+    "category": "Food Campaign",
     "description": "Feed the hungry through different food support programs.",
     "subCategory": [
       {
@@ -26,7 +26,7 @@
   {
     "id": 2,
     "banner": "/assets/images/education-class.jpg",
-    "category": "Education Campaigns",
+    "category": "Education Campaign",
     "description": "Support children’s education through sponsorships and facilities.",
     "subCategory": [
       {
@@ -55,7 +55,7 @@
   {
     "id": 3,
     "banner": "/assets/images/women-empowerment-gathering.jpg",
-    "category": "Women Empowerment Campaign",
+    "category": "Women Empowerment",
     "description": "Empower women and support families through skills and resources.",
     "subCategory": [
       {
@@ -74,7 +74,7 @@
   {
     "id": 4,
     "banner": "/assets/images/community-development-construction.jpg",
-    "category": "Community Development Campaign",
+    "category": "Community Development",
     "description": "Support infrastructure and community-building initiatives.",
     "subCategory": [
       {

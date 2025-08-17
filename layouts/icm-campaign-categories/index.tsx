@@ -5,7 +5,7 @@ import CampaignCategoryCard from '@/components/campaign-category-card'
 
 export default function ICMCampaignCategories() {
   return (
-    <div>
+    <section>
       <div className="container py-8 pb-6 md:py-14 md:pb-8">
         <div className="mb-8 flex items-end justify-between">
           <h3 className="text-balance text-3xl font-bold text-dark md:text-4xl">
@@ -24,6 +24,6 @@ export default function ICMCampaignCategories() {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   )
 }
