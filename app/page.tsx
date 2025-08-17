@@ -9,6 +9,7 @@ import BenefitsMetricsStrip from '@/layouts/benefits-metrics-strip'
 import LatestFundraisingCampaigns from '@/layouts/latest-fundraising-campaigns'
 import ICMCampaignCategories from '@/layouts/icm-campaign-categories'
 import GemSponsoredSection from '@/layouts/gem-sponsored-section'
+import TopFundraisersVideo from '@/layouts/top-fundraisers-video'
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <LatestFundraisingCampaigns />
       <ICMCampaignCategories />
       <GemSponsoredSection />
+      <TopFundraisersVideo />
       {/*
       <Category />
       <Gem />

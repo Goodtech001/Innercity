@@ -5,8 +5,8 @@ import gemBannerImage from '@/public/assets/images/gem-banner-image.jpg'
 
 export default function GemSponsoredSection() {
   return (
-    <section className="bg-complementary py-8 pb-6 md:py-14 md:pb-8">
-      <div className="container mx-auto flex max-w-6xl grid-cols-2 flex-col gap-6 md:grid">
+    <section className="bg-complementary">
+      <div className="container mx-auto flex max-w-6xl grid-cols-2 flex-col gap-6 py-8 pb-6 md:grid md:py-14 md:pb-8">
         <div className="flex flex-col gap-2">
           <p className="font-medium">Other Sponsored Events</p>
           <h1 className="text-balance text-3xl font-bold text-dark md:text-4xl">
