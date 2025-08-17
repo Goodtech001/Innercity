@@ -4,7 +4,7 @@ import Link from 'next/link'
 export default function BenefitsMetricsStrip() {
   return (
     <div className="bg-secondary py-3 text-light">
-      <div className="container flex max-w-5xl flex-col items-center justify-between gap-5 gap-y-8 md:flex-row">
+      <div className="container flex flex-wrap items-center justify-between gap-5 gap-y-4 md:flex-row">
         <Link className="flex items-center gap-3" href={'/'}>
           <Icon icon={'mingcute:world-fill'} className="size-6 text-2xl" />
           <p className="font-semibold underline">Join a Global Network of Changemakers</p>

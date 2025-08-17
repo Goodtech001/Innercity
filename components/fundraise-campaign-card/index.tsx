@@ -23,7 +23,7 @@ export default function FundraiseCampaignCard() {
         <Link
           href={'/'}
           title="Join Me To Impact 200 Lives Through Education All Around Lagos For The Next 3 Years"
-          className="ellipsis-2 text-balance text-xl font-bold !leading-[100%] text-dark md:text-2xl"
+          className="ellipsis-2 text-balance text-lg font-bold !leading-[100%] text-dark md:text-xl"
         >
           Join Me To Impact 200 Lives Through Education All Around Lagos For The Next 3 Years
         </Link>

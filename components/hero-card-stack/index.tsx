@@ -94,8 +94,8 @@ export default function HeroCardStack({
 
         if (index === 1) yPos = -CARD_OFFSET // 1st behind → top
         if (index === 2) yPos = -CARD_OFFSET * 2 // 2nd behind → top
-        if (index === 3) yPos = CARD_OFFSET * (isMobile ? 3.5 : 4.5) // 1st bottom
-        if (index === 4) yPos = CARD_OFFSET * (isMobile ? 5.25 : 6.5) // 2nd bottom
+        if (index === 3) yPos = CARD_OFFSET * (isMobile ? 3.7 : 4.5) // 1st bottom
+        if (index === 4) yPos = CARD_OFFSET * (isMobile ? 5.7 : 6.5) // 2nd bottom
 
         return (
           <motion.div

@@ -1,6 +1,5 @@
 'use client'
 import Campaign2 from '@/components/campaign2'
-import { Camp } from '@/components/Campaigns'
 import Category from '@/components/Category'
 import Gem from '@/components/Gem'
 import { CarouselDemo } from '@/components/PartnersCorner'
@@ -8,6 +7,7 @@ import TopNavbar from '@/layouts/topnavbar'
 import HeroSection from '@/layouts/hero-section'
 import BenefitsMetricsStrip from '@/layouts/benefits-metrics-strip'
 import LatestFundraisingCampaigns from '@/layouts/latest-fundraising-campaigns'
+import ICMCampaignCategories from '@/layouts/icm-campaign-categories'
 
 export default function Home() {
   return (
@@ -16,7 +16,8 @@ export default function Home() {
       <HeroSection />
       <BenefitsMetricsStrip />
       <LatestFundraisingCampaigns />
-      {/* <Camp />
+      <ICMCampaignCategories />
+      {/*
       <Category />
       <Gem />
       <CarouselDemo />
