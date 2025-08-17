@@ -9,9 +9,9 @@ export default function GemSponsoredSection() {
       <div className="container mx-auto flex max-w-6xl grid-cols-2 flex-col gap-6 py-8 pb-6 md:grid md:py-14 md:pb-8">
         <div className="flex flex-col gap-2">
           <p className="font-medium">Other Sponsored Events</p>
-          <h1 className="text-balance text-3xl font-bold text-dark md:text-4xl">
+          <h3 className="text-balance text-3xl font-bold text-dark md:text-4xl">
             The Innercity Mission Give Every Month Initiative (GEM)
-          </h1>
+          </h3>
           <p className="mt-2 font-medium md:mt-4">
             The InnerCity Mission GEMs [Giving Every Month] Initiative is a Monthly Giving Program
             for Partners who commit to make a regular financial donation to the InnerCity Mission
@@ -33,7 +33,7 @@ export default function GemSponsoredSection() {
         </div>
         <div className="flex flex-col items-center justify-center">
           <Image
-            className="w-full max-w-96 rounded-lg border border-dark/10 shadow md:w-auto"
+            className="w-full rounded-lg border border-dark/10 shadow md:w-auto md:max-w-96"
             alt="GEM"
             src={gemBannerImage}
             width={400}
