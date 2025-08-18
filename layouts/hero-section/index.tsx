@@ -12,7 +12,7 @@ export default function HeroSection() {
             Fundraise Your Moments, Uplift a Child
           </h1>
           <p className="mt-2 font-medium md:mt-4">
-            Fundrise turns your special days into meaningful action. From birthdays to “just
+            Fundraise turns your special days into meaningful action. From birthdays to “just
             because,” every campaign helps a child eat, learn, and thrive.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-6">
