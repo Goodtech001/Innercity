@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import React from 'react'
-import { Input } from './ui/input'
 import mission from '../public/missionlogo.png'
 import { Icon } from '@iconify/react'
 import Image from 'next/image'
