@@ -7,17 +7,12 @@ export default function TopFundraisersVideo() {
         <h3 className="mx-auto max-w-3xl text-center text-3xl font-bold text-dark md:text-4xl">
           Top Fundraisers Share Their Stories and Reasons Behind Major Campaigns
         </h3>
-<<<<<<< HEAD
-        <video width="320" height="240" controls   src="video.mp4" type="video/mp4" className='justify-center' />
-=======
-
+        {/* <video width="320" height="240" controls   src="video.mp4" type="video/mp4" className='justify-center align-middle rounded' /> */}
         <CustomVideoPlayer />
->>>>>>> aaacf5d6e0e78868f37db52fc792770b88c89a95
       </div>
     </section>
   )
 }
-
 import ReactPlayer from 'react-player'
 
 export function CustomVideoPlayer() {

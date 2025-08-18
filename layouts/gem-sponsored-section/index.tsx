@@ -22,7 +22,7 @@ export default function GemSponsoredSection() {
             <Link
               className="btn-primary w-fit px-10"
               target="_blank"
-              href={'https://icm.ngo/partnerwithus'}
+              href={'https://gems.theinnercitymission.ngo/home'}
             >
               Visit GEM
             </Link>
