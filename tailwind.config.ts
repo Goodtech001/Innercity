@@ -10,6 +10,9 @@ import tailwindClipPath from 'tailwind-clip-path'
 
 
 export default {
+   variants: {
+    backgroundColor: ['responsive', 'hover', 'focus', 'disabled'],
+  },
   darkMode: 'class',
   content: [
     './lib/**/*.{js,ts,jsx,tsx,mdx}',
