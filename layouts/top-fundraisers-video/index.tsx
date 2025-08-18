@@ -8,7 +8,7 @@ export default function TopFundraisersVideo() {
           Top Fundraisers Share Their Stories and Reasons Behind Major Campaigns
         </h3>
         {/* <video width="320" height="240" controls   src="video.mp4" type="video/mp4" className='justify-center align-middle rounded' /> */}
-        <CustomVideoPlayer />
+        <CustomVideoPlayer/>
       </div>
     </section>
   )
@@ -37,7 +37,7 @@ export function CustomVideoPlayer() {
   }
 
   return (
-    <div className="relative mx-auto aspect-2 w-full max-w-3xl overflow-hidden rounded-xl shadow-xl">
+    <div className="relative mx-auto aspect-2 w-full max-w-3xl overflow-hidden rounded-xl shadow-xl mt-10">
       {/* Video */}
       <ReactPlayer
         ref={playerRef as React.Ref<HTMLVideoElement> | undefined}
