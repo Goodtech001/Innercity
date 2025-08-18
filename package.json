@@ -4,12 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack --port 7070",
-    "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build": "next build"
   },
   "dependencies": {
-    "@iconify/react": "^6.0.0",
     "@radix-ui/react-navigation-menu": "^1.2.14",
     "@radix-ui/react-progress": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",
@@ -31,8 +30,8 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@tailwindcss/postcss": "^4.1.12",
+    "@types/node": "^20.19.11",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
