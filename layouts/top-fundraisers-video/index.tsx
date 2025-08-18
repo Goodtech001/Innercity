@@ -12,7 +12,6 @@ export default function TopFundraisersVideo() {
           height="240"
           controls
           src="video.mp4"
-          type="video/mp4"
           className="justify-center"
         />
       </div>
