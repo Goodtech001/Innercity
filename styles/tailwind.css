@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* @import 'tw-animate-css'; */
 
 @layer components {
   .btn {
@@ -14,7 +13,7 @@
     @apply flex w-full justify-center rounded-lg border border-primary bg-primary px-6 py-2.5 text-sm/6 font-semibold text-light shadow-sm ring-primary/25 transition-all hover:bg-primary/90 hover:ring-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:scale-x-95 active:ring-2;
   }
   .input-field {
-    @apply disabled:bg-gray-100 block w-full rounded-md border-2 bg-light px-3 py-2.5 text-base text-textcolor -outline-offset-1 outline-primary ring-primary/25 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:ring-2 disabled:cursor-not-allowed disabled:text-gray-500 disabled:ring-0 sm:text-sm/6 md:text-sm;
+    @apply disabled:bg-gray-100 block w-full rounded-md border-2 border-primary/50 bg-light px-3 py-2.5 text-textcolor -outline-offset-1 outline-primary placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:ring-2 disabled:cursor-not-allowed disabled:text-gray-500 disabled:ring-0 sm:text-sm/6 md:text-sm;
   }
   .ellipsis {
     @apply line-clamp-1 max-h-20 overflow-hidden text-ellipsis whitespace-break-spaces !leading-relaxed [-webkit-box-orient:vertical] [display:-webkit-box];

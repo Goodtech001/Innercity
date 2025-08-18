@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import React from 'react'
-import mission from '../public/missionlogo.png'
 import { Icon } from '@iconify/react'
 import Image from 'next/image'
-import kings from '../public/kingslogo.png'
+import kings from '@/public/kingslogo.png'
+import Logo from '@/components/logo'
 
 const quickLinks = [
   { label: 'Create Your Campaign', link: '' },
@@ -20,7 +20,7 @@ const campaignCategoryLinks = [
   { label: 'Send Portions', link: '' },
 ]
 
-function Footer() {
+export default function Footer() {
   return (
     <footer className="bg-footer-grey px-2 py-8 text-white md:px-0 md:pt-16">
       <div className="container flex flex-col justify-between gap-8 md:flex-row">
@@ -62,7 +62,7 @@ function Footer() {
       <div className="mt-20 flex justify-between border-t-2">
         <div className="mt-6 flex space-x-10">
           <div>
-            <Image src={mission} alt="logo" width={100} height={100} />
+            <Logo variant="white" className="w-24" />
           </div>
           <div className="text-sm md:ml-5 md:mt-3">
             <p>©2025 The InnerCity Mission for Children. All Rights Reserved.</p>
@@ -99,5 +99,3 @@ function Footer() {
     </footer>
   )
 }
-
-export default Footer
