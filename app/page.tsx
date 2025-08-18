@@ -21,7 +21,7 @@ export default function Home() {
       <ICMCampaignCategories />
       <GemSponsoredSection />
       <TopFundraisersVideo />
-      {/*
+      {/*npm 
       <Category />
       <Gem />
       <CarouselDemo />

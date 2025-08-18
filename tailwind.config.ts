@@ -7,7 +7,13 @@ import tailwindAspectRatio from '@tailwindcss/aspect-ratio'
 // @ts-ignore
 import tailwindClipPath from 'tailwind-clip-path'
 
+
+
 export default {
+  //  postcss: {
+  //   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  //   plugins: [require('@tailwindcss/postcss')],
+  // },
   darkMode: 'class',
   content: [
     './lib/**/*.{js,ts,jsx,tsx,mdx}',
