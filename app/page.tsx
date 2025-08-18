@@ -1,8 +1,3 @@
-'use client'
-import Campaign2 from '@/components/campaign2'
-import Category from '@/components/Category'
-import Gem from '@/components/Gem'
-import { CarouselDemo } from '@/components/PartnersCorner'
 import TopNavbar from '@/layouts/topnavbar'
 import HeroSection from '@/layouts/hero-section'
 import BenefitsMetricsStrip from '@/layouts/benefits-metrics-strip'
@@ -21,11 +16,6 @@ export default function Home() {
       <ICMCampaignCategories />
       <GemSponsoredSection />
       <TopFundraisersVideo />
-      {/*npm 
-      <Category />
-      <Gem />
-      <CarouselDemo />
-      <Campaign2 /> */}
     </>
   )
 }

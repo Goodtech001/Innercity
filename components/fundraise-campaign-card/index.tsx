@@ -41,7 +41,7 @@ export default function FundraiseCampaignCard() {
           Target: <span className="text-primary">$1,000,000</span>
         </p>
 
-        <Link className="inline-block text-sm underline md:hidden" href={'/'}>
+        <Link className="mt-auto inline-block py-2.5 text-sm underline md:hidden" href={'/'}>
           Donate now
         </Link>
 

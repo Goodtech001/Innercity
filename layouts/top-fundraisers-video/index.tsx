@@ -1,3 +1,4 @@
+'use client'
 import React, { useRef, useState } from 'react'
 
 export default function TopFundraisersVideo() {
@@ -7,7 +8,7 @@ export default function TopFundraisersVideo() {
         <h3 className="mx-auto max-w-3xl text-center text-3xl font-bold text-dark md:text-4xl">
           Top Fundraisers Share Their Stories and Reasons Behind Major Campaigns
         </h3>
-        <video width="320" height="240" controls src="video.mp4" className="justify-center" />
+        <CustomVideoPlayer />
       </div>
     </section>
   )

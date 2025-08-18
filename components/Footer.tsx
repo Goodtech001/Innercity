@@ -6,62 +6,56 @@ import { Icon } from '@iconify/react'
 import Image from 'next/image'
 import kings from '../public/kingslogo.png'
 
+const quickLinks = [
+  { label: 'Create Your Campaign', link: '' },
+  { label: 'Support Campaign', link: '' },
+  { label: 'Campaign Resources', link: '' },
+  { label: 'About Fundraiser', link: '' },
+]
+
+const campaignCategoryLinks = [
+  { label: 'Health & Welfare', link: '' },
+  { label: 'Child Health & Nutrition', link: '' },
+  { label: 'Child Care & Support', link: '' },
+  { label: 'Family Support Program', link: '' },
+  { label: 'Send Portions', link: '' },
+]
+
 function Footer() {
   return (
-    <footer className="bg-[#404756] p-6 text-white">
-      <div className="justify-between md:flex">
-        <div className="md:space-x-17 ml-20 flex gap-10 md:ml-0">
-          <div className="">
-            <h1 className="mb-4 text-2xl font-bold">Quick Links</h1>
+    <footer className="bg-footer-grey px-2 py-8 text-white md:px-0 md:pt-16">
+      <div className="container flex flex-col justify-between gap-8 md:flex-row">
+        <div className="flex w-full max-w-md flex-wrap justify-between gap-6">
+          <ul className="flex flex-col gap-1.5">
+            <h5 className="mb-4 text-lg font-bold !leading-[100%] md:text-xl">Quick Links</h5>
+            {quickLinks.map((link) => (
+              <Link href={link.link} key={link.label}>
+                {link.label}
+              </Link>
+            ))}
+          </ul>
 
-            <ul className="md:text-0 mt-1 text-sm">
-              <Link href="">Create your campaign</Link>
-            </ul>
-            <ul className="md:text-0 mt-1 text-sm">
-              <Link href="">Support campaign</Link>
-            </ul>
-            <ul className="md:text-0 mt-1 text-sm">
-              <Link href="">Campaign Resources</Link>
-            </ul>
-            <ul className="md:text-0 mt-1 text-sm">
-              <Link href="">About Fundraiser</Link>
-            </ul>
-          </div>
-          <div>
-            <h1 className="mb-4 text-2xl font-bold">Campaign categories</h1>
-            <ul className="md:text-0 mt-1 text-sm">
-              <Link href="">Health & Welfare</Link>
-            </ul>
-            <ul className="md:text-0 mt-1 text-sm">
-              <Link href="">Child Health & Nutrition</Link>
-            </ul>
-            <ul className="md:text-0 mt-1 text-sm">
-              <Link href="">Child Care & Support</Link>
-            </ul>
-            <ul className="md:text-0 mt-1 text-sm">
-              <Link href="">Family Support Program</Link>
-            </ul>
-            <ul className="md:text-0 mt-1 text-sm">
-              <Link href="">Send Portions</Link>
-            </ul>
-          </div>
+          <ul className="flex flex-col gap-1.5">
+            <h5 className="mb-4 text-lg font-bold !leading-[100%] md:text-xl">
+              Campaign categories
+            </h5>
+            {campaignCategoryLinks.map((link) => (
+              <Link href={link.link} key={link.label}>
+                {link.label}
+              </Link>
+            ))}
+          </ul>
         </div>
-        <div className="mt-5 md:mt-0">
-          <h1 className="justify-center text-center font-bold md:text-2xl">
+
+        <div className="mt-10 w-full md:mt-0 md:max-w-md">
+          <h5 className="mb-4 text-right text-xl font-bold !leading-[120%] md:text-2xl">
             Subscribe To Our Newsletter
-          </h1>
-          <Input
-            type="text"
-            placeholder="Enter your Email"
-            className="md:w-400 sm:w-100 ml-15 mt-4 h-12 bg-white outline-1 outline-blue-700 md:ml-0"
-          />
-          <div className="mt-4 flex justify-center justify-between md:gap-0">
-            <div>
-              <p>We will never spam you:-) </p>
-            </div>
-            <div>
-              <button className="btn-primary px-8 py-4 text-white">Send</button>
-            </div>
+          </h5>
+          <input type="text" className="input-field" placeholder="Enter Your Email..." />
+          <div className="mt-2 flex flex-wrap items-start justify-between gap-6">
+            <small>we will never spam :)</small>
+
+            <button className="btn-primary w-fit px-10">Send</button>
           </div>
         </div>
       </div>

@@ -7,11 +7,11 @@ import tailwindAspectRatio from '@tailwindcss/aspect-ratio'
 // @ts-ignore
 import tailwindClipPath from 'tailwind-clip-path'
 
-
-
 export default {
-   variants: {
-    backgroundColor: ['responsive', 'hover', 'focus', 'disabled'],
+  variants: {
+    extend: {
+      backgroundColor: ['responsive', 'hover', 'focus', 'disabled'],
+    },
   },
   darkMode: 'class',
   content: [
@@ -118,13 +118,7 @@ export default {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
-      backgroundColor: {
-        blue: 'hsla(205, 100%, 44%, 1)',
-        white: 'hsla(0, 0%, 100%, 1)',
-        gray: 'hsla(221, 15%, 29%, 1)',
-        lightGreen: 'hsla(167, 39%, 93%, 1)',
-        lightGray: 'hsla(219, 54%, 95%, 0.3)',
-      },
+      backgroundColor: {},
       colors: {
         primary: 'rgba(var(--primary))',
         secondary: 'rgba(var(--secondary))',
@@ -136,6 +130,7 @@ export default {
         info: 'rgba(var(--info))',
         dark: 'rgba(var(--dark))',
         light: 'rgba(var(--light))',
+        'footer-grey': 'rgba(var(--footer-grey))',
         'ghost-white': 'rgba(var(--ghost-white))',
         'fade-error': 'rgba(var(--fade-error))',
       },
