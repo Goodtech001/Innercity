@@ -47,11 +47,11 @@ export default function Footer() {
         </div>
 
         <div className="mt-10 w-full md:mt-0 md:max-w-md">
-          <h5 className="mb-4 text-right text-xl font-bold !leading-[120%] md:text-2xl">
+          <h5 className="mb-4 text-xl font-bold !leading-[120%] md:text-right md:text-2xl">
             Subscribe To Our Newsletter
           </h5>
           <input type="text" className="input-field" placeholder="Enter Your Email..." />
-          <div className="mt-2 flex flex-wrap items-start justify-between gap-6">
+          <div className="mt-2 flex flex-row-reverse flex-wrap items-start justify-between gap-6 md:flex-row">
             <small>we will never spam :)</small>
 
             <button className="btn-primary w-fit px-10">Send</button>
@@ -59,42 +59,26 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="mt-20 flex justify-between border-t-2">
-        <div className="mt-6 flex space-x-10">
-          <div>
+      <hr className="container my-10 md:mt-20" />
+
+      <div className="container flex items-center justify-between">
+        <div className="flex flex-col gap-6 gap-y-6 md:flex-row">
+          <Link href={'/'}>
             <Logo variant="white" className="w-24" />
-          </div>
-          <div className="text-sm md:ml-5 md:mt-3">
-            <p>©2025 The InnerCity Mission for Children. All Rights Reserved.</p>
+          </Link>
+          <div className="flex flex-col gap-2 text-sm">
+            <p>
+              ©{new Date().getFullYear()} The InnerCity Mission for Children. All Rights Reserved.
+            </p>
             <p className="">
               An Initiative of{' '}
-              <Link target="_blank" href="https://theinnercitymission.ngo/" className="underline">
+              <a target="_blank" href="https://theinnercitymission.ngo/" className="underline">
                 The Innercity Mission.
-              </Link>
+              </a>
             </p>
           </div>
         </div>
-        <div className="mt-6 flex space-x-3">
-          <Link target="_blank" href="https://www.instagram.com/innercityhq/">
-            {' '}
-            <Icon icon={'ri:instagram-fill'} className="mt-3 size-6 text-2xl" />
-          </Link>
-          <Link target="_blank" href="https://www.facebook.com/OfficialInnerCityMission">
-            {' '}
-            <Icon icon={'ic:baseline-facebook'} className="mt-3 size-6 text-2xl" />
-          </Link>
-          <Link target="_blank" href="https://x.com/innercityhq">
-            {' '}
-            <Icon icon={'streamline-logos:x-twitter-logo-block'} className="mt-3 size-6 text-2xl" />
-          </Link>
-          <Link target="_blank" href="https://www.linkedin.com/in/TheInnerCityMission">
-            {' '}
-            <Icon icon={'mdi:linkedin'} className="mt-3 size-6 text-2xl" />
-          </Link>
-          <Link target="_blank" href="https://web.kingsch.at/superusers/icm4c">
-            <Image src={kings} alt="kings" width={40} height={40} />
-          </Link>
-        </div>
+        <div className=""></div>
       </div>
     </footer>
   )
