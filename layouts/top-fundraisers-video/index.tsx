@@ -1,3 +1,7 @@
+
+'use client'
+import { InfiniteMovingCards } from '@/components/infinite-moving-cards'
+import React, { useRef, useState } from 'react'
 import VideoPlayer from '@/components/video-player'
 
 export default function TopFundraisersVideo() {
