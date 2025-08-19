@@ -16,7 +16,6 @@ export default function VideoPlayer() {
 
   const togglePlay = () => {
     setPlaying((prev) => !prev)
-    console.log(progress)
   }
 
   // Update progress as video plays
@@ -39,7 +38,6 @@ export default function VideoPlayer() {
 
   const handleJumpPlayerCurrentTime = (jumpBy: number) => {
     if (!playerRef.current || !jumpBy) return
-    console.log(jumpBy, 'seconds')
     playerRef.current.currentTime = playerRef.current.currentTime + jumpBy
   }
 
@@ -52,6 +50,7 @@ export default function VideoPlayer() {
   const toggleMute = () => {
     if (!playerRef.current) return
     const currentVolume = playerRef.current.volume
+
     if (currentVolume > 0) {
       playerRef.current.volume = 0
       setVolume(0)
@@ -69,14 +68,18 @@ export default function VideoPlayer() {
         {/* Video */}
         <ReactPlayer
           ref={playerRef}
-          // src="https://vimeo.com/76979871"
-          src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+          src="https://vimeo.com/76979871"
+          // src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
           playing={playing}
           controls={false} // hide native controls
+          muted={isMuted}
+          volume={volume}
           width="100%"
           height="100%"
           onTimeUpdate={handleTimeUpdate}
           onEnded={() => handleVideoEnded}
+          onWaiting={(e) => console.log(e)}
+          onWaitingCapture={(e) => console.log(e)}
           style={{ pointerEvents: 'none' }} // prevent click-through to Vimeo UI
           slot="media"
         />
@@ -110,11 +113,20 @@ export default function VideoPlayer() {
                 }}
               />
               <div className="mt-1.5 flex items-center justify-between gap-x-8 gap-y-2 text-sm leading-tight md:flex-nowrap">
-                <small className="w-full">
-                  {duration
-                    ? `${formatTime(progress * duration)} / ${formatTime(duration)}`
-                    : '00:00 / 00:00'}
-                </small>
+                <div className="flex w-full items-center justify-start gap-2">
+                  <small className="">
+                    {duration
+                      ? `${formatTime(progress * duration)} / ${formatTime(duration)}`
+                      : '00:00 / 00:00'}
+                  </small>
+
+                  <button
+                    onClick={toggleMute}
+                    className="rounded border border-light bg-light/25 p-1 text-light backdrop-blur active:scale-95"
+                  >
+                    <Icon icon={isMuted ? 'mdi:mute' : 'mdi:volume-high'} className="text-base" />
+                  </button>
+                </div>
 
                 <div className="flex w-full items-center justify-end gap-2">
                   <button
@@ -122,6 +134,19 @@ export default function VideoPlayer() {
                     className="rounded border border-light bg-light/25 p-1 text-light backdrop-blur active:scale-95"
                   >
                     <Icon icon="fluent:skip-backward-10-28-regular" className="text-base" />
+                  </button>
+                  <button
+                    onClick={togglePlay}
+                    className="rounded border border-light bg-light/25 p-1 text-light backdrop-blur active:scale-95"
+                  >
+                    <Icon
+                      icon={
+                        playing
+                          ? 'material-symbols-light:pause-rounded'
+                          : 'material-symbols:play-arrow-rounded'
+                      }
+                      className="text-base"
+                    />
                   </button>
                   <button
                     onClick={() => handleJumpPlayerCurrentTime(10)}
