@@ -1,4 +1,5 @@
 'use client'
+import { InfiniteMovingCards } from '@/components/infinite-moving-cards'
 import React, { useRef, useState } from 'react'
 
 export default function TopFundraisersVideo() {
@@ -8,73 +9,39 @@ export default function TopFundraisersVideo() {
         <h3 className="mx-auto max-w-3xl text-center text-3xl font-bold text-dark md:text-4xl">
           Top Fundraisers Share Their Stories and Reasons Behind Major Campaigns
         </h3>
-        <CustomVideoPlayer />
       </div>
     </section>
   )
 }
-import ReactPlayer from 'react-player'
 
-export function CustomVideoPlayer() {
-  const playerRef = useRef<HTMLVideoElement | undefined>(null)
-  const [playing, setPlaying] = useState(false)
-  const [progress, setProgress] = useState(0)
-
-  const togglePlay = () => setPlaying(!playing)
-
-  const handleProgress = (state: unknown) => {
-    // setProgress(state.played)
-    console.log(state)
-  }
-
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTime = parseFloat(e.target.value)
-    setProgress(newTime)
-    console.log(e)
-    console.log(playerRef)
-
-    // playerRef.current?.seekTo(newTime)
-  }
-
-  return (
-    <div className="relative mx-auto aspect-2 w-full max-w-3xl overflow-hidden rounded-xl shadow-xl">
-      {/* Video */}
-      <ReactPlayer
-        ref={playerRef as React.Ref<HTMLVideoElement> | undefined}
-        src="https://player.vimeo.com/video/1037756541/?h=2f13d91b44"
-        playing={playing}
-        width="100%"
-        height="100%"
-        controls={false}
-        onProgress={handleProgress}
-      />
-
-      {/* Center Play Button */}
-      {!playing && (
-        <button
-          onClick={togglePlay}
-          className="absolute inset-0 flex items-center justify-center bg-black/30"
-        >
-          <div className="bg-blue-500 rounded-full p-4 shadow-lg">
-            <svg className="h-10 w-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </div>
-        </button>
-      )}
-
-      {/* Controls */}
-      <div className="absolute bottom-2 left-0 right-0 px-4">
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step="0.01"
-          value={progress}
-          onChange={handleSeek}
-          className="w-full cursor-pointer accent-blue-500"
-        />
-      </div>
-    </div>
-  )
-}
+const testimonials = [
+  {
+    quote:
+      "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair.",
+    name: "Charles Dickens",
+    title: "A Tale of Two Cities",
+  },
+  {
+    quote:
+      "To be, or not to be, that is the question: Whether 'tis nobler in the mind to suffer The slings and arrows of outrageous fortune, Or to take Arms against a Sea of troubles, And by opposing end them: to die, to sleep.",
+    name: "William Shakespeare",
+    title: "Hamlet",
+  },
+  {
+    quote: "All that we see or seem is but a dream within a dream.",
+    name: "Edgar Allan Poe",
+    title: "A Dream Within a Dream",
+  },
+  {
+    quote:
+      "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.",
+    name: "Jane Austen",
+    title: "Pride and Prejudice",
+  },
+  {
+    quote:
+      "Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.",
+    name: "Herman Melville",
+    title: "Moby-Dick",
+  },
+];

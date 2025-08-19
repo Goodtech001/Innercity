@@ -24,4 +24,7 @@
   .ellipsis-3 {
     @apply line-clamp-3 max-h-20 overflow-hidden text-ellipsis whitespace-break-spaces !leading-relaxed [-webkit-box-orient:vertical] [display:-webkit-box];
   }
+  .card {
+    @apply absolute top-[20%] left-[20%] 
+   }
 }
