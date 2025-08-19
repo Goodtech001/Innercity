@@ -7,11 +7,12 @@ import { formatTime } from '@/utils/format-time'
 
 export default function VideoPlayer() {
   const playerRef = useRef<HTMLVideoElement>(null)
-
   const [playing, setPlaying] = useState(false)
   const [isHovering, setIsHovering] = useState(true)
   const [progress, setProgress] = useState(0) // 0–1 fraction
   const [duration, setDuration] = useState(0)
+  const [volume, setVolume] = useState(1)
+  const [isMuted, setIsMuted] = useState(false)
 
   const togglePlay = () => {
     setPlaying((prev) => !prev)
@@ -24,22 +25,22 @@ export default function VideoPlayer() {
     setDuration(el.duration)
     if (el && el.duration > 0) {
       setProgress(el.currentTime / el.duration)
-      // console.log(progress)
     }
   }
 
   const handleUpdatePlayerCurrentTime = (percentage: number) => {
     if (!duration || !playerRef.current) return
-
     // convert percentage (0–100) into seconds
     const newTime = (percentage / 100) * duration
-
     // update the progress as well with percentage to fraction
     setProgress(percentage / 100)
-
-    console.log('Jumping to:', newTime, 'seconds')
-
     playerRef.current.currentTime = newTime
+  }
+
+  const handleJumpPlayerCurrentTime = (jumpBy: number) => {
+    if (!playerRef.current || !jumpBy) return
+    console.log(jumpBy, 'seconds')
+    playerRef.current.currentTime = playerRef.current.currentTime + jumpBy
   }
 
   const handleVideoEnded = () => {
@@ -48,17 +49,18 @@ export default function VideoPlayer() {
     setProgress(0)
   }
 
-  // Seek when slider moves
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSeek = (e: any) => {
-    const newProgress = parseFloat(e.target.value)
-    setProgress(newProgress)
-
-    console.log(playerRef?.current?.currentTime)
-    console.dir({ v: playerRef.current })
-    console.log(Object.keys(playerRef.current || {}))
-    console.log(Object.getOwnPropertyNames(playerRef.current || {}))
-    console.log(Object.getPrototypeOf(playerRef.current))
+  const toggleMute = () => {
+    if (!playerRef.current) return
+    const currentVolume = playerRef.current.volume
+    if (currentVolume > 0) {
+      playerRef.current.volume = 0
+      setVolume(0)
+      setIsMuted(true)
+    } else {
+      playerRef.current.volume = 1
+      setVolume(1)
+      setIsMuted(false)
+    }
   }
 
   return (
@@ -67,8 +69,8 @@ export default function VideoPlayer() {
         {/* Video */}
         <ReactPlayer
           ref={playerRef}
-          src="https://vimeo.com/76979871"
-          // src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+          // src="https://vimeo.com/76979871"
+          src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
           playing={playing}
           controls={false} // hide native controls
           width="100%"
@@ -99,7 +101,7 @@ export default function VideoPlayer() {
           </div>
 
           <div className="absolute bottom-0 h-16 w-full">
-            <div className="mx-auto h-12 rounded-lg bg-white/30 px-2 py-2 backdrop-blur-sm md:w-11/12">
+            <div className="mx-auto h-14 rounded-lg bg-white/30 px-2 py-1.5 backdrop-blur-sm md:w-11/12">
               <PercentageBar
                 value={progress * 100}
                 onChange={(val) => {
@@ -107,17 +109,26 @@ export default function VideoPlayer() {
                   handleUpdatePlayerCurrentTime(val)
                 }}
               />
-              <div className="flex items-center justify-between gap-8 text-sm">
-                <small>
+              <div className="mt-1.5 flex items-center justify-between gap-x-8 gap-y-2 text-sm leading-tight md:flex-nowrap">
+                <small className="w-full">
                   {duration
                     ? `${formatTime(progress * duration)} / ${formatTime(duration)}`
                     : '00:00 / 00:00'}
                 </small>
 
-                <div className="">
-                  <span className="text-xs text-gray-400">
-                    <Icon icon="mdi:volume-high" className="size-4" />
-                  </span>
+                <div className="flex w-full items-center justify-end gap-2">
+                  <button
+                    onClick={() => handleJumpPlayerCurrentTime(-10)}
+                    className="rounded border border-light bg-light/25 p-1 text-light backdrop-blur active:scale-95"
+                  >
+                    <Icon icon="fluent:skip-backward-10-28-regular" className="text-base" />
+                  </button>
+                  <button
+                    onClick={() => handleJumpPlayerCurrentTime(10)}
+                    className="rounded border border-light bg-light/25 p-1 text-light backdrop-blur active:scale-95"
+                  >
+                    <Icon icon="fluent:skip-forward-10-28-regular" className="text-base" />
+                  </button>
                 </div>
               </div>
             </div>
