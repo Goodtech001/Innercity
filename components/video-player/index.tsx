@@ -2,7 +2,7 @@
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
-import PercentageBar from '../percentage-bar'
+import PercentageBar from '@/components/percentage-bar'
 import { formatTime } from '@/utils/format-time'
 
 export default function VideoPlayer() {
