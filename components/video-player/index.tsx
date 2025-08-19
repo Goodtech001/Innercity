@@ -4,6 +4,8 @@ import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import PercentageBar from '@/components/percentage-bar'
 import { formatTime } from '@/utils/format-time'
+import thumbnail from '@/public/assets/images/video-thumbnail.jpg'
+import Image from 'next/image'
 
 export default function VideoPlayer() {
   const playerRef = useRef<HTMLVideoElement>(null)
@@ -13,6 +15,7 @@ export default function VideoPlayer() {
   const [duration, setDuration] = useState(0)
   const [volume, setVolume] = useState(1)
   const [isMuted, setIsMuted] = useState(false)
+  const [showThumbnail, setShowThumbnail] = useState(true)
 
   const togglePlay = () => {
     setPlaying((prev) => !prev)
@@ -45,6 +48,7 @@ export default function VideoPlayer() {
     setPlaying(false)
     setDuration(0)
     setProgress(0)
+    setShowThumbnail(true)
   }
 
   const toggleMute = () => {
@@ -66,6 +70,13 @@ export default function VideoPlayer() {
     <>
       <div className="relative aspect-[1.5] w-full max-w-3xl overflow-hidden rounded-lg bg-black backdrop-filter md:aspect-[1.8]">
         {/* Video */}
+        <Image
+          alt="thumbnail"
+          src={thumbnail}
+          className={`absolute inset-0 z-[1] h-full w-full ${showThumbnail ? 'block' : 'hidden'}`}
+          width={640}
+          height={360}
+        />
         <ReactPlayer
           ref={playerRef}
           src="https://vimeo.com/76979871"
@@ -73,7 +84,9 @@ export default function VideoPlayer() {
           playing={playing}
           controls={false} // hide native controls
           muted={isMuted}
+          loop={false}
           volume={volume}
+          onPlay={() => setShowThumbnail(false)}
           width="100%"
           height="100%"
           onTimeUpdate={handleTimeUpdate}
@@ -88,7 +101,7 @@ export default function VideoPlayer() {
         <div
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
-          className={`absolute inset-0 bg-gradient-to-b from-dark/5 to-dark/95 text-light transition duration-500 ${isHovering ? 'opacity-100' : 'opacity-0'}`}
+          className={`absolute inset-0 z-10 bg-gradient-to-b from-dark/5 to-dark/95 text-light transition duration-500 ${isHovering ? 'opacity-100' : 'opacity-0'}`}
         >
           <div
             onClick={togglePlay}
