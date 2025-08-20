@@ -42,7 +42,7 @@ export default function TopFundraisersVideo() {
               clickable: true,
             }}
             modules={[FreeMode, Pagination]}
-            className="min-h-48 max-w-4xl"
+            className="min-h-40 max-w-4xl"
           >
             {Array.from({ length: 8 }).map((_, index) => (
               <SwiperSlide key={index}>
