@@ -1,8 +1,28 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import VideoPlayer from '@/components/video-player'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { FreeMode, Pagination } from 'swiper/modules'
+import Image from 'next/image'
+import thumbnail from '@/public/assets/images/video-thumbnail.jpg'
 
 export default function TopFundraisersVideo() {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth
+      setIsMobile(width <= 768)
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
   return (
     <section>
       <div className="container py-8 pb-6 md:py-14 md:pb-8">
@@ -10,10 +30,35 @@ export default function TopFundraisersVideo() {
           Top Fundraisers Share Their Stories{' '}
           <span className="hidden md:inline-block">and Reasons Behind Major Campaigns</span>
         </h3>
-        <div className="mx-auto mt-5 flex max-w-4xl items-center justify-center">
+        <div className="mx-auto mb-2 mt-5 flex max-w-4xl items-center justify-center">
           <VideoPlayer />
         </div>
-        <div className=""></div>
+        <div className="">
+          <Swiper
+            slidesPerView={isMobile ? 2 : 4}
+            spaceBetween={5}
+            freeMode={true}
+            pagination={{
+              clickable: true,
+            }}
+            modules={[FreeMode, Pagination]}
+            className="min-h-48 max-w-4xl"
+          >
+            {Array.from({ length: 8 }).map((_, index) => (
+              <SwiperSlide key={index}>
+                <div className="">
+                  <Image
+                    alt="thumbnail"
+                    src={thumbnail}
+                    className={`h-32 w-48 rounded-lg object-cover shadow-lg`}
+                    width={640}
+                    height={360}
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
       </div>
     </section>
   )

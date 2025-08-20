@@ -90,7 +90,7 @@ h6,
   max-width: 1250px;
   margin: auto;
   height: 100%;
-  padding-inline: 0.2rem;
+  padding-inline: 0.4rem;
 }
 
 .sub-header {
@@ -107,6 +107,15 @@ h6,
   background: rgba(var(--textcolor));
   display: block;
   border-radius: 10px;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  height: fit-content;
 }
 
 @media only screen and (max-width: 650px) {
