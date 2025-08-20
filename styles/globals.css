@@ -1,19 +1,6 @@
 /* @import "tailwindcss"; */
 @import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap');
 
-
-
-
-@theme inline {
-  --animate-scroll: scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite;
- 
-  @keyframes scroll {
-    to {
-      transform: translate(calc(-50% - 0.5rem));
-    }
-  }
-}
-
 :root {
   --dark: 0, 0, 0; /* #000000 */
   --white: 255, 255, 255; /* #FFFFFF */
@@ -120,12 +107,6 @@ h6,
   background: rgba(var(--textcolor));
   display: block;
   border-radius: 10px;
-}
-.cta {
-  position: absolute;
-  top: 20%;
-  left: 24%;
-  display: block;
 }
 
 @media only screen and (max-width: 650px) {
