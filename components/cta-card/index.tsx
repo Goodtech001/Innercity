@@ -3,8 +3,8 @@ import React from 'react'
 
 function Ctacard () {
   return (
-    <div className=''>
-      <div className='text-center md:p-20 p-10 bg-white cta rounded'>
+    <div className='align-middle'>
+      <div className='text-center md:p-20 p-5 bg-white w-fit cta rounded md:m-1 m-5 mt-10'>
         <h1 className='font-bold text-2xl text-black'>
             You can Be The Reason Someone Smiles Today.
         </h1>
