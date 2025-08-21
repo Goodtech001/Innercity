@@ -118,12 +118,9 @@ h6,
   height: fit-content;
 }
 
-
-
 .marquee-container:hover {
   animation-play-state: paused;
 }
-
 
 @media only screen and (max-width: 650px) {
   body {
