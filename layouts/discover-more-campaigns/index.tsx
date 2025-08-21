@@ -49,10 +49,8 @@ export default function DiscoverMoreCategories() {
 
 const CategoryLinkButton = () => {
   return (
-    <button className="rounded-lg border-2 border-textcolor/25 bg-white px-8 py-3 text-center shadow-[0px_0px_6px_1px_rgba(0,_0,_0,_0.1)]">
-      <p className="text-base font-semibold !leading-[100%] text-textcolor md:text-lg">
-        Send Children Back to School
-      </p>
+    <button className="rounded-lg border-2 border-textcolor/25 bg-white px-8 py-3 text-center text-textcolor shadow-[0px_0px_6px_1px_rgba(0,_0,_0,_0.1)] hover:border-primary hover:text-primary md:text-base">
+      <p className="font-medium !leading-[100%]">Send Children Back to School</p>
     </button>
   )
 }
