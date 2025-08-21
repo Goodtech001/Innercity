@@ -2,7 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 import { Icon } from '@iconify/react'
 import Image from 'next/image'
-import kings from '@/public/kingslogo.png'
+import kingsChatIcon from '@/public/assets/icons/kings-chat-icon.png'
 import Logo from '@/components/logo'
 
 const quickLinks = [
@@ -61,7 +61,7 @@ export default function Footer() {
 
       <hr className="container my-10 md:mt-20" />
 
-      <div className="container flex items-center justify-between">
+      <div className="container flex flex-col justify-between gap-5 gap-y-8 md:flex-row md:items-center">
         <div className="flex flex-col gap-6 gap-y-6 md:flex-row">
           <Link href={'/'}>
             <Logo variant="white" className="w-24" />
@@ -78,7 +78,27 @@ export default function Footer() {
             </p>
           </div>
         </div>
-        <div className=""></div>
+        <div className="flex items-center gap-3">
+          <Link href={'https://instagram.com/innercityhq/'}>
+            <Icon className="size-7" icon={'ri:instagram-fill'} />
+          </Link>
+
+          <Link href={'https://x.com/innercityhq/'}>
+            <Icon className="size-7" icon={'fa6-brands:square-x-twitter'} />
+          </Link>
+
+          <Link href={'https://www.instagram.com/innercityhq/'}>
+            <Image alt="kingschat" className="size-9" width={27} height={27} src={kingsChatIcon} />
+          </Link>
+
+          <Link href={'https://facebook.com/OfficialInnerCityMission'}>
+            <Icon className="size-7" icon={'uim:facebook-f'} />
+          </Link>
+
+          <Link href={'https://linkedin.com/in/TheInnerCityMission'}>
+            <Icon className="size-7" icon={'fa6-brands:linkedin-in'} />
+          </Link>
+        </div>
       </div>
     </footer>
   )

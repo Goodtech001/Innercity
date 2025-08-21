@@ -7,6 +7,7 @@ import GemSponsoredSection from '@/layouts/gem-sponsored-section'
 import TopFundraisersVideo from '@/layouts/top-fundraisers-video'
 import Footer from '@/layouts/footer'
 import CtaSection from '@/layouts/cta-section'
+import DiscoverMoreCategories from '@/layouts/discover-more-campaigns'
 
 export default function Home() {
   return (
@@ -18,7 +19,8 @@ export default function Home() {
       <ICMCampaignCategories />
       <GemSponsoredSection />
       <TopFundraisersVideo />
-      <CtaSection/>
+      <DiscoverMoreCategories />
+      <CtaSection />
       <Footer />
     </>
   )

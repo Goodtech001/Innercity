@@ -38,6 +38,14 @@ export default {
           '0%, 100%': { transform: 'rotate(-3deg)' },
           '50%': { transform: 'rotate(3deg)' },
         },
+        marquee: {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
+        'marquee-right': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
         bounce: {
           '0%, 100%': {
             transform: 'translateY(0)',
@@ -113,6 +121,8 @@ export default {
         rotate: 'rotate 2s linear infinite',
         floatUp: 'floatUp 5s ease-in-out infinite',
         tada: 'tada 1.5s ease-in-out 0.25s 1',
+        marquee: 'marquee 10s linear infinite',
+        'marquee-right': 'marquee-right 10s linear infinite',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

@@ -42,8 +42,10 @@ export default function TopFundraisersVideo() {
               clickable: true,
             }}
             modules={[FreeMode, Pagination]}
-            className="min-h-40 max-w-4xl"
+            className="relative min-h-40 max-w-4xl"
           >
+            <div className="absolute bottom-0 left-0 top-0 z-10 bg-gradient-to-tr from-white via-white/70 to-white/20 px-6 py-4" />
+            <div className="absolute bottom-0 right-0 top-0 z-10 bg-gradient-to-tl from-white via-white/70 to-white/20 px-6 py-4" />
             {Array.from({ length: 8 }).map((_, index) => (
               <SwiperSlide key={index}>
                 <div className="">
