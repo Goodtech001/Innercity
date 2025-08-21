@@ -3,7 +3,6 @@ import { Analytics } from '@vercel/analytics/next'
 import '@/styles/globals.css'
 import '@/styles/tailwind.css'
 import '@/styles/bg.css'
-// Import Swiper styles
 import 'swiper/css'
 import 'swiper/css/free-mode'
 import 'swiper/css/pagination'

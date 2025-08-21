@@ -6,6 +6,5 @@
 
 .bg-ctabg {
   background-image:
-    linear-gradient(rgba(var(--black), 0.5), rgba(var(--black), 0.5)),
-    url('/cta.jpg');
+    linear-gradient(rgba(var(--dark), 0.5), rgba(var(--dark), 0.5)), url('/assets/images/cta.jpg');
 }
