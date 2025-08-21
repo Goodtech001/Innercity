@@ -1,0 +1,103 @@
+[
+  {
+    "id": 1,
+    "banner": "/assets/images/food-7bmc.jpg",
+    "category": "Food Campaign",
+    "description": "Feed the hungry through different food support programs.",
+    "subCategory": [
+      {
+        "id": 1,
+        "title": "Feed an indigent in Africa",
+        "description": "Feed an indigent child in Africa today."
+      },
+      {
+        "id": 2,
+        "title": "Sponsor school meals for children in Malawi",
+        "description": "Provide daily meals for children attending school in Malawi."
+      },
+      {
+        "id": 3,
+        "title": "Sponsor family food parcels",
+        "description": "Support families with monthly food parcels through InnerCity."
+      }
+    ],
+    "createdAt": "2025-04-12T00:00:00Z"
+  },
+  {
+    "id": 2,
+    "banner": "/assets/images/education-class.jpg",
+    "category": "Education Campaign",
+    "description": "Support children’s education through sponsorships and facilities.",
+    "subCategory": [
+      {
+        "id": 1,
+        "title": "Sponsor a child's education",
+        "description": "Help cover tuition and school expenses for a child."
+      },
+      {
+        "id": 2,
+        "title": "Sponsor uniform kit",
+        "description": "Provide school uniforms to underprivileged children."
+      },
+      {
+        "id": 3,
+        "title": "Sponsor stationery",
+        "description": "Supply books, pens, and learning tools for school children."
+      },
+      {
+        "id": 4,
+        "title": "Build a school",
+        "description": "Fund construction of schools in underserved communities."
+      }
+    ],
+    "createdAt": "2025-04-12T00:00:00Z"
+  },
+  {
+    "id": 3,
+    "banner": "/assets/images/women-empowerment-gathering.jpg",
+    "category": "Women Empowerment",
+    "description": "Empower women and support families through skills and resources.",
+    "subCategory": [
+      {
+        "id": 1,
+        "title": "Sponsor skill acquisition program",
+        "description": "Provide vocational training for women to gain sustainable income."
+      },
+      {
+        "id": 2,
+        "title": "Support a family",
+        "description": "Assist vulnerable families with resources to thrive."
+      }
+    ],
+    "createdAt": "2025-04-12T00:00:00Z"
+  },
+  {
+    "id": 4,
+    "banner": "/assets/images/community-development-construction.jpg",
+    "category": "Community Development",
+    "description": "Support infrastructure and community-building initiatives.",
+    "subCategory": [
+      {
+        "id": 1,
+        "title": "Sponsor clean water (borehole)",
+        "description": "Help provide access to clean and safe drinking water."
+      },
+      {
+        "id": 2,
+        "title": "Sponsor toilet building projects",
+        "description": "Fund proper sanitation facilities in communities."
+      },
+      {
+        "id": 3,
+        "title": "Build a learning center",
+        "description": "Support the creation of community learning centers."
+      },
+      {
+        "id": 4,
+        "title": "Build a library",
+        "description": "Help establish libraries to improve literacy and knowledge access."
+      }
+    ],
+    "createdAt": "2025-04-12T00:00:00Z"
+  }
+]

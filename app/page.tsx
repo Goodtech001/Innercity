@@ -1,23 +1,27 @@
-import Body from "@/components/Body";
-import { Camp } from "@/components/Campaigns";
-import Category from "@/components/Category";
-import CornerTitle from "@/components/CornerTitle";
-import Gem from "@/components/Gem";
-import Hero from "@/components/Hero";
-import Par from "@/components/par";
-import { CarouselDemo } from "@/components/PartnersCorner";
-import Image from "next/image";
+import TopNavbar from '@/layouts/topnavbar'
+import HeroSection from '@/layouts/hero-section'
+import BenefitsMetricsStrip from '@/layouts/benefits-metrics-strip'
+import LatestFundraisingCampaigns from '@/layouts/latest-fundraising-campaigns'
+import ICMCampaignCategories from '@/layouts/icm-campaign-categories'
+import GemSponsoredSection from '@/layouts/gem-sponsored-section'
+import TopFundraisersVideo from '@/layouts/top-fundraisers-video'
+import Footer from '@/layouts/footer'
+import CtaSection from '@/layouts/cta-section'
+import DiscoverMoreCategories from '@/layouts/discover-more-campaigns'
 
 export default function Home() {
   return (
-    <div>
-     <Hero />
-     <Body />
-     <Camp />
-     <Category/>
-     <Gem />
-     <CarouselDemo />
-     <Par />
-    </div>
-  );
+    <>
+      <TopNavbar />
+      <HeroSection />
+      <BenefitsMetricsStrip />
+      <LatestFundraisingCampaigns />
+      <ICMCampaignCategories />
+      <GemSponsoredSection />
+      <TopFundraisersVideo />
+      <DiscoverMoreCategories />
+      <CtaSection />
+      <Footer />
+    </>
+  )
 }

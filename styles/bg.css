@@ -1,0 +1,10 @@
+.bg-hero-blue-specs-pattern {
+  background-image:
+    linear-gradient(rgba(var(--white), 0), rgba(var(--white), 0)),
+    url('/assets/svg/randomized-blue-specs-pattern.svg');
+}
+
+.bg-ctabg {
+  background-image:
+    linear-gradient(rgba(var(--dark), 0.5), rgba(var(--dark), 0.5)), url('/assets/images/cta.jpg');
+}
