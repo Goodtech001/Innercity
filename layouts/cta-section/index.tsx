@@ -1,6 +1,6 @@
 import React from 'react'
-import Ctaimg from '@/components/cta-image/page'
-import Ctacard from '@/components/cta-card/page'
+import Ctaimg from '@/components/cta-image'
+import Ctacard from '@/components/cta-card'
 
 function CtaSection() {
   return (
