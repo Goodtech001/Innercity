@@ -1,6 +1,6 @@
+import React from 'react'
 import Marquee from '@/components/marquee/marquee'
 import Link from 'next/link'
-import React from 'react'
 
 export default function DiscoverMoreCategories() {
   return (
