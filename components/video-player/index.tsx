@@ -79,8 +79,8 @@ export default function VideoPlayer() {
         />
         <ReactPlayer
           ref={playerRef}
-          // src="https://vimeo.com/76979871"
-          src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+          src="https://vimeo.com/1037756541/2f13d91b44"
+          // src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
           playing={playing}
           controls={false} // hide native controls
           muted={isMuted}
