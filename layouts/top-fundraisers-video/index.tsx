@@ -13,6 +13,7 @@ import amaechi from "@/public/assets/images/P-Amaechi.jpg"
 import hungry from "@/public/assets/images/hungry.jpg"
 import chuka2 from "@/public/assets/images/chuka2.jpg"
 
+import { Icon } from '@iconify/react/dist/iconify.js'
 
 export default function TopFundraisersVideo() {
   const [isMobile, setIsMobile] = useState(false)
@@ -84,13 +85,6 @@ const handleThumbnailClick = (video: Video) => {
          <VideoPlayer key={currentVideo.src} src={currentVideo.src} thumb={currentVideo.thumb} />
         </div>
         <div className="">
-          <div className='relative'>
-           <div className="swiper-prev absolute top-1/2 w-10 border-2 border-gray-600 shadow bg-white p-2 rounded md:mt-10 mt-40">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-    </svg>
-  </div>
-  </div>
           <Swiper
             slidesPerView={isMobile ? 2 : 4}
             spaceBetween={5}
@@ -98,7 +92,7 @@ const handleThumbnailClick = (video: Video) => {
             pagination={{
               clickable: true,
             }}
-             navigation={{ prevEl: '.swiper-prev', nextEl: '.swiper-next' }}
+            navigation={{ prevEl: '.swiper-prev', nextEl: '.swiper-next' }}
             modules={[FreeMode, Pagination, Navigation]}
             className="relative min-h-40 max-w-4xl"
           >
@@ -110,26 +104,6 @@ const handleThumbnailClick = (video: Video) => {
     </SwiperSlide>
   ))}
           </Swiper>
-          <div className='relative'>
-          <div className="
-    swiper-next
-    absolute
-    md:top-[-115px]
-    right-3
-    w-10
-    border-2
-    border-gray-600
-    shadow
-    bg-white
-    p-2
-    rounded
-
-  ">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-    </svg>
-  </div>
-  </div>
         </div>
       </div>
     </section>

@@ -30,7 +30,7 @@ export default function PartnersCorners() {
           Partners Corners
         </h3>
       </div>
-      <div className="border-4">
+      <div className="">
         <Swiper
           slidesPerView={isMobile ? 1 : 2}
           spaceBetween={5}

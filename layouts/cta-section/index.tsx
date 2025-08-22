@@ -1,17 +1,26 @@
 import React from 'react'
-import Ctacard from '@/components/cta-card'
+import Link from 'next/link'
 
 function CtaSection() {
   return (
-    // <section className="relative bg-ctabg min-h-full bg-[100%,100%]">
-    //   {/* <Ctaimg /> */}
-    //   <div className='justify-self-center'>
-    //     <Ctacard />
-    //   </div>
-    // </section>
-    <section className="relative bg-ctabg min-h-full bg-[100%,100%] flex items-center justify-center">
-  <Ctacard />
-</section>
+    <section className="bg-ctabg flex items-center justify-center px-2 py-16">
+      <div className="w-full max-w-2xl rounded-lg bg-white px-4 py-6 text-center md:py-10">
+        <h1 className="text-2xl font-bold text-dark">
+          You can Be The Reason Someone Smiles Today.
+        </h1>
+        <p className="mx-auto mt-5 max-w-sm text-base">
+          Start a fundraiser or support one — every action helps change a life.
+        </p>
+        <span className="mt-10 flex flex-wrap justify-center gap-5">
+          <Link href={'/create-campaign'} className="btn-white w-fit max-w-md truncate">
+            Support a campaign
+          </Link>
+          <Link href={'/create-campaign'} className="btn-primary nowrap w-fit truncate">
+            Create a campaign
+          </Link>
+        </span>
+      </div>
+    </section>
   )
 }
 

@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import Marquee from '@/components/marquee/marquee'
 import Link from 'next/link'
 
@@ -13,7 +13,7 @@ export default function DiscoverMoreCategories() {
           </h3>
 
           <Link className="font-semibold underline" href={'/campaigns'}>
-            See more <span className="hidden md:inline">campaigns</span>
+            See more
           </Link>
         </div>
 
@@ -22,8 +22,8 @@ export default function DiscoverMoreCategories() {
           <div className="absolute bottom-0 right-0 top-0 z-10 bg-gradient-to-tl from-white via-white/70 to-white/20 px-6 py-4" />
           <div className="flex flex-col gap-3">
             {/* fundraise campaign card */}
-            
-              <Marquee direction="left" >
+
+            <Marquee direction="left">
               <div className="flex gap-4">
                 <CategoryLinkButton />
                 <CategoryLinkButton />
@@ -32,7 +32,7 @@ export default function DiscoverMoreCategories() {
                 <CategoryLinkButton />
               </div>
             </Marquee>
-              <Marquee direction="right">
+            <Marquee direction="right">
               <div className="flex gap-4">
                 <CategoryLinkButton />
                 <CategoryLinkButton />
@@ -55,4 +55,3 @@ const CategoryLinkButton = () => {
     </button>
   )
 }
-
