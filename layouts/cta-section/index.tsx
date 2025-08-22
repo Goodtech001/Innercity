@@ -11,7 +11,7 @@ function CtaSection() {
         <p className="mx-auto mt-5 max-w-sm text-base">
           Start a fundraiser or support one — every action helps change a life.
         </p>
-        <span className="mt-10 flex flex-wrap justify-center gap-5">
+        <span className="mt-10 flex flex-wrap justify-center gap-2 md:gap-5">
           <Link href={'/create-campaign'} className="btn-white w-fit max-w-md truncate">
             Support a campaign
           </Link>
