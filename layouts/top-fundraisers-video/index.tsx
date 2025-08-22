@@ -3,11 +3,61 @@ import React, { useEffect, useState } from 'react'
 import VideoPlayer from '@/components/video-player'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { FreeMode, Navigation, Pagination } from 'swiper/modules'
-import Image from 'next/image'
-import thumbnail from '@/public/assets/images/video-thumbnail.jpg'
+import Image, { StaticImageData } from 'next/image'
+
+import rita from '@/public/assets/images/rita.jpg'
+import difference from "@/public/assets/images/difference.jpg";
+import tosin from "@/public/assets/images/Tosin.jpg"
+import amaechi from "@/public/assets/images/P-Amaechi.jpg"
+
+import hungry from "@/public/assets/images/hungry.jpg"
+import chuka2 from "@/public/assets/images/chuka2.jpg"
+
 
 export default function TopFundraisersVideo() {
   const [isMobile, setIsMobile] = useState(false)
+  const [currentVideo, setCurrentVideo] = useState({
+    src: 'https://vimeo.com/1037756541/2f13d91b44',
+    thumb: rita,
+  })
+
+  const videos = [
+  {
+    thumb: difference,
+    src: 'https://vimeo.com/731472228/709298ca1b?share=copy',
+  },
+  {
+    thumb: tosin,
+    src: 'https://vimeo.com/1010215295/7c79867761',
+  },
+  {
+    thumb: amaechi,
+    src: 'https://player.vimeo.com/video/231560451',
+  },
+  {
+    thumb: rita,
+    src: 'https://vimeo.com/1037756541/2f13d91b44',
+  },
+  {
+    thumb: chuka2,
+    src: 'https://player.vimeo.com/video/292941519',
+  },
+  {
+    thumb: hungry,
+    src: 'https://player.vimeo.com/video/731472228/?h=709298ca1b',
+  },
+  // ...
+]
+
+interface Video {
+  thumb: StaticImageData;
+  src: string;
+}
+
+const handleThumbnailClick = (video: Video) => {
+  setCurrentVideo(video) // ✅ just use as-is
+}
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -31,7 +81,7 @@ export default function TopFundraisersVideo() {
           <span className="hidden md:inline-block">and Reasons Behind Major Campaigns</span>
         </h3>
         <div className="mx-auto mb-2 mt-5 flex max-w-4xl items-center justify-center">
-          <VideoPlayer />
+         <VideoPlayer key={currentVideo.src} src={currentVideo.src} thumb={currentVideo.thumb} />
         </div>
         <div className="">
           <div className='relative'>
@@ -52,21 +102,13 @@ export default function TopFundraisersVideo() {
             modules={[FreeMode, Pagination, Navigation]}
             className="relative min-h-40 max-w-4xl"
           >
-            <div className="absolute bottom-0 left-0 top-0 z-10 bg-gradient-to-tr from-white via-white/70 to-white/20 px-6 py-4" />
-            <div className="absolute bottom-0 right-0 top-0 z-10 bg-gradient-to-tl from-white via-white/70 to-white/20 px-6 py-4" />
-            {Array.from({ length: 8 }).map((_, index) => (
-              <SwiperSlide key={index}>
-                <div className="">
-                  <Image
-                    alt="thumbnail"
-                    src={thumbnail}
-                    className={`h-32 w-48 rounded-lg object-cover shadow-lg`}
-                    width={640}
-                    height={360}
-                  />
-                </div>
-              </SwiperSlide>
-            ))}
+         {videos.map((video, index) => (
+    <SwiperSlide key={index}>
+      <div className="cursor-pointer" onClick={() => handleThumbnailClick(video)}>
+        <Image alt="thumbnail" src={video.thumb} className={`h-32 w-48 rounded-lg object-cover shadow-lg`} width={640} height={360} />
+      </div>
+    </SwiperSlide>
+  ))}
           </Swiper>
           <div className='relative'>
           <div className="

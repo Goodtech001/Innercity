@@ -4,12 +4,18 @@ import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import PercentageBar from '@/components/percentage-bar'
 import { formatTime } from '@/utils/format-time'
-import thumbnail from '@/public/assets/images/video-thumbnail.jpg'
-import Image from 'next/image'
+// import thumbnail from '@/public/assets/images/video-thumbnail.jpg'
+import Image, { StaticImageData } from 'next/image'
 
-export default function VideoPlayer() {
+interface VideoPlayerProps {
+  src: string
+  thumb: StaticImageData
+  autoplay?: boolean
+}
+
+const VideoPlayer = ({ src, thumb, autoplay = false }: VideoPlayerProps) => {
+  const [playing, setPlaying] = useState(autoplay)
   const playerRef = useRef<HTMLVideoElement>(null)
-  const [playing, setPlaying] = useState(false)
   const [isHovering, setIsHovering] = useState(true)
   const [progress, setProgress] = useState(0) // 0–1 fraction
   const [duration, setDuration] = useState(0)
@@ -66,20 +72,21 @@ export default function VideoPlayer() {
     }
   }
 
+
   return (
     <>
       <div className="relative aspect-[1.5] w-full max-w-3xl overflow-hidden rounded-lg bg-black backdrop-filter md:aspect-[1.8]">
         {/* Video */}
         <Image
           alt="thumbnail"
-          src={thumbnail}
+          src={thumb}
           className={`absolute inset-0 z-[1] h-full w-full ${showThumbnail ? 'block' : 'hidden'}`}
           width={640}
           height={360}
         />
         <ReactPlayer
           ref={playerRef}
-          src="https://vimeo.com/1037756541/2f13d91b44"
+          src={src}
           // src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
           playing={playing}
           controls={false} // hide native controls
@@ -90,7 +97,7 @@ export default function VideoPlayer() {
           width="100%"
           height="100%"
           onTimeUpdate={handleTimeUpdate}
-          onEnded={() => handleVideoEnded}
+          onEnded={handleVideoEnded}
           onWaiting={(e) => console.log(e)}
           onWaitingCapture={(e) => console.log(e)}
           style={{ pointerEvents: 'none' }} // prevent click-through to Vimeo UI
@@ -176,3 +183,5 @@ export default function VideoPlayer() {
     </>
   )
 }
+
+export default VideoPlayer
