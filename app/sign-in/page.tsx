@@ -4,15 +4,18 @@ import signlogo from '@/public/inner-black-text.png'
 import Link from 'next/link'
 import { AnimatedTooltipPreview } from '@/components/animated-tooltip'
 
+// TODO: please name your page render function something proper, in this case name it SingIn or SingInPage, make the code easier to understand even after 5 years
 function index() {
   return (
-    <div className="md:grid grid-cols-10 h-screen overflow-y-hidden overflow-x-hidden">
-
-        {/* form */}
-      <form className="flex items-center justify-center col-span-4 mx-auto my-auto py-20 md:px-10 px-6 w-full">
-        <div  className='w-full'>
-          <Image src={signlogo} alt="logo" width={90} height={90} className=' mx-auto md:mx-0' />
-          <h1 className="mb-5 mt-5 font-sans text-3xl font-bold text-black md:text-left text-center"> Sign In</h1>
+    <div className="h-screen grid-cols-10 overflow-x-hidden overflow-y-hidden md:grid">
+      {/* form */}
+      <form className="col-span-4 mx-auto my-auto flex w-full items-center justify-center px-6 py-20 md:px-10">
+        <div className="w-full">
+          <Image src={signlogo} alt="logo" width={90} height={90} className="mx-auto md:mx-0" />
+          <h1 className="mb-5 mt-5 text-center font-sans text-3xl font-bold text-black md:text-left">
+            {' '}
+            Sign In
+          </h1>
           <label htmlFor="text" className="label mt-5">
             Name*
           </label>
@@ -25,7 +28,6 @@ function index() {
               className="input mb-3"
             />
           </div>{' '}
-        
           <label htmlFor="password" className="label">
             {' '}
             Password*
@@ -40,11 +42,7 @@ function index() {
             />
           </div>
           <div>
-            <button
-              type="submit"
-              id="submit"
-              className="btn-primary mt-5"
-            >
+            <button type="submit" id="submit" className="btn-primary mt-5">
               Create Account
             </button>
           </div>
@@ -59,11 +57,9 @@ function index() {
         </div>
       </form>
 
-
-
-      <div className="bg-sign-in h-screen items-center bg-cover bg-center text-white col-span-6 md:block hidden">
-        <div className="bg-[100%,100%] p-20 mt-10">
-          <h1 className="text-5xl font-bold sign">
+      <div className="bg-sign-in col-span-6 hidden h-screen items-center bg-cover bg-center text-white md:block">
+        <div className="mt-10 bg-[100%,100%] p-20">
+          <h1 className="sign text-5xl font-bold">
             Start turning your <br /> ideas into realities{' '}
           </h1>
           <p className="mt-5 text-sm">
@@ -74,10 +70,8 @@ function index() {
           <AnimatedTooltipPreview />
         </div>
       </div>
-
     </div>
   )
 }
 
 export default index
-

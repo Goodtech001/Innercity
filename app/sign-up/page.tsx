@@ -3,14 +3,17 @@ import React from 'react'
 import signlogo from '@/public/inner-black-text.png'
 import Link from 'next/link'
 import { AnimatedTooltipPreview } from '@/components/animated-tooltip'
-import '@/styles/globals.css'
+import '@/styles/globals.css' // TODO: what is this, please remove we already have an import initialized in the layout.tsx root under the app directly
 
+// TODO: learn to format your code when you write (shift + alt + f) uses the formatter i have installed, there is a prettierrc.yaml already in the project just use it daily so code does'nt look like its written roughly
+
+// TODO: please name your page render function something proper, in this case name it SingUp or SingUpPage, make the code easier to understand even after 5 years
 function index() {
   return (
-    <div className="md:grid grid-cols-10 mx-auto h-screen overflow-y-hidden">
-      <div className="bg-sign-up h-screen items-center bg-cover bg-center text-white col-span-6 md:block hidden ">
-        <div className="bg-[100%,100%] p-20 mt-10">
-          <h1 className="text-5xl font-bold sign">
+    <div className="mx-auto h-screen grid-cols-10 overflow-y-hidden md:grid">
+      <div className="bg-sign-up col-span-6 hidden h-screen items-center bg-cover bg-center text-white md:block">
+        <div className="mt-10 bg-[100%,100%] p-20">
+          <h1 className="sign text-5xl font-bold">
             Start turning your <br /> ideas into realities{' '}
           </h1>
           <p className="mt-5 text-sm">
@@ -23,10 +26,13 @@ function index() {
       </div>
 
       {/* form */}
-      <form className="flex items-center justify-center col-span-4 mx-auto py-20 md:px-10 px-6 w-full self-start">
-        <div className='w-full '>
-          <Image src={signlogo} alt="logo" width={90} height={90} className=' mx-auto md:mx-0'/>
-          <h1 className="mb-5 mt-5 font-sans text-3xl font-bold text-black md:text-left text-center"> Sign Up</h1>
+      <form className="col-span-4 mx-auto flex w-full items-center justify-center self-start px-6 py-20 md:px-10">
+        <div className="w-full">
+          <Image src={signlogo} alt="logo" width={90} height={90} className="mx-auto md:mx-0" />
+          <h1 className="mb-5 mt-5 text-center font-sans text-3xl font-bold text-black md:text-left">
+            {' '}
+            Sign Up
+          </h1>
           <label htmlFor="text" className="label mt-5">
             Name*
           </label>
@@ -66,11 +72,7 @@ function index() {
             />
           </div>
           <div>
-            <button
-              type="submit"
-              id="submit"
-              className="btn-primary mt-5"
-            >
+            <button type="submit" id="submit" className="btn-primary mt-5">
               Create Account
             </button>
           </div>
