@@ -12,6 +12,7 @@
   --complementary: 216, 241, 255; /* #D8F1FF */
   --footer-grey: 64, 71, 86; /* #404756*/
   --textcolor: 95, 95, 95; /* #5F5F5F*/
+  --purple: 128, 0, 128;
 
   --error: 237, 76, 92; /* #ED4C5C */
   --fade-error: 255, 242, 242; /* #FFF2F2 */
@@ -73,6 +74,9 @@ body {
   color: rgba(var(--textcolor));
   overflow-x: hidden;
 }
+.sign {
+  font-family: 'Commissioner', sans-serif;
+}
 
 h1,
 h2,
@@ -120,6 +124,11 @@ h6,
 
 .marquee-container:hover {
   animation-play-state: paused;
+}
+
+.input {
+  width: 200px;
+  border-radius: 3px;
 }
 
 @media only screen and (max-width: 650px) {
