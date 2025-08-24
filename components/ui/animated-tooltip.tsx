@@ -3,7 +3,6 @@ import React, { useState, useRef } from 'react'
 import { motion, useTransform, AnimatePresence, useMotionValue, useSpring } from 'motion/react'
 import Image from 'next/image'
 
-// TODO: i removed the regular img tag from html, this is Next js use the Image tag more often instead
 export const AnimatedTooltip = ({
   items,
 }: {
