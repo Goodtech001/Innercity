@@ -1,6 +1,5 @@
 'use client'
 import React, { useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import people from '@/json/people.json'
 import { AnimatedTooltip } from '@/components/ui/animated-tooltip'
@@ -8,11 +7,6 @@ import { useRouter } from 'next/navigation'
 import Input from '@/components/input'
 import { IInputState } from '@/components/input/useInput'
 import Logo from '@/components/logo'
-
-const fakeUsers = [
-  { email: 'john@gmail.com', password: 'hello' },
-  { email: 'jane@gmail.com', password: 'world' },
-]
 
 function SignIn() {
   const [email, setEmail] = useState<IInputState>({ value: '' })
