@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import useTopnavbar, { leftMenu, rightMenu } from './useTopnavbar'
 import CountryCurrencyDropdown from '@/components/country-currency-dropdown'
@@ -8,6 +8,14 @@ import { Icon } from '@iconify/react'
 import UserProfileDropdown from '@/components/user-profile-dropdown'
 
 export default function TopNavbar() {
+  const [isSignedIn, setIsSignedIn] = useState(false)
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      setIsSignedIn(true)
+    }
+  }, [])
+
   const {
     setNavOpen,
     getActiveUrl,
@@ -120,10 +128,18 @@ export default function TopNavbar() {
                 )}
               </li>
             ))}
-            <Link className="btn-primary" href={'/create-campaign'}>
-              Create campaign
-            </Link>
-            <UserProfileDropdown />
+            {isSignedIn ? (
+              <>
+                <Link className="btn-primary" href={'/create-campaign'}>
+                  Create campaign
+                </Link>
+                <UserProfileDropdown />
+              </>
+            ) : (
+              <Link href="/sign-in" className="btn-primary px-8">
+                Sign in
+              </Link>
+            )}
           </ul>
 
           <button onClick={() => setNavOpen((p) => !p)} className="inline-block md:hidden">

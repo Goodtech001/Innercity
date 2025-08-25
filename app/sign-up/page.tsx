@@ -1,36 +1,48 @@
+'use client'
+import React, { useState } from 'react'
 import Image from 'next/image'
-import React from 'react'
 import signlogo from '@/public/inner-black-text.png'
 import Link from 'next/link'
-import people from '@/components/ui/people.json';
+import people from '@/components/ui/people.json'
 import { AnimatedTooltip } from '@/components/ui/animated-tooltip'
 
 function SignUp() {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [email, setemail] = useState('')
+  const [error, setError] = useState(null)
+
+  const handleSignUp = () => {
+    // Simulate a sign-up request (replace with your actual API call)
+    // Sign-up successful, redirect to login page
+    window.location.href = '/login'
+  }
+
   return (
     <div className="mx-auto h-screen grid-cols-10 overflow-y-hidden md:grid">
-      <div className="bg-sign-up col-span-6 hidden h-screen bg-cover bg-center text-white md:block items-center justify-center">
-        <div className=" flex justify-center items-center h-screen flex-col">
-          <h1 className="sign text-5xl font-bold">
+      <div className="bg-sign-up col-span-6 hidden h-screen items-center justify-center bg-cover bg-center text-white md:block">
+        <div className="mx-40 flex h-screen flex-col justify-center">
+          <h1 className="sign truncate text-5xl font-bold">
             Start turning your <br /> ideas into realities{' '}
           </h1>
-          <p className="mt-5 text-sm">
+          <p className="mt-5 truncate text-sm">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus <br /> illo, aut
             repudiandae consectetur, modi quis ex, laudantium <br /> delectus dolorum unde quibusdam
             dicta sit corrupti aliquam.
           </p>
-          <div className=" flex w-full ml-80">
-      <AnimatedTooltip items={people} />
-    </div>
+          <div className="flex w-full">
+            <AnimatedTooltip items={people} />
+          </div>
         </div>
       </div>
 
       {/* form */}
       <form className="col-span-4 mx-auto flex w-full items-center justify-center self-start px-6 py-20 md:px-10">
         <div className="w-full">
-           <Link href="/">
-          <Image src={signlogo} alt="logo" width={90} height={90} className="mx-auto md:mx-0" />
-         </Link>
-          <h1 className="mb-5 mt-5 text-center font-sans text-3xl font-bold text-black md:text-left">
+          <Link href="/">
+            <Image src={signlogo} alt="logo" width={90} height={90} className="mx-auto md:mx-0" />
+          </Link>
+          <h1 className="mb-5 mt-5 text-center font-sans text-3xl font-bold text-textcolor md:text-left">
             {' '}
             Sign Up
           </h1>
@@ -44,6 +56,8 @@ function SignUp() {
               placeholder="Enter your name"
               required
               className="input mb-3"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>{' '}
           <label htmlFor="email" className="label mt-5">
@@ -57,6 +71,8 @@ function SignUp() {
               placeholder="Enter your email"
               required
               className="input mb-3"
+              value={email}
+              onChange={(e) => setemail(e.target.value)}
             />
           </div>{' '}
           <label htmlFor="password" className="label">
@@ -70,10 +86,12 @@ function SignUp() {
               placeholder="Enter your password"
               required
               className="input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div>
-            <button type="submit" id="submit" className="btn-primary mt-5">
+            <button type="submit" id="submit" className="btn-primary mt-5" onClick={handleSignUp}>
               Create Account
             </button>
           </div>

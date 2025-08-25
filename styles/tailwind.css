@@ -31,6 +31,6 @@
     @apply w-full h-11 rounded-lg outline-gray-200 border-2 border-gray-200 
    }
    .label {
-    @apply text-black font-bold mt-5
+    @apply text-textcolor text-sm  mt-5
    }
 }
