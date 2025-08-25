@@ -3,13 +3,13 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import signlogo from '@/public/inner-black-text.png'
 import Link from 'next/link'
-import people from '@/components/ui/people.json'
+import people from '@/json/people.json'
 import { AnimatedTooltip } from '@/components/ui/animated-tooltip'
 
 function SignUp() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [email, setemail] = useState('')
+  const [email, setEmail] = useState('')
   const [error, setError] = useState(null)
 
   const handleSignUp = () => {
@@ -22,13 +22,11 @@ function SignUp() {
     <div className="mx-auto h-screen grid-cols-10 overflow-y-hidden md:grid">
       <div className="bg-sign-up col-span-6 hidden h-screen items-center justify-center bg-cover bg-center text-white md:block">
         <div className="mx-40 flex h-screen flex-col justify-center">
-          <h1 className="sign truncate text-5xl font-bold">
-            Start turning your <br /> ideas into realities{' '}
-          </h1>
-          <p className="mt-5 truncate text-sm">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus <br /> illo, aut
-            repudiandae consectetur, modi quis ex, laudantium <br /> delectus dolorum unde quibusdam
-            dicta sit corrupti aliquam.
+          <h1 className="max-w-md text-5xl font-bold">Together, we can make a difference.</h1>
+          <p className="mt-5 text-sm">
+            Every small act of kindness begins here. Join our community to give, share, or ignite
+            your own fundraiser today. Create an account to support inspiring causes and launch your
+            own impactful campaign.
           </p>
           <div className="flex w-full">
             <AnimatedTooltip items={people} />
@@ -72,7 +70,7 @@ function SignUp() {
               required
               className="input mb-3"
               value={email}
-              onChange={(e) => setemail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>{' '}
           <label htmlFor="password" className="label">
