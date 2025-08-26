@@ -7,10 +7,6 @@ import people from '@/components/ui/people.json'
 import { AnimatedTooltip } from '@/components/ui/animated-tooltip'
 import { useRouter } from 'next/navigation'
 
-const fakeUsers = [
-  { email: 'john@gmail.com', password: 'hello' },
-  { email: 'jane@gmail.com', password: 'world' },
-]
 
 function SignIn() {
   const [email, setemail] = useState('')
@@ -18,27 +14,40 @@ function SignIn() {
   const [error, setError] = useState('')
   const router = useRouter()
 
-  const handleSignIn = () => {
-    //
-    const user = fakeUsers.find((user) => user.email === email && user.password === password)
+const handleSignIn = (e: React.FormEvent) => {
+  e.preventDefault(); // prevent page refresh
+    const fakeUsers = [
+  { email: 'john@gmail.com', password: 'hello' },
+  { email: 'jane@gmail.com', password: 'world' },
+]
+const user = fakeUsers.find((user) => user.email === email && user.password === password);
 
-    if (user) {
-      localStorage.setItem("token", "sign")
-      console.log(user)
-      console.log('Redirecting to the home page...')
-      // window.location.href = '/'
-      window.history.pushState({}, '', '/')
+if (user) {
+  router.push("/")
+} else {
+  setError('Invaid username or password');
+}
+
+    //
+    // const user = fakeUsers.find((user) => user.email === email && user.password === password)
+
+    // if (user) {
+    //   localStorage.setItem("token", "sign")
+    //   console.log(user)
+    //   console.log('Redirecting to the home page...')
+    //   router.push("")
+    //   // window.location.href = '/'
+    //   // window.history.pushState({}, '', '/')
      
-    } else {
-      setError('Invalid username or password')
-    }
+    // } else {
+    //   setError('Invalid username or password')
+    // }
   }
 
   return (
     <div className="h-screen grid-cols-10 overflow-x-hidden overflow-y-hidden md:grid">
       {/* form */}
       <form
-        onSubmit={handleSignIn}
         className="col-span-4 mx-auto my-auto flex w-full items-center justify-center px-6 py-20 md:px-10"
       >
         <div className="w-full">
@@ -82,7 +91,7 @@ function SignIn() {
           <br />
           {error && <p style={{ color: 'red' }}>{error}</p>}
           <div>
-            <button type="submit" id="submit" className="btn-primary mt-5">
+            <button className="btn-primary mt-5" onClick={handleSignIn}>
               Create Account
             </button>
           </div>

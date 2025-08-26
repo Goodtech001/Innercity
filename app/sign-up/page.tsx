@@ -5,17 +5,19 @@ import signlogo from '@/public/inner-black-text.png'
 import Link from 'next/link'
 import people from '@/components/ui/people.json'
 import { AnimatedTooltip } from '@/components/ui/animated-tooltip'
+import { useRouter } from 'next/navigation'
 
 function SignUp() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [email, setemail] = useState('')
-  const [error, setError] = useState(null)
+  const router = useRouter(); 
 
-  const handleSignUp = () => {
+const handleSignUp = (e: React.FormEvent) => {
+  e.preventDefault(); // prevent page refresh
     // Simulate a sign-up request (replace with your actual API call)
     // Sign-up successful, redirect to login page
-    window.location.href = '/login'
+    router.push("/sign-in")
   }
 
   return (
