@@ -2,7 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 import FundraiseCampaignCard from '@/components/fundraise-campaign-card'
 import campaigns from '@/json/dummy-campaigns.json'
-import { Campaign } from "@/types/campaign"
+import { Campaign } from "@/types/Campaign"
 
 export default function LatestFundraisingCampaigns() {
   return (

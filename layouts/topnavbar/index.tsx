@@ -31,12 +31,13 @@ export default function TopNavbar() {
       <nav className="fixed left-0 top-0 z-20 w-full border-b-2 bg-light/25 py-2 text-dark/75 backdrop-blur-sm">
         <div className="wrapper flex items-center justify-between gap-3 lg:container">
           <span className="block md:hidden">
-            <UserProfileDropdown direction="left" />
+            <CountryCurrencyDropdown/>
           </span>
 
           <ul className="hidden items-center gap-10 text-sm md:flex">
             <CountryCurrencyDropdown />
             {leftMenu.map((menu, index) => (
+              
               <li
                 onMouseEnter={() => setSubMenuClicked(menu.subPath || '')}
                 onMouseLeave={() => setSubMenuClicked('')}
@@ -223,8 +224,13 @@ export default function TopNavbar() {
                   )}
                 </li>
               ))}
+
             </ul>
+            <span className='flex justify-center p-5'>
+              <UserProfileDropdown direction='right'/>
+            </span>
           </div>
+          
         </div>
       </div>
     </>
