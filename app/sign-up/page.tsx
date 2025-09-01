@@ -10,13 +10,12 @@ import { useRouter } from 'next/navigation'
 function SignUp() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-<<<<<<< HEAD
-  const [email, setemail] = useState('')
-  const router = useRouter(); 
-=======
+
+
   const [email, setEmail] = useState('')
   const [error, setError] = useState(null)
->>>>>>> 169fdf1bf3ada32de3a92c27d94af33a0fd1d86e
+  const router = useRouter();
+
 
 const handleSignUp = (e: React.FormEvent) => {
   e.preventDefault(); // prevent page refresh

@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import React from 'react'
 import FundraiseCampaignCard from '@/components/fundraise-campaign-card'
-import dummyCampaignsData from '@/json/dummy-campaigns.json'
+import campaigns from '@/json/dummy-campaigns.json'
+import { Campaign } from "@/types/campaign"
 
 export default function LatestFundraisingCampaigns() {
   return (
@@ -12,15 +13,15 @@ export default function LatestFundraisingCampaigns() {
             Latest <span className="hidden md:inline">Fundraising</span> Campaigns
           </h3>
 
-          <Link className="font-semibold underline" href={'/campaigns'}>
+          <Link className="font-semibold underline" href={'/more-campaign'}>
             See more
           </Link>
         </div>
 
         <div className="flex flex-col gap-5 md:grid md:grid-cols-3">
           {/* fundraise campaign card */}
-          {dummyCampaignsData.slice(0, 3).map((data) => (
-            <FundraiseCampaignCard key={data.id} />
+          {(campaigns as unknown as Campaign[]).slice(0, 3).map((campaign) => (
+             <FundraiseCampaignCard key={campaign.id} campaign={campaign} />
           ))}
         </div>
       </div>

@@ -151,6 +151,8 @@ export default {
     tailwindForms,
     tailwindTypography,
     tailwindAspectRatio,
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    require('@tailwindcss/line-clamp'),
     tailwindClipPath,
     function ({ addUtilities }: PluginAPI) {
       addUtilities({
