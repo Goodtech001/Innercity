@@ -1,16 +1,14 @@
 'use client'
 import React, { Suspense } from 'react'
-import Link from 'next/link'
 import campaigns from '@/json/dummy-campaigns.json'
 import { Campaign } from '@/types/Campaign'
 import TopNavbar from '@/layouts/topnavbar'
 import Footer from '@/layouts/footer'
 import { useSearchParams } from 'next/navigation'
 import SearchInput from '@/components/search-input'
-import router, { useRouter } from 'next/router'
 import FundraiseCampaignCard from '@/components/fundraise-campaign-card'
 
-export default function MoreFundraisingCampaigns() {
+ function CampaignsContent() {
   const searchParams = useSearchParams()
   const query = searchParams.get('query')?.toLowerCase() || ''
 
@@ -23,8 +21,6 @@ export default function MoreFundraisingCampaigns() {
 
   return (
     <div>
-      <TopNavbar />
-       <Suspense fallback={<div className="p-4 text-gray-500">Loading campaigns...</div>}>
       <section>
         <div className="container py-8 pb-6 md:py-14 md:pb-8">
           <div className="mb-8 flex items-end justify-between gap-5 md:gap-0">
@@ -50,6 +46,17 @@ export default function MoreFundraisingCampaigns() {
           )}
         </div>
       </section>
+    </div>
+  )
+}
+
+
+export default function MoreFundraisingCampaigns() {
+  return (
+    <div>
+      <TopNavbar />
+      <Suspense fallback={<div className="p-4 text-gray-500">Loading campaigns...</div>}>
+        <CampaignsContent />
       </Suspense>
       <Footer />
     </div>

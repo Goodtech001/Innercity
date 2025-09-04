@@ -116,11 +116,6 @@ const ProfileSection = () => {
   const [activeTab, setActiveTab] = useState('profile')
 
   // Dynamic background colors based on tab
-  const bgColorMap: Record<typeof activeTab, string> = {
-    profile: 'bg-blue-100',
-    settings: 'bg-green-100',
-    notifications: 'bg-yellow-100',
-  }
 
   const renderContent = () => {
     switch (activeTab) {
