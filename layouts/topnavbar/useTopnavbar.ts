@@ -21,7 +21,7 @@ export const leftMenu: menu_type[] = [
   },
   {
     title: 'Resources',
-    path: '/resources',
+    path: '/Resources-page',
   },
 ]
 

@@ -32,7 +32,7 @@ function ResourcePage() {
     <div>
         <TopNavbar/>
        <div className='py-10 md:px-[10%] px-2'>
-         <div className='border-b text-4xl text-black font-bold'>
+         <div className='border-b md:text-4xl text-2xl text-black font-bold'>
             <h1 className='mb-2'>Resources</h1>
         </div>
 
