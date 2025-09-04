@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { Suspense } from 'react'
 import Link from 'next/link'
 import campaigns from '@/json/dummy-campaigns.json'
 import { Campaign } from '@/types/Campaign'
@@ -24,6 +24,7 @@ export default function MoreFundraisingCampaigns() {
   return (
     <div>
       <TopNavbar />
+       <Suspense fallback={<div className="p-4 text-gray-500">Loading campaigns...</div>}>
       <section>
         <div className="container py-8 pb-6 md:py-14 md:pb-8">
           <div className="mb-8 flex items-end justify-between gap-5 md:gap-0">
@@ -49,6 +50,7 @@ export default function MoreFundraisingCampaigns() {
           )}
         </div>
       </section>
+      </Suspense>
       <Footer />
     </div>
   )

@@ -110,6 +110,7 @@ import Editpage from '@/components/edit-profile'
 import ImageUploader from '@/components/image-uploader'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { useState } from 'react'
+import Mynotification from '../test/page'
 
 const ProfileSection = () => {
   const [activeTab, setActiveTab] = useState('profile')
@@ -132,7 +133,9 @@ const ProfileSection = () => {
       case 'settings':
         return <div>Settings content</div>
       case 'notifications':
-        return <div>Notifications content</div>
+        return <div>
+          <Mynotification />
+        </div>
         case 'chat':
         return <div>Chat with Us.</div>
       default:
@@ -141,16 +144,18 @@ const ProfileSection = () => {
   }
 
   return (
-    <div className="${bgColorMap[activeTab]} md:flex h-screen transition-colors duration-500 p-5 gap-6 top">
+    <div className="${bgColorMap[activeTab]} md:flex h-screen transition-colors duration-500 p-2 gap-6 top">
         {/* Content Area */}
-      <div className="md:w-2/3 p-5  border-gray-100 border rounded area">
+      <div className="md:w-2/3 h-full border-gray-100 border rounded overflow-y-auto p-2">
         
         {renderContent()}
       </div>
 
 
       {/* Sidebar */}
-      <div className="md:w-1/3 overflow-y-hidden bg-white md:p-4 border-gray-100 border rounded side">
+     <div className="w-full md:w-1/3 bg-white py-2 border-gray-100 border rounded side flex md:block justify-between gap">
+     {/* <div className="md:w-1/3 overflow-y-hidden bg-white md:p-4 border-gray-100 border rounded side"> */}
+
         {/* <h2 className="mb-6 text-xl font-bold">My Profile</h2> */}
 
         <SidebarButton
@@ -199,7 +204,7 @@ type SidebarButtonProps = {
 const SidebarButton = ({ icon, label, onClick, active, note }: SidebarButtonProps) => (
   <button
     onClick={onClick}
-    className={`mb-2 md:flex w-full rounded px-4 py-3 transition hover:bg-gray-200`}
+    className={`mb-2 md:flex w-full rounded md:px-4 px-2 md:py-3 transition md:hover:bg-gray-200`}
   >
     <span className={`mr-4 btn-white w-fit p-2 ${
       active ? 'btn-primary' : ''

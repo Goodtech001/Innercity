@@ -67,7 +67,7 @@ export default function CountryCurrencyDropdown({
   const [selectedValue, setSelectedValue] = useState<TCountryCurrency>(countryCurrencyList[0])
 
   return (
-    <div className={`relative flex h-fit w-fit min-w-24 flex-col ${className}`}>
+    <div className={`relative flex h-fit w-fit min-w-20 flex-col ${className}`}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="z-10 inline-flex items-center gap-1 rounded-full px-1.5 py-1.5 text-center text-sm font-medium focus:outline-none focus:ring-2"
