@@ -6,7 +6,7 @@ import arrow1 from '@/public/assets/images/Vector 16.png'
 
 function How() {
   return (
-    <div className="relative bg-[#0074E6] p-5 md:p-10">
+    <div className="relative bg-[#0074E6] p-5 md:p-10 md:mt-2 mt-5">
       <div className="text-center text-white">
         <h1 className="text-2xl font-bold md:text-4xl">How Fundraising Works</h1>
         <p className="text-xs md:text-sm">
