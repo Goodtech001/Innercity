@@ -199,9 +199,9 @@ type SidebarButtonProps = {
 const SidebarButton = ({ icon, label, onClick, active, note }: SidebarButtonProps) => (
   <button
     onClick={onClick}
-    className={`md:mb-2 flex w-full flex-col items-center justify-center rounded transition md:flex-row md:px-4 md:py-3 md:hover:bg-gray-200`}
+    className={`mb-2 flex w-full flex-col rounded transition md:flex-row md:px-4 md:py-3 md:hover:bg-gray-200`}
   >
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center md:ml-0 ml-3">
       <span className={`btn-white mr-4 w-fit p-2 ${active ? 'btn-primary' : ''}`}>{icon}</span>
     </div>
     <div className="text-center text-sm md:text-left">
