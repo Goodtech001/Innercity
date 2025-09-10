@@ -17,7 +17,7 @@ export type menu_type = {
 export const leftMenu: menu_type[] = [
   {
     title: 'About Fundraiser',
-    path: '/about',
+    path: '/About',
   },
   {
     title: 'Resources',

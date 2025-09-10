@@ -22,3 +22,11 @@
      url('/assets/images/education-class.jpg');
       background-size: cover;
 }
+
+.bg1 {
+  background-image:
+  linear-gradient(rgba(var(--dark), 0.5), rgba(var(--dark), 0.9 )),
+   url('/assets/images/food-7bmc.jpg');
+  background-size: cover;
+  backdrop-filter: blur(5px);
+}
