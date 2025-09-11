@@ -26,12 +26,12 @@ function DpUploader() {
     <div className="flex w-full items-center justify-between rounded-md p-2  border-b">
       {/* Image box (small thumbnail) */}
       <div className='flex md:gap-5 gap-2'>
-        <div className="border-color relative h-[50] w-[50] overflow-hidden rounded-full border">
+        <div className="border-color relative h-[30px] w-[30px] overflow-hidden rounded-full border">
         <Image
           src={image || placeholderImage}
           alt="Thumbnail"
-          width={100}
-          height={100}
+          width={50}
+          height={50}
           className="h-full w-full object-cover"
         />
       </div>
