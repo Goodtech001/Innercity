@@ -31,14 +31,12 @@ export default function TopNavbar() {
       <nav className="fixed left-0 top-0 z-20 w-full border-b-2 bg-light/25 py-2 text-dark/75 backdrop-blur-sm">
         <div className="wrapper flex items-center justify-between gap-3 lg:container">
           <span className="block md:hidden">
-            {/* <CountryCurrencyDropdown/> */}
-            <UserProfileDropdown />
+            <UserProfileDropdown direction="left" />
           </span>
 
           <ul className="hidden items-center gap-10 text-sm md:flex">
             <CountryCurrencyDropdown />
             {leftMenu.map((menu, index) => (
-              
               <li
                 onMouseEnter={() => setSubMenuClicked(menu.subPath || '')}
                 onMouseLeave={() => setSubMenuClicked('')}
@@ -130,6 +128,7 @@ export default function TopNavbar() {
                 )}
               </li>
             ))}
+
             {isSignedIn ? (
               <>
                 <Link className="btn-primary" href={'/create-campaign'}>
@@ -167,7 +166,7 @@ export default function TopNavbar() {
           } h-full w-full bg-light px-2 py-3 duration-500`}
         >
           <div className="flex items-center justify-between">
-            <CountryCurrencyDropdown/>
+            <CountryCurrencyDropdown />
             <Logo variant="alt" className="w-24 md:w-28" />
             <button onClick={() => setNavOpen((p) => !p)} className="inline-block md:hidden">
               <Icon
@@ -226,11 +225,8 @@ export default function TopNavbar() {
                   )}
                 </li>
               ))}
-
             </ul>
-           
           </div>
-          
         </div>
       </div>
     </>

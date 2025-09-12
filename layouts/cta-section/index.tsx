@@ -6,7 +6,7 @@ function CtaSection() {
     <section className="bg-ctabg flex items-center justify-center px-2 py-16">
       <div className="w-full max-w-2xl rounded-lg bg-white px-4 py-6 text-center md:py-10">
         <h1 className="text-2xl font-bold text-dark">
-          You can Be The Reason Someone Smiles Today.
+          You Can Be The Reason Someone Smiles Today.
         </h1>
         <p className="mx-auto mt-5 max-w-sm text-base">
           Start a fundraiser or support one — every action helps change a life.

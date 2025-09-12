@@ -25,7 +25,7 @@ export default function Footer() {
     <footer className="bg-footer-grey px-2 py-8 text-white md:px-0 md:pt-16">
       <div className="container flex flex-col justify-between gap-8 md:flex-row">
         <div className="flex w-full max-w-md flex-wrap justify-between gap-6">
-          <ul className="flex flex-col gap-1.5">
+          <ul className="flex flex-col gap-1.5 text-sm">
             <h5 className="mb-4 text-lg font-bold !leading-[100%] md:text-xl">Quick Links</h5>
             {quickLinks.map((link) => (
               <Link href={link.link} key={link.label}>
@@ -34,9 +34,9 @@ export default function Footer() {
             ))}
           </ul>
 
-          <ul className="flex flex-col gap-1.5">
+          <ul className="flex flex-col gap-1.5 text-sm">
             <h5 className="mb-4 text-lg font-bold !leading-[100%] md:text-xl">
-              Campaign categories
+              Campaign Categories
             </h5>
             {campaignCategoryLinks.map((link) => (
               <Link href={link.link} key={link.label}>
@@ -68,7 +68,7 @@ export default function Footer() {
           </Link>
           <div className="flex flex-col gap-2 text-sm">
             <p>
-              ©{new Date().getFullYear()} The InnerCity Mission for Children. All Rights Reserved.
+              ©{new Date().getFullYear()} The InnerCity Mission For Children. All Rights Reserved.
             </p>
             <p className="">
               An Initiative of{' '}
