@@ -159,40 +159,6 @@ function ResourceCard({ asset }: { asset: GetResourcesServiceResponse }) {
           </div>
         </div>
       </Modal>
-
-      {/* {showDrawer && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50">
-          <button
-            onClick={() => setShowDrawer(false)}
-            className="absolute right-40 top-5 text-white"
-          >
-            <Icon icon="iconoir:cancel" width="30" height="30" />
-          </button>
-          <div className="border-color w-full max-w-[800px] items-center rounded-lg border-2 bg-white p-10 shadow-lg">
-            <div className="mb-10 flex justify-between text-black">
-              <h1 className="font-medium">7 billion meals</h1>
-              <div className="ml-auto flex gap-5">
-                <Icon
-                  icon="material-symbols:download"
-                  width="24"
-                  height="24"
-                  className="mb-3 ml-auto"
-                  onClick={handleDownload}
-                />
-                <Icon
-                  icon="material-symbols:collections-bookmark-outline"
-                  width="24"
-                  height="24"
-                  className="ml-auto"
-                />
-                <Icon icon="nrk:more" width="24" height="24" />
-              </div>
-              <div></div>
-            </div>
-            <VideoPlayer key={currentVideo.src} src={currentVideo.src} thumb={currentVideo.thumb} />
-          </div>
-        </div>
-      )} */}
     </>
   )
 }
