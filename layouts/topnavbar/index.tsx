@@ -131,7 +131,7 @@ export default function TopNavbar() {
 
             {isSignedIn ? (
               <>
-                <Link className="btn-primary" href={'/create-campaign'}>
+                <Link className="btn-primary" href={'/campaigns/create'}>
                   Create campaign
                 </Link>
                 <UserProfileDropdown />
