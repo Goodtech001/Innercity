@@ -1,23 +1,24 @@
 'use client'
-import DpUploader from '@/components/dp-uploader'
-import Editpage from '@/components/edit-profile'
-import ImageUploader from '@/components/image-uploader'
 import Footer from '@/layouts/footer'
 import TopNavbar from '@/layouts/topnavbar'
 import { Icon } from '@iconify/react/dist/iconify.js'
-import Link from 'next/link'
 import React, { useState } from 'react'
-import DrawerPage from '../../components/drawer/page'
+import ResourceCard from '@/components/resources-card'
 
 function ResourcePage() {
   const [activeTab, setActiveTab] = useState('profile')
+  const tabs = [
+    { name: 'All', tab: 'all' },
+    { name: 'Videos', tab: 'videos' },
+    { name: 'Images', tab: 'images' },
+  ]
 
   const renderContent = () => {
     switch (activeTab) {
       case 'all':
         return (
           <div>
-            <DrawerPage />
+            <ResourceCard />
           </div>
         )
       case 'videos':
@@ -27,7 +28,7 @@ function ResourcePage() {
       default:
         return (
           <div>
-            <DrawerPage />
+            <ResourceCard />
           </div>
         )
     }
@@ -36,8 +37,8 @@ function ResourcePage() {
   return (
     <div>
       <TopNavbar />
-      <div className="px-2 py-10 md:px-[10%]">
-        <div className="border-b text-2xl font-bold text-black md:text-4xl">
+      <div className="container">
+        <div className="border-b pt-2 text-2xl font-bold text-black md:text-4xl">
           <h1 className="mb-2">Resources</h1>
         </div>
 
@@ -68,23 +69,13 @@ function ResourcePage() {
           </div>
         </div>
 
-        <div className="mt-20 items-center justify-between flex md:flex-row flex-col md:space-y-0 space-y-5 ">
+        <div className="mt-20 flex flex-col items-center justify-between space-y-5 md:flex-row md:space-y-0">
           <div className="flex space-x-4 md:space-x-5">
-            <SidebarButton
-              label="All"
-              onClick={() => setActiveTab('all')}
-              active={activeTab === 'all'}
-            />
-            <SidebarButton
-              label="Videos"
-              onClick={() => setActiveTab('videos')}
-              active={activeTab === 'videos'}
-            />
-            <SidebarButton
-              label="Images"
-              onClick={() => setActiveTab('images')}
-              active={activeTab === 'images'}
-            />
+            {tabs.map((tab) => (
+              <button key={tab.tab} onClick={() => setActiveTab(tab.tab)}>
+                <span className={`${tab.tab === activeTab ? 'text-primary' : ''}`}>{tab.name}</span>
+              </button>
+            ))}
           </div>
 
           <div className="flex w-fit rounded-lg border border-[#7BB2E7] p-1">
@@ -105,25 +96,11 @@ function ResourcePage() {
         </div>
 
         {/* Content Area */}
-        <div className="mt-10 overflow-y-auto rounded p-2 md:h-3/4 md:w-full">
-          {renderContent()}
-        </div>
+        <div className="mt-10 overflow-y-auto rounded py-2 pb-10">{renderContent()}</div>
       </div>
       <Footer />
     </div>
   )
 }
-
-type SidebarButtonProps = {
-  label: string
-  onClick: () => void
-  active?: boolean
-}
-
-const SidebarButton = ({ label, onClick, active }: SidebarButtonProps) => (
-  <button onClick={onClick}>
-    <span className={`${active ? 'text-primary' : ''}`}>{label}</span>
-  </button>
-)
 
 export default ResourcePage

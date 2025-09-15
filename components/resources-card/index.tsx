@@ -7,9 +7,8 @@ import man from '@/public/assets/images/food-7bmc.jpg'
 import women from '@/public/assets/images/women-empowerment-gathering.jpg'
 import men from '@/public/assets/images/community-development-construction.jpg'
 import clss from '@/public/assets/images/education-class.jpg'
-import { StaticImageData } from 'next/image'
 
-function DrawerPage() {
+function ResourceCard() {
   const [showDrawer, setShowDrawer] = useState(false)
   const [formData, setFormData] = useState({
     fullName: '',
@@ -24,11 +23,11 @@ function DrawerPage() {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
+
   const [currentVideo, setCurrentVideo] = useState({
     src: 'https://vimeo.com/1037756541/2f13d91b44',
     thumb: rita,
   })
-  // const downloadableVideoUrl = "https://yourdomain.com/videos/myvideo.mp4";
 
   const handleDownload = () => {
     const a = document.createElement('a')
@@ -91,49 +90,39 @@ function DrawerPage() {
     // ...
   ]
 
-  interface Drawer {
-    id: number
-    name: string
-    src: string
-    img: string | StaticImageData
-  }
-
   return (
-    <div>
-      <div className="items-center justify-center gap-3 md:grid md:grid-cols-3 lg:grid-cols-4 flex flex-col">
-        {drawers.map((drawer, index) => (
-          <button
+    <>
+      <div className="flex flex-col items-center justify-center gap-3 md:grid md:grid-cols-3 lg:grid-cols-4">
+        {drawers.map((drawer) => (
+          <div
             onClick={() => {
               setCurrentVideo({ src: drawer.src, thumb: drawer.img })
               setShowDrawer(true)
             }}
             key={drawer.id}
+            className="flex aspect-1 w-full flex-col rounded-lg bg-gray-200 p-2 text-white backdrop-brightness-75"
+            style={{
+              backgroundImage: `linear-gradient(rgba(var(--dark), 0.2), rgba(var(--dark), 0.9 )), url(${typeof drawer.img === 'string' ? drawer.img : drawer.img.src})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
           >
-            <div
-              className="flex h-[200px] md:w-[230px] w-[300px] flex-col rounded-lg bg-gray-200 p-2 text-white backdrop-brightness-75"
-              style={{
-                backgroundImage: `linear-gradient(rgba(var(--dark), 0.2), rgba(var(--dark), 0.9 )), url(${typeof drawer.img === 'string' ? drawer.img : drawer.img.src})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            >
-              <Icon
-                icon="material-symbols:download"
-                width="22"
-                height="22"
-                className="mb-3 ml-auto"
-              />
-              <Icon
-                icon="material-symbols:collections-bookmark-outline"
-                width="22"
-                height="22"
-                className="ml-auto"
-              />
-              <div className="mr-auto mt-auto p-2 text-xs">
-                <p>{drawer.name}</p>
-              </div>
+            <Icon
+              icon="material-symbols:download"
+              width="22"
+              height="22"
+              className="mb-3 ml-auto"
+            />
+            <Icon
+              icon="material-symbols:collections-bookmark-outline"
+              width="22"
+              height="22"
+              className="ml-auto"
+            />
+            <div className="mr-auto mt-auto p-2 text-xs">
+              <p>{drawer.name}</p>
             </div>
-          </button>
+          </div>
         ))}
 
         {showDrawer && (
@@ -174,8 +163,8 @@ function DrawerPage() {
           </div>
         )}
       </div>
-    </div>
+    </>
   )
 }
 
-export default DrawerPage
+export default ResourceCard
