@@ -11,13 +11,13 @@ export default function CreateCampaignPage() {
   const [tabs] = useState([
     {
       id: 1,
-      title: 'Campaign Information',
+      title: 'Campaign Basic Information',
       description: 'Enter campaign title and description',
       icon: 'majesticons:checkbox-list-detail',
     },
     {
       id: 2,
-      title: 'Upload Image',
+      title: 'Upload Campaign Image',
       description: 'Provide a banner for your campaign',
       icon: 'majesticons:image',
     },
@@ -80,12 +80,12 @@ export default function CreateCampaignPage() {
           <div className="rounded-xl border p-1 md:col-span-7 md:p-2 lg:col-span-8">
             {CurrentComponent && <CurrentComponent />}
           </div>
-          <div className="flex h-full gap-3 rounded-xl border p-1 md:col-span-5 md:flex-col md:p-2 lg:col-span-4">
+          <div className="grid h-full grid-cols-3 justify-between gap-3 rounded-xl border p-1 md:col-span-5 md:flex md:flex-col md:p-2 lg:col-span-4">
             {tabs.map((tab) => (
               <div
                 key={tab.id}
                 onClick={() => setActiveStep(tab.id)}
-                className="flex max-w-20 cursor-pointer flex-col items-center gap-2 rounded-lg border p-1 hover:bg-primary/5 md:max-w-none md:flex-row md:p-2"
+                className="flex max-w-xs cursor-pointer flex-col items-center gap-2 rounded-lg border p-1 hover:bg-primary/5 md:max-w-none md:flex-row md:p-2"
               >
                 <button
                   className={`rounded-md border border-primary p-1.5 text-lg md:p-2 md:text-2xl ${activeStep >= tab.id ? 'bg-primary text-light' : 'bg-complementary text-primary'}`}
