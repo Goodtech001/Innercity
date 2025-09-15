@@ -140,26 +140,4 @@ h6,
     left: -25%;
     width: 30px;
   }
-  .side{
-    display: flex;
-    overflow-x: hidden;
-    text-align: center;
-  }
-  .icon{
-    width: 15px;
-    height: 15px;
-    overflow-y: hidden;
-    text-align: center;
-  }
-  .top{
-    display: flex;
-    flex-direction: column-reverse;
-  }
-  .area {
-    height: 100%;
-  }
-  .lab {
-    justify-content: center;
-    text-align: center;
-  }
 }
