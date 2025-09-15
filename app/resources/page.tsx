@@ -131,7 +131,7 @@ function ResourcePage() {
           <div className="mb-8 flex items-center justify-between">
             <h5 className="text-lg font-bold text-dark md:text-xl">{selectedResource?.name}</h5>
 
-            <div className="ml-auto flex gap-5 border-4">
+            <div className="ml-auto flex gap-5">
               <Icon
                 icon="material-symbols:download"
                 className="btn size-8 cursor-pointer p-1"
