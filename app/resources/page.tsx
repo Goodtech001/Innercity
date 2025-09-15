@@ -1,11 +1,14 @@
 'use client'
+import useSWR from 'swr'
 import Footer from '@/layouts/footer'
 import TopNavbar from '@/layouts/topnavbar'
-import { Icon } from '@iconify/react/dist/iconify.js'
+import { Icon } from '@iconify/react'
 import React, { useState } from 'react'
 import ResourceCard from '@/components/resources-card'
+import { getResourcesService } from '@/services/resources.service'
 
 function ResourcePage() {
+  const { data } = useSWR('donations', getResourcesService)
   const [activeTab, setActiveTab] = useState('profile')
   const tabs = [
     { name: 'All', tab: 'all' },
@@ -13,33 +16,33 @@ function ResourcePage() {
     { name: 'Images', tab: 'images' },
   ]
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'all':
-        return (
-          <div>
-            <ResourceCard />
-          </div>
-        )
-      case 'videos':
-        return <div>Videos...</div>
-      case 'images':
-        return <div>Images...</div>
-      default:
-        return (
-          <div>
-            <ResourceCard />
-          </div>
-        )
-    }
-  }
+  // const renderContent = () => {
+  //   switch (activeTab) {
+  //     case 'all':
+  //       return (
+  //         <div>
+  //           <ResourceCard />
+  //         </div>
+  //       )
+  //     case 'videos':
+  //       return <div>Videos...</div>
+  //     case 'images':
+  //       return <div>Images...</div>
+  //     default:
+  //       return (
+  //         <div>
+  //           <ResourceCard />
+  //         </div>
+  //       )
+  //   }
+  // }
 
   return (
     <div>
       <TopNavbar />
       <div className="container">
-        <div className="border-b pt-2 text-2xl font-bold text-black md:text-4xl">
-          <h1 className="mb-2">Resources</h1>
+        <div className="mb-3 flex items-center justify-between border-b py-1.5 pt-6">
+          <h3 className="text-balance text-3xl font-bold text-dark md:text-4xl">Resources</h3>
         </div>
 
         <div className="mt-3 justify-between md:flex">
@@ -96,7 +99,11 @@ function ResourcePage() {
         </div>
 
         {/* Content Area */}
-        <div className="mt-10 overflow-y-auto rounded py-2 pb-10">{renderContent()}</div>
+        <div className="mt-10 flex flex-col items-center justify-center gap-3 overflow-y-auto rounded py-2 pb-10 md:grid md:grid-cols-3 lg:grid-cols-4">
+          {data?.map((asset, index) => (
+            <ResourceCard key={index} asset={asset} />
+          ))}
+        </div>
       </div>
       <Footer />
     </div>

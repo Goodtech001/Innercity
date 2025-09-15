@@ -11,9 +11,10 @@ interface VideoPlayerProps {
   src: string
   thumb: StaticImageData
   autoplay?: boolean
+  className?: string
 }
 
-const VideoPlayer = ({ src, thumb, autoplay = false }: VideoPlayerProps) => {
+const VideoPlayer = ({ src, thumb, autoplay = false, className }: VideoPlayerProps) => {
   const [playing, setPlaying] = useState(autoplay)
   const playerRef = useRef<HTMLVideoElement>(null)
   const [isHovering, setIsHovering] = useState(true)
@@ -72,10 +73,11 @@ const VideoPlayer = ({ src, thumb, autoplay = false }: VideoPlayerProps) => {
     }
   }
 
-
   return (
     <>
-      <div className="relative aspect-[1.5] w-full max-w-3xl overflow-hidden rounded-lg bg-black backdrop-filter md:aspect-[1.8]">
+      <div
+        className={`relative aspect-[1.5] w-full max-w-3xl overflow-hidden rounded-lg bg-black backdrop-filter md:aspect-[1.8] ${className}`}
+      >
         {/* Video */}
         <Image
           alt="thumbnail"
