@@ -6,6 +6,7 @@ import '@/styles/bg.css'
 import 'swiper/css'
 import 'swiper/css/free-mode'
 import 'swiper/css/pagination'
+import 'react-phone-input-2/lib/style.css'
 
 export const metadata: Metadata = {
   title: 'The InnerCity Mission Gifting Platform',

@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import Input from '@/components/input'
 import { IInputState } from '@/components/input/useInput'
 import Logo from '@/components/logo'
+import PhoneInput from 'react-phone-input-2'
 
 function SignUp() {
   const [name, setName] = useState<IInputState>({ value: '' }) //?? optionally you can define the type to see the values that are available when interacted with
@@ -49,16 +50,16 @@ function SignUp() {
             <h1 className="mb-5 text-center text-3xl font-bold md:text-left">Sign Up</h1>
 
             <div className="">
-              <label className="label" htmlFor="email">
-                Email*
+              <label className="label" htmlFor="name">
+                Full Name*
               </label>
               <Input
-                name="email"
-                setState={setEmail}
-                state={email}
-                type="email"
+                name="name"
+                setState={setName}
+                state={name}
+                type="text"
                 required
-                placeholder="Enter your email..."
+                placeholder="Enter your name..."
               />
             </div>
 
@@ -78,48 +79,44 @@ function SignUp() {
               </div>
 
               <div className="">
-                <label className="label" htmlFor="email">
-                  Email*
+                <label className="label" htmlFor="birthDate">
+                  Date of Birth*
                 </label>
                 <Input
-                  name="email"
-                  setState={setEmail}
-                  state={email}
-                  type="email"
+                  name="birthDate"
+                  setState={setBirthDate}
+                  state={birthDate}
+                  type="date"
                   required
-                  placeholder="Enter your email..."
+                  placeholder="Select Birth Month"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
-              <div className="">
-                <label className="label" htmlFor="email">
-                  Email*
-                </label>
-                <Input
-                  name="email"
-                  setState={setEmail}
-                  state={email}
-                  type="email"
-                  required
-                  placeholder="Enter your email..."
-                />
-              </div>
-
-              <div className="">
-                <label className="label" htmlFor="email">
-                  Email*
-                </label>
-                <Input
-                  name="email"
-                  setState={setEmail}
-                  state={email}
-                  type="email"
-                  required
-                  placeholder="Enter your email..."
-                />
-              </div>
+            <div className="">
+              <label className="label" htmlFor="password">
+                Password*
+              </label>
+              <PhoneInput
+                country={'ng'}
+                placeholder="Phone Number"
+                value={phoneNumber.value}
+                onChange={(phone) => setPhoneNumber({ value: phone })}
+                inputClass="!w-full !h-11"
+                buttonClass=""
+                containerClass="input-field border-text/25 flex items-center !border-2 bg-transparent px-0 py-0 ring-offset-2 hover:!border-primary hover:ring-2"
+              />
+            </div>
+            <div className="input-field border-text/25 flex items-center !border-2 bg-transparent px-0 py-0 ring-offset-2 hover:!border-primary hover:ring-2">
+              <PhoneInput
+                country={'ng'}
+                placeholder="Phone Number"
+                value={phoneNumber.value}
+                onChange={(phone) => setPhoneNumber({ value: phone })}
+                inputClass="!w-full !bg-transparent !h-10 !border-none"
+                buttonClass="!bg-transparent !border-none !shadow-none !rounded-r-md"
+                containerClass="w-full !bg-transparent !outline-none !border-0"
+              />
             </div>
 
             <div className="">

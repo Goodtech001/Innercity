@@ -16,7 +16,7 @@ export default function HeroSection() {
             because,” every campaign helps a child eat, learn, and thrive.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-6">
-            <Link className="btn-primary w-fit" href={'/campaign/create'}>
+            <Link className="btn-primary w-fit" href={'/campaigns/create'}>
               Create your campaign
             </Link>
             <Link className="btn-white w-fit" href={'/campaign/all'}>
