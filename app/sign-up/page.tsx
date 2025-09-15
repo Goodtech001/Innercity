@@ -1,33 +1,32 @@
 'use client'
 import React, { useState } from 'react'
-import Image from 'next/image'
-import signlogo from '@/public/inner-black-text.png'
 import Link from 'next/link'
 import people from '@/json/people.json'
 import { AnimatedTooltip } from '@/components/ui/animated-tooltip'
 import { useRouter } from 'next/navigation'
+import Input from '@/components/input'
+import { IInputState } from '@/components/input/useInput'
+import Logo from '@/components/logo'
 
 function SignUp() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [name, setName] = useState<IInputState>({ value: '' }) //?? optionally you can define the type to see the values that are available when interacted with
+  const [country, setCountry] = useState({ value: '' })
+  const [phoneNumber, setPhoneNumber] = useState({ value: '' })
+  const [email, setEmail] = useState({ value: '' })
+  const [zone, setZone] = useState({ value: '' })
+  const [birthDate, setBirthDate] = useState({ value: '' })
+  const [password, setPassword] = useState({ value: '' })
+  const router = useRouter()
 
-
-  const [email, setEmail] = useState('')
-  const [error, setError] = useState(null)
-  const router = useRouter();
-
-
-const handleSignUp = (e: React.FormEvent) => {
-  e.preventDefault(); // prevent page refresh
-    // Simulate a sign-up request (replace with your actual API call)
-    // Sign-up successful, redirect to login page
-    router.push("/sign-in")
+  const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    router.push('/')
   }
 
   return (
-    <div className="mx-auto h-screen grid-cols-10 overflow-y-hidden md:grid">
-      <div className="bg-sign-up col-span-6 hidden h-screen items-center justify-center bg-cover bg-center text-white md:block">
-        <div className="mx-40 flex h-screen flex-col justify-center">
+    <div className="h-screen grid-cols-10 overflow-x-hidden overflow-y-hidden md:grid">
+      <div className="bg-sign-up col-span-6 hidden h-screen items-center bg-cover bg-center text-white md:block">
+        <div className="flex h-screen flex-col justify-center md:mx-20 lg:mx-40">
           <h1 className="max-w-md text-5xl font-bold">Together, we can make a difference.</h1>
           <p className="mt-5 text-sm">
             Every small act of kindness begins here. Join our community to give, share, or ignite
@@ -40,75 +39,116 @@ const handleSignUp = (e: React.FormEvent) => {
         </div>
       </div>
 
-      {/* form */}
-      <form className="col-span-4 mx-auto flex w-full items-center justify-center self-start px-6 py-20 md:px-10">
-        <div className="w-full">
-          <Link href="/">
-            <Image src={signlogo} alt="logo" width={90} height={90} className="mx-auto md:mx-0" />
+      <div className="flex h-full max-h-svh flex-col items-center overflow-y-auto px-6 py-8 md:col-span-4 md:px-10">
+        <div className="my-auto w-full">
+          <Link className="mx-auto mb-5 block w-fit md:mx-0" href={'/'}>
+            <Logo variant="alt" className="w-24" />
           </Link>
-          <h1 className="mb-5 mt-5 text-center font-sans text-3xl font-bold text-textcolor md:text-left">
-            {' '}
-            Sign Up
-          </h1>
-          <label htmlFor="text" className="label mt-5">
-            Name*
-          </label>
-          <div className="flex-row">
-            <input
-              type="text"
-              id="text"
-              placeholder="Enter your name"
-              required
-              className="input mb-3"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>{' '}
-          <label htmlFor="email" className="label mt-5">
-            {' '}
-            Email*
-          </label>
-          <div>
-            <input
-              type="email"
-              id="email"
-              placeholder="Enter your email"
-              required
-              className="input mb-3"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>{' '}
-          <label htmlFor="password" className="label">
-            {' '}
-            Password*
-          </label>
-          <div>
-            <input
-              type="password"
-              id="password"
-              placeholder="Enter your password"
-              required
-              className="input"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div>
-            <button type="submit" id="submit" className="btn-primary mt-5" onClick={handleSignUp}>
+
+          <form onSubmit={handleSignIn} className="flex flex-col gap-4">
+            <h1 className="mb-5 text-center text-3xl font-bold md:text-left">Sign Up</h1>
+
+            <div className="">
+              <label className="label" htmlFor="email">
+                Email*
+              </label>
+              <Input
+                name="email"
+                setState={setEmail}
+                state={email}
+                type="email"
+                required
+                placeholder="Enter your email..."
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <div className="">
+                <label className="label" htmlFor="email">
+                  Email*
+                </label>
+                <Input
+                  name="email"
+                  setState={setEmail}
+                  state={email}
+                  type="email"
+                  required
+                  placeholder="Enter your email..."
+                />
+              </div>
+
+              <div className="">
+                <label className="label" htmlFor="email">
+                  Email*
+                </label>
+                <Input
+                  name="email"
+                  setState={setEmail}
+                  state={email}
+                  type="email"
+                  required
+                  placeholder="Enter your email..."
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <div className="">
+                <label className="label" htmlFor="email">
+                  Email*
+                </label>
+                <Input
+                  name="email"
+                  setState={setEmail}
+                  state={email}
+                  type="email"
+                  required
+                  placeholder="Enter your email..."
+                />
+              </div>
+
+              <div className="">
+                <label className="label" htmlFor="email">
+                  Email*
+                </label>
+                <Input
+                  name="email"
+                  setState={setEmail}
+                  state={email}
+                  type="email"
+                  required
+                  placeholder="Enter your email..."
+                />
+              </div>
+            </div>
+
+            <div className="">
+              <label className="label" htmlFor="password">
+                Password*
+              </label>
+              <Input
+                name="password"
+                setState={setPassword}
+                state={password}
+                type="password"
+                required
+                placeholder="Enter your password..."
+              />
+            </div>
+
+            <button type="submit" id="submit" className="btn-primary mt-5">
               Create Account
             </button>
-          </div>
-          <div className="mt-5 flex justify-center text-center">
-            <p className="justify-center text-sm">
+
+            <p className="mt-5 justify-center text-center text-sm">
               Already have an Account?{' '}
-              <Link href="/sign-in" className="font-bold text-primary">
-                Log In
+              <Link href="/sign-up" className="font-bold text-primary">
+                Login
               </Link>
             </p>
-          </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   )
 }

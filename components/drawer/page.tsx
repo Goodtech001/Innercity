@@ -100,7 +100,7 @@ function DrawerPage() {
 
   return (
     <div>
-      <div className="items-center justify-center gap-3 md:grid md:grid-cols-4 flex flex-col">
+      <div className="items-center justify-center gap-3 md:grid md:grid-cols-3 lg:grid-cols-4 flex flex-col">
         {drawers.map((drawer, index) => (
           <button
             onClick={() => {

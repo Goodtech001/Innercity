@@ -9,7 +9,7 @@ import { IInputState } from '@/components/input/useInput'
 import Logo from '@/components/logo'
 
 function SignIn() {
-  const [email, setEmail] = useState<IInputState>({ value: '' })
+  const [email, setEmail] = useState<IInputState>({ value: '' }) //?? optionally you can define the type to see the values that are available when interacted with
   const [password, setPassword] = useState({ value: '' })
   const router = useRouter()
 
@@ -72,7 +72,7 @@ function SignIn() {
       </div>
 
       <div className="bg-sign-in col-span-6 hidden h-screen items-center bg-cover bg-center text-white md:block">
-        <div className="mx-40 flex h-screen flex-col justify-center">
+        <div className="flex h-screen flex-col justify-center md:mx-20 lg:mx-40">
           <h1 className="max-w-md text-5xl font-bold">Together, we can make a difference.</h1>
           <p className="mt-5 text-sm">
             Every small act of kindness begins here. Join our community to give, share, or ignite

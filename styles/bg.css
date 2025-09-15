@@ -6,27 +6,27 @@
 
 .bg-ctabg {
   background-image:
-  linear-gradient(rgba(var(--dark), 0.5), rgba(var(--dark), 0.5)),
-     url('/assets/images/cta.jpg');
+    linear-gradient(rgba(var(--dark), 0.5), rgba(var(--dark), 0.5)), url('/assets/images/cta.jpg');
 }
+
 .bg-sign-up {
-  background-image: 
-   linear-gradient(rgba(var(--primary), 0.2), rgba(var(--primary), 0.5)),
-     url('/assets/images/food-7bmc.jpg');
-      background-size: cover;
+  background-image:
+    linear-gradient(rgba(var(--primary), 0.2), rgba(var(--primary), 0.5)),
+    url('/assets/images/food-7bmc.jpg');
+  background-size: cover;
 }
 
 .bg-sign-in {
-  background-image: 
-   linear-gradient(rgba(var(--primary), 0.2), rgba(var(--primary), 0.5)),
-     url('/assets/images/education-class.jpg');
-      background-size: cover;
+  background-image:
+    linear-gradient(rgba(var(--primary), 0.2), rgba(var(--primary), 0.5)),
+    url('/assets/images/education-class.jpg');
+  background-size: cover;
 }
 
 .bg1 {
   background-image:
-  linear-gradient(rgba(var(--dark), 0.5), rgba(var(--dark), 0.9 )),
-   url('/assets/images/food-7bmc.jpg');
+    linear-gradient(rgba(var(--dark), 0.5), rgba(var(--dark), 0.9)),
+    url('/assets/images/food-7bmc.jpg');
   background-size: cover;
   backdrop-filter: blur(5px);
 }

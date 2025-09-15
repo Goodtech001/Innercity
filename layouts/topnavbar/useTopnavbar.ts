@@ -17,11 +17,11 @@ export type menu_type = {
 export const leftMenu: menu_type[] = [
   {
     title: 'About Fundraiser',
-    path: '/About',
+    path: '/about',
   },
   {
     title: 'Resources',
-    path: '/Resources-page',
+    path: '/resources-page',
   },
 ]
 

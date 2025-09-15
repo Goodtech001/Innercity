@@ -38,7 +38,7 @@ export const AnimatedTooltip = ({
         <div
           className="group relative -mr-4 mt-10"
           key={item.name}
-          onMouseEnter={() => setHoveredIndex(item.id)}
+          onMouseEnter={() => setHoveredIndex(null)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
           <AnimatePresence>
