@@ -10,11 +10,11 @@ import Logo from '@/components/logo'
 import PhoneInput from 'react-phone-input-2'
 
 function SignUp() {
+  // const [country, setCountry] = useState({ value: '' })
+  // const [zone, setZone] = useState({ value: '' })
   const [name, setName] = useState<IInputState>({ value: '' }) //?? optionally you can define the type to see the values that are available when interacted with
-  const [country, setCountry] = useState({ value: '' })
   const [phoneNumber, setPhoneNumber] = useState({ value: '' })
   const [email, setEmail] = useState({ value: '' })
-  const [zone, setZone] = useState({ value: '' })
   const [birthDate, setBirthDate] = useState({ value: '' })
   const [password, setPassword] = useState({ value: '' })
   const router = useRouter()
