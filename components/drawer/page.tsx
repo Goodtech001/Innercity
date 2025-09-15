@@ -137,7 +137,7 @@ function DrawerPage() {
         ))}
 
         {showDrawer && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
+          <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm backdrop-brightness-50">
             <button
               onClick={() => setShowDrawer(false)}
               className="absolute right-40 top-5 text-white"

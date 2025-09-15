@@ -27,6 +27,10 @@ const nextConfig: NextConfig = {
         protocol: 'http',
         hostname: 'dummyimage.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'elements.envato.com',
+      },
     ],
   },
 }

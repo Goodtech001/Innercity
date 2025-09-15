@@ -7,7 +7,7 @@ import TopNavbar from '@/layouts/topnavbar'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import Link from 'next/link'
 import React, { useState } from 'react'
-import DrawerPage from '../drawer/page'
+import DrawerPage from '../../components/drawer/page'
 
 function ResourcePage() {
   const [activeTab, setActiveTab] = useState('profile')

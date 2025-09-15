@@ -14,7 +14,7 @@ function How() {
         </p>
       </div>
       {/* 1 */}
-      <div className="mt-24 flex items-center justify-center md:mt-0">
+      <div className="mt-5 flex items-center justify-center md:mt-0">  
         <div className="mt-10 flex w-full flex-col-reverse items-center justify-center gap-5 md:container md:grid-cols-2 md:flex-row md:gap-0 md:space-x-80">
           <div className="text-center text-white md:text-left">
             <h1 className="mb-2 text-2xl font-semibold">Step 1 — Create Your Fundrise</h1>

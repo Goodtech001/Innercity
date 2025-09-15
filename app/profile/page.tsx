@@ -110,7 +110,7 @@ import Editpage from '@/components/edit-profile'
 import ImageUploader from '@/components/image-uploader'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { useState } from 'react'
-import Mynotification from '../test/page'
+import Mynotification from '../../components/test/page'
 
 const ProfileSection = () => {
   const [activeTab, setActiveTab] = useState('profile')
