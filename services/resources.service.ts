@@ -16,9 +16,6 @@ export const getResourcesService = async () => {
     throw new Error(errorMessage)
   }
 
-  console.log(res)
-
   const data: GetResourcesServiceResponse[] = res
-
   return data
 }
