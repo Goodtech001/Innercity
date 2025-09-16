@@ -10,11 +10,11 @@ import Logo from '@/components/logo'
 import PhoneInput from 'react-phone-input-2'
 
 function SignUp() {
+  // const [country, setCountry] = useState({ value: '' })
+  // const [zone, setZone] = useState({ value: '' })
   const [name, setName] = useState<IInputState>({ value: '' }) //?? optionally you can define the type to see the values that are available when interacted with
-  const [country, setCountry] = useState({ value: '' })
   const [phoneNumber, setPhoneNumber] = useState({ value: '' })
   const [email, setEmail] = useState({ value: '' })
-  const [zone, setZone] = useState({ value: '' })
   const [birthDate, setBirthDate] = useState({ value: '' })
   const [password, setPassword] = useState({ value: '' })
   const router = useRouter()
@@ -80,42 +80,30 @@ function SignUp() {
 
               <div className="">
                 <label className="label" htmlFor="birthDate">
-                  Date of Birth*
+                  Date of Birth
                 </label>
                 <Input
                   name="birthDate"
                   setState={setBirthDate}
                   state={birthDate}
                   type="date"
-                  required
                   placeholder="Select Birth Month"
                 />
               </div>
             </div>
 
             <div className="">
-              <label className="label" htmlFor="password">
-                Password*
+              <label className="label" htmlFor="phoneNumber">
+                Phone Number
               </label>
               <PhoneInput
                 country={'ng'}
                 placeholder="Phone Number"
                 value={phoneNumber.value}
                 onChange={(phone) => setPhoneNumber({ value: phone })}
-                inputClass="!w-full !h-11"
+                inputClass="!w-full !h-11 "
                 buttonClass=""
-                containerClass="input-field border-text/25 flex items-center !border-2 bg-transparent px-0 py-0 ring-offset-2 hover:!border-primary hover:ring-2"
-              />
-            </div>
-            <div className="input-field border-text/25 flex items-center !border-2 bg-transparent px-0 py-0 ring-offset-2 hover:!border-primary hover:ring-2">
-              <PhoneInput
-                country={'ng'}
-                placeholder="Phone Number"
-                value={phoneNumber.value}
-                onChange={(phone) => setPhoneNumber({ value: phone })}
-                inputClass="!w-full !bg-transparent !h-10 !border-none"
-                buttonClass="!bg-transparent !border-none !shadow-none !rounded-r-md"
-                containerClass="w-full !bg-transparent !outline-none !border-0"
+                containerClass="input-field border-text/25 flex items-center !border bg-transparent px-0 py-0"
               />
             </div>
 
@@ -134,12 +122,12 @@ function SignUp() {
             </div>
 
             <button type="submit" id="submit" className="btn-primary mt-5">
-              Create Account
+              Create account
             </button>
 
             <p className="mt-5 justify-center text-center text-sm">
               Already have an Account?{' '}
-              <Link href="/sign-up" className="font-bold text-primary">
+              <Link href="/sign-in" className="font-bold text-primary">
                 Login
               </Link>
             </p>

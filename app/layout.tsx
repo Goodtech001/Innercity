@@ -31,6 +31,7 @@ export default function RootLayout({
       <body id="root" className={`scroll-smooth antialiased`}>
         {children}
         <div id="modal-root"></div>
+        <div id="portal"></div>
         <Analytics />
       </body>
     </html>

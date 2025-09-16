@@ -4,16 +4,17 @@ import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import PercentageBar from '@/components/percentage-bar'
 import { formatTime } from '@/utils/format-time'
-// import thumbnail from '@/public/assets/images/video-thumbnail.jpg'
+import thumbnail from '@/public/assets/images/video-thumbnail.jpg'
 import Image, { StaticImageData } from 'next/image'
 
 interface VideoPlayerProps {
   src: string
-  thumb: StaticImageData
   autoplay?: boolean
+  thumb?: StaticImageData | string
+  className?: string
 }
 
-const VideoPlayer = ({ src, thumb, autoplay = false }: VideoPlayerProps) => {
+const VideoPlayer = ({ src, thumb = thumbnail, autoplay = false, className }: VideoPlayerProps) => {
   const [playing, setPlaying] = useState(autoplay)
   const playerRef = useRef<HTMLVideoElement>(null)
   const [isHovering, setIsHovering] = useState(true)
@@ -72,10 +73,11 @@ const VideoPlayer = ({ src, thumb, autoplay = false }: VideoPlayerProps) => {
     }
   }
 
-
   return (
     <>
-      <div className="relative aspect-[1.5] w-full max-w-3xl overflow-hidden rounded-lg bg-black backdrop-filter md:aspect-[1.8]">
+      <div
+        className={`relative aspect-[1.5] w-full max-w-3xl overflow-hidden rounded-lg bg-black backdrop-filter md:aspect-[1.8] ${className}`}
+      >
         {/* Video */}
         <Image
           alt="thumbnail"
