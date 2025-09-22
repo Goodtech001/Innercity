@@ -143,14 +143,12 @@ const ProfileSection = () => {
   }
 
   return (
-    <div className="${bgColorMap[activeTab]} top h-screen gap-6 p-2 transition-colors duration-500 md:flex">
+    <div className="${bgColorMap[activeTab]} top h-screen gap-6 p-2 transition-colors duration-500 md:flex flex-row-reverse">
       {/* Content Area */}
-      <div className="h-full overflow-y-auto rounded border border-gray-100 p-2 md:w-2/3">
-        {renderContent()}
-      </div>
+    
 
       {/* Sidebar */}
-      <div className="flex rounded border border-gray-100 bg-white py-2 md:block md:w-1/3">
+      <div className="flex rounded border border-gray-100 bg-white py-2 md:block md:w-1/3 md:mb-0 mb-3">
         {/* <div className="md:w-1/3 overflow-y-hidden bg-white md:p-4 border-gray-100 border rounded side"> */}
 
         {/* <h2 className="mb-6 text-xl font-bold">My Profile</h2> */}
@@ -183,6 +181,10 @@ const ProfileSection = () => {
           onClick={() => setActiveTab('chat')}
           active={activeTab === 'chat'}
         />
+      </div>
+
+        <div className="h-full overflow-y-auto rounded border border-gray-100 p-2 md:w-2/3">
+        {renderContent()}
       </div>
     </div>
   )
