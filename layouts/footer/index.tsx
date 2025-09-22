@@ -87,7 +87,7 @@ export default function Footer() {
             <Icon className="size-7" icon={'fa6-brands:square-x-twitter'} />
           </Link>
 
-          <Link href={'https://www.instagram.com/innercityhq/'}>
+          <Link href={'https://www.kingschat.com/innercityhq/'}>
             <Image alt="kingschat" className="size-9" width={27} height={27} src={kingsChatIcon} />
           </Link>
 

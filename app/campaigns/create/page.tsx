@@ -1,4 +1,9 @@
 'use client'
+import {
+  CampaignInformationTab,
+  PreviewCampaignTab,
+  UploadImageTab,
+} from '@/layouts/create-campaign-tabs'
 import Footer from '@/layouts/footer'
 import TopNavbar from '@/layouts/topnavbar'
 import { Icon } from '@iconify/react'
@@ -78,6 +83,15 @@ export default function CreateCampaignPage() {
 
         <div className="mb-6 flex flex-col-reverse gap-4 md:grid md:grid-cols-12">
           <div className="rounded-xl border p-1 md:col-span-7 md:p-2 lg:col-span-8">
+            <div className="mb-6 flex items-center justify-between">
+              <h5 className="text-lg font-bold text-dark md:text-xl">
+                {tabs[activeStep - 1].title}
+              </h5>
+
+              <span className="btn w-fit bg-complementary px-3 py-1 text-xs font-normal text-primary md:text-sm">
+                Step {activeStep}/{stepsTab.length}
+              </span>
+            </div>
             {CurrentComponent && <CurrentComponent />}
           </div>
           <div className="grid h-full grid-cols-3 justify-between gap-3 rounded-xl border p-1 md:col-span-5 md:flex md:flex-col md:p-2 lg:col-span-4">
@@ -106,20 +120,4 @@ export default function CreateCampaignPage() {
       <Footer />
     </>
   )
-}
-
-type TabsProps = {
-  goForward: () => void
-}
-
-export function CampaignInformationTab({ goForward }: TabsProps) {
-  return <div>CampaignInformationTab</div>
-}
-
-export function UploadImageTab({ goForward }: TabsProps) {
-  return <div>UploadImageTab</div>
-}
-
-export function PreviewCampaignTab({ goForward }: TabsProps) {
-  return <div>PreviewCampaignTab</div>
 }
