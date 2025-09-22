@@ -183,7 +183,7 @@ const ProfileSection = () => {
         />
       </div>
 
-        <div className="h-full overflow-y-auto rounded border border-gray-100 p-2 md:w-2/3">
+        <div className="h-full overflow-y-auto rounded border border-gray-100 p-2 md:w-2/3 ">
         {renderContent()}
       </div>
     </div>
