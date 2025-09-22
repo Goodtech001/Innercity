@@ -221,7 +221,9 @@ function DropZoneFileUpload({
         <div className="mb-3 flex flex-col items-center text-center">
           <Icon className="text-xl" icon={'iconoir:cloud-upload'} />
         </div>
-        <p className="text-base font-semibold text-dark">Drag &amp; drop files or Browse</p>
+        <p className="text-base font-semibold text-dark">
+          Drag &amp; drop or Click to open gallery
+        </p>
         <p className="text-sm text-gray-500">Supported formats: JPEG, JPG, PNG</p>
         {files && files.length > 0 && (
           <div className="mt-2 text-sm text-gray-600">

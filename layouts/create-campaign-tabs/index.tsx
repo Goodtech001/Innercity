@@ -130,15 +130,15 @@ export function UploadImageTab({ goForward, goBack }: TabsProps) {
   return (
     <div className="lg:max-w-3xl">
       <div className="col-span-2">
-        <label className="label mb-0.5 flex items-center gap-1" htmlFor="campaignImage">
+        <label className="label mb-2 flex items-center gap-1" htmlFor="campaignImage">
           <p>Campaign Image</p>
           <Tooltip content={'Campaign image should be at least 800x400px'}>
             <Icon icon={'si:info-duotone'} className="bg-transparent text-textcolor/75" />
           </Tooltip>
         </label>
-        <p className="mb-1.5 text-sm font-light">
+        {/* <p className="mb-1.5 text-sm font-light">
           Upload an image for your campaign from your gallery try the following.
-        </p>
+        </p> */}
         <div className="mb-2.5 flex w-fit flex-wrap items-center gap-2 gap-y-3 text-sm font-semibold text-primary">
           <Link
             className="flex items-center justify-center gap-1.5 rounded-md p-1 hover:bg-primary/15"
