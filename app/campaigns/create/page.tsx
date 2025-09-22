@@ -45,7 +45,7 @@ export default function CreateCampaignPage() {
     {
       step: 2,
       name: 'upload-banner',
-      component: () => <UploadImageTab goForward={goForward} />,
+      component: () => <UploadImageTab goForward={goForward} goBack={goBack} />,
     },
     {
       step: 3,
