@@ -101,7 +101,7 @@ function SignUp() {
                 placeholder="Phone Number"
                 value={phoneNumber.value}
                 onChange={(phone) => setPhoneNumber({ value: phone })}
-                inputClass="!w-full !h-11 "
+                inputClass="!w-full !h-11"
                 buttonClass=""
                 containerClass="input-field border-text/25 flex items-center !border bg-transparent px-0 py-0"
               />

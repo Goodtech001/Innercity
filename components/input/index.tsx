@@ -117,7 +117,7 @@ function TextArea({
   return (
     <>
       <textarea
-        className={`w-full resize-none rounded-md border border-dark/20 bg-transparent px-4 py-3 outline-none ring-primary/30 focus:ring-4 md:text-sm ${
+        className={`w-full resize-none rounded-md border border-dark/20 bg-transparent px-3 py-3 outline-none ring-primary/30 focus:ring-4 md:text-sm ${
           state.error ? 'border-red-600' : 'border-dark/20'
         } ${className}`}
         name={name}

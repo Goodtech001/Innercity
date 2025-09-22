@@ -13,10 +13,11 @@ export default function Tooltip({ content, children }: TTooltipProps) {
   const x = useMotionValue(0)
   const rotate = useSpring(useTransform(x, [-100, 100], [-45, 45]), springConfig)
   const translateX = useSpring(useTransform(x, [-100, 100], [-50, 50]), springConfig)
+
   return (
     <>
       <div
-        className="group relative border-2"
+        className="group relative"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
@@ -44,7 +45,7 @@ export default function Tooltip({ content, children }: TTooltipProps) {
             >
               <div className="absolute -bottom-px left-10 z-30 h-px w-[40%] bg-gradient-to-r from-transparent via-primary to-transparent" />
               {typeof content === 'string' ? (
-                <p className="text-wrap text-xs text-white md:text-sm">{content}</p>
+                <p className="text-wrap text-xs text-light md:text-sm">{content}</p>
               ) : (
                 content
               )}
