@@ -94,7 +94,7 @@ export function CampaignInformationTab({ goForward }: TabsProps) {
               type="amount"
               className="pl-8"
               required
-              placeholder="1,000"
+              placeholder="100"
             />
           </div>
         </div>
@@ -136,24 +136,22 @@ export function UploadImageTab({ goForward, goBack }: TabsProps) {
             <Icon icon={'si:info-duotone'} className="bg-transparent text-textcolor/75" />
           </Tooltip>
         </label>
-        {/* <p className="mb-1.5 text-sm font-light">
-          Upload an image for your campaign from your gallery try the following.
-        </p> */}
+
         <div className="mb-2.5 flex w-fit flex-wrap items-center gap-2 gap-y-3 text-sm font-semibold text-primary">
-          <Link
-            className="flex items-center justify-center gap-1.5 rounded-md p-1 hover:bg-primary/15"
-            href={'/resources'}
-          >
-            <Icon className="text-base" icon={'solar:gallery-wide-bold'} />{' '}
-            <p>Browse Our Resources</p>
-          </Link>
-          <div className="mx-2 hidden h-5 flex-1 border border-textcolor/75 md:block" />
           <Link
             className="flex items-center justify-center gap-1.5 rounded-md p-1 hover:bg-primary/15"
             href={'#create-avatar'}
           >
             <Icon className="text-base" icon={'carbon:user-avatar-filled-alt'} />{' '}
             <p>Create Custom Avatar</p>
+          </Link>
+          <div className="mx-2 hidden h-5 flex-1 border border-textcolor/75 md:block" />
+          <Link
+            className="flex items-center justify-center gap-1.5 rounded-md p-1 hover:bg-primary/15"
+            href={'/resources'}
+          >
+            <Icon className="text-base" icon={'solar:gallery-wide-bold'} />{' '}
+            <p>Browse Our Resources</p>
           </Link>
         </div>
         <FileUpload

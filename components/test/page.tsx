@@ -173,7 +173,6 @@
 
 // export default Mynotification
 
-
 'use client'
 
 import { Icon } from '@iconify/react/dist/iconify.js'
@@ -183,7 +182,8 @@ const initialNotifications = [
   {
     id: 'checkbox1',
     title: 'New supporter alert!',
-    description: 'James added your fundraiser “Clean Water for Lagos” to his favourites. This means more visibility for your cause...',
+    description:
+      'James added your fundraiser “Clean Water for Lagos” to his favourites. This means more visibility for your cause...',
     date: '4 April 2025',
     icon: 'material-symbols:star-outline',
     isRead: false,
@@ -191,7 +191,8 @@ const initialNotifications = [
   {
     id: 'checkbox2',
     title: 'New supporter alert!',
-    description: 'James added your fundraiser “Clean Water for Lagos” to his favourites. This means more visibility for your cause...',
+    description:
+      'James added your fundraiser “Clean Water for Lagos” to his favourites. This means more visibility for your cause...',
     date: '4 April 2025',
     icon: 'material-symbols:star-outline',
     isRead: true,
@@ -199,7 +200,8 @@ const initialNotifications = [
   {
     id: 'checkbox3',
     title: 'New supporter alert!',
-    description: 'James added your fundraiser “Clean Water for Lagos” to his favourites. This means more visibility for your cause...',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis dolores delectus aspernatur temporibus quos numquam ducimus doloribus obcaecati laudantium voluptas illum, consequuntur suscipit asperiores, totam sunt commodi molestias quasi itaque. James added your fundraiser “Clean Water for Lagos” to his favourites. This means more visibility for your cause...',
     date: '4 April 2025',
     icon: 'material-symbols:star-outline',
     isRead: false,
@@ -207,7 +209,8 @@ const initialNotifications = [
   {
     id: 'checkbox4',
     title: 'New supporter alert!',
-    description: 'James added your fundraiser “Clean Water for Lagos” to his favourites. This means more visibility for your cause...',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis dolores delectus aspernatur temporibus quos numquam ducimus doloribus obcaecati laudantium voluptas illum, consequuntur suscipit asperiores, totam sunt commodi molestias quasi itaque. James added your fundraiser “Clean Water for Lagos” to his favourites. This means more visibility for your cause...',
     date: '4 April 2025',
     icon: 'material-symbols:celebration',
     isRead: true,
@@ -216,15 +219,11 @@ const initialNotifications = [
 
 function Mynotification() {
   const [notifications, setNotifications] = useState(
-    initialNotifications.map((n) => ({ ...n, checked: false }))
+    initialNotifications.map((n) => ({ ...n, checked: false })),
   )
 
   const handleCheckboxChange = (id: string) => {
-    setNotifications((prev) =>
-      prev.map((n) =>
-        n.id === id ? { ...n, checked: !n.checked } : n
-      )
-    )
+    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, checked: !n.checked } : n)))
   }
 
   const isAnyChecked = notifications.some((n) => n.checked)
@@ -232,9 +231,7 @@ function Mynotification() {
 
   const handleSelectAll = () => {
     const newCheckedState = !areAllChecked
-    setNotifications((prev) =>
-      prev.map((n) => ({ ...n, checked: newCheckedState }))
-    )
+    setNotifications((prev) => prev.map((n) => ({ ...n, checked: newCheckedState })))
   }
 
   const handleDeleteSelected = () => {
@@ -285,24 +282,26 @@ function Mynotification() {
             n.checked ? 'border-blue-500' : 'border-color'
           } ${n.isRead ? 'bg-blue-100' : ''}`}
         >
-          <div className="flex items-center justify-center px-2 text-primary">
-            <Icon icon={n.icon} width="34" height="34" />
+          <div className="flex items-center justify-center border-r border-textcolor/75 px-1 text-primary md:px-2">
+            <Icon icon={n.icon} className="text-2xl md:text-3xl" />
           </div>
-          <div className="gap-3 space-x-3 border-l border-textcolor">
-            <div className="flex md:w-[140%] justify-between">
-              <p className="ml-3 font-semibold text-primary">{n.title}</p>
-              <Icon icon="ant-design:more-outlined" width="24" height="24" />
-            </div>
-            <p className="text-md ml-3 md:w-[510px]">{n.description}</p>
-            <span className="flex md:w-[137%] justify-between space-y-2 font-semibold text-primary ml-3">
-              <small>{n.date}</small>
-              <input
-                type="checkbox"
-                checked={n.checked}
-                onChange={() => handleCheckboxChange(n.id)}
-                className="rounded-sm border-2 border-primary"
-              />
-            </span>
+
+          <div className="flex w-full flex-col gap-1.5 px-3">
+            <h4 className="text-base font-semibold capitalize text-primary">{n.title}</h4>
+            <p className="ellipsis-2 text-sm !leading-tight">{n.description}</p>
+            <small className="font-semibold text-primary">{n.date}</small>
+          </div>
+
+          <div className="flex flex-col items-center justify-between">
+            <button className="btn p-0.5">
+              <Icon icon={'mingcute:more-2-line'} className="text-2xl" />
+            </button>
+            <input
+              type="checkbox"
+              checked={n.checked}
+              onChange={() => handleCheckboxChange(n.id)}
+              className="rounded-sm border-2 border-primary"
+            />
           </div>
         </div>
       ))}
