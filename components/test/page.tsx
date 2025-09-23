@@ -174,60 +174,28 @@
 // export default Mynotification
 
 'use client'
-
 import { Icon } from '@iconify/react/dist/iconify.js'
 import React, { useState } from 'react'
+import NotificationCard from '../notifications-card'
+import dummyNotifications from '@/json/dummy-notifications.json'
 
-const initialNotifications = [
-  {
-    id: 'checkbox1',
-    title: 'New supporter alert!',
-    description:
-      'James added your fundraiser “Clean Water for Lagos” to his favourites. This means more visibility for your cause...',
-    date: '4 April 2025',
-    icon: 'material-symbols:star-outline',
-    isRead: false,
-  },
-  {
-    id: 'checkbox2',
-    title: 'New supporter alert!',
-    description:
-      'James added your fundraiser “Clean Water for Lagos” to his favourites. This means more visibility for your cause...',
-    date: '4 April 2025',
-    icon: 'material-symbols:star-outline',
-    isRead: true,
-  },
-  {
-    id: 'checkbox3',
-    title: 'New supporter alert!',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis dolores delectus aspernatur temporibus quos numquam ducimus doloribus obcaecati laudantium voluptas illum, consequuntur suscipit asperiores, totam sunt commodi molestias quasi itaque. James added your fundraiser “Clean Water for Lagos” to his favourites. This means more visibility for your cause...',
-    date: '4 April 2025',
-    icon: 'material-symbols:star-outline',
-    isRead: false,
-  },
-  {
-    id: 'checkbox4',
-    title: 'New supporter alert!',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis dolores delectus aspernatur temporibus quos numquam ducimus doloribus obcaecati laudantium voluptas illum, consequuntur suscipit asperiores, totam sunt commodi molestias quasi itaque. James added your fundraiser “Clean Water for Lagos” to his favourites. This means more visibility for your cause...',
-    date: '4 April 2025',
-    icon: 'material-symbols:celebration',
-    isRead: true,
-  },
-]
-
-function Mynotification() {
-  const [notifications, setNotifications] = useState(
-    initialNotifications.map((n) => ({ ...n, checked: false })),
-  )
-
-  const handleCheckboxChange = (id: string) => {
-    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, checked: !n.checked } : n)))
-  }
+function Notifications() {
+  const [notifications, setNotifications] = useState(dummyNotifications)
 
   const isAnyChecked = notifications.some((n) => n.checked)
   const areAllChecked = notifications.every((n) => n.checked)
+
+  const handleCheckboxChange = (id: string) => {
+    console.log(id)
+    const newNotifications = notifications.map((notification) => {
+      if (String(notification.id) === String(id)) {
+        return { ...notification, checked: !notification.checked }
+      }
+      return notification
+    })
+
+    setNotifications(newNotifications)
+  }
 
   const handleSelectAll = () => {
     const newCheckedState = !areAllChecked
@@ -276,37 +244,10 @@ function Mynotification() {
 
       {/* Notifications */}
       {notifications.map((n) => (
-        <div
-          key={n.id}
-          className={`border-color flex rounded border-2 p-2 ${
-            n.checked ? 'border-blue-500' : 'border-color'
-          } ${n.isRead ? 'bg-blue-100' : ''}`}
-        >
-          <div className="flex items-center justify-center border-r border-textcolor/75 px-1 text-primary md:px-2">
-            <Icon icon={n.icon} className="text-2xl md:text-3xl" />
-          </div>
-
-          <div className="flex w-full flex-col gap-1.5 px-3">
-            <h4 className="text-base font-semibold capitalize text-primary">{n.title}</h4>
-            <p className="ellipsis-2 text-sm !leading-tight">{n.description}</p>
-            <small className="font-semibold text-primary">{n.date}</small>
-          </div>
-
-          <div className="flex flex-col items-center justify-between">
-            <button className="btn p-0.5">
-              <Icon icon={'mingcute:more-2-line'} className="text-2xl" />
-            </button>
-            <input
-              type="checkbox"
-              checked={n.checked}
-              onChange={() => handleCheckboxChange(n.id)}
-              className="rounded-sm border-2 border-primary"
-            />
-          </div>
-        </div>
+        <NotificationCard notification={n} key={n.id} handleCheckboxChange={handleCheckboxChange} />
       ))}
     </div>
   )
 }
 
-export default Mynotification
+export default Notification

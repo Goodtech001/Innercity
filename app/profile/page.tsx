@@ -1,216 +1,155 @@
-// 'use client'
-// import { Icon } from '@iconify/react/dist/iconify.js'
-// import React, { ReactNode, useState } from 'react'
-
-// // --- SidebarButton Component ---
-// type SidebarButtonProps = {
-//   icon: ReactNode
-//   label: string
-//   active: boolean
-//   onClick: () => void
-// }
-
-// const SidebarButton = ({ icon, label, active, onClick }: SidebarButtonProps) => (
-//   <button
-//     onClick={onClick}
-//     className={classNames(
-//       'flex items-center w-full py-3 px-4 rounded hover:bg-gray-700 transition mb-2',
-//       { 'bg-gray-700': active }
-//     )}
-//   >
-//     <span className="mr-3">{icon}</span>
-//     <span>{label}</span>
-//   </button>
-// )
-
-// const ProfilePage = () => {
-//   const [activeTab, setActiveTab] = useState('profile')
-
-//   const renderContent = () => {
-//     switch (activeTab) {
-//       case 'profile':
-//         return <div>Your Profile Info Here</div>
-//       case 'settings':
-//         return <div>Your Settings Info Here</div>
-//       case 'notifications':
-//         return <div>Your Notifications Here</div>
-//       default:
-//         return <div>Select an option from the sidebar</div>
-//     }
-//   }
-
-//   return (
-//     <div className="flex h-screen">
-//       {/* Sidebar */}
-//       <div className="w-1/3 max-w-xs bg-gray-800 text-white p-6">
-//         <h2 className="text-xl font-bold mb-6">My Profile</h2>
-
-//         <SidebarButton
-//           icon={<Icon icon="mdi:user" width="24" height="24" />}
-//           label="Profile"
-//           active={activeTab === 'profile'}
-//           onClick={() => setActiveTab('profile')}
-//         />
-
-//         <SidebarButton
-//           icon={<Icon icon="mynaui:cog-solid" width="24" height="24" />}
-//           label="Settings"
-//           active={activeTab === 'settings'}
-//           onClick={() => setActiveTab('settings')}
-//         />
-
-//         <SidebarButton
-//           icon={<Icon icon="mdi:bell-outline" width="24" height="24" />}
-//           label="Notifications"
-//           active={activeTab === 'notifications'}
-//           onClick={() => setActiveTab('notifications')}
-//         />
-//       </div>
-
-//       {/* Content Area */}
-//       <div className="w-2/3 p-10 overflow-y-auto">
-//         <h1 className="text-2xl font-bold mb-4">{activeTab.toUpperCase()}</h1>
-//         {renderContent()}
-//       </div>
-//     </div>
-//   )
-// }
-
-// // type SidebarButtonProps = {
-// //   icon: ReactNode
-// //   label: string
-// //   active: boolean
-// //   onClick: () => void
-// // }
-
-// // Reusable button component
-// // const SidebarButton = ({ icon, label, active, onClick }) => (
-// //   <button
-// //     onClick={onClick}
-// //     className={classNames(
-// //       'flex items-center w-full py-3 px-4 rounded hover:bg-gray-700 transition mb-2',
-// //       { 'bg-gray-700': active }
-// //     )}
-// //   >
-// //     <span className="mr-3">{icon}</span>
-// //     <span>{label}</span>
-// //   </button>
-// // )
-
-// export default ProfilePage
-// function classNames(_arg0: string, _arg1: { 'bg-gray-700': unknown }): string | undefined {
-//     throw new Error('Function not implemented.')
-// }
-
-// export default page
-
 'use client'
 import DpUploader from '@/components/dp-uploader'
 import Editpage from '@/components/edit-profile'
 import ImageUploader from '@/components/image-uploader'
-import Mynotification from '@/components/test/page'
-import { Icon } from '@iconify/react/dist/iconify.js'
-import { useState } from 'react'
+import {
+  CampaignInformationTab,
+  PreviewCampaignTab,
+  UploadImageTab,
+} from '@/layouts/create-campaign-tabs'
+import Footer from '@/layouts/footer'
+import Notifications from '@/layouts/profile-tabs/notification'
+import TopNavbar from '@/layouts/topnavbar'
+import { Icon } from '@iconify/react'
+import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
 
-const ProfileSection = () => {
-  const [activeTab, setActiveTab] = useState('profile')
+export default function ProfilePage() {
+  const router = useRouter()
+  const urlQueryTab = new URLSearchParams(window.location.search).get('tab')
+  const [activeStep, setActiveStep] = useState(1)
+  const [tabs] = useState([
+    {
+      id: 1,
+      title: 'Profile',
+      shortTitle: 'Profile',
+      description: 'View & edit basic details about yourself',
+      icon: 'iconamoon:profile-fill',
+    },
+    {
+      id: 2,
+      title: 'My Campaigns',
+      shortTitle: 'My Campaigns',
+      description: 'Manage your campaigns here',
+      icon: 'ri:funds-fill',
+    },
+    {
+      id: 3,
+      title: 'Notifications',
+      shortTitle: 'Notifications',
+      description: 'See updates you should be aware of',
+      icon: 'bxs:notification',
+    },
+    {
+      id: 4,
+      title: 'Chat',
+      shortTitle: 'Chat',
+      description: 'Chat with the ICM support team',
+      icon: 'material-symbols:chat',
+    },
+  ])
 
-  // Dynamic background colors based on tab
+  const stepsTab = [
+    {
+      step: 1,
+      name: '/',
+      component: () => (
+        <div>
+          <ImageUploader />
+          <DpUploader />
+          <Editpage />
+        </div>
+      ),
+    },
+    {
+      step: 2,
+      name: 'campaigns',
+      component: () => <PreviewCampaignTab goForward={goForward} />,
+    },
+    {
+      step: 3,
+      name: 'notifications',
+      component: () => <Notifications />,
+    },
+    {
+      step: 4,
+      name: 'chat',
+      component: () => <PreviewCampaignTab goForward={goForward} />,
+    },
+  ]
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'profile':
-        return (
-          <div>
-            <ImageUploader />
-            <DpUploader />
-            <Editpage />
-          </div>
-        )
-      case 'settings':
-        return <div>Settings content</div>
-      case 'notifications':
-        return (
-          <div>
-            <Mynotification />
-          </div>
-        )
-      case 'chat':
-        return <div>Chat with Us.</div>
-      default:
-        return <div>Select a tab</div>
-    }
+  const CurrentComponent = stepsTab.find((step) => step.step === activeStep)?.component
+
+  function goForward() {
+    setActiveStep((prev) => Math.min(prev + 1, stepsTab.length))
   }
 
+  function goBack() {
+    if (activeStep === 1) {
+      router.back()
+    }
+    setActiveStep((prev) => Math.max(prev - 1, 1))
+  }
+
+  useEffect(() => {
+    if (urlQueryTab) {
+      const tabIndex = stepsTab.findIndex(
+        (tab) => tab.name.toLowerCase() === urlQueryTab.toLowerCase(),
+      )
+      console.log(tabIndex)
+
+      // setActiveStep(tabs[tabIndex].id)
+    } else {
+      // setActiveStep(1)
+    }
+  }, [stepsTab, tabs, urlQueryTab])
+
   return (
-    <div className="${bgColorMap[activeTab]} top h-screen gap-6 p-2 transition-colors duration-500 md:flex flex-row-reverse">
-      {/* Content Area */}
-    
+    <>
+      <TopNavbar />
+      <div className="container h-fit">
+        <div className="mb-3 flex items-center justify-between border-b py-1.5 pt-6">
+          <h3 className="text-balance text-3xl font-bold text-dark md:text-4xl">
+            {tabs[activeStep - 1].title}
+          </h3>
 
-      {/* Sidebar */}
-      <div className="flex rounded border border-gray-100 bg-white py-2 md:block md:w-1/3 md:mb-0 mb-3">
-        {/* <div className="md:w-1/3 overflow-y-hidden bg-white md:p-4 border-gray-100 border rounded side"> */}
+          <button
+            onClick={goBack}
+            className="btn hidden w-fit border border-error bg-fade-error px-6 text-sm text-error md:inline"
+          >
+            Go back
+          </button>
+        </div>
 
-        {/* <h2 className="mb-6 text-xl font-bold">My Profile</h2> */}
-
-        <SidebarButton
-          label="Profile"
-          note="View & edit basic details about yourself"
-          icon={<Icon icon="mdi:user" width="24" height="24" className="icon" />}
-          onClick={() => setActiveTab('profile')}
-          active={activeTab === 'profile'}
-        />
-        <SidebarButton
-          label="Campaigns"
-          note="Manage your campaigns here"
-          icon={<Icon icon="ri:funds-fill" width="24" height="24" className="icon" />}
-          onClick={() => setActiveTab('settings')}
-          active={activeTab === 'settings'}
-        />
-        <SidebarButton
-          label="Notifications"
-          note="See updates you should be aware of"
-          icon={<Icon icon="bxs:notification" width="24" height="24" className="icon" />}
-          onClick={() => setActiveTab('notifications')}
-          active={activeTab === 'notifications'}
-        />
-        <SidebarButton
-          label="Chat"
-          note="Chat with the ICM support team"
-          icon={<Icon icon="material-symbols:chat" width="24" height="24" className="icon" />}
-          onClick={() => setActiveTab('chat')}
-          active={activeTab === 'chat'}
-        />
+        <div className="mb-6 flex flex-col-reverse gap-4 md:grid md:grid-cols-12">
+          <div className="rounded-xl border p-1 md:col-span-7 md:p-2 lg:col-span-8">
+            {CurrentComponent && <CurrentComponent />}
+          </div>
+          <div className="grid h-full grid-cols-3 gap-3 rounded-xl border p-1 md:col-span-5 md:flex md:flex-col md:p-2 lg:col-span-4">
+            {tabs.map((tab) => (
+              <div
+                key={tab.id}
+                onClick={() => setActiveStep(tab.id)}
+                className="flex max-w-xs cursor-pointer flex-col items-center gap-2 gap-y-5 rounded-lg p-1 hover:bg-primary/5 md:max-w-none md:flex-row md:p-2"
+              >
+                <button
+                  className={`rounded-md border border-primary p-1.5 text-lg md:p-2 md:text-2xl ${activeStep === tab.id ? 'bg-primary text-light' : 'bg-complementary text-primary'}`}
+                >
+                  <Icon icon={tab.icon} />
+                </button>
+                <div className="text-sm">
+                  <h4 className="text-center text-xs font-semibold text-dark md:text-left md:text-sm">
+                    <span className="hidden md:inline">{tab.title}</span>
+                    <span className="inline md:hidden">{tab.shortTitle}</span>
+                  </h4>
+                  <p className="hidden md:inline">{tab.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-
-        <div className="h-full overflow-y-auto rounded border border-gray-100 p-2 md:w-2/3 ">
-        {renderContent()}
-      </div>
-    </div>
+      <Footer />
+    </>
   )
 }
-
-type SidebarButtonProps = {
-  icon: React.ReactNode
-  label: string
-  note: string
-  onClick: () => void
-  active?: boolean
-}
-
-const SidebarButton = ({ icon, label, onClick, active, note }: SidebarButtonProps) => (
-  <button
-    onClick={onClick}
-    className={`mb-2 flex w-full flex-col rounded transition md:flex-row md:px-4 md:py-3 md:hover:bg-gray-200`}
-  >
-    <div className="flex items-center justify-center md:ml-0 ml-3">
-      <span className={`btn-white mr-4 w-fit p-2 ${active ? 'btn-primary' : ''}`}>{icon}</span>
-    </div>
-    <div className="text-center text-sm md:text-left">
-      <div className="mt-3 text-xs font-semibold text-black md:mt-0 md:text-base">{label}</div>
-      <div className="hidden text-xs md:block">{note}</div>
-    </div>
-  </button>
-)
-
-export default ProfileSection

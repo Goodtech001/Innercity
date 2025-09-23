@@ -1,6 +1,5 @@
 import Footer from '@/layouts/footer'
 import TopNavbar from '@/layouts/topnavbar'
-import Link from 'next/link'
 import React from 'react'
 import ProfileSection from '../profile/page'
 
@@ -9,9 +8,8 @@ function page() {
     <div>
       <TopNavbar />
       <div className="p-5">
-        <div className="flex justify-between border-b border-color">
-          <h1 className="text-3xl font-bold text-black mb-3">Profile</h1>
-          
+        <div className="border-color flex justify-between border-b">
+          <h1 className="mb-3 text-3xl font-bold text-black">Profile</h1>
         </div>
       </div>
       <ProfileSection />

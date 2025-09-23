@@ -7,22 +7,22 @@ import Link from 'next/link'
 const userProfileList: TUserProfile[] = [
   {
     label: 'Profile',
-    link: '/profile-page',
+    link: '/profile',
     icon: <Icon icon={'solar:user-bold'} className="h-6 w-6 text-2xl" />,
   },
   {
-    label: 'Notification',
-    link: '/notifications',
-    icon: <Icon icon={'bxs:notification'} className="h-6 w-6 text-2xl" />,
-  },
-  {
     label: 'My Campaigns',
-    link: '/my-campaigns',
+    link: '/profile?tab=campaigns',
     icon: <Icon icon={'ri:funds-fill'} className="h-6 w-6 text-2xl" />,
   },
   {
-    label: 'Inbox',
-    link: '/inbox',
+    label: 'Notification',
+    link: '/profile?tab=notifications',
+    icon: <Icon icon={'bxs:notification'} className="h-6 w-6 text-2xl" />,
+  },
+  {
+    label: 'Chat',
+    link: '/profile?tab=chat',
     icon: <Icon icon={'material-symbols-light:chat'} className="h-6 w-6 text-2xl" />,
   },
 ]
