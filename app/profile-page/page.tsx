@@ -8,7 +8,7 @@ function page() {
   return (
     <div>
       <TopNavbar />
-      <div className="p-5">
+      <div className="wrapper lg:container py-5">
         <div className="flex justify-between border-b border-color">
           <h1 className="text-3xl font-bold text-black mb-3">Profile</h1>
           

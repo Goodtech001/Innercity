@@ -143,7 +143,7 @@ const ProfileSection = () => {
   }
 
   return (
-    <div className="${bgColorMap[activeTab]} top h-screen gap-6 p-2 transition-colors duration-500 md:flex flex-row-reverse">
+    <div className="${bgColorMap[activeTab]} top h-screen gap-6 wrapper lg:container py-5 transition-colors duration-500 md:flex flex-row-reverse">
       {/* Content Area */}
     
 
