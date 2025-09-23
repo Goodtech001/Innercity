@@ -2,11 +2,7 @@
 import DpUploader from '@/components/dp-uploader'
 import Editpage from '@/components/edit-profile'
 import ImageUploader from '@/components/image-uploader'
-import {
-  CampaignInformationTab,
-  PreviewCampaignTab,
-  UploadImageTab,
-} from '@/layouts/create-campaign-tabs'
+import { PreviewCampaignTab } from '@/layouts/create-campaign-tabs'
 import Footer from '@/layouts/footer'
 import Notifications from '@/layouts/profile-tabs/notification'
 import TopNavbar from '@/layouts/topnavbar'
@@ -22,28 +18,28 @@ export default function ProfilePage() {
     {
       id: 1,
       title: 'Profile',
-      shortTitle: 'Profile',
+      slug: 'profile',
       description: 'View & edit basic details about yourself',
       icon: 'iconamoon:profile-fill',
     },
     {
       id: 2,
-      title: 'My Campaigns',
-      shortTitle: 'My Campaigns',
+      title: 'Campaigns',
+      slug: 'campaigns',
       description: 'Manage your campaigns here',
       icon: 'ri:funds-fill',
     },
     {
       id: 3,
       title: 'Notifications',
-      shortTitle: 'Notifications',
+      slug: 'notifications',
       description: 'See updates you should be aware of',
       icon: 'bxs:notification',
     },
     {
       id: 4,
       title: 'Chat',
-      shortTitle: 'Chat',
+      slug: 'chat',
       description: 'Chat with the ICM support team',
       icon: 'material-symbols:chat',
     },
@@ -74,7 +70,7 @@ export default function ProfilePage() {
     {
       step: 4,
       name: 'chat',
-      component: () => <PreviewCampaignTab goForward={goForward} />,
+      component: () => <>CHAT SUPPORT</>,
     },
   ]
 
@@ -93,16 +89,15 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (urlQueryTab) {
-      const tabIndex = stepsTab.findIndex(
-        (tab) => tab.name.toLowerCase() === urlQueryTab.toLowerCase(),
-      )
+      const tabIndex = tabs.findIndex((tab) => tab.slug.toLowerCase() === urlQueryTab.toLowerCase())
       console.log(tabIndex)
-
-      // setActiveStep(tabs[tabIndex].id)
-    } else {
-      // setActiveStep(1)
+      setActiveStep(tabs[tabIndex].id)
+      // remove tab from the query param
+      const newUrl = new URL(window.location.href)
+      newUrl.searchParams.delete('tab')
+      window.history.replaceState({}, '', newUrl.toString())
     }
-  }, [stepsTab, tabs, urlQueryTab])
+  }, [tabs, urlQueryTab])
 
   return (
     <>
@@ -125,7 +120,7 @@ export default function ProfilePage() {
           <div className="rounded-xl border p-1 md:col-span-7 md:p-2 lg:col-span-8">
             {CurrentComponent && <CurrentComponent />}
           </div>
-          <div className="grid h-full grid-cols-3 gap-3 rounded-xl border p-1 md:col-span-5 md:flex md:flex-col md:p-2 lg:col-span-4">
+          <div className="grid h-full grid-cols-4 gap-2 rounded-xl border p-1 md:col-span-5 md:flex md:flex-col md:gap-3 md:p-2 lg:col-span-4">
             {tabs.map((tab) => (
               <div
                 key={tab.id}
@@ -139,8 +134,7 @@ export default function ProfilePage() {
                 </button>
                 <div className="text-sm">
                   <h4 className="text-center text-xs font-semibold text-dark md:text-left md:text-sm">
-                    <span className="hidden md:inline">{tab.title}</span>
-                    <span className="inline md:hidden">{tab.shortTitle}</span>
+                    <span className="inline">{tab.title}</span>
                   </h4>
                   <p className="hidden md:inline">{tab.description}</p>
                 </div>

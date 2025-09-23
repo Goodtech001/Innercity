@@ -7,7 +7,7 @@ import Link from 'next/link'
 const userProfileList: TUserProfile[] = [
   {
     label: 'Profile',
-    link: '/profile',
+    link: '/profile?tab=profile',
     icon: <Icon icon={'solar:user-bold'} className="h-6 w-6 text-2xl" />,
   },
   {
