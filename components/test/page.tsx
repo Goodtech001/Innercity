@@ -51,7 +51,7 @@ function Mynotification() {
           <Icon icon="material-symbols:star-outline" width="34" height="34" />
         </div>
         <div className="gap-3 space-x-3 border-l border-textcolor">
-          <div className="flex w-[158%] justify-between">
+          <div className="flex md:w-[158%] justify-between">
             <p className="ml-3 font-semibold text-primary">New supporter alert!</p>
             <Icon icon="ant-design:more-outlined" width="24" height="24" className="" />
           </div>
@@ -59,7 +59,7 @@ function Mynotification() {
             James added your fundraiser “Clean Water for Lagos” to his favourites. <br />
             This means more visibility for your cause...
           </p>
-          <span className="flex w-[155%] justify-between space-y-2 font-semibold text-primary">
+          <span className="flex md:w-[155%] justify-between space-y-2 font-semibold text-primary">
             <small>4 April 2025</small>
             <input
               type="checkbox"
@@ -83,7 +83,7 @@ function Mynotification() {
           <Icon icon="material-symbols:star-outline" width="34" height="34" />
         </div>
         <div className="gap-3 space-x-3 border-l border-textcolor">
-          <div className="flex w-[158%] justify-between">
+          <div className="flex md:w-[158%] justify-between">
             <p className="ml-3 font-semibold text-primary">New supporter alert!</p>
             <Icon icon="ant-design:more-outlined" width="24" height="24" className="" />
           </div>
@@ -91,7 +91,7 @@ function Mynotification() {
             James added your fundraiser “Clean Water for Lagos” to his favourites. <br />
             This means more visibility for your cause...
           </p>
-          <span className="flex w-[155%] justify-between space-y-2 font-semibold text-primary">
+          <span className="flex md:w-[155%] justify-between space-y-2 font-semibold text-primary">
             <small>4 April 2025</small>
             <input
               type="checkbox"
@@ -115,7 +115,7 @@ function Mynotification() {
           <Icon icon="material-symbols:star-outline" width="34" height="34" />
         </div>
         <div className="gap-3 space-x-3 border-l border-textcolor">
-          <div className="flex w-[158%] justify-between">
+          <div className="flex md:w-[158%] justify-between">
             <p className="ml-3 font-semibold text-primary">New supporter alert!</p>
             <Icon icon="ant-design:more-outlined" width="24" height="24" className="" />
           </div>
@@ -123,7 +123,7 @@ function Mynotification() {
             James added your fundraiser “Clean Water for Lagos” to his favourites. <br />
             This means more visibility for your cause...
           </p>
-          <span className="flex w-[155%] justify-between space-y-2 font-semibold text-primary">
+          <span className="flex md:w-[155%] justify-between space-y-2 font-semibold text-primary">
             <small>4 April 2025</small>
             <input
               type="checkbox"
@@ -147,7 +147,7 @@ function Mynotification() {
           <Icon icon="material-symbols:celebration" width="34" height="34" />
         </div>
         <div className="gap-3 space-x-3 border-l border-textcolor">
-          <div className="flex w-[158%] justify-between">
+          <div className="flex md:w-[158%] justify-between">
             <p className="ml-3 font-semibold text-primary">New supporter alert!</p>
             <Icon icon="ant-design:more-outlined" width="24" height="24" className="" />
           </div>
@@ -155,7 +155,7 @@ function Mynotification() {
             James added your fundraiser “Clean Water for Lagos” to his favourites. <br />
             This means more visibility for your cause...
           </p>
-          <span className="flex w-[155%] justify-between space-y-2 font-semibold text-primary">
+          <span className="flex md:w-[155%] justify-between space-y-2 font-semibold text-primary">
             <small>4 April 2025</small>
             <input
               type="checkbox"

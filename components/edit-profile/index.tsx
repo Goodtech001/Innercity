@@ -22,12 +22,18 @@ function Editpage() {
         console.log('Updated data:', formData);
         setShowEditModal(false); // close modal
       };
+      
+      const ProfileName = 'Goodnews'
+      const ProfileUsername = 'goodnews_'
+      const ProfileEmail = 'youremail.com'
+      const ProfilePhone = '1234 567 8910'
+      const ProfileLocation = 'Lagos, Nigeria'
 
   return (
     <div className='mt-5'>
        <button
               onClick={() => setShowEditModal(true)}
-              className="flex gap-1 rounded border border-primary bg-gray-200 px-4 py-1 transition hover:bg-gray-300 ml-auto"
+              className="flex gap-1 rounded border border-primary bg-gray-100 px-4 py-1 transition hover:bg-gray-300 ml-auto"
               title="Change Image"
             >
               <Icon icon="basil:edit-solid" width="24" height="24" className='text-primary'/>
@@ -110,17 +116,17 @@ function Editpage() {
               <div className='space-y-1'>
                 <div>
                     <label htmlFor="text"> Full Name</label>
-                <p className='text-black font-medium line-clamp-2 md:line-clamp-0'>{formData.fullName}</p>
+                <p className='text-black font-medium line-clamp-2 md:line-clamp-0'>{formData.fullName || ProfileName}</p>
                 </div>
 
                 <div>
                     <label htmlFor="text">Username</label>
-                <p className='text-black font-medium'>@ {formData.username}</p>
+                <p className='text-black font-medium'>@ {formData.username || ProfileUsername}</p>
                 </div>
 
                  <div>
                 <label htmlFor="text">Loction</label>
-                <p className='text-black font-medium'>{formData.location}</p>
+                <p className='text-black font-medium'>{formData.location || ProfileLocation}</p>
                 </div>
 
                 <div>
@@ -132,11 +138,11 @@ function Editpage() {
               <div className='mx-auto'>
                 <div>
                 <label htmlFor="text">Email</label>
-                <p className='text-black font-medium truncate'>{formData.email}</p>
+                <p className='text-black font-medium truncate'>{formData.email || ProfileEmail}</p>
                 </div>
 
                 <label htmlFor="text">Phone</label>
-                <p className='text-black font-medium'>+234 {formData.phone}</p>
+                <p className='text-black font-medium'>+234 {formData.phone || ProfilePhone}</p>
 
                 <label htmlFor="text">Joined</label>
                 <p className='text-black font-medium'>15 Apr 2025</p>

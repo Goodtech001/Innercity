@@ -44,11 +44,11 @@ function DpUploader() {
       {/* Camera Icon (clickable) */}
       <button
         onClick={triggerFileInput}
-        className="flex gap-1 rounded border border-primary bg-gray-200 px-4 py-1 transition hover:bg-gray-300"
+        className="flex gap-1 rounded border border-primary bg-gray-100 px-4 py-1 transition hover:bg-gray-300"
         title="Change Image"
       >
         <Icon icon="fluent:camera-edit-20-filled" width="20" height="20" className="text-primary" />
-        <div className="text-sm font-medium text-primary">DP</div>
+        <div className="text-sm font-medium text-primary ">DP</div>
       </button>
 
       {/* Hidden file input */}
