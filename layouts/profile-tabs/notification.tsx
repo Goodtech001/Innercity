@@ -1,5 +1,5 @@
 'use client'
-import { Icon } from '@iconify/react/dist/iconify.js'
+import { Icon } from '@iconify/react'
 import React, { useState } from 'react'
 import dummyNotifications from '@/json/dummy-notifications.json'
 import NotificationCard from '@/components/notifications-card'

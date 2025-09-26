@@ -1,5 +1,5 @@
 'use client'
-import { Icon } from '@iconify/react/dist/iconify.js'
+import { Icon } from '@iconify/react'
 import { useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
 import PercentageBar from '@/components/percentage-bar'

@@ -1,5 +1,5 @@
 'use client'
-import { Icon } from '@iconify/react/dist/iconify.js'
+import { Icon } from '@iconify/react'
 import Image from 'next/image'
 import { useRef, useState } from 'react'
 // import ima from "@/public/assets/images/education-class.jpg";
@@ -23,22 +23,22 @@ function DpUploader() {
   }
 
   return (
-    <div className="flex w-full items-center justify-between rounded-md p-2  border-b">
+    <div className="flex w-full items-center justify-between rounded-md border-b p-2">
       {/* Image box (small thumbnail) */}
-      <div className='flex md:gap-5 gap-2'>
+      <div className="flex gap-2 md:gap-5">
         <div className="border-color relative h-[50px] w-[50px] overflow-hidden rounded-full border">
-        <Image
-          src={image || placeholderImage}
-          alt="Thumbnail"
-          width={50}
-          height={50}
-          className="h-full w-full object-cover"
-        />
-      </div>
-      <div>
-        <h1 className='text-black font-medium md:text-lg text-xs'>Brother Elumelu Paul</h1>
-        <p>Lagos,Nigeria</p>
-      </div>
+          <Image
+            src={image || placeholderImage}
+            alt="Thumbnail"
+            width={50}
+            height={50}
+            className="h-full w-full object-cover"
+          />
+        </div>
+        <div>
+          <h1 className="text-xs font-medium text-black md:text-lg">Brother Elumelu Paul</h1>
+          <p>Lagos,Nigeria</p>
+        </div>
       </div>
 
       {/* Camera Icon (clickable) */}
@@ -48,7 +48,7 @@ function DpUploader() {
         title="Change Image"
       >
         <Icon icon="fluent:camera-edit-20-filled" width="20" height="20" className="text-primary" />
-        <div className="text-sm font-medium text-primary ">DP</div>
+        <div className="text-sm font-medium text-primary">DP</div>
       </button>
 
       {/* Hidden file input */}

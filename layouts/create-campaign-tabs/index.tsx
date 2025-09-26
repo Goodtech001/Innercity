@@ -184,6 +184,8 @@ export function UploadImageTab({ goForward, goBack }: TabsProps) {
 }
 
 export function PreviewCampaignTab({ goForward }: TabsProps) {
+  console.log(goForward)
+
   return (
     <div>
       <div className="mb-3 aspect-2 w-full overflow-hidden rounded-lg">
@@ -205,8 +207,8 @@ export function PreviewCampaignTab({ goForward }: TabsProps) {
         </Link>{' '}
         Created this fundraising campaign
       </p>
-      <div className="mt-3 grid gap-8 rounded-lg bg-complementary px-3 py-2 md:grid-cols-10">
-        <div className="col-span-5 flex flex-col justify-between gap-4">
+      <div className="mt-3 grid gap-8 rounded-lg bg-complementary px-3 py-2 text-sm md:grid-cols-10">
+        <div className="col-span-6 flex flex-col justify-between gap-4">
           <div className="flex items-center gap-2 font-semibold">
             <p>$58,046 Raised</p>
             <p>•</p>
@@ -220,15 +222,61 @@ export function PreviewCampaignTab({ goForward }: TabsProps) {
             <p className="font-normal">100k+ Donors</p>
           </div>
         </div>
-        <div className="col-span-5 flex h-full flex-col">
-          <p className="mb-1 text-sm font-semibold text-primary">20%</p>
-          <PercentageBar value={20} className="h-4" />
-          <div className="mt-1 flex items-center justify-between">
-            <small>0%</small>
-            <small>100%</small>
+        <div className="col-span-4 flex h-full flex-col">
+          {/* PROGRESS BAR CIRCLE  */}
+          <div className="">
+            <CircleProgress />
+            <div className="relative aspect-1 max-w-24 rounded-full bg-primary p-4"></div>
+          </div>
+
+          {/* PROGRESS BAR TUBE  */}
+          <div className="">
+            <p className="mb-1 text-sm font-semibold text-primary">20%</p>
+            <PercentageBar value={20} className="h-4" />
+            <div className="mt-1 flex items-center justify-between">
+              <small>0%</small>
+              <small>100%</small>
+            </div>
           </div>
         </div>
       </div>
     </div>
+  )
+}
+
+function CircleProgress({ size = 90, stroke = 15, progress = 40 }) {
+  const radius = (size - stroke) / 2
+  const circumference = 2 * Math.PI * radius
+  const offset = circumference - (progress / 100) * circumference
+
+  console.log('RADIUS', radius)
+  console.log('CIRCUMFERENCE', circumference)
+  console.log('OFFSET', offset)
+
+  return (
+    <svg width={size} height={size}>
+      <circle
+        stroke="#d9d9d9"
+        fill="transparent"
+        strokeWidth={stroke}
+        r={radius}
+        cx={size / 2}
+        cy={size / 2}
+      />
+      <circle
+        stroke="tomato"
+        fill="transparent"
+        strokeWidth={stroke}
+        strokeDasharray={circumference}
+        strokeDashoffset={offset}
+        strokeLinecap="butt"
+        r={radius}
+        cx={size / 2}
+        cy={size / 2}
+      />
+      <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fontSize="15">
+        {progress}%
+      </text>
+    </svg>
   )
 }

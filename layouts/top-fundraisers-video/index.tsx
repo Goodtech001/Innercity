@@ -13,7 +13,7 @@ import amaechi from '@/public/assets/images/P-Amaechi.jpg'
 import hungry from '@/public/assets/images/hungry.jpg'
 import chuka2 from '@/public/assets/images/chuka2.jpg'
 
-import { Icon } from '@iconify/react/dist/iconify.js'
+import { Icon } from '@iconify/react'
 
 export default function TopFundraisersVideo() {
   const [isMobile, setIsMobile] = useState(false)

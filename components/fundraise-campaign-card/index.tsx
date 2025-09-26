@@ -3,15 +3,14 @@ import Link from 'next/link'
 import Image from 'next/image'
 import fundraiseCampaignImage from '@/public/assets/images/campaign-flyer.jpg'
 import PercentageBar from '@/components/percentage-bar'
-import { Icon } from '@iconify/react/dist/iconify.js'
-import {Campaign} from "@/types/Campaign"
+import { Icon } from '@iconify/react'
+import { Campaign } from '@/types/Campaign'
 
 interface Props {
   campaign: Campaign
 }
 
 export default function FundraiseCampaignCard({ campaign }: Readonly<Props>) {
-  
   return (
     <div className="flex w-full flex-row gap-4 rounded-md p-1.5 shadow-[0px_0px_6px_1px_rgba(0,_0,_0,_0.1)] hover:scale-[1.01] md:max-w-96 md:flex-col md:p-2">
       <div className="relative w-[40%] md:h-52 md:w-auto">
@@ -25,7 +24,7 @@ export default function FundraiseCampaignCard({ campaign }: Readonly<Props>) {
           src={fundraiseCampaignImage}
         />
       </div>
-      <div className="flex flex-col gap-2 w-[60%] md:w-auto">
+      <div className="flex w-[60%] flex-col gap-2 md:w-auto">
         <Link
           href={'/'}
           title="Join Me To Impact 200 Lives Through Education All Around Lagos For The Next 3 Years"

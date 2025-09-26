@@ -1,4 +1,4 @@
-import { Icon } from '@iconify/react/dist/iconify.js'
+import { Icon } from '@iconify/react'
 import Image from 'next/image'
 import React from 'react'
 import arrow from '@/public/assets/images/arrow-to-bl.png'
