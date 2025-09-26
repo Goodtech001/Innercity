@@ -6,9 +6,12 @@ import Tooltip from '@/components/ui/tooltip'
 import { Icon } from '@iconify/react'
 import React, { useState } from 'react'
 import dummyCategrories from '@/json/dummy-category.json'
+import fundraiseBannerExample from '@/public/assets/images/fundraise-banner-example.jpg'
 import { createSelectOptions } from '@/components/select/useSelect'
 import FileUpload from '@/components/file-upload'
 import Link from 'next/link'
+import Image from 'next/image'
+import PercentageBar from '@/components/percentage-bar'
 
 type TabsProps = {
   goForward: () => void
@@ -181,5 +184,51 @@ export function UploadImageTab({ goForward, goBack }: TabsProps) {
 }
 
 export function PreviewCampaignTab({ goForward }: TabsProps) {
-  return <div>PreviewCampaignTab</div>
+  return (
+    <div>
+      <div className="mb-3 aspect-2 w-full overflow-hidden rounded-lg">
+        <Image
+          src={fundraiseBannerExample}
+          height={163}
+          width={321}
+          className="h-full w-full object-cover object-top"
+          alt="fundraise-banner-example.jpg"
+        />
+      </div>
+      <h3 className="text-balance text-2xl font-bold text-dark md:text-3xl">
+        JOIN GOV. OSAZE TO PUT SMILES ON THE FACES OF 1000 KIDS FOR HIS BIRTHDAY
+      </h3>
+      <hr className="my-3 border border-textcolor/75" />
+      <p className="font-medium text-dark">
+        <Link className="text-primary" href={'#'}>
+          Big Minister Testimony
+        </Link>{' '}
+        Created this fundraising campaign
+      </p>
+      <div className="mt-3 grid gap-8 rounded-lg bg-complementary px-3 py-2 md:grid-cols-10">
+        <div className="col-span-5 flex flex-col justify-between gap-4">
+          <div className="flex items-center gap-2 font-semibold">
+            <p>$58,046 Raised</p>
+            <p>•</p>
+            <p className="font-normal">End Date: 22nd Sept 2026</p>
+          </div>
+          <div className="flex items-center gap-2 font-semibold">
+            <p>
+              $Goal: <span className="text-primary">$58,046</span>
+            </p>
+            <p>•</p>
+            <p className="font-normal">100k+ Donors</p>
+          </div>
+        </div>
+        <div className="col-span-5 flex h-full flex-col">
+          <p className="mb-1 text-sm font-semibold text-primary">20%</p>
+          <PercentageBar value={20} className="h-4" />
+          <div className="mt-1 flex items-center justify-between">
+            <small>0%</small>
+            <small>100%</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }

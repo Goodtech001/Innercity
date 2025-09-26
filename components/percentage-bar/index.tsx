@@ -5,6 +5,7 @@ type PercentageBarProps = {
   value: number // 0 to 100
   filledColor?: string
   backgroundColor?: string
+  className?: string
   onChange?: (value: number) => void // callback when user clicks/drags
 }
 
@@ -12,6 +13,7 @@ const PercentageBar: React.FC<PercentageBarProps> = ({
   value,
   filledColor = '#0074E6',
   backgroundColor = '#D9D9D9',
+  className,
   onChange,
 }) => {
   const barRef = useRef<HTMLDivElement>(null)
@@ -59,7 +61,7 @@ const PercentageBar: React.FC<PercentageBarProps> = ({
   return (
     <div
       ref={barRef}
-      className="h-2 w-full cursor-pointer overflow-hidden rounded-lg"
+      className={`${className} h-2 w-full cursor-pointer overflow-hidden rounded-lg`}
       style={{ backgroundColor }}
       onMouseDown={handleMouseDown}
     >
