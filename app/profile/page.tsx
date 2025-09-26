@@ -7,12 +7,14 @@ import Footer from '@/layouts/footer'
 import Notifications from '@/layouts/profile-tabs/notification'
 import TopNavbar from '@/layouts/topnavbar'
 import { Icon } from '@iconify/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 export default function ProfilePage() {
+  const searchParams = useSearchParams()
+  const [urlQueryTab, setUrlQueryTab] = useState<string | null>(null)
   const router = useRouter()
-  const urlQueryTab = new URLSearchParams(window.location.search).get('tab')
+  // const urlQueryTab = new URLSearchParams(window.location.search).get('tab')
   const [activeStep, setActiveStep] = useState(1)
   const [tabs] = useState([
     {
@@ -88,16 +90,19 @@ export default function ProfilePage() {
   }
 
   useEffect(() => {
-    if (urlQueryTab) {
-      const tabIndex = tabs.findIndex((tab) => tab.slug.toLowerCase() === urlQueryTab.toLowerCase())
-      console.log(tabIndex)
-      setActiveStep(tabs[tabIndex].id)
-      // remove tab from the query param
-      const newUrl = new URL(window.location.href)
-      newUrl.searchParams.delete('tab')
-      window.history.replaceState({}, '', newUrl.toString())
-    }
-  }, [tabs, urlQueryTab])
+    const tab = searchParams.get('tab')
+    if (tab) setUrlQueryTab(tab)
+  }, [searchParams])
+
+  useEffect(() => {
+    if (!urlQueryTab || tabs.length === 0) return
+    const tabIndex = tabs.findIndex((tab) => tab.slug.toLowerCase() === urlQueryTab.toLowerCase())
+    if (tabIndex !== -1) setActiveStep(tabs[tabIndex].id)
+    //   // remove tab from the query param
+    //   // const newUrl = new URL(window.location.href)
+    //   // newUrl.searchParams.delete('tab')
+    //   // window.history.replaceState({}, '', newUrl.toString())
+  }, [urlQueryTab, tabs])
 
   return (
     <>
