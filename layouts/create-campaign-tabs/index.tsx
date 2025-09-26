@@ -222,7 +222,7 @@ export function PreviewCampaignTab({ goForward }: TabsProps) {
         </div>
         <div className="col-span-5 flex h-full flex-col">
           <p className="mb-1 text-sm font-semibold text-primary">20%</p>
-          <PercentageBar value={20} className="h-6" />
+          <PercentageBar value={20} className="h-4" />
           <div className="mt-1 flex items-center justify-between">
             <small>0%</small>
             <small>100%</small>
