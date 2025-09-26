@@ -12,6 +12,7 @@ import FileUpload from '@/components/file-upload'
 import Link from 'next/link'
 import Image from 'next/image'
 import PercentageBar from '@/components/percentage-bar'
+import PercentageCircle from '@/components/percentage-circle'
 
 type TabsProps = {
   goForward: () => void
@@ -197,17 +198,21 @@ export function PreviewCampaignTab({ goForward }: TabsProps) {
           alt="fundraise-banner-example.jpg"
         />
       </div>
+
       <h3 className="text-balance text-2xl font-bold text-dark md:text-3xl">
         JOIN GOV. OSAZE TO PUT SMILES ON THE FACES OF 1000 KIDS FOR HIS BIRTHDAY
       </h3>
-      <hr className="my-3 border border-textcolor/75" />
+
+      <hr className="my-3 border border-textcolor/50" />
+
       <p className="font-medium text-dark">
         <Link className="text-primary" href={'#'}>
           Big Minister Testimony
         </Link>{' '}
         Created this fundraising campaign
       </p>
-      <div className="mt-3 grid gap-8 rounded-lg bg-complementary px-3 py-2 text-sm md:grid-cols-10">
+
+      <div className="mt-3 flex grid-cols-10 flex-wrap items-center justify-between gap-8 gap-y-4 rounded-lg bg-complementary px-3 py-2 text-sm lg:grid">
         <div className="col-span-6 flex flex-col justify-between gap-4">
           <div className="flex items-center gap-2 font-semibold">
             <p>$58,046 Raised</p>
@@ -222,15 +227,14 @@ export function PreviewCampaignTab({ goForward }: TabsProps) {
             <p className="font-normal">100k+ Donors</p>
           </div>
         </div>
-        <div className="col-span-4 flex h-full flex-col">
+        <div className="col-span-4 flex h-full flex-col md:w-full">
           {/* PROGRESS BAR CIRCLE  */}
-          <div className="">
-            <CircleProgress />
-            <div className="relative aspect-1 max-w-24 rounded-full bg-primary p-4"></div>
+          <div className="block md:hidden">
+            <PercentageCircle progress={20} />
           </div>
 
           {/* PROGRESS BAR TUBE  */}
-          <div className="">
+          <div className="hidden md:block">
             <p className="mb-1 text-sm font-semibold text-primary">20%</p>
             <PercentageBar value={20} className="h-4" />
             <div className="mt-1 flex items-center justify-between">
@@ -240,43 +244,34 @@ export function PreviewCampaignTab({ goForward }: TabsProps) {
           </div>
         </div>
       </div>
+
+      <div className="my-4 flex w-fit items-center justify-center gap-2 rounded-md border border-primary bg-white px-4 py-1.5 text-sm font-semibold text-primary">
+        <Icon icon={'mdi:tag'} className="text-xl" />
+        <Link href={'/more-campaigns'}>Send Children Back to School</Link>
+      </div>
+
+      <hr className="my-3 border border-textcolor/50" />
+
+      <p className="text-sm">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum sunt, ipsam corrupti, eaque
+        incidunt, quos a numquam officiis molestias tempore fuga quidem. Quaerat non quasi nam vel
+        dolorum fuga voluptatibus officia beatae iure perspiciatis nostrum delectus sapiente fugit
+        magnam, incidunt eligendi quia quas. At id fuga facere eos itaque facilis totam, aperiam
+        doloremque reiciendis ipsa tempora molestiae optio repellat, adipisci nemo illo error fugiat
+        repudiandae quas pariatur in sit voluptate delectus? Molestias, totam ullam est earum
+        repudiandae ratione ipsam animi eius reprehenderit deserunt? Consectetur facere obcaecati ad
+        praesentium sint? Quae quidem pariatur quis vitae reiciendis inventore iusto, modi deleniti
+        velit.
+      </p>
+
+      <div className="mt-6 flex items-center gap-4">
+        <button onClick={() => console.log()} className="btn-primary mt-5 w-fit !px-10">
+          Publish Campaign
+        </button>
+        <button onClick={() => console.log()} className="btn-white mt-5 w-fit !px-10">
+          Save as Draft
+        </button>
+      </div>
     </div>
-  )
-}
-
-function CircleProgress({ size = 90, stroke = 15, progress = 40 }) {
-  const radius = (size - stroke) / 2
-  const circumference = 2 * Math.PI * radius
-  const offset = circumference - (progress / 100) * circumference
-
-  console.log('RADIUS', radius)
-  console.log('CIRCUMFERENCE', circumference)
-  console.log('OFFSET', offset)
-
-  return (
-    <svg width={size} height={size}>
-      <circle
-        stroke="#d9d9d9"
-        fill="transparent"
-        strokeWidth={stroke}
-        r={radius}
-        cx={size / 2}
-        cy={size / 2}
-      />
-      <circle
-        stroke="tomato"
-        fill="transparent"
-        strokeWidth={stroke}
-        strokeDasharray={circumference}
-        strokeDashoffset={offset}
-        strokeLinecap="butt"
-        r={radius}
-        cx={size / 2}
-        cy={size / 2}
-      />
-      <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fontSize="15">
-        {progress}%
-      </text>
-    </svg>
   )
 }
