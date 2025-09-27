@@ -34,6 +34,16 @@ export default {
         'slide-top-down': 'polygon(0 0, 100% 0, 100% 100%, 0% 100%);',
       },
       keyframes: {
+        growSwell: {
+          '0%': {
+            transform: 'scale(0.9)',
+            opacity: '0',
+          },
+          '100%': {
+            transform: 'scale(1)',
+            opacity: '1',
+          },
+        },
         wiggle: {
           '0%, 100%': { transform: 'rotate(-3deg)' },
           '50%': { transform: 'rotate(3deg)' },
@@ -123,6 +133,7 @@ export default {
         tada: 'tada 1.5s ease-in-out 0.25s 1',
         marquee: 'marquee 10s linear infinite',
         'marquee-right': 'marquee-right 10s linear infinite',
+        'grow-swell': 'growSwell 0.5s ease-out forwards',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

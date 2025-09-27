@@ -114,7 +114,7 @@ function ResourcePage() {
         <div className="mt-8 flex flex-col items-center justify-center gap-3 pb-10 md:grid md:grid-cols-3 lg:grid-cols-4">
           {data?.map((asset, index) => (
             <ResourceCard
-              key={index}
+              key={index}    
               onClick={(asset) => {
                 setSelectedResource(asset)
                 openModal()
