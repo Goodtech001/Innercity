@@ -153,7 +153,7 @@ export default function NotificationCard({ handleCheckboxChange, notification }:
       {/* 🔍 Modal for Full View */}
       {selectedNotification && (
         <Modal
-          className="max-w-xl w-full transition-all duration-300 overflow-hidden"
+          className="max-w-xl md:w-full transition-all duration-300 overflow-hidden"
           closeModal={closeModal}
           isModalClosed={isModalClosed}
         >
@@ -171,8 +171,8 @@ export default function NotificationCard({ handleCheckboxChange, notification }:
               ? 'border-blue-500'
               : 'border-yellow-500'
           }`}>
-            <div className="flex items-start justify-center pr-4">
-              <Icon icon={getIconByType(notification.type)} className={`text-2xl md:text-3xl ${iconClass}`} />
+            <div className="flex items-start justify-left pr-4">
+              <Icon icon={getIconByType(notification.type)} className={`text-3xl md:text-3xl ${iconClass}`} />
             </div>
 
             <div className="flex-1">

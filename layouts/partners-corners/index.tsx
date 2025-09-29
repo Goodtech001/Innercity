@@ -1,13 +1,17 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import partnersGirl from '@/public/assets/images/partners-girl.jpg'
 import Image from 'next/image'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { FreeMode, Pagination } from 'swiper/modules'
 import { Icon } from '@iconify/react'
+import { motion,useInView } from 'framer-motion'
 
 export default function PartnersCorners() {
   const [isMobile, setIsMobile] = useState(false)
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -24,6 +28,12 @@ export default function PartnersCorners() {
   }, [])
 
   return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, ease: 'easeOut' }}
+    >
     <section>
       <div className="container py-8 pb-6 md:py-14 md:pb-8">
         <h3 className="mb-8 text-balance text-center text-3xl font-bold text-dark md:text-4xl">
@@ -49,6 +59,7 @@ export default function PartnersCorners() {
         </Swiper>
       </div>
     </section>
+    </motion.div>
   )
 }
 
