@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export default function BenefitsMetricsStrip() {
   return (
-    <div className="bg-secondary py-3 text-light">
+    <div className="bg-complementary py-3 text-dark">
       <div className="container flex flex-wrap items-center justify-between gap-5 gap-y-4 md:flex-row">
         <Link
           className="flex items-center gap-3"

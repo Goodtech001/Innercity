@@ -25,7 +25,7 @@ export default function PartnersCorners() {
 
   return (
     <section>
-      <div className="container py-8 pb-6 md:py-14 md:pb-8">
+      <div className="container pb-8 md:py-2 md:pb-8">
         <h3 className="mb-8 text-balance text-center text-3xl font-bold text-dark md:text-4xl">
           Partners Corner
         </h3>
@@ -55,7 +55,7 @@ export default function PartnersCorners() {
 export function PartnersCornersCard() {
   return (
     <>
-      <div className="min-h-24 max-w-lg rounded-lg border bg-secondary px-2 py-2 text-light md:grid md:min-w-96 md:grid-cols-12 md:px-3 md:py-3">
+      <div className="min-h-24 max-w-lg rounded-lg border bg-complementary px-2 py-2 text-textcolor md:grid md:min-w-96 md:grid-cols-12 md:px-3 md:py-3">
         <div className="relative col-span-3 flex justify-between md:flex-col">
           <span className="before:absolute before:-left-2 before:-top-2 before:hidden before:size-9 before:rounded-lg before:border-2 before:border-primary before:content-[''] md:mb-6 md:w-full before:md:-left-8 before:md:-top-8 before:md:inline-block before:md:size-24">
             <Image
@@ -68,17 +68,19 @@ export function PartnersCornersCard() {
           </span>
 
           <div className="flex flex-col gap-2 text-right md:text-left">
-            <h4 className="text-xs font-semibold md:text-sm">~ G.E.M ~</h4>
-            <h4 className="text-sm font-medium md:hidden">50k Donations</h4>
+            <h4 className="text-xs font-semibold text-dark md:text-sm">~ G.E.M ~</h4>
+            <h4 className="text-sm font-medium text-dark md:hidden">50k Donations</h4>
           </div>
         </div>
         <div className="relative col-span-9 mt-2 border-t pt-2 md:mt-0 md:border-0 md:*:pt-0">
           <div className="mb-3 flex items-start justify-between">
             <div className="">
-              <h4 className="text-sm font-semibold md:text-base">Abigail Otingba</h4>
+              <h4 className="text-sm font-semibold text-dark md:text-base">Abigail Otingba</h4>
               <h4 className="text-xs font-medium md:text-sm">Donated: $ 2.5m</h4>
             </div>
-            <h4 className="hidden text-xs font-medium md:inline-block md:text-sm">50k Donations</h4>
+            <h4 className="hidden text-xs font-medium text-dark md:inline-block md:text-sm">
+              50k Donations
+            </h4>
           </div>
 
           <p className="mb-5">Member of the G.E.M platfrom</p>
