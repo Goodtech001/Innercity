@@ -1,11 +1,22 @@
-import React from 'react'
+"use client";
+import React, { useRef } from 'react'
 import Image from 'next/image'
 import about from '@/public/assets/images/about.jpg'
+import { motion,useInView } from 'framer-motion';
 
 function AboutHero() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-100px' });
+
   return (
-    <div>
-      <main className="bg-hero-blue-specs-pattern min-h-96 bg-[100%,100%] py-16 pb-0 md:py-28 md:pb-36">
+    <main className="bg-hero-blue-specs-pattern min-h-96 bg-[100%,100%] py-16 pb-0 md:py-28 md:pb-36">
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, ease: 'easeOut' }}
+    >
+      
         <div className="container flex flex-col gap-6 gap-y-10 md:grid md:grid-cols-2">
           <div className="flex flex-col justify-center gap-2">
             <h1 className="text-balance text-4xl font-extrabold text-dark md:text-5xl">
@@ -28,8 +39,8 @@ function AboutHero() {
             </div>
           </div>
         </div>
-      </main>
-    </div>
+    </motion.div>
+    </main>
   )
 }
 

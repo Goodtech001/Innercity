@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import VideoPlayer from '@/components/video-player'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { FreeMode, Navigation, Pagination } from 'swiper/modules'
@@ -14,8 +14,12 @@ import hungry from '@/public/assets/images/hungry.jpg'
 import chuka2 from '@/public/assets/images/chuka2.jpg'
 
 import { Icon } from '@iconify/react'
+import { motion,useInView } from 'framer-motion'
 
 export default function TopFundraisersVideo() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
+
   const [isMobile, setIsMobile] = useState(false)
   const [currentVideo, setCurrentVideo] = useState({
     src: 'https://vimeo.com/1037756541/2f13d91b44',
@@ -74,6 +78,12 @@ export default function TopFundraisersVideo() {
   }, [])
 
   return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, ease: 'easeOut' }}
+    >
     <section>
       <div className="container py-8 pb-6 md:py-14 md:pb-8">
         <h3 className="mx-auto mb-4 max-w-3xl text-center text-3xl font-bold text-dark md:text-4xl">
@@ -123,5 +133,6 @@ export default function TopFundraisersVideo() {
         </div>
       </div>
     </section>
+    </motion.div>
   )
 }

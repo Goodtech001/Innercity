@@ -1,11 +1,22 @@
+"use client";
 import { Icon } from '@iconify/react'
 import Image from 'next/image'
-import React from 'react'
+import React, { useRef } from 'react'
 import arrow from '@/public/assets/images/arrow-to-bl.png'
 import arrow2 from '@/public/assets/images/arrow-to-br.png'
+import { motion,useInView } from 'framer-motion';
 
 function HowItWorks() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
+
   return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, ease: 'easeOut' }}
+    >
     <div className="mt-5 bg-primary p-5 text-light md:mt-2 md:p-10">
       <div className="mx-auto max-w-4xl">
         <div className="mb-20 text-center">
@@ -102,6 +113,7 @@ function HowItWorks() {
         </div>
       </div>
     </div>
+    </motion.div>
   )
 }
 
