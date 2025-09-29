@@ -1,6 +1,6 @@
 'use client'
 import { Icon } from '@iconify/react'
-import { circInOut, motion, spring, Transition } from 'framer-motion'
+import { motion, Transition } from 'framer-motion'
 import Link from 'next/link'
 
 export default function BenefitsMetricsStrip() {
