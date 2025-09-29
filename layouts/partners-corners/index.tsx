@@ -5,13 +5,12 @@ import Image from 'next/image'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { FreeMode, Pagination } from 'swiper/modules'
 import { Icon } from '@iconify/react'
-import { motion,useInView } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 
 export default function PartnersCorners() {
   const [isMobile, setIsMobile] = useState(false)
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: '-50px' })
 
   useEffect(() => {
     const handleResize = () => {
@@ -34,31 +33,31 @@ export default function PartnersCorners() {
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, ease: 'easeOut' }}
     >
-    <section>
-      <div className="container pb-8 md:py-2 md:pb-8">
-        <h3 className="mb-8 text-balance text-center text-3xl font-bold text-dark md:text-4xl">
-          Partners Corner
-        </h3>
-      </div>
-      <div className="">
-        <Swiper
-          slidesPerView={isMobile ? 1 : 2}
-          spaceBetween={5}
-          freeMode={true}
-          pagination={{
-            clickable: true,
-          }}
-          modules={[FreeMode, Pagination]}
-          className=""
-        >
-          {Array.from({ length: 8 }).map((_, index) => (
-            <SwiperSlide key={index} className="px-8 py-6 pb-20">
-              <PartnersCornersCard />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
-    </section>
+      <section>
+        <div className="container pb-8 md:py-2 md:pb-8">
+          <h3 className="mb-8 text-balance text-center text-3xl font-bold text-dark md:text-4xl">
+            Partners Corner
+          </h3>
+        </div>
+        <div className="">
+          <Swiper
+            slidesPerView={isMobile ? 1 : 2}
+            spaceBetween={5}
+            freeMode={true}
+            pagination={{
+              clickable: true,
+            }}
+            modules={[FreeMode, Pagination]}
+            className=""
+          >
+            {Array.from({ length: 8 }).map((_, index) => (
+              <SwiperSlide key={index} className="px-8 py-6 pb-20">
+                <PartnersCornersCard />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      </section>
     </motion.div>
   )
 }
