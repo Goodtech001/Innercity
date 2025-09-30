@@ -15,7 +15,7 @@ function CtaSection() {
           <Link href={'/create-campaign'} className="btn-white w-fit max-w-md truncate">
             Support a campaign
           </Link>
-          <Link href={'/create-campaign'} className="btn-primary nowrap w-fit truncate">
+          <Link href={'/campaigns/create'} className="btn-primary nowrap w-fit truncate">
             Create a campaign
           </Link>
         </span>

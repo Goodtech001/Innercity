@@ -2,11 +2,12 @@
 import React, { useRef } from 'react'
 import Image from 'next/image'
 import about from '@/public/assets/images/about.jpg'
-import { motion,useInView } from 'framer-motion';
+import { circInOut, motion,spring,useInView } from 'framer-motion';
 
 function AboutHero() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const transitionSpring = { duration: 0.4, ease: circInOut, type: spring, stiffness: 150 }
 
   return (
     <main className="bg-hero-blue-specs-pattern min-h-96 bg-[100%,100%] py-16 pb-0 md:py-28 md:pb-36">
@@ -14,7 +15,7 @@ function AboutHero() {
       ref={ref}
       initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, ease: 'easeOut' }}
+      transition={transitionSpring}
     >
       
         <div className="container flex flex-col gap-6 gap-y-10 md:grid md:grid-cols-2">

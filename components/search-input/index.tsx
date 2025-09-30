@@ -13,7 +13,7 @@ export default function SearchInput() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
+    <form onSubmit={handleSubmit} className="flex gap-2 mt-3">
       <input
         type="text"
         placeholder="Search campaigns..."
