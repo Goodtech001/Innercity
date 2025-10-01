@@ -13,6 +13,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import PercentageBar from '@/components/percentage-bar'
 import PercentageCircle from '@/components/percentage-circle'
+import { useModal } from '@/components/modal/useModal'
+import Modal from '@/components/modal'
 
 type TabsProps = {
   goForward: () => void
@@ -130,6 +132,11 @@ export function CampaignInformationTab({ goForward }: TabsProps) {
 
 export function UploadImageTab({ goForward, goBack }: TabsProps) {
   const [images, setImages] = useState<File[]>([])
+  const { isModalClosed, openModal, closeModal } = useModal()
+
+  const handleOpen = () => {
+    openModal()
+  }
 
   return (
     <div className="lg:max-w-3xl">
@@ -147,7 +154,7 @@ export function UploadImageTab({ goForward, goBack }: TabsProps) {
             href={'#create-avatar'}
           >
             <Icon className="text-base" icon={'carbon:user-avatar-filled-alt'} />{' '}
-            <p>Create Custom Avatar</p>
+            <p onClick={handleOpen}>Create Custom Avatar</p>
           </Link>
           <div className="mx-2 hidden h-5 flex-1 border border-textcolor/75 md:block" />
           <Link
@@ -180,6 +187,42 @@ export function UploadImageTab({ goForward, goBack }: TabsProps) {
           Prev Step{' '}
         </button>
       </div>
+
+      <Modal
+        className="max-w-xl overflow-hidden rounded-xl bg-white p-5 transition-all duration-300 md:w-full"
+        closeModal={closeModal}
+        isModalClosed={isModalClosed}
+      >
+        <div className=" ">
+          <button
+            onClick={closeModal}
+            className="z-50 ml-auto flex rounded-lg border border-[#ED4C5C] bg-transparent px-5 py-1 text-dark shadow-sm transition"
+          >
+            <Icon icon="iconoir:cancel" className="h-6 w-6 text-[#ED4C5C] md:h-7 md:w-7" />
+          </button>
+
+          <div className="">
+            <p className="mb-2 text-lg font-bold text-black">Create Avatar</p>
+            <h1 className="mb-2 text-sm">
+              Choose a beautiful head-shot photo that will be attached to our campaign banner avatar
+              generator
+            </h1>
+            <FileUpload
+              files={images}
+              name="campaignImage"
+              accept="image/*" // accept images and gifs"
+              variant="dropzone"
+              containerClassName="bg-primary/15"
+              onChange={(e) => {
+                const fileList = e.target.files
+                if (fileList) setImages([...images, ...Array.from(fileList)])
+              }}
+              setFiles={setImages}
+            />
+          </div>
+          <Link href="/" className='btn-primary w-fit !px-10'>Download Avatar</Link>
+        </div>
+      </Modal>
     </div>
   )
 }

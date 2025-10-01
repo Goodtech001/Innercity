@@ -24,7 +24,7 @@ function CampaignsContent() {
     <div>
 
        <div className="w-full mt-5 justify-between flex overflow-x-auto no-scrollbar px-2">
-          <div className="flex space-x-2 md:space-x-2 text-sm md:mb-0 mb-1">
+          <div className="flex space-x-2 md:space-x-2 text-sm md:mb-0 mb-1 ">
             <button className="btn-white px-4 py-2 text-xs font-light md:px-3 md:py-2 truncate">
               Food Campaigns
             </button>

@@ -1,6 +1,6 @@
 // import MoreFundraiseCampaignCard from "@/components/more-fundraiser-card";
 
-import MoreFundraisingCampaigns from "../more-campaign/page";
+import MoreFundraisingCampaigns from "../campaign/all/page";
 
 
 // async function SearchPage({
