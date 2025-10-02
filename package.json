@@ -20,6 +20,7 @@
     "axios": "^1.12.2",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.12",
+    "html2canvas": "^1.4.1",
     "lucide-react": "^0.539.0",
     "motion": "^12.23.12",
     "next": "15.4.5",

@@ -4,7 +4,7 @@ import { IInputState } from '@/components/input/useInput'
 import Select from '@/components/select'
 import Tooltip from '@/components/ui/tooltip'
 import { Icon } from '@iconify/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import dummyCategrories from '@/json/dummy-category.json'
 import fundraiseBannerExample from '@/public/assets/images/fundraise-banner-example.jpg'
 import { createSelectOptions } from '@/components/select/useSelect'
@@ -15,6 +15,7 @@ import PercentageBar from '@/components/percentage-bar'
 import PercentageCircle from '@/components/percentage-circle'
 import { useModal } from '@/components/modal/useModal'
 import Modal from '@/components/modal'
+import avatar from '@/public/assets/images/1-peer-2-peer-5-BMC.png'
 
 type TabsProps = {
   goForward: () => void
@@ -137,6 +138,26 @@ export function UploadImageTab({ goForward, goBack }: TabsProps) {
   const handleOpen = () => {
     openModal()
   }
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false)
+  const [avatarPreview, setAvatarPreview] = useState<string>('') // for download
+
+  //   useEffect(() => {
+  //   let objectUrl: string | null = null;
+
+  //   if (images[0]) {
+  //     objectUrl = URL.createObjectURL(images[0]);
+  //   }
+
+  //   return () => {
+  //     if (objectUrl) URL.revokeObjectURL(objectUrl);
+  //   };
+  // }, [images]);
+
+  useEffect(() => {
+    return () => {
+      images.forEach((file) => URL.revokeObjectURL(file))
+    }
+  }, [images])
 
   return (
     <div className="lg:max-w-3xl">
@@ -220,7 +241,51 @@ export function UploadImageTab({ goForward, goBack }: TabsProps) {
               setFiles={setImages}
             />
           </div>
-          <Link href="/" className='btn-primary w-fit !px-10'>Download Avatar</Link>
+          <button onClick={() => setIsPreviewOpen(true)} className="btn-primary w-fit !px-10">
+            Preview
+          </button>
+        </div>
+      </Modal>
+
+      {/* Avatar design */}
+
+      <Modal
+        className="max-w-xl overflow-hidden rounded-xl bg-white p-5 transition-all duration-300 md:w-full"
+        isModalClosed={!isPreviewOpen}
+        closeModal={() => setIsPreviewOpen(false)}
+      >
+        <div className="flex flex-col items-center space-y-4">
+          <p className="text-lg font-bold text-black">Your Avatar Preview</p>
+
+          <div className="relative h-64 w-64">
+            {images[0] && (
+             
+             
+              <AvatarCard
+                cardImageSrc={avatar.src}
+                croppedImage1={URL.createObjectURL(images[0])}
+                hole1={{ x: 126, y: 88, width: 130, height: 130 }} // adjust for your card layout
+                cardDimensions={{ width: 300, height: 300 }} // match your design
+                text=""
+                onPreviewReady={(preview: React.SetStateAction<string>) =>
+                  setAvatarPreview(preview)
+                }
+              />
+            )}
+          </div>
+
+          <button
+            onClick={() => {
+              if (!avatarPreview) return
+              const link = document.createElement('a')
+              link.href = avatarPreview
+              link.download = 'my-avatar.jpg'
+              link.click()
+            }}
+            className="btn-primary px-6 py-2"
+          >
+            Download Avatar
+          </button>
         </div>
       </Modal>
     </div>
@@ -317,4 +382,21 @@ export function PreviewCampaignTab({ goForward }: TabsProps) {
       </div>
     </div>
   )
+}
+
+import html2canvas from 'html2canvas'
+import AvatarCard from '@/components/avatar-card'
+
+const handleDownloadAvatar = async () => {
+  const avatarElement = document.getElementById('avatar-canvas')
+  if (!avatarElement) return
+
+  const canvas = await html2canvas(avatarElement)
+  const dataURL = canvas.toDataURL('image/png')
+
+  // Create a temporary link to trigger download
+  const link = document.createElement('a')
+  link.href = dataURL
+  link.download = 'my-avatar.png'
+  link.click()
 }
