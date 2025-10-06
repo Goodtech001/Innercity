@@ -264,7 +264,7 @@ export function UploadImageTab({ goForward, goBack }: TabsProps) {
               <AvatarCard
                 cardImageSrc={avatar.src}
                 croppedImage1={URL.createObjectURL(images[0])}
-                hole1={{ x: 126, y: 88, width: 130, height: 130 }} // adjust for your card layout
+                hole1={{ x: 126, y: 86, width: 130, height: 130 }} // adjust for your card layout
                 cardDimensions={{ width: 300, height: 300 }} // match your design
                 text=""
                 onPreviewReady={(preview: React.SetStateAction<string>) =>
