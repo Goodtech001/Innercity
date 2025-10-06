@@ -30,8 +30,8 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
         ← Back
       </button>
          </div> */}
-      <div className="container h-screen grid-cols-10 py-5 md:grid md:space-x-10">
-        <section className="col-span-6 md:overflow-y-auto no-scrollbar">
+      <div className="container md:h-screen grid-cols-10 py-5 md:grid md:space-x-10">
+        <section className="col-span-6 overflow-y-auto no-scrollbar">
           <Image
             src={fundraiseCampaignImage}
             alt={campaign.title}
@@ -58,8 +58,8 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
           </p>
         </section>
 
-      <div className='absolute top-72 w-full pr-4'>
-        <div className="top-80 md:col-span-4 rounded-md border bg-blue-200 p-2 md:h-screen md:bg-white">
+      
+        <div className="top-80 md:col-span-4 rounded-md border bg-blue-200 p-2 md:bg-white md:relative absolute md:top-0">
           <div className="flex w-full justify-between border-b border-textcolor">
             {/* PROGRESS BAR CIRCLE  */}
             <div className="mb-3 flex gap-3">
@@ -72,7 +72,7 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
                 <p className="md:mt-2">100k+ Donors</p>
               </div>
             </div>
-            <Icon icon="solar:bookmark-bold" width="24" height="24" className="mt-2 text-primary" />
+            <Icon icon="solar:bookmark-bold" width="24" height="24" className="mt-2 text-primary md:ml-0 ml-16" />
           </div>
           {/* <p>
           <strong>Category:</strong> {campaign.category}
@@ -87,10 +87,10 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
 
           <div className="mt-8 flex space-x-4 md:block md:space-x-0 md:space-y-3">
             <button className="btn-primary w-full">
-              Donate<span className="hidden md:block">to campaign</span>
+              Donate <span className="hidden md:block"> to campaign</span>
             </button>
             <button className="btn-white w-full">
-              Share<span className="hidden md:block">campaign</span>
+              Share <span className="hidden md:block"> campaign</span>
             </button>
           </div>
 
@@ -110,6 +110,6 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
         </div>
       </div>
     </div>
-  </div>
+  
   )
 }
