@@ -86,10 +86,10 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
           </div>
 
           <div className="mt-8 flex space-x-4 md:block md:space-x-0 md:space-y-3">
-            <button className="btn-primary w-full">
-              Donate <span className="hidden md:block"> to campaign</span>
+            <button className="btn-primary w-full gap-1">
+              Donate <span className="hidden md:inline"> to campaign</span>
             </button>
-            <button className="btn-white w-full">
+            <button className="btn-white w-full gap-1">
               Share <span className="hidden md:block"> campaign</span>
             </button>
           </div>
