@@ -4,7 +4,7 @@ import { IInputState } from '@/components/input/useInput'
 import Select from '@/components/select'
 import Tooltip from '@/components/ui/tooltip'
 import { Icon } from '@iconify/react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import dummyCategrories from '@/json/dummy-category.json'
 import fundraiseBannerExample from '@/public/assets/images/fundraise-banner-example.jpg'
 import { createSelectOptions } from '@/components/select/useSelect'
@@ -152,12 +152,15 @@ export function UploadImageTab({ goForward, goBack }: TabsProps) {
   //     if (objectUrl) URL.revokeObjectURL(objectUrl);
   //   };
   // }, [images]);
+const imageUrls = useRef<string[]>([]);
 
   useEffect(() => {
-    return () => {
-      images.forEach((file) => URL.revokeObjectURL(file))
-    }
-  }, [images])
+  imageUrls.current = images.map((file) => URL.createObjectURL(file));
+
+  return () => {
+    imageUrls.current.forEach((url) => URL.revokeObjectURL(url));
+  };
+}, [images]);
 
   return (
     <div className="lg:max-w-3xl">
