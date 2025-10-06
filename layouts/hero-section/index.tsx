@@ -22,7 +22,7 @@ function HeroSection() {
             <div className="flex flex-col gap-2">
               <p className="font-medium">Share love. Spread change</p>
               <h1 className="text-balance text-4xl font-extrabold text-dark md:text-5xl">
-                Fundraise Your Moments, Uplift a Childd
+                Fundraise Your Moments, Uplift a Child
               </h1>
               <p className="mt-2 font-medium md:mt-4">
                 Fundraise turns your special days into meaningful action. From birthdays to “just
