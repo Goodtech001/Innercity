@@ -59,7 +59,7 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
         </section>
 
       
-        <div className="top-80 md:col-span-4 rounded-md border bg-blue-200 p-2 md:bg-white md:relative absolute md:top-0">
+        <div className="md:col-span-4 rounded-md border bg-blue-200 p-2 md:bg-white md:relative md:top-0">
           <div className="flex w-full justify-between border-b border-textcolor">
             {/* PROGRESS BAR CIRCLE  */}
             <div className="mb-3 flex gap-3">
