@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+
 'use client'
 import campaigns from '@/json/dummy-campaigns.json'
 import { Campaign } from '@/types/Campaign'
@@ -11,9 +11,6 @@ import PercentageCircle from '@/components/percentage-circle'
 import me from '@/public/assets/images/me.jpg'
 import TopNavbar from '@/layouts/topnavbar'
 
-type Props = {
-  params: { id: string }
-}
 
 export default function CampaignDetail({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
