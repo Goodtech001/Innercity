@@ -79,7 +79,7 @@ export default function CreateCampaignPage() {
           <button
             onClick={goBack}
             className="btn hidden w-fit border border-error bg-fade-error px-6 text-sm text-error md:inline"
-          >
+          >  
             Go back
           </button>
         </div>

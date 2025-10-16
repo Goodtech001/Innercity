@@ -16,6 +16,8 @@ import PercentageCircle from '@/components/percentage-circle'
 import { useModal } from '@/components/modal/useModal'
 import Modal from '@/components/modal'
 import avatar from '@/public/assets/images/1-peer-2-peer-5-BMC.png'
+import Cropper from 'react-easy-crop'
+import getCroppedImg from '@/utils/cropImage'
 
 type TabsProps = {
   goForward: () => void
@@ -134,6 +136,11 @@ export function CampaignInformationTab({ goForward }: TabsProps) {
 export function UploadImageTab({ goForward, goBack }: TabsProps) {
   const [images, setImages] = useState<File[]>([])
   const { isModalClosed, openModal, closeModal } = useModal()
+  const [isCropModalOpen, setIsCropModalOpen] = useState(false)
+  const [croppedImage, setCroppedImage] = useState<string>('') // To pass to AvatarCard
+  const [crop, setCrop] = useState({ x: 0, y: 0 })
+  const [zoom, setZoom] = useState(1)
+ 
 
   const handleOpen = () => {
     openModal()
@@ -152,15 +159,24 @@ export function UploadImageTab({ goForward, goBack }: TabsProps) {
   //     if (objectUrl) URL.revokeObjectURL(objectUrl);
   //   };
   // }, [images]);
-const imageUrls = useRef<string[]>([]);
+  const imageUrls = useRef<string[]>([])
 
   useEffect(() => {
-  imageUrls.current = images.map((file) => URL.createObjectURL(file));
+    imageUrls.current = images.map((file) => URL.createObjectURL(file))
 
-  return () => {
-    imageUrls.current.forEach((url) => URL.revokeObjectURL(url));
-  };
-}, [images]);
+    return () => {
+      imageUrls.current.forEach((url) => URL.revokeObjectURL(url))
+    }
+  }, [images])
+
+  interface Area {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area|null>(null);
 
   return (
     <div className="lg:max-w-3xl">
@@ -244,8 +260,58 @@ const imageUrls = useRef<string[]>([]);
               setFiles={setImages}
             />
           </div>
-          <button onClick={() => setIsPreviewOpen(true)} className="btn-primary w-fit !px-10">
+          <button onClick={() => setIsCropModalOpen(true)} className="btn-primary w-fit !px-10">
             Preview
+          </button>
+        </div>
+      </Modal>
+
+      <Modal
+        isModalClosed={!isCropModalOpen}
+        closeModal={() => setIsCropModalOpen(false)}
+        className="max-w-3xl rounded-xl bg-white p-10"
+      >
+        <div className="relative h-96">
+          {images[0] && (
+            <div className="crop-container relative h-full w-full">
+              <Cropper
+                image={URL.createObjectURL(images[0])}
+                crop={crop}
+                zoom={zoom}
+                aspect={1}
+                cropShape="rect" 
+                showGrid={false}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={(_, croppedAreaPixels) => {
+                  setCroppedAreaPixels(croppedAreaPixels)
+                }}
+              />
+              {/* Circular mask */}
+              <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+                <div className="h-60 w-60 rounded-full border-2 border-white/60" />
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="mt-4 flex justify-end gap-4">
+          <button onClick={() => setIsCropModalOpen(false)} className="btn-white">
+            Cancel
+          </button>
+          <button
+            onClick={async () => {
+              const imageUrl = await getCroppedImg(
+                URL.createObjectURL(images[0]),
+                croppedAreaPixels,
+              )
+              setCroppedImage(imageUrl)
+              setIsCropModalOpen(false)
+              setIsPreviewOpen(true) // open avatar preview modal
+            }}
+            className="btn-primary truncate"
+          >
+            Crop & Continue
           </button>
         </div>
       </Modal>
@@ -262,17 +328,13 @@ const imageUrls = useRef<string[]>([]);
 
           <div className="relative h-64 w-64">
             {images[0] && (
-             
-             
               <AvatarCard
                 cardImageSrc={avatar.src}
-                croppedImage1={URL.createObjectURL(images[0])}
-                hole1={{ x: 126, y: 86, width: 130, height: 130 }} // adjust for your card layout
-                cardDimensions={{ width: 300, height: 300 }} // match your design
+                croppedImage1={croppedImage}
+                hole1={{ x: 126, y: 86, width: 130, height: 130 }}
+                cardDimensions={{ width: 300, height: 300 }}
                 text=""
-                onPreviewReady={(preview: React.SetStateAction<string>) =>
-                  setAvatarPreview(preview)
-                }
+                onPreviewReady={(preview) => setAvatarPreview(preview)}
               />
             )}
           </div>
@@ -387,19 +449,6 @@ export function PreviewCampaignTab({ goForward }: TabsProps) {
   )
 }
 
-import html2canvas from 'html2canvas'
 import AvatarCard from '@/components/avatar-card'
 
-const handleDownloadAvatar = async () => {
-  const avatarElement = document.getElementById('avatar-canvas')
-  if (!avatarElement) return
 
-  const canvas = await html2canvas(avatarElement)
-  const dataURL = canvas.toDataURL('image/png')
-
-  // Create a temporary link to trigger download
-  const link = document.createElement('a')
-  link.href = dataURL
-  link.download = 'my-avatar.png'
-  link.click()
-}
