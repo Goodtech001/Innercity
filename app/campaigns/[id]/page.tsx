@@ -3,7 +3,7 @@
 import campaigns from '@/json/dummy-campaigns.json'
 import { Campaign } from '@/types/Campaign'
 import { notFound, useRouter } from 'next/navigation'
-
+import { use } from 'react'
 import fundraiseCampaignImage from '@/public/assets/images/campaign-flyer.jpg'
 import Image from 'next/image'
 import { Icon } from '@iconify/react/dist/iconify.js'
@@ -11,17 +11,13 @@ import PercentageCircle from '@/components/percentage-circle'
 import me from '@/public/assets/images/me.jpg'
 import TopNavbar from '@/layouts/topnavbar'
 
-type Props = {
-  params: {
-    id: string
-  }
-}
 
-export default function CampaignDetail({ params }: Props) {
+export default function CampaignDetail({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
-  const { id } = params
+  const { id } = use(params)
   const campaign = (campaigns as unknown as Campaign[]).find((c) => String(c.id) === id)
 
+  
   if (!campaign) return notFound()
 
   return (
@@ -32,6 +28,8 @@ export default function CampaignDetail({ params }: Props) {
         ← Back
       </button>
          </div> */}
+         
+          <h1>Campaign ID: {id}</h1>
       <div className="container md:h-screen grid-cols-10 py-5 md:grid md:space-x-10">
         <section className="col-span-6 overflow-y-auto no-scrollbar">
           <Image
