@@ -2,15 +2,15 @@
 import React, { useState } from 'react'
 
 function CardForm() {
-     const [accountHolderName, setAccountHolderName] = useState('');
-  const [accountNumber, setAccountNumber] = useState('');
+     const [accountHolderName] = useState('');
+  const [accountNumber] = useState('');
   const [bankName, setBankName] = useState('');
   const [ifscCode, setIfscCode] = useState('');
   const [accountType, setAccountType] = useState('');
 
    const [cardNumber, setCardNumber] = useState('');
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: { target: { value: string; }; }) => {
     const value = e.target.value.replace(/\s+/g, '');
     let formattedValue = '';
 
@@ -50,7 +50,7 @@ function CardForm() {
       type="text"
       value={cardNumber}
       onChange={handleInputChange}
-      maxLength="19"
+      maxLength={19}
       placeholder="1234 1234 1234 1234"
       className="block w-full p-1 outline-none border-0 rounded focus:outline-none focus:ring-0"
     />
