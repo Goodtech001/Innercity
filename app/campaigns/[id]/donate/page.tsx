@@ -1,4 +1,3 @@
-
 'use client'
 
 import campaigns from '@/json/dummy-campaigns.json'
@@ -7,7 +6,7 @@ import { Campaign } from '@/types/Campaign'
 import TopNavbar from '@/layouts/topnavbar'
 import ProgressCircle from '@/components/progress bar-circle'
 import me from '@/public/assets/images/me.jpg'
-import { useEffect, useRef, useState } from 'react'
+import { use, useEffect, useRef, useState } from 'react'
 import { Icon } from '@iconify/react/dist/iconify.js'
 
 import espees from '@/public/assets/images/espees.png'
@@ -15,14 +14,7 @@ import Image from 'next/image'
 import CardForm from '@/components/card-form'
 import paystack from '@/public/assets/images/paystackk.png'
 
-
-
-type Props = {
-  params: { id: string }
-}
-
-export default function DonatePage({ params }: Props) {
-  const { id } = params // ✅ Safe 
+export default function CampaignDetail({ params }: { params: Promise<{ id: string }> }) {
   const searchParams = useSearchParams()
   const [activeStep, setActiveStep] = useState(1)
   const [urlQueryTab, setUrlQueryTab] = useState<string | null>(null)
@@ -128,7 +120,7 @@ export default function DonatePage({ params }: Props) {
     },
   ]
   const CurrentComponent = stepsTab.find((step) => step.step === activeStep)?.component
-  
+
   useEffect(() => {
     const tab = searchParams.get('tab')
     if (tab) setUrlQueryTab(tab)
@@ -144,7 +136,7 @@ export default function DonatePage({ params }: Props) {
     //   // window.history.replaceState({}, '', newUrl.toString())
   }, [urlQueryTab, tabs])
 
-
+  const { id } = use(params)
   const campaign = (campaigns as unknown as Campaign[]).find((c) => String(c.id) === id)
 
   if (!campaign) return notFound()
