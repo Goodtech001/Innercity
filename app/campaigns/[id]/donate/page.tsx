@@ -15,11 +15,14 @@ import Image from 'next/image'
 import CardForm from '@/components/card-form'
 import paystack from '@/public/assets/images/paystackk.png'
 
+
+
 type Props = {
   params: { id: string }
 }
 
 export default function DonatePage({ params }: Props) {
+  const { id } = params // ✅ Safe 
   const searchParams = useSearchParams()
   const [activeStep, setActiveStep] = useState(1)
   const [urlQueryTab, setUrlQueryTab] = useState<string | null>(null)
@@ -141,7 +144,7 @@ export default function DonatePage({ params }: Props) {
     //   // window.history.replaceState({}, '', newUrl.toString())
   }, [urlQueryTab, tabs])
 
-  const { id } = params
+
   const campaign = (campaigns as unknown as Campaign[]).find((c) => String(c.id) === id)
 
   if (!campaign) return notFound()
