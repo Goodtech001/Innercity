@@ -1,14 +1,15 @@
-/* eslint-disable @next/next/no-img-element */
+
 'use client'
+
 import campaigns from '@/json/dummy-campaigns.json'
-import { notFound, useRouter, useSearchParams } from 'next/navigation'
+import { notFound, useSearchParams } from 'next/navigation'
 import { Campaign } from '@/types/Campaign'
 import TopNavbar from '@/layouts/topnavbar'
 import ProgressCircle from '@/components/progress bar-circle'
 import me from '@/public/assets/images/me.jpg'
 import { useEffect, useRef, useState } from 'react'
 import { Icon } from '@iconify/react/dist/iconify.js'
-import card from '@/public/assets/images/card.png'
+
 import espees from '@/public/assets/images/espees.png'
 import Image from 'next/image'
 import CardForm from '@/components/card-form'
@@ -22,11 +23,8 @@ export default function DonatePage({ params }: Props) {
   const searchParams = useSearchParams()
   const [activeStep, setActiveStep] = useState(1)
   const [urlQueryTab, setUrlQueryTab] = useState<string | null>(null)
-  const router = useRouter()
-
-  const scrollRef = useRef(null)
-
-  const scroll = (direction: string) => {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const scroll = (direction: 'left' | 'right') => {
     const container = scrollRef.current
     if (container) {
       const scrollAmount = direction === 'left' ? -200 : 200
@@ -127,18 +125,7 @@ export default function DonatePage({ params }: Props) {
     },
   ]
   const CurrentComponent = stepsTab.find((step) => step.step === activeStep)?.component
-
-  function goForward() {
-    setActiveStep((prev) => Math.min(prev + 1, stepsTab.length))
-  }
-
-  function goBack() {
-    if (activeStep === 1) {
-      router.back()
-    }
-    setActiveStep((prev) => Math.max(prev - 1, 1))
-  }
-
+  
   useEffect(() => {
     const tab = searchParams.get('tab')
     if (tab) setUrlQueryTab(tab)
@@ -169,14 +156,14 @@ export default function DonatePage({ params }: Props) {
         {/* 
         <p>Goal: ${campaign.goal}</p> */}
         <div className="w-full overflow-auto rounded-t-md bg-primary">
-          <div className="md:flex w-full justify-between border-textcolor px-12 py-2">
+          <div className="w-full justify-between border-textcolor px-12 py-2 md:flex">
             {/* PROGRESS BAR CIRCLE  */}
             <div className="mb-3 flex gap-3">
               <ProgressCircle />
 
               <div className="mt-4">
                 <span className="flex w-full justify-between">
-                  <h1 className="mt-4 line-clamp-2 md:max-w-80 text-2xl font-bold text-white">
+                  <h1 className="mt-4 line-clamp-2 text-2xl font-bold text-white md:max-w-80">
                     {' '}
                     {campaign.title}
                   </h1>
@@ -184,12 +171,12 @@ export default function DonatePage({ params }: Props) {
                 <p className="text-white md:mt-2">Ends on: 22nd March 2025</p>
               </div>
             </div>
-            <div className="mt-10 flex gap-8 items-end">
+            <div className="mt-10 flex items-end gap-8">
               <div className="text-white">
                 <p className="text-right">Target</p>
                 <p>$ 82,239.43</p>
               </div>
-              <div className="text-white ml-auto">
+              <div className="ml-auto text-white">
                 <p className="text-right">Raised</p>
                 <p>$ 82,239.43</p>
               </div>
@@ -237,12 +224,14 @@ export default function DonatePage({ params }: Props) {
                       >
                         {tab.iconType === 'iconify' ? (
                           <Icon icon={tab.icon} className="h-6 w-6" />
-                        ) : (
+                        ) : tab.image ? (
                           <Image
                             src={tab.image}
                             alt={tab.title}
                             className="h-6 w-6 object-contain"
                           />
+                        ) : (
+                          <div className="h-6 w-6" /> // or some other fallback
                         )}
                       </button>
                       <h4 className="mt-1 truncate text-center text-xs font-semibold text-textcolor md:text-sm">
@@ -253,11 +242,11 @@ export default function DonatePage({ params }: Props) {
                 </div>
               </div>
 
-              <button
-                onClick={() => scroll('right')}
-                className="flex items-center justify-center"
-              >
-                <Icon icon="material-symbols-light:keyboard-arrow-right" className="h-8 w-8 text-gray-600" />
+              <button onClick={() => scroll('right')} className="flex items-center justify-center">
+                <Icon
+                  icon="material-symbols-light:keyboard-arrow-right"
+                  className="h-8 w-8 text-gray-600"
+                />
               </button>
             </div>
 

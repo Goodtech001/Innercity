@@ -35,7 +35,7 @@ export default function getCroppedImg(imageSrc: string, crop: any): Promise<stri
       }, 'image/jpeg')
     }
 
-    image.onerror = (e) => {
+    image.onerror = () => {
       reject(new Error('Failed to load image'))
     }
   })
