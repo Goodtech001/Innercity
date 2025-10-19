@@ -5,10 +5,7 @@ import fundraiseCampaignImage from '@/public/assets/images/campaign-flyer.jpg'
 import PercentageBar from '@/components/percentage-bar'
 import { Icon } from '@iconify/react'
 import { Campaign } from '@/types/Campaign'
-
-interface Props {
-  campaign: Campaign
-}
+import { useRouter } from 'next/navigation'
 
 export default function FundraiseCampaignCard({
   campaign,
@@ -17,6 +14,9 @@ export default function FundraiseCampaignCard({
   campaign: Campaign
   href: string
 }) {
+
+    const router = useRouter()
+
   return (
     <Link href={href}>
       <div className="flex w-full flex-row gap-4 rounded-md p-1.5 shadow-[0px_0px_6px_1px_rgba(0,_0,_0,_0.1)] hover:scale-[1.01] md:max-w-96 md:flex-col md:p-2">
@@ -39,7 +39,10 @@ export default function FundraiseCampaignCard({
           >
             {campaign.title}
           </Link>
-          <p className="hidden font-medium md:inline-block">
+          <p
+            onClick={() => router.push(`/campaigns/${campaign.id}`)}
+            className="hidden font-medium md:inline-block"
+          >
             Created by:{' '}
             <Link className="text-primary" href={'/'}>
               {campaign.user}

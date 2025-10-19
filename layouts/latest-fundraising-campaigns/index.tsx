@@ -4,7 +4,7 @@ import React, { useRef } from 'react'
 import FundraiseCampaignCard from '@/components/fundraise-campaign-card'
 import campaigns from '@/json/dummy-campaigns.json'
 import { Campaign } from '@/types/Campaign'
-import { AnimatePresence, motion, useInView } from 'framer-motion'
+import {  motion, useInView } from 'framer-motion'
 
 export default function LatestFundraisingCampaigns() {
   const ref = useRef(null);
