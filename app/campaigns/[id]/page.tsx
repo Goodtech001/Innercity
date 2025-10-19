@@ -1,8 +1,8 @@
 
-'use client'
+
 import campaigns from '@/json/dummy-campaigns.json'
 import { Campaign } from '@/types/Campaign'
-import { notFound, useRouter } from 'next/navigation'
+import { notFound } from 'next/navigation'
 // import { use } from 'react'
 import fundraiseCampaignImage from '@/public/assets/images/campaign-flyer.jpg'
 import Image from 'next/image'
@@ -10,16 +10,19 @@ import { Icon } from '@iconify/react/dist/iconify.js'
 import PercentageCircle from '@/components/percentage-circle'
 import me from '@/public/assets/images/me.jpg'
 import TopNavbar from '@/layouts/topnavbar'
-import { use } from 'react'
+
+import Link from 'next/link'
 
 
 
 
-export default function CampaignDetail({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)
-  const router = useRouter()
+export const dynamic = 'force-dynamic'  // ✅ Ensures this page is rendered on demand
 
+// eslint-disable-next-line @next/next/no-async-client-component
+export default async function CampaignDetail({ params }: { params: { id: string } }) {
+  const { id } = params
   const campaign = (campaigns as unknown as Campaign[]).find((c) => String(c.id) === id)
+
   
 
   
@@ -93,11 +96,14 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
           </div>
 
           <div className="mt-8 flex space-x-4 md:block md:space-x-0 md:space-y-3">
-            <button 
+            {/* <button 
             className="btn-primary w-full gap-1"
             onClick={() => router.push(`/campaigns/${id}/donate`)}>
               Donate <span className="hidden md:inline"> to campaign</span>
-            </button>
+            </button> */}
+            <Link href={`/campaigns/${id}/donate`} className="btn-primary w-full gap-1">
+            Donate <span className="hidden md:inline"> to campaign</span>
+          </Link>
             <button className="btn-white w-full gap-1">
               Share <span className="hidden md:block"> campaign</span>
             </button>
