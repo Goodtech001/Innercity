@@ -8,7 +8,7 @@ import fundraiseCampaignImage from '@/public/assets/images/campaign-flyer.jpg'
 import Image from 'next/image'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import PercentageCircle from '@/components/percentage-circle'
-import me from '@/public/assets/images/me.jpg'
+// import me from '@/public/assets/images/me.jpg'
 import TopNavbar from '@/layouts/topnavbar'
 
 import Link from 'next/link'
@@ -112,7 +112,7 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
 
           <div className="mt-10 hidden w-full gap-2 rounded-xl border bg-[#0074E626] p-3 md:flex">
             <Image
-              src={me}
+              src="/assets/images/me.jpg"
               alt=""
               height={34}
               width={34}
