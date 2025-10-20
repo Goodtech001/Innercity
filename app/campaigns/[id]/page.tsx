@@ -19,7 +19,13 @@ import Link from 'next/link'
 export const dynamic = 'force-dynamic'  // ✅ Ensures this page is rendered on demand
 
 // eslint-disable-next-line @next/next/no-async-client-component
-export default async function CampaignDetail({ params }: { params: { id: string } }) {
+interface CampaignDetailPageProps {
+  params: {
+    id: string
+  }
+}
+
+export default async function CampaignDetail({ params }: CampaignDetailPageProps) {
   const { id } = params
   const campaign = (campaigns as unknown as Campaign[]).find((c) => String(c.id) === id)
 

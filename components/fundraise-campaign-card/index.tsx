@@ -5,7 +5,7 @@ import fundraiseCampaignImage from '@/public/assets/images/campaign-flyer.jpg'
 import PercentageBar from '@/components/percentage-bar'
 import { Icon } from '@iconify/react'
 import { Campaign } from '@/types/Campaign'
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 
 export default function FundraiseCampaignCard({
   campaign,
@@ -15,7 +15,7 @@ export default function FundraiseCampaignCard({
   href: string
 }) {
 
-    const router = useRouter()
+    // const router = useRouter()
 
   return (
     <Link href={href}>
@@ -32,22 +32,20 @@ export default function FundraiseCampaignCard({
           />
         </div>
         <div className="flex w-[60%] flex-col gap-2 md:w-auto">
-          <Link
-            href={'/'}
+          <p
             title="Join Me To Impact 200 Lives Through Education All Around Lagos For The Next 3 Years"
             className="ellipsis-2 text-balance text-lg font-bold !leading-[100%] text-dark md:text-xl"
           >
             {campaign.title}
-          </Link>
-          <p
-            onClick={() => router.push(`/campaigns/${campaign.id}`)}
+          </p>
+          <div
             className="hidden font-medium md:inline-block"
           >
             Created by:{' '}
-            <Link className="text-primary" href={'/'}>
+            <h1 className="text-primary">
               {campaign.user}
-            </Link>
-          </p>
+            </h1>
+          </div>
           <div className="flex items-center gap-6">
             <PercentageBar value={10} />
             <p className="pb-1 text-sm font-medium leading-tight text-primary">100%</p>
@@ -56,13 +54,13 @@ export default function FundraiseCampaignCard({
             Target: <span className="text-primary">${campaign.target}</span>
           </p>
 
-          <Link className="mt-auto inline-block py-2.5 text-sm underline md:hidden" href={'/'}>
+          <button className="mt-auto inline-block py-2.5 text-sm underline md:hidden">
             Donate now
-          </Link>
+          </button>
 
-          <Link className="btn-primary mt-3 hidden w-fit px-10 text-sm md:inline-block" href={'/'}>
+          <button className="btn-primary mt-3 hidden w-fit px-10 text-sm md:inline-block">
             Donate now
-          </Link>
+          </button>
         </div>
       </div>
     </Link>
