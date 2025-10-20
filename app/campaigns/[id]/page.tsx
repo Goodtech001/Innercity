@@ -17,18 +17,13 @@ import { use } from 'react'
 
 
 
-export const dynamic = 'force-dynamic'  // ✅ Ensures this page is rendered on demand
+export const dynamic = 'force-dynamic' 
 
 
 export default function CampaignDetail({ params }: { params: Promise<{ id: string }> }) {
  const { id } = use(params)
   const campaign = (campaigns as unknown as Campaign[]).find((c) => String(c.id) === id)
 
-  
-
-  
-
-  
   if (!campaign) return notFound()
 
   return (

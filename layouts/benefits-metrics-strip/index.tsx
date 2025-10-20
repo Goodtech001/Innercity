@@ -32,7 +32,7 @@ export default function BenefitsMetricsStrip() {
           <Icon icon={'ri:seedling-fill'} className="size-6 text-2xl" />
           <p className="font-semibold underline">Give Every Month (G.E.M)</p>
         </Link>
-        <Link className="flex items-center gap-3" href={'/'}>
+        <Link className="flex items-center gap-3" href={'/blogs'}>
           <Icon icon={'ri:progress-7-line'} className="size-6 text-2xl" />
           <p className="font-semibold underline">Track Your Impact in Real Time</p>
         </Link>
