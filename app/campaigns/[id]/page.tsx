@@ -12,21 +12,16 @@ import me from '@/public/assets/images/me.jpg'
 import TopNavbar from '@/layouts/topnavbar'
 
 import Link from 'next/link'
+import { use } from 'react'
 
 
 
 
 export const dynamic = 'force-dynamic'  // ✅ Ensures this page is rendered on demand
 
-// eslint-disable-next-line @next/next/no-async-client-component
-interface CampaignDetailPageProps {
-  params: {
-    id: string
-  }
-}
 
-export default async function CampaignDetail({ params }: CampaignDetailPageProps) {
-  const { id } = params
+export default function CampaignDetail({ params }: { params: Promise<{ id: string }> }) {
+ const { id } = use(params)
   const campaign = (campaigns as unknown as Campaign[]).find((c) => String(c.id) === id)
 
   
