@@ -1,5 +1,5 @@
 
-
+"use client"
 import campaigns from '@/json/dummy-campaigns.json'
 import { Campaign } from '@/types/Campaign'
 import { notFound } from 'next/navigation'
