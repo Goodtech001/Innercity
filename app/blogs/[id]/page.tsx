@@ -3,9 +3,10 @@ import { notFound } from 'next/navigation'
 import blogsData from '@/json/blog-posts.json'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRightIcon, ClockIcon, TagIcon, UsersIcon } from '@/components/svgs'
 import { BlogContent } from '@/components/blog-details-content'
 import { Icon } from '@iconify/react/dist/iconify.js'
+import Footer from '@/layouts/footer'
+import TopNavbar from '@/layouts/topnavbar'
 
 export async function generateStaticParams() {
   return blogsData.map((post) => ({
@@ -26,6 +27,8 @@ export default async function BlogDetailsPage({ params }: BlogPostPageProps) {
   if (!post) notFound()
 
   return (
+    <>
+    <TopNavbar/>
     <div className="bg-white">
       <div className="wrapper mx-auto px-2 py-12 md:px-4 lg:px-8">
         <Link
@@ -65,5 +68,7 @@ export default async function BlogDetailsPage({ params }: BlogPostPageProps) {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   )
 }

@@ -42,9 +42,11 @@ export default function FundraiseCampaignCard({ campaign }: { campaign: Campaign
           <button className="mt-auto inline-block w-fit py-4 text-sm underline md:hidden">
             Donate now
           </button>
+          </button>
 
           <button className="btn-primary mt-auto hidden w-fit px-10 text-sm md:inline-block">
             Donate now
+          </button>
           </button>
         </div>
       </div>
