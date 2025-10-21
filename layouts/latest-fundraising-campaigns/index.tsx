@@ -35,7 +35,7 @@ export default function LatestFundraisingCampaigns() {
               <FundraiseCampaignCard
                 key={campaign.id}
                 campaign={campaign}
-                href={`/campaigns/${campaign.id}`}
+                
               />
             ))}
           </div>
