@@ -14,8 +14,7 @@ export default function FundraiseCampaignCard({
   campaign: Campaign
   href: string
 }) {
-
-    // const router = useRouter()
+  // const router = useRouter()
 
   return (
     <Link className="flex w-fit flex-col" href={href}>
@@ -38,14 +37,9 @@ export default function FundraiseCampaignCard({
             className="ellipsis-2 text-balance text-lg font-bold !leading-[100%] text-dark md:text-xl"
           >
             {campaign.title}
-          </p>
-          <div
-            className="hidden font-medium md:inline-block"
-          >
-            Created by:{' '}
-            <h1 className="text-primary">
-              {campaign.user}
-            </h1>
+          </Link>
+          <div className="hidden font-medium md:inline-block">
+            Created by: <h1 className="text-primary">{campaign.user}</h1>
           </div>
           <div className="flex items-center gap-6">
             <PercentageBar value={10} />
@@ -57,14 +51,14 @@ export default function FundraiseCampaignCard({
 
           <Link className="inline-block py-2.5 text-sm underline md:hidden" href={'/'}>
             Donate now
-          </button>
+          </Link>
 
           <Link
             className="btn-primary mt-auto hidden w-fit px-10 text-sm md:inline-block"
             href={'/'}
           >
             Donate now
-          </button>
+          </Link>
         </div>
       </div>
     </Link>
