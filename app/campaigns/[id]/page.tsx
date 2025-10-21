@@ -47,7 +47,7 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
             </div>
             <div className="flex font-bold text-primary">
               <Icon icon={'mdi:location'} className="mt-1" />
-              <p>Lagos,Nigeria</p>
+              <p>Lagos, Nigeria</p>
             </div>
           </div>
           <div className="mt-4 flex gap-1">

@@ -33,7 +33,12 @@ export const rightMenu: menu_type[] = [
       {
         title: 'Food Campaigns',
         path: '?category=food',
+<<<<<<< HEAD
         description: 'Feed an indigent in africa, Sponsor school meals for children in malawi, Sponsor family food parcels',
+=======
+        description:
+          'Feed an indigent in africa, Sponsor school meals for children in malawi, Sponsor family food parcels',
+>>>>>>> b9100a31a7723917aabf02aa20b8f43f1473114e
       },
       {
         title: 'Education Campaigns',
