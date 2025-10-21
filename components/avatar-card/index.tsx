@@ -86,7 +86,7 @@ const AvatarCard = ({
 
   useEffect(() => {
     handlePreviewReady()
-  }, [preview])
+  }, [handlePreviewReady, preview])
 
   return (
     <div className="aspect-square relative h-full w-full">
@@ -99,6 +99,7 @@ const AvatarCard = ({
       <canvas ref={canvasRef} className="invisible absolute -z-10" />
 
       {preview && (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={preview}
           alt="Birthday card preview"

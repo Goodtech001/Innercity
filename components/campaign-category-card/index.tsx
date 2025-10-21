@@ -1,6 +1,5 @@
 import useTopnavbar from '@/layouts/topnavbar/useTopnavbar'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
@@ -23,16 +22,14 @@ export type TCampaignCategoryCard = {
 export default function CampaignCategoryCard({
   data: { banner, category },
 }: TCampaignCategoryCard) {
-  const { setSubMenuClicked } = useTopnavbar()
+  useTopnavbar()
 
   const handleCategoryClick = () => {
   if (category) {
     router.push(`?category=${category.toLowerCase()}`);
   }
 };
-const handleSubMenuClick = (path: string) => {
-  router.push(path);
-};
+
 
   const router = useRouter()
   return (
