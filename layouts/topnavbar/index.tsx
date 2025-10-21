@@ -6,9 +6,11 @@ import CountryCurrencyDropdown from '@/components/country-currency-dropdown'
 import Logo from '@/components/logo'
 import { Icon } from '@iconify/react'
 import UserProfileDropdown from '@/components/user-profile-dropdown'
+import { useRouter } from 'next/navigation'
 
 export default function TopNavbar() {
   const [isSignedIn, setIsSignedIn] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -26,6 +28,12 @@ export default function TopNavbar() {
     pathName,
     navListRef,
   } = useTopnavbar()
+
+   const handleSubMenuClick = (path: string) => {
+    router.push(path)
+    setSubMenuClicked(path)
+  }
+
 
   return (
     <>
@@ -212,8 +220,8 @@ export default function TopNavbar() {
                               'border-l-primary bg-secondary/50 font-semibold'
                             }`}
                             // href={subMenu.external ? subMenu.path : menu.subPath + subMenu.path}
-                            href={subMenu.path}
-                            target={subMenu.external ? '_blank' : '_self'}
+                            href={menu.subPath + subMenu.path}
+                            onClick={() => handleSubMenuClick(menu.subPath + subMenu.path)}
                           >
                             <p>{subMenu.title}</p>
                             <small className="ml-10 text-xs font-bold text-primary">

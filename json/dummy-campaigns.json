@@ -7,7 +7,7 @@
     "user": "Lolita Pasfield",
     "target": 8409,
     "donations": 1481,
-    "category": "Food - Cereal",
+    "category": "food",
     "createdAt": "2025-03-11T00:27:41Z"
   },
   {
@@ -18,7 +18,7 @@
     "user": "Jervis Chappell",
     "target": 5340,
     "donations": 118,
-    "category": "Fitness",
+    "category": "food",
     "createdAt": "2025-04-22T18:02:03Z"
   },
   {
@@ -29,7 +29,7 @@
     "user": "Bel Dobey",
     "target": 5711,
     "donations": 2626,
-    "category": "Home",
+    "category": "food",
     "createdAt": "2025-05-07T20:35:23Z"
   },
   {
@@ -40,7 +40,7 @@
     "user": "Brion Bossons",
     "target": 6199,
     "donations": 647,
-    "category": "Food - Produce",
+    "category": "education",
     "createdAt": "2024-11-17T02:12:10Z"
   },
   {
@@ -51,7 +51,7 @@
     "user": "Adela Slorance",
     "target": 8089,
     "donations": 5451,
-    "category": "Food - Snacks",
+    "category": "education",
     "createdAt": "2025-03-08T14:43:00Z"
   },
   {
@@ -62,7 +62,7 @@
     "user": "Lian Fassmann",
     "target": 8634,
     "donations": 6760,
-    "category": "Clothing - Outerwear",
+    "category": "education",
     "createdAt": "2024-09-14T05:41:12Z"
   },
   {
@@ -73,7 +73,7 @@
     "user": "Anthe Curgenven",
     "target": 5319,
     "donations": 5039,
-    "category": "Electronics",
+    "category": "women",
     "createdAt": "2024-12-10T09:32:50Z"
   },
   {
@@ -84,7 +84,7 @@
     "user": "Robinet Mersey",
     "target": 35780,
     "donations": 8889,
-    "category": "Food - Snacks",
+    "category": "women",
     "createdAt": "2025-08-05T20:55:20Z"
   },
   {
@@ -95,7 +95,7 @@
     "user": "Heall Orhrt",
     "target": 4453,
     "donations": 95,
-    "category": "Food - Prepared Meals",
+    "category": "community",
     "createdAt": "2024-09-02T17:57:43Z"
   },
   {
@@ -106,7 +106,7 @@
     "user": "Annabelle Dye",
     "target": 6987,
     "donations": 3677,
-    "category": "Pets",
+    "category": "community",
     "createdAt": "2025-07-02T15:41:00Z"
   }
 ]

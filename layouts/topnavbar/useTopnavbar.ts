@@ -1,4 +1,4 @@
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
 export type menu_type = {
@@ -32,26 +32,23 @@ export const rightMenu: menu_type[] = [
     subMenus: [
       {
         title: 'Food Campaigns',
-        path: '/food',
-        description:
-          'Feed an indigent in africa, Sponsor school meals for children in malawi, Sponsor family food parcels',
+        path: '?category=food',
+        description: 'Feed an indigent in africa, Sponsor school meals for children in malawi, Sponsor family food parcels',
       },
       {
         title: 'Education Campaigns',
-        path: '/education',
-        description:
-          "Sponsor a child's education, Sponsor uniform kit, Sponsor stationery, Build a school",
+        path: '?category=education',
+        description: "Sponsor a child's education, Sponsor uniform kit, Sponsor stationery, Build a school",
       },
       {
         title: 'Women Empowerment',
-        path: '/women-empowerment',
-        description: 'Sponsor skill acquisition program, Support a family',
+        path: '?category=women',
+        description: 'Sponsor skill acquisition program, Support a family',
       },
       {
         title: 'Community Development',
-        path: '/community-development',
-        description:
-          'Sponsor clean water (borehole), Sponsor toilet building projects, Build a learning center, Build a library',
+        path: '?category=community',
+        description: 'Sponsor clean water (borehole), Sponsor toilet building projects, Build a learning center, Build a library',
       },
     ],
   },
@@ -64,6 +61,7 @@ export default function useTopnavbar() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_activeMenu, setActiveMenu] = useState<menu_type | null>(null)
   const pathName = usePathname()
+  const router = useRouter()
 
   const getActiveUrl = (path: string, subPath?: string): boolean => {
     // Check if the main path matches
@@ -77,6 +75,11 @@ export default function useTopnavbar() {
     return false
   }
 
+  const handleSubMenuClick = (path: string) => {
+    router.push(path)
+    setSubMenuClicked(path)
+  }
+
   useEffect(() => {
     const activeMenuObj = [...leftMenu, ...rightMenu].find(
       (menu) =>
@@ -84,27 +87,21 @@ export default function useTopnavbar() {
         (menu.subMenus && menu.subMenus.some((subMenu) => getActiveUrl(subMenu.path))),
     )
     setActiveMenu(activeMenuObj || null)
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathName])
 
   useEffect(() => {
     const navList = navListRef.current
-
     if (navList) {
       const handleClick = (e: MouseEvent) => {
         // Check if the target is a link tag and then toggle the nav open and close
         if (e.target instanceof HTMLElement) {
           // This line checks if the target is an <a> tag with a non-empty href attribute and toggles the nav state
           // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          e.target.tagName === 'A' &&
-            e.target.attributes.getNamedItem('href')?.value !== '' &&
-            setNavOpen((p) => !p)
+          e.target.tagName === 'A' && e.target.attributes.getNamedItem('href')?.value !== '' && setNavOpen((p) => !p)
         }
       }
-
       navList.addEventListener('click', (e) => handleClick(e))
-
       return () => {
         navList.removeEventListener('click', handleClick)
       }
@@ -119,5 +116,6 @@ export default function useTopnavbar() {
     navOpen,
     pathName,
     navListRef,
+    handleSubMenuClick,
   }
 }
