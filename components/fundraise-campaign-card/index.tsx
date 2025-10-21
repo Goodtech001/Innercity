@@ -5,10 +5,7 @@ import fundraiseCampaignImage from '@/public/assets/images/campaign-flyer.jpg'
 import PercentageBar from '@/components/percentage-bar'
 import { Icon } from '@iconify/react'
 import { Campaign } from '@/types/Campaign'
-
-interface Props {
-  campaign: Campaign
-}
+// import { useRouter } from 'next/navigation'
 
 export default function FundraiseCampaignCard({
   campaign,
@@ -17,6 +14,9 @@ export default function FundraiseCampaignCard({
   campaign: Campaign
   href: string
 }) {
+
+    // const router = useRouter()
+
   return (
     <Link className="flex w-fit flex-col" href={href}>
       <div className="flex h-full w-full flex-row gap-4 rounded-md p-1.5 shadow-[0px_0px_4px_1px_rgba(100,_100,_100,_0.1)] hover:scale-[1.01] md:max-w-96 md:flex-col md:p-2">
@@ -38,13 +38,15 @@ export default function FundraiseCampaignCard({
             className="ellipsis-2 text-balance text-lg font-bold !leading-[100%] text-dark md:text-xl"
           >
             {campaign.title}
-          </Link>
-          <p className="hidden font-medium md:inline-block">
-            Created by:{' '}
-            <Link className="text-primary" href={'/'}>
-              {campaign.user}
-            </Link>
           </p>
+          <div
+            className="hidden font-medium md:inline-block"
+          >
+            Created by:{' '}
+            <h1 className="text-primary">
+              {campaign.user}
+            </h1>
+          </div>
           <div className="flex items-center gap-6">
             <PercentageBar value={10} />
             <p className="pb-1 text-sm font-medium leading-tight text-primary">100%</p>
@@ -55,14 +57,14 @@ export default function FundraiseCampaignCard({
 
           <Link className="inline-block py-2.5 text-sm underline md:hidden" href={'/'}>
             Donate now
-          </Link>
+          </button>
 
           <Link
             className="btn-primary mt-auto hidden w-fit px-10 text-sm md:inline-block"
             href={'/'}
           >
             Donate now
-          </Link>
+          </button>
         </div>
       </div>
     </Link>

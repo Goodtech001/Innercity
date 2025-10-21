@@ -24,7 +24,7 @@ export default function LatestFundraisingCampaigns() {
               Latest <span className="hidden md:inline">Fundraising</span> Campaigns
             </h3>
 
-            <Link className="font-semibold underline" href={'/campaign/all'}>
+            <Link className="font-semibold underline" href={'/campaigns'}>
               See more
             </Link>
           </div>

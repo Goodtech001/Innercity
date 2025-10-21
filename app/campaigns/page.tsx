@@ -99,7 +99,7 @@ function CampaignsContent() {
             <p className="text-gray-500">No campaigns found for.</p>
           ) : (
             <div className="flex flex-col gap-5 md:grid md:grid-cols-3">
-              {/* fundraise campaign card */}
+              {/* fundraise campaign card */} 
               {campaignsData.map((campaign) => (
                 <FundraiseCampaignCard key={campaign.id} campaign={campaign} href={`/campaigns/${campaign.id}`} />
               ))}
@@ -122,3 +122,4 @@ export default function MoreFundraisingCampaigns() {
     </div>
   )
 }
+

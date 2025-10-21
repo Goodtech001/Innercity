@@ -1,22 +1,21 @@
-/* eslint-disable @next/next/no-img-element */
 'use client'
 import campaigns from '@/json/dummy-campaigns.json'
 import { Campaign } from '@/types/Campaign'
-import { notFound, useRouter } from 'next/navigation'
-import { use } from 'react'
+import { notFound } from 'next/navigation'
+// import { use } from 'react'
 import fundraiseCampaignImage from '@/public/assets/images/campaign-flyer.jpg'
 import Image from 'next/image'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import PercentageCircle from '@/components/percentage-circle'
-import me from '@/public/assets/images/me.jpg'
+// import me from '@/public/assets/images/me.jpg'
 import TopNavbar from '@/layouts/topnavbar'
 
-type Props = {
-  params: { id: string }
-}
+import Link from 'next/link'
+import { use } from 'react'
+
+export const dynamic = 'force-dynamic'
 
 export default function CampaignDetail({ params }: { params: Promise<{ id: string }> }) {
-  const router = useRouter()
   const { id } = use(params)
   const campaign = (campaigns as unknown as Campaign[]).find((c) => String(c.id) === id)
 
@@ -25,7 +24,13 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
   return (
     <div>
       <TopNavbar />
-      <div className="container grid-cols-10 pb-5 pt-6 md:grid md:h-screen md:space-x-10">
+      {/* <div className='container ml-auto'>
+            <button onClick={() => router.back()} className="text-white rounded bg-red-200 p-2 mt-5 ">
+        ← Back
+      </button>
+         </div> */}
+
+      <div className="container grid-cols-10 py-5 md:grid md:h-screen md:space-x-10">
         <section className="col-span-6 overflow-y-auto no-scrollbar">
           <Image
             src={fundraiseCampaignImage}
@@ -54,7 +59,7 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
           </p>
         </section>
 
-        <div className="absolute top-80 rounded-md border bg-blue-200 p-2 md:relative md:top-0 md:col-span-4 md:bg-white">
+        <div className="rounded-md border bg-blue-200 p-2 md:relative md:top-0 md:col-span-4 md:bg-white">
           <div className="flex w-full justify-between border-b border-textcolor">
             {/* PROGRESS BAR CIRCLE  */}
             <div className="mb-3 flex gap-3">
@@ -86,9 +91,14 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
           </div>
 
           <div className="mt-8 flex space-x-4 md:block md:space-x-0 md:space-y-3">
-            <button className="btn-primary w-full gap-1">
+            {/* <button 
+            className="btn-primary w-full gap-1"
+            onClick={() => router.push(`/campaigns/${id}/donate`)}>
               Donate <span className="hidden md:inline"> to campaign</span>
-            </button>
+            </button> */}
+            <Link href={`/campaigns/${id}/donate`} className="btn-primary w-full gap-1">
+              Donate <span className="hidden md:inline"> to campaign</span>
+            </Link>
             <button className="btn-white w-full gap-1">
               Share <span className="hidden md:block"> campaign</span>
             </button>
@@ -96,7 +106,7 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
 
           <div className="mt-10 hidden w-full gap-2 rounded-xl border bg-[#0074E626] p-3 md:flex">
             <Image
-              src={me}
+              src="/assets/images/me.jpg"
               alt=""
               height={34}
               width={34}

@@ -32,7 +32,7 @@ function HeroSection() {
                 <Link className="btn-primary w-fit" href={'/campaigns/create'}>
                   Create your campaign
                 </Link>
-                <Link className="btn-white w-fit" href={'/campaign/all'}>
+                <Link className="btn-white w-fit" href={'/campaigns'}>
                   Support a campaign
                 </Link>
               </div>
