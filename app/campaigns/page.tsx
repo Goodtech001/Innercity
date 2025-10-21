@@ -22,14 +22,16 @@ function CampaignsContent() {
 
   return (
     <div>
-      <div className='container !h-auto'>
-        <div className="mb-3 md:flex items-center justify-between border-b py-1.5 pt-6">
-          <h3 className="text-balance text-2xl font-bold text-dark md:text-4xl">Fundraising Campaigns</h3>
-           <SearchInput />
+      <div className="container !h-auto">
+        <div className="mb-3 items-center justify-between border-b py-1.5 pt-6 md:flex">
+          <h3 className="text-balance text-2xl font-bold text-dark md:text-4xl">
+            Fundraising Campaigns
+          </h3>
+          <SearchInput />
         </div>
 
         <div className="mt-3 flex w-full justify-between overflow-x-auto no-scrollbar">
-          <div className=" flex space-x-2 text-sm md:mb-0 md:space-x-2">
+          <div className="flex space-x-2 text-sm md:mb-0 md:space-x-2">
             <button className="btn-white truncate px-4 py-2 text-xs font-light md:px-3 md:py-2">
               Food Campaigns
             </button>
@@ -89,7 +91,6 @@ function CampaignsContent() {
 
       <section>
         <div className="container py-8 pb-6 md:py-14 md:pb-8">
-          
           {query && (
             <p className="mb-6 text-sm text-gray-500">
               Showing results for `<span className="font-semibold">{query}</span>`
@@ -99,9 +100,9 @@ function CampaignsContent() {
             <p className="text-gray-500">No campaigns found for.</p>
           ) : (
             <div className="flex flex-col gap-5 md:grid md:grid-cols-3">
-              {/* fundraise campaign card */} 
+              {/* fundraise campaign card */}
               {campaignsData.map((campaign) => (
-                <FundraiseCampaignCard key={campaign.id} campaign={campaign} href={`/campaigns/${campaign.id}`} />
+                <FundraiseCampaignCard key={campaign.id} campaign={campaign} />
               ))}
             </div>
           )}
@@ -122,4 +123,3 @@ export default function MoreFundraisingCampaigns() {
     </div>
   )
 }
-

@@ -32,11 +32,7 @@ export default function LatestFundraisingCampaigns() {
           <div className="flex flex-col gap-5 md:grid md:grid-cols-3">
             {/* fundraise campaign card */}
             {(campaigns as unknown as Campaign[]).slice(0, 3).map((campaign) => (
-              <FundraiseCampaignCard
-                key={campaign.id}
-                campaign={campaign}
-                href={`/campaigns/${campaign.id}`}
-              />
+              <FundraiseCampaignCard key={campaign.id} campaign={campaign} />
             ))}
           </div>
         </div>
