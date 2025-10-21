@@ -18,8 +18,8 @@ export default function FundraiseCampaignCard({
   href: string
 }) {
   return (
-    <Link href={href}>
-      <div className="flex w-full flex-row gap-4 rounded-md p-1.5 shadow-[0px_0px_6px_1px_rgba(0,_0,_0,_0.1)] hover:scale-[1.01] md:max-w-96 md:flex-col md:p-2">
+    <Link className="flex w-fit flex-col" href={href}>
+      <div className="flex h-full w-full flex-row gap-4 rounded-md p-1.5 shadow-[0px_0px_4px_1px_rgba(100,_100,_100,_0.1)] hover:scale-[1.01] md:max-w-96 md:flex-col md:p-2">
         <div className="relative w-[40%] md:h-52 md:w-auto">
           <span className="absolute left-1 top-1 hidden w-fit items-center justify-center gap-3 rounded-md border border-primary bg-white px-6 py-1 font-semibold text-primary md:flex">
             <Icon icon={'mdi:tag'} />
@@ -31,9 +31,9 @@ export default function FundraiseCampaignCard({
             src={fundraiseCampaignImage}
           />
         </div>
-        <div className="flex w-[60%] flex-col gap-2 md:w-auto">
+        <div className="flex w-[60%] flex-col justify-between gap-2 md:w-auto">
           <Link
-            href={'/'}
+            href={href}
             title="Join Me To Impact 200 Lives Through Education All Around Lagos For The Next 3 Years"
             className="ellipsis-2 text-balance text-lg font-bold !leading-[100%] text-dark md:text-xl"
           >
@@ -53,11 +53,14 @@ export default function FundraiseCampaignCard({
             Target: <span className="text-primary">${campaign.target}</span>
           </p>
 
-          <Link className="mt-auto inline-block py-2.5 text-sm underline md:hidden" href={'/'}>
+          <Link className="inline-block py-2.5 text-sm underline md:hidden" href={'/'}>
             Donate now
           </Link>
 
-          <Link className="btn-primary mt-3 hidden w-fit px-10 text-sm md:inline-block" href={'/'}>
+          <Link
+            className="btn-primary mt-auto hidden w-fit px-10 text-sm md:inline-block"
+            href={'/'}
+          >
             Donate now
           </Link>
         </div>

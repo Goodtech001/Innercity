@@ -25,18 +25,14 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
   return (
     <div>
       <TopNavbar />
-      {/* <div className='container ml-auto'>
-            <button onClick={() => router.back()} className="text-white rounded bg-red-200 p-2 mt-5 ">
-        ← Back
-      </button>
-         </div> */}
-      <div className="container md:h-screen grid-cols-10 py-5 md:grid md:space-x-10">
+      <div className="container grid-cols-10 pb-5 pt-6 md:grid md:h-screen md:space-x-10">
         <section className="col-span-6 overflow-y-auto no-scrollbar">
           <Image
             src={fundraiseCampaignImage}
             alt={campaign.title}
             className="mb-6 max-h-[400px] w-full rounded-lg object-cover"
           />
+
           <h1 className="mb-4 text-2xl font-bold text-black">{campaign.title}</h1>
 
           <div className="justify-between md:flex">
@@ -58,8 +54,7 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
           </p>
         </section>
 
-      
-        <div className="top-80 md:col-span-4 rounded-md border bg-blue-200 p-2 md:bg-white md:relative absolute md:top-0">
+        <div className="absolute top-80 rounded-md border bg-blue-200 p-2 md:relative md:top-0 md:col-span-4 md:bg-white">
           <div className="flex w-full justify-between border-b border-textcolor">
             {/* PROGRESS BAR CIRCLE  */}
             <div className="mb-3 flex gap-3">
@@ -72,7 +67,12 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
                 <p className="md:mt-2">100k+ Donors</p>
               </div>
             </div>
-            <Icon icon="solar:bookmark-bold" width="24" height="24" className="mt-2 text-primary md:ml-0 ml-16" />
+            <Icon
+              icon="solar:bookmark-bold"
+              width="24"
+              height="24"
+              className="ml-16 mt-2 text-primary md:ml-0"
+            />
           </div>
           {/* <p>
           <strong>Category:</strong> {campaign.category}
@@ -110,6 +110,5 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
         </div>
       </div>
     </div>
-  
   )
 }

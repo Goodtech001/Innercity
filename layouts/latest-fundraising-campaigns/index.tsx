@@ -1,14 +1,14 @@
-"use client";
+'use client'
 import Link from 'next/link'
 import React, { useRef } from 'react'
 import FundraiseCampaignCard from '@/components/fundraise-campaign-card'
 import campaigns from '@/json/dummy-campaigns.json'
 import { Campaign } from '@/types/Campaign'
-import { AnimatePresence, motion, useInView } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 
 export default function LatestFundraisingCampaigns() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: '-50px' })
 
   return (
     <motion.div
@@ -32,7 +32,11 @@ export default function LatestFundraisingCampaigns() {
           <div className="flex flex-col gap-5 md:grid md:grid-cols-3">
             {/* fundraise campaign card */}
             {(campaigns as unknown as Campaign[]).slice(0, 3).map((campaign) => (
-              <FundraiseCampaignCard key={campaign.id} campaign={campaign} href={`/campaigns/${campaign.id}`} />
+              <FundraiseCampaignCard
+                key={campaign.id}
+                campaign={campaign}
+                href={`/campaigns/${campaign.id}`}
+              />
             ))}
           </div>
         </div>

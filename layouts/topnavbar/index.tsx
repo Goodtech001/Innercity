@@ -9,6 +9,7 @@ import UserProfileDropdown from '@/components/user-profile-dropdown'
 
 export default function TopNavbar() {
   const [isSignedIn, setIsSignedIn] = useState(false)
+
   useEffect(() => {
     const token = localStorage.getItem('token')
     if (token) {
