@@ -14,8 +14,7 @@ export default function FundraiseCampaignCard({
   campaign: Campaign
  
 }) {
-
-    // const router = useRouter()
+  // const router = useRouter()
 
   return (
     <Link href={`/campaigns/${campaign.id}`}>
@@ -31,20 +30,16 @@ export default function FundraiseCampaignCard({
             src={fundraiseCampaignImage}
           />
         </div>
-        <div className="flex w-[60%] flex-col gap-2 md:w-auto">
+        <div className="flex w-[60%] flex-col justify-between gap-2 md:w-auto">
           <p
+            
             title="Join Me To Impact 200 Lives Through Education All Around Lagos For The Next 3 Years"
             className="ellipsis-2 text-balance text-lg font-bold !leading-[100%] text-dark md:text-xl"
           >
             {campaign.title}
           </p>
-          <div
-            className="hidden font-medium md:inline-block"
-          >
-            Created by:{' '}
-            <h1 className="text-primary">
-              {campaign.user}
-            </h1>
+          <div className="hidden font-medium md:inline-block">
+            Created by: <h1 className="text-primary">{campaign.user}</h1>
           </div>
           <div className="flex items-center gap-6">
             <PercentageBar value={10} />
@@ -54,11 +49,13 @@ export default function FundraiseCampaignCard({
             Target: <span className="text-primary">${campaign.target}</span>
           </p>
 
-          <button className="mt-auto inline-block py-2.5 text-sm underline md:hidden">
+          <button className="inline-block py-2.5 text-sm underline md:hidden">
             Donate now
           </button>
 
-          <button className="btn-primary mt-3 hidden w-fit px-10 text-sm md:inline-block">
+          <button
+            className="btn-primary mt-auto hidden w-fit px-10 text-sm md:inline-block"
+          >
             Donate now
           </button>
         </div>

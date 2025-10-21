@@ -1,6 +1,6 @@
 import BlogCard from '@/components/blog-card'
 import blogsData from '@/json/blog-posts.json'
-import CtaSection from '@/layouts/cta-section'
+
 import Footer from '@/layouts/footer'
 import TopNavbar from '@/layouts/topnavbar'
 import React from 'react'
