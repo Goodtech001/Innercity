@@ -32,7 +32,7 @@ export const rightMenu: menu_type[] = [
     subMenus: [
       {
         title: 'Food Campaigns',
-        path: '/food',
+        path: '?category=food',
         description:
           'Feed an indigent in africa, Sponsor school meals for children in malawi, Sponsor family food parcels',
       },

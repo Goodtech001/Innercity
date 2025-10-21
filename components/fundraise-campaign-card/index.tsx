@@ -22,12 +22,13 @@ export default function FundraiseCampaignCard({ campaign }: { campaign: Campaign
           />
         </Link>
         <div className="flex w-[60%] flex-col gap-2 md:h-full md:w-auto">
-          <p
+          <Link
+            href={`/campaign/${campaign.id}`}
             title="Join Me To Impact 200 Lives Through Education All Around Lagos For The Next 3 Years"
             className="ellipsis-2 text-balance text-lg font-bold !leading-[100%] text-dark md:text-xl"
           >
             {campaign.title}
-          </p>
+          </Link>
           <div className="hidden gap-x-1.5 font-medium md:flex">
             Created by: <h1 className="text-primary">{campaign.user}</h1>
           </div>
