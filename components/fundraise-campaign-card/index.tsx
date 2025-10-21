@@ -10,7 +10,7 @@ export default function FundraiseCampaignCard({ campaign }: { campaign: Campaign
   return (
     <div className="flex w-fit flex-col">
       <div className="flex h-full w-full flex-row gap-4 rounded-md p-1.5 shadow-[0px_0px_4px_1px_rgba(100,_100,_100,_0.1)] hover:scale-[1.01] md:max-w-96 md:flex-col md:p-2">
-        <Link href={'/profile?tab=notifications'} className="relative w-[40%] md:h-52 md:w-auto">
+        <div className="relative w-[40%] md:h-52 md:w-auto">
           <span className="absolute left-1 top-1 hidden w-fit items-center justify-center gap-3 rounded-md border border-primary bg-white px-6 py-1 font-semibold text-primary md:flex">
             <Icon icon={'mdi:tag'} />
             <small>Send Children Back to School</small>
@@ -20,11 +20,11 @@ export default function FundraiseCampaignCard({ campaign }: { campaign: Campaign
             alt="fundraise campaign image"
             src={fundraiseCampaignImage}
           />
-        </Link>
+        </div>
         <div className="flex w-[60%] flex-col gap-2 md:h-full md:w-auto">
           <Link
             href={`/campaign/${campaign.id}`}
-            title="Join Me To Impact 200 Lives Through Education All Around Lagos For The Next 3 Years"
+            title={campaign.title}
             className="ellipsis-2 text-balance text-lg font-bold !leading-[100%] text-dark md:text-xl"
           >
             {campaign.title}
