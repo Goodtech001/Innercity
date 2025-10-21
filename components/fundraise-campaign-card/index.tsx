@@ -9,16 +9,16 @@ import { Campaign } from '@/types/Campaign'
 
 export default function FundraiseCampaignCard({
   campaign,
-  href,
+ 
 }: {
   campaign: Campaign
-  href: string
+ 
 }) {
 
     // const router = useRouter()
 
   return (
-    <Link href={href}>
+    <Link href={`/campaigns/${campaign.id}`}>
       <div className="flex w-full flex-row gap-4 rounded-md p-1.5 shadow-[0px_0px_6px_1px_rgba(0,_0,_0,_0.1)] hover:scale-[1.01] md:max-w-96 md:flex-col md:p-2">
         <div className="relative w-[40%] md:h-52 md:w-auto">
           <span className="absolute left-1 top-1 hidden w-fit items-center justify-center gap-3 rounded-md border border-primary bg-white px-6 py-1 font-semibold text-primary md:flex">

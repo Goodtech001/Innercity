@@ -101,7 +101,7 @@ function CampaignsContent() {
             <div className="flex flex-col gap-5 md:grid md:grid-cols-3">
               {/* fundraise campaign card */} 
               {campaignsData.map((campaign) => (
-                <FundraiseCampaignCard key={campaign.id} campaign={campaign} href={`/campaigns/${campaign.id}`} />
+                <FundraiseCampaignCard key={campaign.id} campaign={campaign} />
               ))}
             </div>
           )}
