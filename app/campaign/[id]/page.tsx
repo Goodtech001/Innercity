@@ -1,11 +1,10 @@
 import React from 'react'
 
-interface PageProps {
-  params: {
-    id: string
-  }
+type Props = {
+  params: Promise<{ id: string }>
 }
 
-export default function Page({ params }: PageProps) {
-  return <div>Page {JSON.stringify(params.id)}</div>
+export default async function Page({ params }: Props) {
+  const { id } = await params
+  return <div>Page {id}</div>
 }
