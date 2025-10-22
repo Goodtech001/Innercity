@@ -1,6 +1,6 @@
-'use client'
-import campaigns from '@/json/dummy-campaigns.json'
-import { Campaign } from '@/types/Campaign'
+
+
+// import { Campaign } from '@/types/Campaign'
 import { notFound } from 'next/navigation'
 // import { use } from 'react'
 import fundraiseCampaignImage from '@/public/assets/images/campaign-flyer.jpg'
@@ -9,17 +9,30 @@ import { Icon } from '@iconify/react/dist/iconify.js'
 import PercentageCircle from '@/components/percentage-circle'
 // import me from '@/public/assets/images/me.jpg'
 import TopNavbar from '@/layouts/topnavbar'
+import campaignsData from '@/json/dummy-campaigns.json'
 
 import Link from 'next/link'
-import { use } from 'react'
+// import { use } from 'react'
 
-export const dynamic = 'force-dynamic'
+// export const dynamic = 'force-dynamic'
+export async function generateStaticParams() {
+  return campaignsData.map((campaign) => ({
+    id: campaign.id.toString(),
+  }))
+}
 
-export default function CampaignDetail({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)
-  const campaign = (campaigns as unknown as Campaign[]).find((c) => String(c.id) === id)
+interface CampaignPageProps {
+  params: Promise<{
+    id: string
+  }>
+}
 
-  if (!campaign) return notFound()
+export default async function CampaignDetailsPage({ params }: CampaignPageProps) {
+  const { id } = await params // ✅ await it
+  const post = campaignsData.find((p) => String(p.id) === id)
+
+  if (!post) notFound()
+  console.log(post)
 
   return (
     <div>
@@ -34,13 +47,13 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
         <section className="col-span-6 overflow-y-auto no-scrollbar">
           <Image
             src={fundraiseCampaignImage}
-            alt={campaign.title}
+            alt={post.title}
             className="mb-6 max-h-[400px] w-full rounded-lg object-cover"
           />
 
-          <h1 className="mb-4 text-2xl font-bold text-black">{campaign.title}</h1>
+          <h1 className="mb-4 text-2xl font-bold text-black">{post.title}</h1>
 
-          <div className="justify-between md:flex">
+          <div className="md:flex space-x-6">
             <div className="flex font-bold text-primary">
               <Icon icon={'mdi:tag'} className="mt-1" />
               <p>Send Children Back to School</p>
@@ -51,11 +64,11 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
             </div>
           </div>
           <div className="mt-4 flex gap-1">
-            <span className="font-bold text-primary">{campaign.user}</span>{' '}
+            <span className="font-bold text-primary">{post.user}</span>{' '}
             <p className="mt text-base">Created this campaign</p>
           </div>
           <p className="mb-4 mt-5 border-t border-textcolor text-gray-700">
-            {campaign.description}
+            {post.description}
           </p>
         </section>
 
@@ -84,7 +97,7 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
         </p> */}
           <div className="mt-4 flex justify-between">
             <p>
-              <strong>Goal:</strong> ${campaign.goal} <span className="text-primary">58,046</span>
+              <strong>Goal:</strong> $ 50,000 <span className="text-primary">58,046</span>
             </p>
             <p>•</p>
             <p className="font-bold">End Date: 22nd Sept 2026</p>
@@ -113,7 +126,7 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
               className="h-[50px] w-[50px] rounded-full object-cover"
             />
             <div>
-              <span className="font-bold text-black">{campaign.user}</span>
+              <span className="font-bold text-black">{post.user}</span>
               <p className="text-black">Joined on: 12 Sep 2025</p>
             </div>
           </div>

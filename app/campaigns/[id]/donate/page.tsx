@@ -166,7 +166,7 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
                 <p className="text-white md:mt-2">Ends on: 22nd March 2025</p>
               </div>
             </div>
-            <div className="mt-10 flex items-end gap-8">
+            <div className=" mt-12 flex gap-8">
               <div className="text-white">
                 <p className="text-right">Target</p>
                 <p>$ 82,239.43</p>

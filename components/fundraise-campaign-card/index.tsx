@@ -23,7 +23,7 @@ export default function FundraiseCampaignCard({ campaign }: { campaign: Campaign
         </div>
         <div className="flex w-[60%] flex-col gap-2 md:h-full md:w-auto">
           <Link
-            href={`/campaign/${campaign.id}`}
+            href={`/campaigns/${campaign.id}`}
             title={campaign.title}
             className="ellipsis-2 text-balance text-lg font-bold !leading-[100%] text-dark md:text-xl"
           >
