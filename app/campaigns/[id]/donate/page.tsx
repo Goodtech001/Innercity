@@ -1,20 +1,34 @@
-'use client'
-
-import campaigns from '@/json/dummy-campaigns.json'
+"use client";
 import { notFound, useSearchParams } from 'next/navigation'
-import { Campaign } from '@/types/Campaign'
+// import { Campaign } from '@/types/Campaign'
 import TopNavbar from '@/layouts/topnavbar'
 import ProgressCircle from '@/components/progress bar-circle'
 import me from '@/public/assets/images/me.jpg'
 import { use, useEffect, useRef, useState } from 'react'
 import { Icon } from '@iconify/react/dist/iconify.js'
+import campaignsData from '@/json/dummy-campaigns.json'
 
 import espees from '@/public/assets/images/espees.png'
 import Image from 'next/image'
 import CardForm from '@/components/card-form'
 import paystack from '@/public/assets/images/paystackk.png'
 
-export default function CampaignDetail({ params }: { params: Promise<{ id: string }> }) {
+// export function generateStaticParams() {
+//   return campaignsData.map((campaign) => ({
+//     id: campaign.id.toString(),
+//   }))
+// }
+
+interface CampaignPageProps {
+  params: Promise<{
+    id: string
+  }>
+}
+
+export default function CampaignDetailsPage({ params }: CampaignPageProps) {
+  // const { id } = await params // ✅ await it
+
+  
   const searchParams = useSearchParams()
   const [activeStep, setActiveStep] = useState(1)
   const [urlQueryTab, setUrlQueryTab] = useState<string | null>(null)
@@ -137,9 +151,10 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
   }, [urlQueryTab, tabs])
 
   const { id } = use(params)
-  const campaign = (campaigns as unknown as Campaign[]).find((c) => String(c.id) === id)
+  const post = campaignsData.find((p) => String(p.id) === id)
 
-  if (!campaign) return notFound()
+  if (!post) notFound()
+  console.log(post)
 
   return (
     <div>
@@ -160,7 +175,7 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
                 <span className="flex w-full justify-between">
                   <h1 className="mt-4 line-clamp-2 text-2xl font-bold text-white md:max-w-80">
                     {' '}
-                    {campaign.title}
+                    {post.title}
                   </h1>
                 </span>
                 <p className="text-white md:mt-2">Ends on: 22nd March 2025</p>
@@ -190,7 +205,7 @@ export default function CampaignDetail({ params }: { params: Promise<{ id: strin
                 className="h-[50px] w-[50px] rounded-full object-cover"
               />
               <div>
-                <span className="font-bold text-primary">{campaign.user}</span>
+                <span className="font-bold text-primary">{post.user}</span>
                 <p className="text-sm text-textcolor">Joined on: 12 Sep 2025</p>
               </div>
             </div>
