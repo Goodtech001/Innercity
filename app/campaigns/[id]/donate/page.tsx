@@ -19,13 +19,11 @@ export async function generateStaticParams() {
   }))
 }
 
-// ✅ Fix types — no `Promise` on params
-interface CampaignPageProps {
+export default async function CampaignDonatePage({
+  params,
+}: {
   params: { id: string }
-}
-
-// ✅ Server Component version
-export default async function CampaignDonatePage({ params }: CampaignPageProps) {
+}) {
   const { id } = params
   const post = campaignsData.find((p) => String(p.id) === id)
 
