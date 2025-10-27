@@ -43,7 +43,7 @@ export default async function CampaignDetailsPage({ params }: CampaignPageProps)
       </button>
          </div> */}
 
-      <div className="container grid-cols-10 py-5 md:grid md:h-screen md:space-x-10">
+      <div className="container grid-cols-10 p-6 md:grid md:h-screen md:space-x-10 h-[115vh]">
         <section className="col-span-6 overflow-y-auto no-scrollbar">
           <Image
             src={fundraiseCampaignImage}
@@ -53,7 +53,7 @@ export default async function CampaignDetailsPage({ params }: CampaignPageProps)
 
           <h1 className="mb-4 text-2xl font-bold text-black">{post.title}</h1>
 
-          <div className="md:flex space-x-6">
+          <div className="md:flex md:space-x-6">
             <div className="flex font-bold text-primary">
               <Icon icon={'mdi:tag'} className="mt-1" />
               <p>Send Children Back to School</p>
@@ -72,7 +72,7 @@ export default async function CampaignDetailsPage({ params }: CampaignPageProps)
           </p>
         </section>
 
-        <div className="rounded-md border bg-blue-200 p-2 md:relative md:top-0 md:col-span-4 md:bg-white">
+        <div className="rounded-md border bg-blue-200 p-2 md:relative md:top-0 md:col-span-4 md:bg-white fixed md:w-ful w-11/12 bottom-0">
           <div className="flex w-full justify-between border-b border-textcolor">
             {/* PROGRESS BAR CIRCLE  */}
             <div className="mb-3 flex gap-3">
@@ -97,7 +97,7 @@ export default async function CampaignDetailsPage({ params }: CampaignPageProps)
         </p> */}
           <div className="mt-4 flex justify-between">
             <p>
-              <strong>Goal:</strong> $ 50,000 <span className="text-primary">58,046</span>
+              <strong>Goal:</strong> $<span className="text-primary">58,046</span>
             </p>
             <p>•</p>
             <p className="font-bold">End Date: 22nd Sept 2026</p>

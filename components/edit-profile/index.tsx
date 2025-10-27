@@ -122,8 +122,8 @@ function Editpage() {
         </div>
       )}
 
-      <section className="flex">
-        <div className="space-y-1">
+      <section className="flex ">
+        <div className="space-y-3">
           <div>
             <label htmlFor="text"> Full Name</label>
             <p className="md:line-clamp-0 line-clamp-2 font-medium text-black">
@@ -147,20 +147,26 @@ function Editpage() {
           </div>
         </div>
 
-        <div className="mx-auto">
+        <div className="mx-auto space-y-3">
           <div>
             <label htmlFor="text">Email</label>
             <p className="truncate font-medium text-black">{formData.email || ProfileEmail}</p>
           </div>
 
-          <label htmlFor="text">Phone</label>
+          <div>
+            <label htmlFor="text">Phone</label>
           <p className="font-medium text-black">+234 {formData.phone || ProfilePhone}</p>
+          </div>
 
-          <label htmlFor="text">Joined</label>
+         <div>
+           <label htmlFor="text">Joined</label>
           <p className="font-medium text-black">15 Apr 2025</p>
+         </div>
 
-          <label htmlFor="text">Bio</label>
+         <div>
+           <label htmlFor="text">Bio</label>
           <p className="truncate font-medium text-black">A stitch in time saves nine</p>
+         </div>
         </div>
       </section>
     </div>

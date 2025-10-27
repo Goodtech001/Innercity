@@ -83,7 +83,7 @@ function CardForm() {
 
 
      <div className='flex gap-3'>
-         <div className="mb-4">
+         <div className="mb-4 w-full">
         <label
           htmlFor="ifsc-code"
           className="block text-sm font-medium mb-2"
@@ -100,7 +100,7 @@ function CardForm() {
           required
         />
       </div>
-      <div className="mb-4">
+      <div className="mb-4 w-full">
         <label
           htmlFor="ifsc-code"
           className="block text-sm font-medium mb-2"
@@ -110,6 +110,7 @@ function CardForm() {
         <input
           type="text"
           onChange={(e) => setIfscCode(e.target.value)}
+          maxLength={3}
           className="block w-full p-2 border border-gray-300 rounded"
           required
         />
@@ -137,9 +138,9 @@ function CardForm() {
       </div>
       <button
         type="submit"
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        className="btn-primary"
       >
-        Submit
+        Donate
       </button>
     </form>
   )
