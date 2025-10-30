@@ -3,7 +3,7 @@ import React from 'react'
 
 function BankTransfer() {
   return (
-    <div className="mx-auto max-w-md">
+    <div className="mx-auto max-w-md p-4">
         <p className='mb-4 text-sm'>You can make payment directly to the InnerCity Mission Account via bank transfer </p>
         <small className=''>Account Name: InnerCity Mission</small><br />
         <small>Account Number: 2030022369</small><br />
