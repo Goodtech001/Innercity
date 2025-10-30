@@ -43,17 +43,17 @@ export default async function CampaignDonatePage({ params }: CampaignPageProps) 
       <div className="wrapper container mt-10 min-h-screen w-full rounded-t-md">
         {/* Header section */}
         <div className="w-full overflow-auto rounded-t-md bg-primary">
-          <div className="flex w-full items-center justify-between gap-3 border-textcolor px-12 md:mb-3 md:flex py-2">
+          <div className="flex w-full items-center justify-between gap-3 border-textcolor md:px-12 md:mb-3 md:flex py-2">
             <div className="flex gap-4">
               <div className="flex items-center">
                 <ProgressCircle />
               </div>
 
               <div className=''> 
-                <h1 className="mt-8 line-clamp-2 text-2xl font-bold text-white md:max-w-80 my-auto">
+                <h1 className="mt-8 line-clamp-2 text-base font-bold text-white md:max-w-80 my-auto">
                   {post.title}
                 </h1>
-                <p className="text-white md:mt-2">Ends on: 22nd March 2025</p>
+                <p className="text-white text-sm md:mt-2">Ends on: 22nd March 2025</p>
 
                 <div className="mb-3 flex gap-8 text-white mt-2">
                   <div className="block md:hidden">

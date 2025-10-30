@@ -51,7 +51,7 @@ export default function DonationTabsClient({ espees, paystack }: { espees: any; 
       {/* User info */}
       <div>
 
-        <div className="mt-10 hidden w-full gap-2 p-3 md:flex ">
+        <div className="md:mt-10 w-full gap-2 p-3 flex ">
         <Image
           src={me}
           alt="me"
@@ -66,12 +66,13 @@ export default function DonationTabsClient({ espees, paystack }: { espees: any; 
       </div>
 
       <div className="flex">
-        <div className="mt-10">
+        <div className="md:mt-10">
           <div className="flex">
             <div className="mb-6 gap-4">
               <div
                 ref={scrollRef}
-                className="flex max-w-[450px] gap-2 overflow-x-auto border-r p-1 no-scrollbar md:gap-2 md:p-2"
+                // className="flex max-w-[300px] gap-2 overflow-x-auto border-r p-1 no-scrollbar md:gap-2 md:p-2"
+                className="flex w-[90vw] gap-2 overflow-x-auto border-r p-1 no-scrollbar md:w-[450px] md:gap-2 md:p-2"
               >
                 {tabs.map((tab) => (
                   <div
