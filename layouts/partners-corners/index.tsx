@@ -36,7 +36,7 @@ export default function PartnersCorners() {
       <section>
         <div className="container pb-8 md:py-2 md:pb-8">
           <h3 className="mb-8 text-balance text-center text-3xl font-bold text-dark md:text-4xl">
-            Partners Corner
+            Partners Diary
           </h3>
         </div>
         <div className="">

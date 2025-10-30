@@ -25,23 +25,23 @@ export default function DonationTabsClient({ espees, paystack }: { espees: any; 
   }
 
   const tabs = [
-    { id: 1, title: 'Card', icon: 'streamline-emojis:credit-card', iconType: 'iconify' },
-    { id: 2, title: 'Espees', image: espees },
-    { id: 3, title: 'Stripe', icon: 'bi:stripe', iconType: 'iconify' },
-    { id: 4, title: 'PayPal', icon: 'logos:paypal', iconType: 'iconify' },
-    { id: 5, title: 'PayStack', image: paystack },
-    { id: 6, title: 'Voucher', icon: 'mdi:voucher', iconType: 'iconify' },
-    { id: 7, title: 'Bank Transfer', icon: 'noto:bank', iconType: 'iconify' },
+    // { id: 1, title: 'Card', icon: 'streamline-emojis:credit-card', iconType: 'iconify' },
+    { id: 1, title: 'Espees', image: espees },
+    { id: 2, title: 'Stripe', icon: 'bi:stripe', iconType: 'iconify' },
+    { id: 3, title: 'PayPal', icon: 'logos:paypal', iconType: 'iconify' },
+    { id: 4, title: 'PayStack', image: paystack },
+    { id: 5, title: 'Voucher', icon: 'mdi:voucher', iconType: 'iconify' },
+    { id: 6, title: 'Bank Transfer', icon: 'noto:bank', iconType: 'iconify' },
   ]
 
   const steps = [
-    { id: 1, component: <CardForm /> },
-    { id: 2, component: <EspeeForm /> },
-    { id: 3, component: <StripeForm /> },
-    { id: 4, component: <PaypalForm /> },
-    { id: 5, component: <PaystackForm /> },
-    { id: 6, component: <VoucherForm /> },
-    { id: 7, component: <BankTransfer /> },
+    // { id: 1, component: <CardForm /> },
+    { id: 1, component: <EspeeForm /> },
+    { id: 2, component: <StripeForm /> },
+    { id: 3, component: <PaypalForm /> },
+    { id: 4, component: <PaystackForm /> },
+    { id: 5, component: <VoucherForm /> },
+    { id: 6, component: <BankTransfer /> },
   ]
 
   const current = steps.find((s) => s.id === activeStep)?.component
