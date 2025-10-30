@@ -43,7 +43,7 @@ export default async function CampaignDetailsPage({ params }: CampaignPageProps)
       </button>
          </div> */}
 
-      <div className="container grid-cols-10 p-6 md:grid md:h-screen md:space-x-10 h-[115vh]">
+      <div className="container grid-cols-10 p-6 md:grid md:h-screen md:space-x-10 h-[118vh]">
         <section className="col-span-6 overflow-y-auto no-scrollbar">
           <Image
             src={fundraiseCampaignImage}
@@ -67,7 +67,7 @@ export default async function CampaignDetailsPage({ params }: CampaignPageProps)
             <span className="font-bold text-primary">{post.user}</span>{' '}
             <p className="mt text-base">Created this campaign</p>
           </div>
-          <p className="mb-4 mt-5 border-t border-textcolor text-gray-700">
+          <p className="mb-6 mt-5 border-t border-textcolor text-gray-700">
             {post.description}
           </p>
         </section>

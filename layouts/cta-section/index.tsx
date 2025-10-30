@@ -12,7 +12,7 @@ function CtaSection() {
           Start a fundraiser or support one — every action helps change a life.
         </p>
         <span className="mt-10 flex flex-wrap justify-center gap-2 md:gap-5">
-          <Link href={'/create-campaign'} className="btn-white w-fit max-w-md truncate">
+          <Link href={'/campaigns'} className="btn-white w-fit max-w-md truncate">
             Support a campaign
           </Link>
           <Link href={'/campaigns/create'} className="btn-primary nowrap w-fit truncate">

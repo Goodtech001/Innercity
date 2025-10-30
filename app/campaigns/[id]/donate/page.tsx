@@ -11,7 +11,6 @@ import DonationTabsClient from '@/components/donation-tab-client'
 
 // 👇 import client-side tab component
 
-
 // ✅ Pre-generate paths for static campaigns
 export async function generateStaticParams() {
   return campaignsData.map((campaign) => ({
@@ -19,12 +18,15 @@ export async function generateStaticParams() {
   }))
 }
 
-export default async function CampaignDonatePage({
-  params,
-}: {
-  params: { id: string }
-}) {
-  const { id } = params
+interface CampaignPageProps {
+  params: Promise<{
+    id: string
+  }>
+}
+
+
+export default async function CampaignDonatePage({ params }: CampaignPageProps) {
+  const { id } = await params // ✅ await it
   const post = campaignsData.find((p) => String(p.id) === id)
 
   if (!post) notFound()
@@ -35,52 +37,49 @@ export default async function CampaignDonatePage({
       <TopNavbar />
 
       <div className="container border-b">
-        <p className="mb-3 mt-5 text-4xl font-bold text-black">Donation Summary</p>
+        <p className="mb-3 mt-5 md:text-4xl text-2xl container font-bold text-black">Donation Summary</p>
       </div>
 
       <div className="wrapper container mt-10 min-h-screen w-full rounded-t-md">
         {/* Header section */}
         <div className="w-full overflow-auto rounded-t-md bg-primary">
-          <div className="w-full justify-between border-textcolor px-12 py-2 md:flex">
-
-            <div className="mb-3 flex gap-3">
-              <div className='flex items-center'>
+          <div className="flex w-full items-center justify-between gap-3 border-textcolor px-12 md:mb-3 md:flex py-2">
+            <div className="flex gap-4">
+              <div className="flex items-center">
                 <ProgressCircle />
               </div>
 
-              <div className="">
-                <h1 className="mt-4 line-clamp-2 text-2xl font-bold text-white md:max-w-80">
+              <div className=''> 
+                <h1 className="mt-8 line-clamp-2 text-2xl font-bold text-white md:max-w-80 my-auto">
                   {post.title}
                 </h1>
                 <p className="text-white md:mt-2">Ends on: 22nd March 2025</p>
 
-                 <div className="mt-2 flex gap-8 text-white">
-              <div>
-                <p className="md:text-right md:hidden block">Target</p>
-                <p>$ 82,239.43</p>
-              </div>
-              <div>
-                <p className="md:text-right md:hidden block">Raised</p>
-                <p>$ 82,239.43</p>
-              </div>
-            </div>
+                <div className="mb-3 flex gap-8 text-white mt-2">
+                  <div className="block md:hidden">
+                    <p className="md:text-right">Target</p>
+                    <p>$ 82,239.43</p>
+                  </div>
+                  <div className="block md:hidden">
+                    <p className="md:text-right">Raised</p>
+                    <p>$ 82,239.43</p>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className=" flex gap-8 text-white">
-              <div className=' md:block hidden'>
+            <div className="ml-auto flex items-center gap-8 text-white mt-12">
+              <div className="hidden md:block">
                 <p className="text-right">Target</p>
                 <p>$ 82,239.43</p>
               </div>
-              <div className=' md:block hidden'>
-                <p className="text-right md:block hidden">Raised</p>
+              <div className="hidden md:block">
+                <p className="hidden text-right md:block">Raised</p>
                 <p>$ 82,239.43</p>
               </div>
             </div>
           </div>
         </div>
-
-       
 
         {/* 🧩 Donation tabs (client-side component) */}
         <DonationTabsClient espees={espees} paystack={paystack} />

@@ -6,18 +6,17 @@ import kingsChatIcon from '@/public/assets/icons/kings-chat-icon.png'
 import Logo from '@/components/logo'
 
 const quickLinks = [
-  { label: 'Create Your Campaign', link: '' },
-  { label: 'Support Campaign', link: '' },
-  { label: 'Campaign Resources', link: '' },
-  { label: 'About Fundraiser', link: '' },
+  { label: 'Create Your Campaign', link: '/campaigns/create' },
+  { label: 'Support Campaign', link: '/campaigns' },
+  { label: 'Campaign Resources', link: '/resources' },
+  { label: 'About Fundraiser', link: '/about' },
 ]
 
 const campaignCategoryLinks = [
-  { label: 'Health & Welfare', link: '' },
-  { label: 'Child Health & Nutrition', link: '' },
-  { label: 'Child Care & Support', link: '' },
-  { label: 'Family Support Program', link: '' },
-  { label: 'Send Portions', link: '' },
+  { label: 'food campaign', link: '/campaigns?category=food' },
+  { label: 'Education campaign', link: '/campaigns?category=education' },
+  { label: 'Women Empowerment', link: '/campaigns?category=women' },
+  { label: 'Community Development', link: '/campaigns?category=community' },
 ]
 
 export default function Footer() {
@@ -28,7 +27,7 @@ export default function Footer() {
           <ul className="flex flex-col gap-1.5 text-sm">
             <h5 className="mb-4 text-lg font-bold !leading-[100%] md:text-xl">Quick Links</h5>
             {quickLinks.map((link) => (
-              <Link href={link.link} key={link.label}>
+              <Link href={link.link} key={link.label} className='hover:underline'>
                 {link.label}
               </Link>
             ))}
@@ -39,7 +38,7 @@ export default function Footer() {
               Campaign Categories
             </h5>
             {campaignCategoryLinks.map((link) => (
-              <Link href={link.link} key={link.label}>
+              <Link href={link.link} key={link.label} className='hover:underline'>
                 {link.label}
               </Link>
             ))}

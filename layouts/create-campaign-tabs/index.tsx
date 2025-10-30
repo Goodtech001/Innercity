@@ -228,18 +228,20 @@ const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area|null>(null);
         </button>
       </div>
 
+      
+
       <Modal
         className="max-w-xl overflow-hidden rounded-xl bg-white p-5 transition-all duration-300 md:w-full"
         closeModal={closeModal}
         isModalClosed={isModalClosed}
       >
-        <div className=" ">
-          <button
+         <button
             onClick={closeModal}
-            className="z-50 ml-auto flex rounded-lg border border-[#ED4C5C] bg-transparent px-5 py-1 text-dark shadow-sm transition"
+            className="z-50 mr-auto flex rounded-lg border border-[#ffff] bg-transparent px-5 py-1 text-dark shadow-sm transition absolute top-10 right-10"
           >
-            <Icon icon="iconoir:cancel" className="h-6 w-6 text-[#ED4C5C] md:h-7 md:w-7" />
+            <Icon icon="iconoir:cancel" className="h-6 w-6 text-[#ffff] md:h-7 md:w-7" />
           </button>
+        <div >
 
           <div className="">
             <p className="mb-2 text-lg font-bold text-black">Create Avatar</p>

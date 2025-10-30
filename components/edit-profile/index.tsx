@@ -1,8 +1,11 @@
 import { Icon } from '@iconify/react'
 import React, { useState } from 'react'
+import Modal from '@/components/modal'
+import { useModal } from '@/components/modal/useModal'
 
 function Editpage() {
   const [showEditModal, setShowEditModal] = useState(false)
+  const { closeModal, isModalClosed, openModal } = useModal()
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
@@ -32,17 +35,18 @@ function Editpage() {
   return (
     <div className="mt-5">
       <button
-        onClick={() => setShowEditModal(true)}
+        // onClick={() => setShowEditModal(true)}
+       onClick={() => openModal()}
         className="ml-auto flex gap-1 rounded border border-primary bg-gray-100 px-4 py-1 transition hover:bg-gray-300"
         title="Change Image"
       >
         <Icon icon="basil:edit-solid" width="24" height="24" className="text-primary" />
         <div className="text-sm font-medium text-primary">Edit</div>
-      </button>
+      </button>      
 
       {/* Your actual profile details go here */}
 
-      {showEditModal && (
+      {/* {showEditModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-transparent backdrop-blur-sm">
           <div className="border-color text- w-full max-w-md rounded-lg border-2 bg-white p-6 shadow-lg">
             <h2 className="mb-4 text-xl font-semibold">Edit Profile</h2>
@@ -120,7 +124,7 @@ function Editpage() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       <section className="flex ">
         <div className="space-y-3">
@@ -169,7 +173,171 @@ function Editpage() {
          </div>
         </div>
       </section>
-    </div>
+
+      {/* <Modal
+        className="fixed inset-0 z-50 flex items-center justify-center bg-transparent backdrop-blur-sm">
+         closeModal={closeModal}
+        isModalClosed={isModalClosed}
+      >
+       <div className="border-color text- w-full max-w-md rounded-lg border-2 bg-white p-6 shadow-lg">
+            <h2 className="mb-4 text-xl font-semibold">Edit Profile</h2>
+            <div className="space-y-1">
+              <label htmlFor="text" className="font-medium">
+                Full Name
+              </label>
+              <input
+                type="text"
+                name="fullName"
+                placeholder="Full Name"
+                value={formData.fullName}
+                onChange={handleChange}
+                className="w-full rounded border px-3 py-2"
+              />
+              <label htmlFor="tel" className="font-medium">
+                Phone
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="w-full rounded border px-3 py-2"
+              />
+              <label htmlFor="email" className="font-medium">
+                email
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full rounded border px-3 py-2"
+              />
+              <label htmlFor="username" className="font-medium">
+                username
+              </label>
+              <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                value={formData.username}
+                onChange={handleChange}
+                className="w-full rounded border px-3 py-2"
+              />
+              <label htmlFor="text" className="font-medium">
+                Location
+              </label>
+              <input
+                type="text"
+                name="location"
+                placeholder="Location"
+                value={formData.location}
+                onChange={handleChange}
+                className="w-full rounded border px-3 py-2"
+              />
+            </div>
+
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                onClick={() => setShowEditModal(false)}
+                className="rounded border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSave}
+                className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+      </Modal> */}
+
+      <Modal
+      closeModal={closeModal}
+      isModalClosed={isModalClosed}
+      className="max-w-3xl rounded-xl bg-white p-10"
+      >
+        <div className="">
+            <h2 className="mb-4 text-xl font-semibold">Edit Profile</h2>
+            <div className="space-y-1">
+              <label htmlFor="text" className="font-medium">
+                Full Name
+              </label>
+              <input
+                type="text"
+                name="fullName"
+                placeholder="Full Name"
+                value={formData.fullName}
+                onChange={handleChange}
+                className="w-full rounded border px-3 py-2"
+              />
+              <label htmlFor="tel" className="font-medium">
+                Phone
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="w-full rounded border px-3 py-2"
+              />
+              <label htmlFor="email" className="font-medium">
+                email
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full rounded border px-3 py-2"
+              />
+              <label htmlFor="username" className="font-medium">
+                username
+              </label>
+              <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                value={formData.username}
+                onChange={handleChange}
+                className="w-full rounded border px-3 py-2"
+              />
+              <label htmlFor="text" className="font-medium">
+                Location
+              </label>
+              <input
+                type="text"
+                name="location"
+                placeholder="Location"
+                value={formData.location}
+                onChange={handleChange}
+                className="w-full rounded border px-3 py-2"
+              />
+            </div>
+
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                onClick={() => closeModal()}
+                className="rounded border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSave}
+                className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+      </Modal>
+    </div>    
   )
 }
 
