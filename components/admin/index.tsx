@@ -70,13 +70,13 @@ export default function AdminSidebar() {
       {/* 🔹 Sidebar */}
       <aside
         className={clsx(
-          'fixed z-50 top-0 left-0 h-full w-64 bg-white border-r p-4 transition-transform duration-300',
+          'z-10 fixed top-0 left-0 h-full w-64 bg-white border-r p-4 transition-transform duration-300',
           mobileOpen ? 'translate-x-0' : '-translate-x-full',
           'md:translate-x-0 md:static md:block'
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className=" flex items-center justify-between mb-6">
           <h2 className="text-lg font-bold">Admin Panel</h2>
           <button
             className="md:hidden"
