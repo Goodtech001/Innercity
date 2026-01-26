@@ -10,7 +10,7 @@ export default function FundraiseCampaignCard({ campaign }: { campaign: Campaign
   return (
     <div className="flex w-fit flex-col">
       <div className="flex h-full w-full flex-row gap-4 rounded-md p-1.5 shadow-[0px_0px_4px_1px_rgba(100,_100,_100,_0.1)] hover:scale-[1.01] md:max-w-96 md:flex-col md:p-2">
-        <div className="relative w-[40%] md:h-52 md:w-auto">
+        <div className="relative w-[30%] md:h-52 md:w-auto">
           <span className="absolute left-1 top-1 hidden w-fit items-center justify-center gap-3 rounded-md border border-primary bg-white px-6 py-1 font-semibold text-primary md:flex">
             <Icon icon={'mdi:tag'} />
             <small>Send Children Back to School</small>
@@ -40,11 +40,11 @@ export default function FundraiseCampaignCard({ campaign }: { campaign: Campaign
             Target: <span className="text-primary">${campaign.target}</span>
           </p>
 
-          <button className="mt-auto inline-block w-fit py-4 text-sm underline md:hidden">
+          {/* <button className="mt-auto inline-block w-fit py-4 text-sm underline md:hidden">
             Donate now
-          </button>
+          </button> */}
 
-          <button className="btn-primary mt-auto hidden w-fit px-10 text-sm md:inline-block">
+          <button className="btn-primary mt-auto hidde w-fit px-10 text-sm md:inline-block">
             Donate now
           </button>
         </div>

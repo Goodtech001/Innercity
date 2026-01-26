@@ -25,6 +25,11 @@ const userProfileList: TUserProfile[] = [
     link: '/profile?tab=chat',
     icon: <Icon icon={'material-symbols-light:chat'} className="h-6 w-6 text-2xl" />,
   },
+    {
+    label: 'Admin',
+    link: '/admin',
+    icon: <Icon icon={"ri:admin-fill"} className="h-6 w-6 text-2xl" />,
+  },
 ]
 
 type TUserProfile = {

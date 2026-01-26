@@ -43,7 +43,7 @@ export default async function CampaignDetailsPage({ params }: CampaignPageProps)
       </button>
          </div> */}
 
-      <div className="container grid-cols-10 p-6 md:grid md:h-screen md:space-x-10 h-[118vh]">
+      <div className="container grid-cols-10 p-4 md:grid md:h-screen md:space-x-10 h-[118vh]">
         <section className="col-span-6 overflow-y-auto no-scrollbar">
           <Image
             src={fundraiseCampaignImage}

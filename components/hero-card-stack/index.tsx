@@ -121,3 +121,93 @@ export default function HeroCardStack({
     </div>
   )
 }
+
+
+
+// 'use client'
+
+// import { useEffect, useState } from 'react'
+// import { motion } from 'framer-motion'
+// import Image from 'next/image'
+
+// // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// let interval: any
+
+// export type Card = {
+//   id: number | string
+//   image: string
+// }
+
+// type CardStackProp = {
+//   items: Card[]          // ← REQUIRED now
+//   offset?: number
+//   scaleFactor?: number
+// }
+
+// export default function HeroCardStack({
+//   items,
+//   offset = 15,
+//   scaleFactor = 0.06,
+// }: CardStackProp) {
+//   const CARD_OFFSET = offset
+//   const SCALE_FACTOR = scaleFactor
+
+//   const [cards, setCards] = useState<Card[]>(items)
+//   const [isMobile, setIsMobile] = useState(false)
+
+//   useEffect(() => {
+//     interval = setInterval(() => {
+//       setCards(prev => {
+//         const copy = [...prev]
+//         copy.unshift(copy.pop()!)
+//         return copy
+//       })
+//     }, 5000)
+
+//     const handleResize = () => {
+//       setIsMobile(window.innerWidth <= 768)
+//     }
+
+//     handleResize()
+//     window.addEventListener('resize', handleResize)
+
+//     return () => {
+//       clearInterval(interval)
+//       window.removeEventListener('resize', handleResize)
+//     }
+//   }, [])
+
+//   return (
+//     <div className="relative h-80 w-full md:h-auto">
+//       {cards.map((card, index) => {
+//         let yPos = 0
+
+//         if (index === 1) yPos = -CARD_OFFSET
+//         if (index === 2) yPos = -CARD_OFFSET * 2
+//         if (index === 3) yPos = CARD_OFFSET * (isMobile ? 3.7 : 4.5)
+//         if (index === 4) yPos = CARD_OFFSET * (isMobile ? 5.7 : 6.5)
+
+//         return (
+//           <motion.div
+//             key={card.id}
+//             className="absolute w-full rounded-3xl border shadow"
+//             style={{ transformOrigin: 'top center' }}
+//             animate={{
+//               top: yPos,
+//               scale: 1 - index * SCALE_FACTOR,
+//               zIndex: cards.length - index,
+//             }}
+//           >
+//             <Image
+//               src={card.image}
+//               alt="Hero card"
+//               width={400}
+//               height={300}
+//               className="aspect-2 w-full rounded-2xl object-cover"
+//             />
+//           </motion.div>
+//         )
+//       })}
+//     </div>
+//   )
+// }

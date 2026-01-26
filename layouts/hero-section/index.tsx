@@ -3,6 +3,7 @@ import React, { useRef } from 'react'
 import Link from 'next/link'
 import HeroCardStack from '@/components/hero-card-stack'
 import { AnimatePresence, circInOut, motion, spring, useInView } from 'framer-motion'
+// import HeroImage from '@/components/hero-image'
 
 function HeroSection() {
   const ref = useRef(null)
