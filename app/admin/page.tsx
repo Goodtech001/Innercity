@@ -26,10 +26,10 @@
 import { Icon } from "@iconify/react";
 
 const stats = [
-  { label: "Total Users", value: "1,284", icon: "fa:users" },
-  { label: "Active Campaigns", value: "32", icon: "mdi:bullhorn" },
-  { label: "Total Income", value: "₦12,450,000", icon: "healthicons:low-income-level" },
-  { label: "Vouchers Issued", value: "412", icon: "mdi:voucher" },
+  { label: "Total Users", value: "0", icon: "fa:users" },
+  { label: "Active Campaigns", value: "0", icon: "mdi:bullhorn" },
+  { label: "Total Income", value: "₦0", icon: "healthicons:low-income-level" },
+  { label: "Vouchers Issued", value: "0", icon: "mdi:voucher" },
 ];
 
 const quickActions = [
@@ -56,7 +56,7 @@ export default function AdminOverviewPage() {
         {stats.map(stat => (
           <div
             key={stat.label}
-            className="rounded-2xl bg-white p-6 shadow-sm border flex items-center gap-4"
+            className="rounded-2xl bg-white p-6 shadow-sm border flex items-center gap-4 truncate"
           >
             <div className="h-12 w-12 flex items-center justify-center rounded-xl bg-blue-50 text-blue-600">
               <Icon icon={stat.icon} className="text-2xl" />
