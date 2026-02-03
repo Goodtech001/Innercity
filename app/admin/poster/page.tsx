@@ -27,24 +27,24 @@ const campaigns = [
 
 const templates = [
   {
-    id: 'classic',
-    name: 'Classic Gradient',
-    type: 'gradient',
-    className: 'bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500',
+    id: "classic",
+    name: "Classic Gradient",
+    type: "gradient",
+    className: "bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500",
   },
   {
-    id: 'gold',
-    name: 'Luxury Gold',
-    type: 'gradient',
-    className: 'bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600',
+    id: "gold",
+    name: "Luxury Gold",
+    type: "gradient",
+    className: "bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600",
   },
   {
-    id: 'custom',
-    name: 'Gold Birthday Frame',
-    type: 'image',
-    background: '/assets/images/poster image.png',
+    id: "custom",
+    name: "Gold Birthday Frame",
+    type: "image",
+    background: "/assets/images/poster image.png",
   },
-]
+];
 
 export default function BirthdayPosterPage() {
   const [name, setName] = useState('')
@@ -85,9 +85,9 @@ export default function BirthdayPosterPage() {
         <p className="text-gray-500">Create branded birthday posters for your campaigns.</p>
       </header>
 
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
+      <div className="grid grid-rows-2 gap-8 lg:grid-cols-2">
         {/* Controls */}
-        <section className="space-y-6 rounded-2xl border bg-white p-6 lg:col-span-2">
+        <section className="space-y-6 rounded-2xl border bg-white p-6 lg:grid-cols-2 ">
           <h2 className="text-lg font-semibold">Poster Settings</h2>
 
           <div>
@@ -135,35 +135,47 @@ export default function BirthdayPosterPage() {
         </section>
 
         {/* Preview */}
-       <section className="flex justify-center lg:col-span-2">
+       <section className="flex justify-center lg:grid-cols-4  ">
           <div
             ref={posterRef}
-            className="relative aspect-[7/4] w-[300px] overflow-hidden sm:w-[340px] md:w-[380px]"
+            className="relative aspect- w-[300px] overflow-hidden sm:w-[340px] md:w-[340px]"
           >
             {/* PHOTO BEHIND THE POSTER */}
-            {image && (
+
+              {image && (
               <img
                 src={image}
                 alt="Celebrant"
-                className="aspect-circle absolute left-1/2 z-0 w-[62%] -translate-x-1/2 object-cover bg-center"
+                className="absolute left-1/2 w-[50%] top-[20%] -translate-x-1/2"
               />
             )}
 
+            {template.type === 'image' ? (
+              <img
+                src={template.background}
+                alt="Poster background"
+                className="absolute h-full w-full object-contain overflow-hidden"
+              />
+            ) : (
+              <div className={`absolute inset-0 ${template.className}`} />
+            )}
+
+           
             {/* NAME ON GOLD STRIP */}
-            <div className="absolute bottom-[22%] left-1/2 z-10 w-[75%] -translate-x-1/2">
-              <div className="rounded-full bg-gradient-to-r from-yellow-300 via-yellow-500 to-amber-600 py-2 text-center shadow-md">
-                <p className="truncate px-3 text-sm font-bold text-gray-900 sm:text-base">
+            <div className="absolute bottom-[34%] left-1/2 z-10 w-[75%] -translate-x-1/2">
+              <div className="rounded-full bg-transparent py-2 text-center shadow-md">
+                <p className="truncate px-3 font-bold post text-gray-900 sm:text-base">
                   {name || 'Celebrant Name'}
                 </p>
               </div>
             </div>
 
             {/* POSTER PNG ON TOP */}
-            <img
+            {/* <img
               src="/assets/images/poster image.png"
               alt="Birthday Poster Frame"
               className="pointer-events-none absolute inset-0 z-20 h-full w-full object-cover"
-            />
+            /> */}
           </div>
         </section>
       </div>

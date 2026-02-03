@@ -16,6 +16,10 @@ export type User= {
 
 export const columns: ColumnDef<User>[] = [
   {
+    accessorKey: "id",
+    header: "Serial",
+    cell: ({ row }) => row.original.id ?? "—",
+  },{
     accessorKey: "name",
     header: "Name",
     cell: ({ row }) => row.original.name ?? "—",
@@ -32,10 +36,6 @@ export const columns: ColumnDef<User>[] = [
         Email <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-  },
-  {
-    accessorKey: "staffId",
-    header: "User ID",
   },
   {
     accessorKey: "dob",

@@ -1,5 +1,7 @@
 /* @import "tailwindcss"; */
 @import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Babylonica&family=Commissioner:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&family=Pacifico&display=swap');
 
 :root {
   --dark: 0, 0, 0; /* #000000 */
@@ -72,6 +74,10 @@ body {
   font-size: 16px;
   color: rgba(var(--textcolor));
   overflow-x: hidden;
+}
+.post {
+  font-family: 'Pacifico', 'Commissioner';
+  font-size: 16px;
 }
 .sign {
   font-family: 'Commissioner', sans-serif;

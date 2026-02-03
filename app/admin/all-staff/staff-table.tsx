@@ -14,6 +14,11 @@ export type Staff = {
 }
 
 export const columns: ColumnDef<Staff>[] = [
+    {
+    accessorKey: "id",
+    header: "Serial",
+    cell: ({ row }) => row.original.id ?? "—",
+  },
   {
     accessorKey: "name",
     header: "Name",

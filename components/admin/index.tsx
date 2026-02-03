@@ -31,12 +31,13 @@ const links: NavLink[] = [
   },
   { href: '/admin/voucher', label: 'Vouchers', icon: 'mdi:voucher' },
   { href: '/admin/all-staff', label: 'Users', icon: 'fa:users' },
+  { href: '/admin/all-transaction', label: 'Transaction', icon: 'hugeicons:transaction' },
   {
     label: 'Downloads',
     icon: 'solar:download-bold',
     children: [
-      { label: 'Income', href: '/admin/announcement', icon: 'healthicons:low-income-level' },
-      { label: 'Database', href: '/admin/announcemet', icon: 'solar:database-bold' },
+      { label: 'Income', href: '/admin/income', icon: 'healthicons:low-income-level' },
+      { label: 'Database', href: '/admin/database', icon: 'solar:database-bold' },
     ],
   },
 ]
@@ -62,7 +63,7 @@ export default function AdminSidebar() {
       {/* 🔹 Overlay (mobile) */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          className="fixed inset- z-40 md:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}

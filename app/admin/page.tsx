@@ -28,15 +28,15 @@ import { Icon } from "@iconify/react";
 const stats = [
   { label: "Total Users", value: "0", icon: "fa:users" },
   { label: "Active Campaigns", value: "0", icon: "mdi:bullhorn" },
+  { label: "Inactive Campaigns", value: "0", icon: "mdi:voucher" },
   { label: "Total Income", value: "₦0", icon: "healthicons:low-income-level" },
-  { label: "Vouchers Issued", value: "0", icon: "mdi:voucher" },
 ];
 
 const quickActions = [
-  { label: "Upload Media", icon: "fluent-mdl2:media-add", href: "/admin/upload-videos" },
-  { label: "Create Voucher", icon: "mdi:voucher", href: "/admin/vouchers" },
+  { label: "Upload Media", icon: "fluent-mdl2:media-add", href: "/admin/hero-images" },
+  { label: "Create Voucher", icon: "mdi:voucher", href: "/admin/voucher" },
   { label: "Manage Users", icon: "fa:users-cog", href: "/admin/all-staff" },
-  { label: "Download Income", icon: "solar:download-bold", href: "/admin/announcement" },
+  { label: "Download Income", icon: "solar:download-bold", href: "/admin/income" },
   { label: "Backup Database", icon: "solar:database-bold", href: "/admin/database" },
 ];
 
