@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import fundraiseCampaignImage from '@/public/assets/images/campaign-flyer.jpg'
+import fundraiseCampaignImage from '@/public/assets/images/meal-fund.jpeg'
 import PercentageBar from '@/components/percentage-bar'
 import { Icon } from '@iconify/react'
 import { Campaign } from '@/types/Campaign'
@@ -9,7 +9,7 @@ import { Campaign } from '@/types/Campaign'
 export default function FundraiseCampaignCard({ campaign }: { campaign: Campaign }) {
   return (
     <div className="flex w-fit flex-col">
-      <div className="flex h-full w-full flex-row gap-4 rounded-md p-1.5 shadow-[0px_0px_4px_1px_rgba(100,_100,_100,_0.1)] hover:scale-[1.01] md:max-w-96 md:flex-col md:p-2">
+      <div className="flex h-full w-full flex-row gap-4 rounded-md p-1.5 shadow-[0px_0px_4px_1px_rgba(100,_100,_100,_0.1)] hover:scale-[1.01] md:max-w-96 md:flex-col md:p-">
         <div className="relative w-[30%] md:h-52 md:w-auto">
           <span className="absolute left-1 top-1 hidden w-fit items-center justify-center gap-3 rounded-md border border-primary bg-white px-6 py-1 font-semibold text-primary md:flex">
             <Icon icon={'mdi:tag'} />
@@ -25,7 +25,7 @@ export default function FundraiseCampaignCard({ campaign }: { campaign: Campaign
           <Link
             href={`/campaigns/${campaign.id}`}
             title={campaign.title}
-            className="ellipsis-2 text-balance text-lg font-bold !leading-[100%] text-dark md:text-xl"
+            className="ellipsis-2 text-balance text-lg font-bold !leading-[100%] md:text-xl title text-dark"
           >
             {campaign.title}
           </Link>

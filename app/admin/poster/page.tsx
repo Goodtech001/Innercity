@@ -2,9 +2,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { Icon } from '@iconify/react'
 import * as htmlToImage from 'html-to-image'
-import poster from '@/public/assets/images/poster image.png'
 
 /* =====================
    MOCK AUTH / PERMISSIONS

@@ -3,7 +3,7 @@
 // import { Campaign } from '@/types/Campaign'
 import { notFound } from 'next/navigation'
 // import { use } from 'react'
-import fundraiseCampaignImage from '@/public/assets/images/campaign-flyer.jpg'
+import fundraiseCampaignImage from '@/public/assets/images/meal-fund.jpeg'
 import Image from 'next/image'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import PercentageCircle from '@/components/percentage-circle'
@@ -51,7 +51,7 @@ export default async function CampaignDetailsPage({ params }: CampaignPageProps)
             className="mb-6 max-h-[400px] w-full rounded-lg object-cover"
           />
 
-          <h1 className="mb-4 text-2xl font-bold text-black">{post.title}</h1>
+          <h1 className="mb-4 text-2xl font-semibol text-black title">{post.title}</h1>
 
           <div className="md:flex md:space-x-6">
             <div className="flex font-bold text-primary">
