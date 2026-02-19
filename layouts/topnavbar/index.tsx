@@ -67,7 +67,7 @@ export default function TopNavbar() {
 
           {/* LEFT */}
           <span className="block md:hidden">
-            {user && <UserProfileDropdown direction="left" />}
+            {user && <UserProfileDropdown direction="left" user={null} />}
           </span>
 
           <ul className="hidden items-center gap-10 text-sm md:flex">
@@ -137,19 +137,8 @@ export default function TopNavbar() {
                   Create campaign
                 </Link>
 
-                <div className="flex items-center gap-3">
-                  <img
-                    src={user.avatar || user.photo || '/avatar.png'}
-                    alt="profile"
-                    className="h-9 w-9 rounded-full border object-cover"
-                  />
+                <UserProfileDropdown user={user} />
 
-                  <span className="font-medium">
-                    {user.name || user.fullName || 'User'}
-                  </span>
-
-                  <UserProfileDropdown />
-                </div>
               </>
             ) : (
               <Link href="/sign-in" className="btn-primary px-8">
@@ -200,13 +189,8 @@ export default function TopNavbar() {
 
             {user ? (
               <div className="pt-6 border-t">
-                <div className="flex items-center gap-3">
-                  <img
-                    src={user.avatar || '/avatar.png'}
-                    className="h-10 w-10 rounded-full"
-                  />
-                  <span>{user.name}</span>
-                </div>
+                <UserProfileDropdown user={user} mobile />
+
               </div>
             ) : (
               <Link href="/sign-in" className="btn-primary mt-6 block text-center">

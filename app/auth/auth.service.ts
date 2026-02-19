@@ -17,17 +17,22 @@ export const postLoginService = async (credentials: { email: string; password: s
 }
 
 export const postLogoutService = async () => {
-  sessionStorage.clear()
   const response = await axios.post(`${baseUrl}/auth/signout`)
-  const res = response.data
 
-  if (res.status < 200 || res.status >= 300) {
-    const errorMessage = res.error?.message || res.message || 'Something went wrong'
+  if (response.status < 200 || response.status >= 300) {
+    const errorMessage =
+      response.data?.error?.message ||
+      response.data?.message ||
+      'Something went wrong'
+
     throw new Error(errorMessage)
   }
 
-  return response
+  sessionStorage.clear()
+
+  return response.data
 }
+
 
 // ---------------- GOOGLE
 export const loginWithGoogle = () => {
