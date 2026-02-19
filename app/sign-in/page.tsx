@@ -87,8 +87,10 @@ const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
             <button type="submit" id="submit" className="btn-primary mt-5">
               {loading ? 'Logging in...' : 'Login'}
             </button>
-
+            
+            <p className='flex justify-center border-t mt-2'>or</p>
             <KingsChatButton />
+             {/* <p className='flex justify-center border-t mt-2'>or</p> */}
             <GoogleButton />
 
             <p className="mt-5 justify-center text-center text-sm">

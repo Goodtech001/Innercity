@@ -5,7 +5,7 @@ import React from 'react'
 
 function GoogleButton() {
   return (
-    <button className='flex btn-primary space-x-4' onClick={loginWithGoogle}>
+    <button className='flex btn-white space-x-4' onClick={loginWithGoogle}>
         <Icon icon="devicon:google" width="20" height="20" className='flex justify-center items-center' />
          <p >Sign up with Google</p>
     </button>
