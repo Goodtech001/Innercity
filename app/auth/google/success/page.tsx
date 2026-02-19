@@ -6,10 +6,10 @@ import axios from "axios"
 
 export default function GoogleSuccess() {
   const router = useRouter()
-  const params = useSearchParams()
+  const searchparams = useSearchParams()
 
   useEffect(() => {
-    const token = params.get("token")
+    const token = searchparams.get("token")
 
     if (!token) {
       router.push("/sign-in")
@@ -35,7 +35,7 @@ export default function GoogleSuccess() {
       router.push("/sign-in")
     })
 
-  }, [])
+  }, [router, searchparams])
 
   return <p>Signing you in...</p>
 }
