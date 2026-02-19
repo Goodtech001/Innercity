@@ -1,3 +1,5 @@
+'use client'
+import { useEffect } from 'react'
 import TopNavbar from '@/layouts/topnavbar'
 import HeroSection from '@/layouts/hero-section'
 import BenefitsMetricsStrip from '@/layouts/benefits-metrics-strip'
@@ -11,6 +13,19 @@ import DiscoverMoreCategories from '@/layouts/discover-more-campaigns'
 import PartnersCorners from '@/layouts/partners-corners'
 
 export default function Home() {
+  // const router = useRouter()
+
+  // useEffect(() => {
+  //   const stored = sessionStorage.getItem('course-training-profile')
+    
+  //   if (!stored) {
+  //     router.push('/sign-in')
+  //   } else {
+  //     const profile = JSON.parse(stored)
+  //     if (!profile?.token) router.push('/sign-in')
+  //   }
+  // }, [])
+
   return (
     <>
       <TopNavbar />

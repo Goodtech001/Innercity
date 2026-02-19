@@ -1,3 +1,6 @@
+/* eslint-disable @next/next/no-async-client-component */
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import React, { useState } from 'react'
 import Link from 'next/link'
@@ -8,20 +11,56 @@ import Input from '@/components/input'
 import { IInputState } from '@/components/input/useInput'
 import Logo from '@/components/logo'
 import PhoneInput from 'react-phone-input-2'
+import KingsChatButton from '@/components/kingschat-button'
+import GoogleButton from '@/components/google-button'
+import { encryptClient } from '@/utils/crypt.client'
+import { postLoginService, postRegisterService } from '../auth/auth.service'
 
-function SignUp() {
+export default function SignUp() {
   // const [country, setCountry] = useState({ value: '' })
   // const [zone, setZone] = useState({ value: '' })
-  const [name, setName] = useState<IInputState>({ value: '' }) //?? optionally you can define the type to see the values that are available when interacted with
-  const [phoneNumber, setPhoneNumber] = useState({ value: '' })
-  const [email, setEmail] = useState({ value: '' })
-  const [birthDate, setBirthDate] = useState({ value: '' })
-  const [password, setPassword] = useState({ value: '' })
+  const [name, setName] = useState('') //?? optionally you can define the type to see the values that are available when interacted with
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [email, setEmail] = useState('')
+  const [birthDate, setBirthDate] = useState('')
+  const [password, setPassword] = useState('')
   const router = useRouter()
 
-  const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
+  const [loading, setLoading] = useState(false)
+
+  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    router.push('/')
+    setLoading(true)
+
+    try {
+      // await postRegisterService({
+      //   name,
+      //   email,
+      //   password,
+      //   phoneNumber,
+      //   birthDate,
+      // })
+
+      // router.push("/sign-in")
+
+      const data = await postRegisterService({
+        name,
+        email,
+        password,
+        phoneNumber,
+        birthDate,
+      })
+
+      sessionStorage.setItem('course-training-profile', JSON.stringify(data))
+
+      localStorage.setItem('token', data.token)
+
+      router.push('/')
+    } catch (err: any) {
+      alert(err?.response?.data?.message || 'Signup failed')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -49,17 +88,18 @@ function SignUp() {
           <form onSubmit={handleSignIn} className="flex flex-col gap-4">
             <h1 className="mb-5 text-center text-3xl font-bold md:text-left">Sign Up</h1>
 
-            <div className="">
+            <div className="flex flex-col">
               <label className="label" htmlFor="name">
                 Full Name*
               </label>
-              <Input
+              <input
                 name="name"
-                setState={setName}
-                state={name}
+                onChange={(e) => setName(e.target.value)}
+                value={name}
                 type="text"
                 required
                 placeholder="Enter your name..."
+                className="rounded border-2 border-gray-300"
               />
             </div>
 
@@ -68,13 +108,14 @@ function SignUp() {
                 <label className="label" htmlFor="email">
                   Email*
                 </label>
-                <Input
+                <input
                   name="email"
-                  setState={setEmail}
-                  state={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                   type="email"
                   required
                   placeholder="Enter your email..."
+                  className="w-full rounded border-2 border-gray-300"
                 />
               </div>
 
@@ -82,12 +123,13 @@ function SignUp() {
                 <label className="label" htmlFor="birthDate">
                   Date of Birth
                 </label>
-                <Input
+                <input
                   name="birthDate"
-                  setState={setBirthDate}
-                  state={birthDate}
+                  onChange={(e) => setBirthDate(e.target.value)}
+                  value={birthDate}
                   type="date"
                   placeholder="Select Birth Month"
+                  className="w-full rounded border-2 border-gray-300"
                 />
               </div>
             </div>
@@ -99,31 +141,34 @@ function SignUp() {
               <PhoneInput
                 country={'ng'}
                 placeholder="Phone Number"
-                value={phoneNumber.value}
-                onChange={(phone) => setPhoneNumber({ value: phone })}
+                value={phoneNumber}
+                onChange={(phone) => setPhoneNumber(phone)}
                 inputClass="!w-full !h-11"
                 buttonClass=""
                 containerClass="input-field border-text/25 flex items-center !border bg-transparent px-0 py-0"
               />
             </div>
 
-            <div className="">
+            <div className="flex flex-col">
               <label className="label" htmlFor="password">
                 Password*
               </label>
-              <Input
+              <input
                 name="password"
-                setState={setPassword}
-                state={password}
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
                 type="password"
                 required
                 placeholder="Enter your password..."
+                className="rounded border-2 border-gray-300"
               />
             </div>
 
             <button type="submit" id="submit" className="btn-primary mt-5">
-              Create account
+              {loading ? 'Creating...' : 'Create Account'}
             </button>
+            <KingsChatButton />
+            <GoogleButton />
 
             <p className="mt-5 justify-center text-center text-sm">
               Already have an Account?{' '}
@@ -138,4 +183,4 @@ function SignUp() {
   )
 }
 
-export default SignUp
+// export default SignUp

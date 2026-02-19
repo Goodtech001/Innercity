@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import React, { useState } from 'react'
 import Link from 'next/link'
@@ -7,16 +8,40 @@ import { useRouter } from 'next/navigation'
 import Input from '@/components/input'
 import { IInputState } from '@/components/input/useInput'
 import Logo from '@/components/logo'
+import { postLoginService } from '../auth/auth.service'
+import KingsChatButton from '@/components/kingschat-button'
+import GoogleButton from '@/components/google-button'
 
 function SignIn() {
-  const [email, setEmail] = useState<IInputState>({ value: '' }) //?? optionally you can define the type to see the values that are available when interacted with
-  const [password, setPassword] = useState({ value: '' })
+  const [email, setEmail] = useState('') //?? optionally you can define the type to see the values that are available when interacted with
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
-  const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault()
+  setLoading(true)
+
+  try {
+    const data = await postLoginService({ email, password })
+
+    // 🔥 STORE FULL SESSION
+    sessionStorage.setItem(
+      'course-training-profile',
+      JSON.stringify(data)
+    )
+
+    localStorage.setItem('token', data.token)
+
     router.push('/')
+  } catch (err: any) {
+    alert(err?.response?.data?.message || 'Login failed')
+  } finally {
+    setLoading(false)
   }
+}
+
+  
 
   return (
     <div className="h-screen grid-cols-10 overflow-x-hidden overflow-y-hidden md:grid">
@@ -29,42 +54,52 @@ function SignIn() {
           <form onSubmit={handleSignIn} className="flex flex-col gap-4">
             <h1 className="mb-5 text-center text-3xl font-bold md:text-left">Sign In</h1>
 
-            <div className="">
+            <div className="flex flex-col">
               <label className="label" htmlFor="email">
                 Email*
               </label>
-              <Input
+              <input
                 name="email"
-                setState={setEmail}
-                state={email}
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
                 type="email"
                 required
                 placeholder="Enter your email..."
+                className="rounded border-2 border-gray-300"
               />
             </div>
 
-            <div className="">
+            <div className="flex flex-col">
               <label className="label" htmlFor="password">
                 Password*
               </label>
-              <Input
+              <input
                 name="password"
-                setState={setPassword}
-                state={password}
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
                 type="password"
                 required
                 placeholder="Enter your password..."
+                className="rounded border-2 border-gray-300"
               />
             </div>
 
             <button type="submit" id="submit" className="btn-primary mt-5">
-              Login
+              {loading ? 'Logging in...' : 'Login'}
             </button>
+
+            <KingsChatButton />
+            <GoogleButton />
 
             <p className="mt-5 justify-center text-center text-sm">
               Don&apos;t have an Account?{' '}
               <Link href="/sign-up" className="font-bold text-primary">
                 Sign Up
+              </Link>
+            </p>
+            <p className="flex justify-center">
+              <Link href="/forgot-password" className="font-semibold text-primary">
+                forgot password?
               </Link>
             </p>
           </form>

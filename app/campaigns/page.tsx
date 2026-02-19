@@ -123,7 +123,7 @@ function CampaignsContent() {
           {filteredCampaignsByQuery.length === 0 ? (
             <p className="text-gray-500">No campaigns found.</p>
           ) : (
-            <div className="flex flex-col gap-5 md:grid md:grid-cols-3">
+            <div className="flex justify-center flex-col gap-5 md:grid md:grid-cols-3">
               {/* fundraise campaign card */}
               {filteredCampaigns.map((campaign) => (
                 <FundraiseCampaignCard key={campaign.id} campaign={campaign} />
