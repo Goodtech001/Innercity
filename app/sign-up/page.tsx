@@ -19,10 +19,10 @@ import { postLoginService, postRegisterService } from '../auth/auth.service'
 export default function SignUp() {
   // const [country, setCountry] = useState({ value: '' })
   // const [zone, setZone] = useState({ value: '' })
-  const [name, setName] = useState('') //?? optionally you can define the type to see the values that are available when interacted with
-  const [phoneNumber, setPhoneNumber] = useState('')
+  const [fullname, setFullName] = useState('') //?? optionally you can define the type to see the values that are available when interacted with
+  const [telephone, setTelephone] = useState('')
   const [email, setEmail] = useState('')
-  const [birthDate, setBirthDate] = useState('')
+  const [birthday, setBirthday] = useState('')
   const [password, setPassword] = useState('')
   const router = useRouter()
 
@@ -33,22 +33,13 @@ export default function SignUp() {
     setLoading(true)
 
     try {
-      // await postRegisterService({
-      //   name,
-      //   email,
-      //   password,
-      //   phoneNumber,
-      //   birthDate,
-      // })
-
-      // router.push("/sign-in")
 
       const data = await postRegisterService({
-        name,
+        fullname,
         email,
         password,
-        phoneNumber,
-        birthDate,
+        telephone: `+${telephone}`,
+        birthday,
       })
 
       sessionStorage.setItem('course-training-profile', JSON.stringify(data))
@@ -94,8 +85,8 @@ export default function SignUp() {
               </label>
               <input
                 name="name"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
+                onChange={(e) => setFullName(e.target.value)}
+                value={fullname}
                 type="text"
                 required
                 placeholder="Enter your name..."
@@ -120,13 +111,13 @@ export default function SignUp() {
               </div>
 
               <div className="">
-                <label className="label" htmlFor="birthDate">
+                <label className="label" htmlFor="birthday">
                   Date of Birth
                 </label>
                 <input
                   name="birthDate"
-                  onChange={(e) => setBirthDate(e.target.value)}
-                  value={birthDate}
+                  onChange={(e) => setBirthday(e.target.value)}
+                  value={birthday}
                   type="date"
                   placeholder="Select Birth Month"
                   className="w-full rounded border-2 border-gray-300"
@@ -135,14 +126,14 @@ export default function SignUp() {
             </div>
 
             <div className="">
-              <label className="label" htmlFor="phoneNumber">
+              <label className="label" htmlFor="telephone">
                 Phone Number
               </label>
               <PhoneInput
                 country={'ng'}
                 placeholder="Phone Number"
-                value={phoneNumber}
-                onChange={(phone) => setPhoneNumber(phone)}
+                value={telephone}
+                onChange={(phone) => setTelephone(phone)}
                 inputClass="!w-full !h-11"
                 buttonClass=""
                 containerClass="input-field border-text/25 flex items-center !border bg-transparent px-0 py-0"
@@ -167,6 +158,7 @@ export default function SignUp() {
             <button type="submit" id="submit" className="btn-primary mt-5">
               {loading ? 'Creating...' : 'Create Account'}
             </button>
+             <p className='flex justify-center border-t mt-2'>or</p>
             <KingsChatButton />
             <GoogleButton />
 

@@ -3,7 +3,20 @@ import React, { useState } from 'react'
 import Modal from '@/components/modal'
 import { useModal } from '@/components/modal/useModal'
 
-function Editpage() {
+  type TUser = {
+  avatar?: string
+  photo?: string
+  fullname?: string
+  birthday?:string
+  fullName?: string
+  telephone?: string
+  email?: string
+}
+type TUserProfileDropdownProps = {
+  user: TUser | null
+}
+
+function Editpage({user}: Readonly<TUserProfileDropdownProps>) {
   const [showEditModal, setShowEditModal] = useState(false)
   const { closeModal, isModalClosed, openModal } = useModal()
   const [formData, setFormData] = useState({
@@ -131,7 +144,7 @@ function Editpage() {
           <div>
             <label htmlFor="text"> Full Name</label>
             <p className="md:line-clamp-0 line-clamp-2 font-medium text-black">
-              {formData.fullName || ProfileName}
+              {user?.fullname || ProfileName}
             </p>
           </div>
 
@@ -141,8 +154,8 @@ function Editpage() {
           </div>
 
           <div>
-            <label htmlFor="text">Loction</label>
-            <p className="font-medium text-black">{formData.location || ProfileLocation}</p>
+            <label htmlFor="text">Location</label>
+            <p className="font-medium text-black">-</p>
           </div>
 
           <div>
@@ -154,22 +167,22 @@ function Editpage() {
         <div className="mx-auto space-y-3">
           <div>
             <label htmlFor="text">Email</label>
-            <p className="truncate font-medium text-black">{formData.email || ProfileEmail}</p>
+            <p className="truncate font-medium text-black">{user?.email || ProfileEmail}</p>
           </div>
 
           <div>
             <label htmlFor="text">Phone</label>
-          <p className="font-medium text-black">+234 {formData.phone || ProfilePhone}</p>
+          <p className="font-medium text-black">+234 {user?.telephone || ProfilePhone}</p>
           </div>
 
          <div>
            <label htmlFor="text">Joined</label>
-          <p className="font-medium text-black">15 Apr 2025</p>
+          <p className="font-medium text-black">{user?.birthday}</p>
          </div>
 
          <div>
            <label htmlFor="text">Bio</label>
-          <p className="truncate font-medium text-black">A stitch in time saves nine</p>
+          <p className="truncate font-medium text-black">-</p>
          </div>
         </div>
       </section>
@@ -293,7 +306,7 @@ function Editpage() {
                 type="email"
                 name="email"
                 placeholder="Email"
-                value={formData.email}
+                value={user?.email}
                 onChange={handleChange}
                 className="w-full rounded border px-3 py-2"
               />

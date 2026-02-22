@@ -41,11 +41,11 @@ export const loginWithGoogle = () => {
 }
 
 export const postRegisterService = async (credentials: {
-  name: string
+  fullname: string
   email: string
   password: string
-  phoneNumber?: string
-  birthDate?: string
+  telephone?: string
+  birthday?: string
 }) => {
   const response = await axios.post(`${baseUrl}/auth/register`, credentials)
   const res: IProfileRes = response.data

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import DpUploader from '@/components/dp-uploader'
 import Editpage from '@/components/edit-profile'
@@ -11,7 +12,37 @@ import React, { useEffect, useState } from 'react'
 export default function ProfilePageLayout() {
   const searchParams = useSearchParams()
   const [urlQueryTab, setUrlQueryTab] = useState<string | null>(null)
-  const router = useRouter()
+  // const router = useRouter()
+    const [user, setUser] = useState<any>(null)
+    const router = useRouter()
+  
+    /* ================================
+       LOAD USER FROM SESSION STORAGE
+    ================================= */
+    useEffect(() => {
+      const loadUser = () => {
+        try {
+          const stored = sessionStorage.getItem('course-training-profile')
+          if (!stored) return setUser(null)
+  
+          const parsed = JSON.parse(stored)
+  
+          if (parsed?.token) {
+            setUser(parsed.user || parsed)
+          } else {
+            setUser(null)
+          }
+        } catch (err) {
+          console.error('Navbar auth parse error:', err)
+          setUser(null)
+        }
+      }
+  
+      loadUser()
+      window.addEventListener('storage', loadUser)
+  
+      return () => window.removeEventListener('storage', loadUser)
+    }, [])
   // const urlQueryTab = new URLSearchParams(window.location.search).get('tab')
   const [activeStep, setActiveStep] = useState(1)
   const [tabs] = useState([
@@ -52,8 +83,8 @@ export default function ProfilePageLayout() {
       component: () => (
         <div>
           <ImageUploader />
-          <DpUploader />
-          <Editpage />
+          <DpUploader user={user} />
+          <Editpage user={user} />
         </div>
       ),
     },

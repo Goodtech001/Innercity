@@ -75,6 +75,7 @@ export default function KingsChatButton() {
 
   return (
     <button
+    type="button"
       onClick={handleKingsChatLogin}
       className="flex btn-white space-x-2" 
     >

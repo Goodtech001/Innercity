@@ -133,7 +133,7 @@ export default function TopNavbar() {
 
             {user ? (
               <>
-                <Link className="btn-primary" href="/campaigns/create">
+                <Link className="btn-primary px-2 py-2" href="/campaigns/create">
                   Create campaign
                 </Link>
 

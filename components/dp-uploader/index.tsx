@@ -1,12 +1,26 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 import { Icon } from '@iconify/react'
 import Image from 'next/image'
 import { useRef, useState } from 'react'
 // import ima from "@/public/assets/images/education-class.jpg";
 
-function DpUploader() {
+  type TUser = {
+  avatar?: string
+  photo?: string
+  fullname?: string
+  fullName?: string
+  email?: string
+}
+type TUserProfileDropdownProps = {
+  user: TUser | null
+}
+
+function DpUploader({user}: Readonly<TUserProfileDropdownProps>) {
   const [image, setImage] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  
+
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target?.files?.[0]
@@ -27,16 +41,14 @@ function DpUploader() {
       {/* Image box (small thumbnail) */}
       <div className="flex gap-2 md:gap-5">
         <div className="border-color relative h-[50px] w-[50px] overflow-hidden rounded-full border">
-          <Image
-            src={image || placeholderImage}
-            alt="Thumbnail"
-            width={50}
-            height={50}
-            className="h-full w-full object-cover"
-          />
+          <img
+          src={user?.avatar || user?.photo || '/avatar.png'}
+          alt="profile"
+          className={`rounded-full object-cover`}
+        />
         </div>
         <div>
-          <h1 className="text-xs font-medium text-black md:text-lg">Brother Elumelu Paul</h1>
+          <h1 className="text-xs font-medium text-black md:text-lg">{user?.fullname || user?.fullName || 'User'}</h1>
           <p>Lagos,Nigeria</p>
         </div>
       </div>

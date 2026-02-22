@@ -44,7 +44,7 @@ type TUserProfile = {
 type TUser = {
   avatar?: string
   photo?: string
-  name?: string
+  fullname?: string
   fullName?: string
   email?: string
 }
@@ -98,7 +98,7 @@ export default function UserProfileDropdown({
         <Icon icon={'mynaui:chevron-down-solid'} className="h-4 w-4" />
 
         <span className="font-medium hidden sm:block">
-          {user?.name || user?.fullName || 'User'}
+          {user?.fullname || user?.fullName || 'User'}
         </span>
       </button>
       {/*  */}

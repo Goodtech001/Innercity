@@ -1,7 +1,18 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 import { Icon } from '@iconify/react'
 import { useState } from 'react'
+import espee from "@/public/assets/images/espees.png"
+import Image from 'next/image'
 
 const countryCurrencyList: TCountryCurrency[] = [
+  {
+    abv: 'ESP',
+    country: 'Espee',
+    currency: 'Espee',
+    symbol: '£',
+    icon: <Image src={espee} className="h-6 w-6 text-2xl" alt={''}/>,
+  },
   {
     abv: 'NGN',
     country: 'Nigeria',
