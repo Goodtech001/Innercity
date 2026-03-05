@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
 import partnersGirl from '@/public/assets/images/partners-girl.jpg'
@@ -6,8 +8,26 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { FreeMode, Pagination } from 'swiper/modules'
 import { Icon } from '@iconify/react'
 import { motion, useInView } from 'framer-motion'
+import { getTestimonialsService } from '@/app/auth/auth.service'
+
+// import { getTestimonialsService } from '@/services/testimonial.service'
 
 export default function PartnersCorners() {
+  // const [isMobile, setIsMobile] = useState(false)
+  const [testimonials, setTestimonials] = useState<any[]>([])
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const data = await getTestimonialsService()
+        setTestimonials(data.data || data)
+      } catch (err) {
+        console.error('Failed to fetch testimonials', err)
+      }
+    }
+
+    fetchTestimonials()
+  }, [])
   const [isMobile, setIsMobile] = useState(false)
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-50px' })
@@ -50,9 +70,9 @@ export default function PartnersCorners() {
             modules={[FreeMode, Pagination]}
             className=""
           >
-            {Array.from({ length: 8 }).map((_, index) => (
-              <SwiperSlide key={index} className="px-8 py-6 pb-20">
-                <PartnersCornersCard />
+            {testimonials.map((item) => (
+              <SwiperSlide key={item.id} className="px-8 py-6 pb-20">
+                <PartnersCornersCard testimonial={item} />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -62,19 +82,13 @@ export default function PartnersCorners() {
   )
 }
 
-export function PartnersCornersCard() {
+export function PartnersCornersCard({ testimonial }: any) {
   return (
     <>
       <div className="min-h-24 max-w-lg rounded-lg border bg-complementary px-2 py-2 text-textcolor md:grid md:min-w-96 md:grid-cols-12 md:px-3 md:py-3">
         <div className="relative col-span-3 flex justify-between md:flex-col">
           <span className="before:absolute before:-left-2 before:-top-2 before:hidden before:size-9 before:rounded-lg before:border-2 before:border-primary before:content-[''] md:mb-6 md:w-full before:md:-left-8 before:md:-top-8 before:md:inline-block before:md:size-24">
-            <Image
-              alt="partner"
-              src={partnersGirl}
-              className="relative z-10 aspect-1 rounded-md md:-ml-5 md:-mt-5"
-              width={100}
-              height={100}
-            />
+            <img alt="partner" src={testimonial.avatar?.url} width={100} height={100} className="relative z-10 aspect-1 rounded-md md:-ml-5 md:-mt-5 object-cover" />
           </span>
 
           <div className="flex flex-col gap-2 text-right md:text-left">
@@ -85,19 +99,23 @@ export function PartnersCornersCard() {
         <div className="relative col-span-9 mt-2 border-t pt-2 md:mt-0 md:border-0 md:*:pt-0">
           <div className="mb-3 flex items-start justify-between">
             <div className="">
-              <h4 className="text-sm font-semibold text-dark md:text-base">Abigail Otingba</h4>
-              <h4 className="text-xs font-medium md:text-sm">Donated: $ 2.5m</h4>
+              <h4 className="text-sm font-semibold text-dark md:text-base">
+                {testimonial.clientName}
+              </h4>
+              <h4 className="text-xs font-medium md:text-sm">
+                Donated: {testimonial.donatedAmount}
+              </h4>
             </div>
             <h4 className="hidden text-xs font-medium text-dark md:inline-block md:text-sm">
               50k Donations
             </h4>
           </div>
 
-          <p className="mb-5">Member of the G.E.M platfrom</p>
+          <p className="mb-5">{testimonial.content}</p>
 
           <small className="bottom-0 right-0 mt-auto flex items-center justify-end gap-1 md:absolute">
             <Icon className="text-sm" icon={'gridicons:location'} />
-            <h4 className="">Lagos, Nigeria</h4>
+            <h4 className="">{testimonial.location}</h4>
           </small>
         </div>
       </div>

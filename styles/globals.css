@@ -82,7 +82,7 @@ body {
   font-size: 16px;
 }
 .title {
-  font-family: 'Lora', sans-serif;
+  font-family:  'Commissioner', sans-serif;
 }
 .sign {
   font-family: 'Commissioner', sans-serif;
@@ -136,6 +136,7 @@ h6,
   animation-play-state: paused;
 }
 
+
 .input {
   width: 200px;
   border-radius: 3px;
@@ -143,6 +144,17 @@ h6,
 @keyframes pulse-glow {
   0%, 100% { box-shadow: 0 0 0 rgba(0,123,255,0); }
   50% { box-shadow: 0 0 10px rgba(0,123,255,0.8); }
+}
+@keyframes shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+.animate-shine {
+  animation: shine 2s infinite;
 }
 .animate-glow {
   animation: pulse-glow 0.5s ease-out;

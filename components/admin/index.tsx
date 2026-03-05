@@ -27,6 +27,14 @@ const links: NavLink[] = [
       { label: 'Banner', href: '/admin/hero-images', icon: 'pixel:image-solid' },
       { label: 'Video', href: '/admin/upload-video', icon: 'mingcute:video-fill' },
       { label: 'Birthday E-card', href: '/admin/poster', icon: 'emojione-monotone:birthday-cake' },
+      { label: 'Testimonials', href: '/admin/testimonials', icon: 'mdi:love'}
+    ],
+  },
+  {
+    label: 'Campaign',
+    icon: 'material-symbols:campaign',
+    children: [
+      { label: 'Categories', href: '/admin/category', icon: 'nrk:category-active' },
     ],
   },
   { href: '/admin/voucher', label: 'Vouchers', icon: 'mdi:voucher' },

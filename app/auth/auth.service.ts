@@ -1,4 +1,5 @@
-import axios from 'axios'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import axios from '@/utils/axios'
 import kingsChatWebSdk from 'kingschat-web-sdk'
 import { IProfileRes } from '@/types'
 import { baseUrl, kingsChatClientId } from '@/constants'
@@ -12,7 +13,6 @@ export const postLoginService = async (credentials: { email: string; password: s
     const errorMessage = response?.data?.message || response.data || 'Something went wrong'
     throw new Error(errorMessage)
   }
-
   return res
 }
 
@@ -129,6 +129,193 @@ export const getKingChatProfile = async ({
   return res
 }
 
+export const uploadFileService = async (file: File) => {
+  const formData = new FormData()
+  formData.append("file", file)
+  formData.append("type", "testimonial")
+
+  const res = await axios.post(
+    `${baseUrl}/uploads`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  )
+
+  return res.data
+}
+
+export const createTestimonialService = async (payload: any) => {
+  const response = await axios.post("/testimonials", payload)
+  return response.data
+}
+
+export const getTestimonialsService = async () => {
+  const res = await axios.get(
+    `${baseUrl}/testimonials`
+  )
+
+  return res.data
+}
+
+export const deleteTestimonialService = async (id: number) => {
+  const response = await axios.delete(
+    `${baseUrl}/testimonials/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(
+            sessionStorage.getItem("course-training-profile") || "{}"
+          )?.token
+        }`,
+      },
+    }
+  )
+
+  return response.data
+}
+
+
+
+const getToken = () => {
+  if (typeof window === "undefined") return null
+  return JSON.parse(
+    sessionStorage.getItem("course-training-profile") || "{}"
+  )?.token
+}
+
+export const getUsersService = async () => {
+  const response = await axios.get(`${baseUrl}/users`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  })
+
+  return response.data
+}
+
+export const deleteUserService = async (id: number) => {
+  const response = await axios.delete(
+    `${baseUrl}/users/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    }
+  )
+
+  return response.data
+}
+export const getAllCategoryService = async () => {
+  const token =
+    typeof window !== 'undefined'
+      ? JSON.parse(
+          sessionStorage.getItem('course-training-profile') || '{}'
+        )?.token
+      : null
+
+  const res = await fetch(
+    `${baseUrl}/category`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch categories')
+  }
+
+  return res.json()
+}
+export const createCategoryService = async (data: any) => {
+  const token =
+    typeof window !== 'undefined'
+      ? JSON.parse(
+          sessionStorage.getItem('course-training-profile') || '{}'
+        )?.token
+      : null
+
+  const res = await fetch(
+    `${baseUrl}/category`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    }
+  )
+
+  const result = await res.json()
+
+  if (!res.ok) {
+    throw new Error(result.message || 'Create failed')
+  }
+
+  return result
+}
+export const deleteCategoryService = async (id: number) => {
+  const token =
+    typeof window !== 'undefined'
+      ? JSON.parse(
+          sessionStorage.getItem('course-training-profile') || '{}'
+        )?.token
+      : null
+
+  const res = await fetch(
+    `${baseUrl}/category/${id}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
+
+  if (!res.ok) {
+    throw new Error('Delete failed')
+  }
+
+  return res.json()
+}
+export const updateCategoryService = async (
+  id: number,
+  data: any
+) => {
+  const token =
+    typeof window !== 'undefined'
+      ? JSON.parse(
+          sessionStorage.getItem('course-training-profile') || '{}'
+        )?.token
+      : null
+
+  const res = await fetch(
+    `${baseUrl}/category/${id}`,
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    }
+  )
+
+  const result = await res.json()
+
+  if (!res.ok) {
+    throw new Error(result.message || 'Update failed')
+  }
+
+  return result
+}
 
 // const getKingChatProfile = async ({
 //   accessToken,

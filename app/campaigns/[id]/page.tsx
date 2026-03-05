@@ -44,14 +44,14 @@ export default async function CampaignDetailsPage({ params }: CampaignPageProps)
          </div> */}
 
       <div className="container grid-cols-10 p-4 md:grid md:h-screen md:space-x-10 h-[118vh]">
-        <section className="col-span-6 overflow-y-auto no-scrollbar">
+        <section className="col-span-6 overflow-y-auto no-scrollbar md:h-auto h-[180vh]">
           <Image
             src={fundraiseCampaignImage}
             alt={post.title}
             className="mb-6 max-h-[400px] w-full rounded-lg object-cover"
           />
 
-          <h1 className="mb-4 text-2xl font-semibol text-black title">{post.title}</h1>
+          <h1 className="mb-4 text-2xl font-semibold text-black title">{post.title}</h1>
 
           <div className="md:flex md:space-x-6">
             <div className="flex font-bold text-primary">
@@ -72,7 +72,7 @@ export default async function CampaignDetailsPage({ params }: CampaignPageProps)
           </p>
         </section>
 
-        <div className="rounded-md border bg-blue-200 p-2 md:relative md:top-0 md:col-span-4 md:bg-white fixed md:w-ful w-11/12 bottom-0">
+        <div className="rounded-md border bg-blue-200 p-2 md:relative md:top-10 md:col-span-4 md:bg-white fixed md:w-ful w-11/12 bottom-10">
           <div className="flex w-full justify-between border-b border-textcolor">
             {/* PROGRESS BAR CIRCLE  */}
             <div className="mb-3 flex gap-3">
@@ -95,7 +95,7 @@ export default async function CampaignDetailsPage({ params }: CampaignPageProps)
           {/* <p>
           <strong>Category:</strong> {campaign.category}
         </p> */}
-          <div className="mt-4 flex justify-between">
+          <div className="mt-4 flex gap-4">
             <p>
               <strong>Goal:</strong> $<span className="text-primary">58,046</span>
             </p>

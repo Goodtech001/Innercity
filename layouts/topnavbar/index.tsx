@@ -16,6 +16,8 @@ export default function TopNavbar() {
   const [user, setUser] = useState<any>(null)
   const router = useRouter()
 
+  
+
   /* ================================
      LOAD USER FROM SESSION STORAGE
   ================================= */
@@ -37,6 +39,7 @@ export default function TopNavbar() {
         setUser(null)
       }
     }
+    console.log("Navbar user:", user)
 
     loadUser()
     window.addEventListener('storage', loadUser)
@@ -67,7 +70,7 @@ export default function TopNavbar() {
 
           {/* LEFT */}
           <span className="block md:hidden">
-            {user && <UserProfileDropdown direction="left" user={null} />}
+            {user && <UserProfileDropdown direction="left"  />}
           </span>
 
           <ul className="hidden items-center gap-10 text-sm md:flex">
@@ -120,14 +123,42 @@ export default function TopNavbar() {
 
           {/* RIGHT */}
           <ul className="hidden items-center gap-8 text-sm md:flex">
-            {rightMenu.map((menu, index) => (
-              <li key={index}>
+             {rightMenu.map((menu, index) => (
+              <li
+                key={index}
+                onMouseEnter={() => setSubMenuClicked(menu.subPath || '')}
+                onMouseLeave={() => setSubMenuClicked('')}
+                className="relative"
+              >
                 <Link
                   href={menu.path || ''}
-                  className="font-medium hover:underline"
+                  className="flex items-center gap-2 font-medium hover:underline"
                 >
                   {menu.title}
+                  {menu.subMenus && (
+                    <Icon icon="mynaui:chevron-down-solid" className="h-4 w-4" />
+                  )}
                 </Link>
+
+                {menu.subMenus && (
+                  <ol
+                    className={`absolute left-0 h-0 min-w-60 overflow-hidden rounded-md bg-light shadow ${
+                      subMenuClicked === menu.subPath && '!h-fit'
+                    }`}
+                  >
+                    {menu.subMenus.map((subMenu, i) => (
+                      <li key={i}>
+                        <Link
+                          href={subMenu.external ? subMenu.path : menu.subPath + subMenu.path}
+                          target={subMenu.external ? '_blank' : '_self'}
+                          className="block px-3 py-2 hover:bg-secondary/50 hover:text-primary"
+                        >
+                          {subMenu.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ol>
+                )}
               </li>
             ))}
 
@@ -137,7 +168,7 @@ export default function TopNavbar() {
                   Create campaign
                 </Link>
 
-                <UserProfileDropdown user={user} />
+                <UserProfileDropdown />
 
               </>
             ) : (
@@ -176,20 +207,47 @@ export default function TopNavbar() {
           <ul ref={navListRef} className="mt-8 space-y-4">
 
             {[...leftMenu, ...rightMenu].map((menu, index) => (
-              <li key={index}>
+              <li
+                key={index}
+                onMouseEnter={() => setSubMenuClicked(menu.subPath || '')}
+                onMouseLeave={() => setSubMenuClicked('')}
+                className="relative"
+              >
                 <Link
                   href={menu.path || ''}
-                  onClick={() => setNavOpen(false)}
-                  className="block font-semibold"
+                  className="flex items-center gap-2 font-medium hover:underline"
                 >
                   {menu.title}
+                  {menu.subMenus && (
+                    <Icon icon="mynaui:chevron-down-solid" className="h-4 w-4" />
+                  )}
                 </Link>
+
+                {menu.subMenus && (
+                  <ol
+                    className={`absolute left-0 h-0 min-w-60 overflow-hidden rounded-md bg-light shadow ${
+                      subMenuClicked === menu.subPath && '!h-fit'
+                    }`}
+                  >
+                    {menu.subMenus.map((subMenu, i) => (
+                      <li key={i}>
+                        <Link
+                          href={subMenu.external ? subMenu.path : menu.subPath + subMenu.path}
+                          target={subMenu.external ? '_blank' : '_self'}
+                          className="block px-3 py-2 hover:bg-secondary/50 hover:text-primary"
+                        >
+                          {subMenu.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ol>
+                )}
               </li>
             ))}
 
             {user ? (
               <div className="pt-6 border-t">
-                <UserProfileDropdown user={user} mobile />
+                <UserProfileDropdown mobile />
 
               </div>
             ) : (
