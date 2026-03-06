@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 import React, { Suspense, useState } from 'react'
 import campaigns from '@/json/dummy-campaigns.json'
@@ -9,6 +10,11 @@ import SearchInput from '@/components/search-input'
 import FundraiseCampaignCard from '@/components/fundraise-campaign-card'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import useTopnavbar from '@/layouts/topnavbar/useTopnavbar'
+import food from '@/public/assets/images/food-7bmc.jpg'
+// import education from '@/public/assets/images/women-empowerment-gathering.jpg'
+import women from '@/public/assets/images/women-empowerment-gathering.jpg'
+import community from '@/public/assets/images/community-development-construction.jpg'
+import Image from 'next/image'
 // import useTopnavbar from '@/layouts/topnavbar/useTopnavbar'
 
 function CampaignsContent() {
@@ -50,39 +56,61 @@ function CampaignsContent() {
           <SearchInput />
         </div>
 
-        <div className="mt-3 flex w-full justify-between overflow-x-auto no-scrollbar">
-          <div className="flex space-x-2 text-sm md:mb-0 md:space-x-2">
-            <button
-              className={`btn-white truncate px-4 py-2 text-xs font-light md:px-3 md:py-2 ${baseButton} ${
-                activeCategory === '?category=food' ?  activeGlow : ''
-              }`}
-              onClick={() => handleSubMenuClick('?category=food')}
-            >
-              Food Campaigns
+        <div className="mt-3 flex w-full md:justify-between justify-center overflow-x-auto no-scrollbar ">
+          <div className="flex space- md:gap-4 gap-4 text-sm md:mb-0 md:space-x-2 justify-center">
+            <button onClick={() => handleSubMenuClick('?category=food')}>
+              <div className="flex flex-col items-center justify-center">
+                <Image
+                  src={food}
+                  alt="food"
+                  className={`h-10 w-10 rounded-full font-light object-cover  ${
+                    activeCategory === '?category=food' ? activeGlow : ''
+                  }`}
+                />
+                <p>Food</p>
+              </div>
             </button>
             <button
-              className={`btn-white bg-color flex items-center truncate border-textcolor px-4 py-2 text-xs font-light text-textcolor md:px-3 md:py-2 ${baseButton} ${
-                activeCategory === '?category=education' ? activeGlow : ''
-              }`}
               onClick={() => handleSubMenuClick('?category=education')}
             >
-              Education Campaigns
+              <div className="flex flex-col items-center justify-center">
+                <Image
+                  src={community}
+                  alt="education"
+                  className={`h-10 w-10 rounded-full font-light object-cover  ${
+                    activeCategory === '?category=food' ? activeGlow : ''
+                  }`}
+                />
+                <p>Education</p>
+              </div>
             </button>
             <button
-              className={`btn-white flex items-center truncate px-4 py-2 text-xs font-light md:truncate md:px-5 md:py-2 ${baseButton} ${
-                activeCategory === '?category=women' ? activeGlow : ''
-              }`}
               onClick={() => handleSubMenuClick('?category=women')}
             >
-              Women Empowerment
+              <div className="flex flex-col items-center justify-center">
+                <Image
+                  src={women}
+                  alt="women"
+                  className={`h-10 w-10 rounded-full font-light object-cover  ${
+                    activeCategory === '?category=food' ? activeGlow : ''
+                  }`}
+                />
+                <p>Women</p>
+              </div>
             </button>
             <button
-              className={`btn-white flex items-center truncate border-textcolor px-6 py-2 text-xs font-light text-textcolor md:truncate md:px-5 md:py-2 ${baseButton} ${
-                activeCategory === '?category=community' ? activeGlow : ''
-              }`}
               onClick={() => handleSubMenuClick('?category=community')}
             >
-              Community Development
+             <div className="flex flex-col items-center justify-center">
+                <Image
+                  src={community}
+                  alt="community"
+                  className={`h-10 w-10 rounded-full font-light object-cover  ${
+                    activeCategory === '?category=food' ? activeGlow : ''
+                  }`}
+                />
+                <p className=''>Community</p>
+              </div>
             </button>
           </div>
 
@@ -101,12 +129,12 @@ function CampaignsContent() {
           <div className="flex justify-between">
             <div className="flex space-x-4 md:space-x-5"></div>
             <div className="flex text-black">
-              <h1 className="block text-sm font-semibold text-black md:hidden">Sort by</h1>
+              <h1 className="  text-sm font-semibold text-black hidden">Sort by</h1>
               <Icon
                 icon="iconamoon:arrow-down-2"
                 width="20"
                 height="20"
-                className="block md:hidden"
+                className=" hidden"
               />
             </div>
           </div>
@@ -123,7 +151,7 @@ function CampaignsContent() {
           {filteredCampaignsByQuery.length === 0 ? (
             <p className="text-gray-500">No campaigns found.</p>
           ) : (
-            <div className="flex justify-center flex-col gap-5 md:grid md:grid-cols-3">
+            <div className="flex flex-col justify-center gap-5 md:grid md:grid-cols-3">
               {/* fundraise campaign card */}
               {filteredCampaigns.map((campaign) => (
                 <FundraiseCampaignCard key={campaign.id} campaign={campaign} />

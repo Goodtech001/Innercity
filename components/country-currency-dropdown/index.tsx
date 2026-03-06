@@ -55,6 +55,13 @@ const countryCurrencyList: TCountryCurrency[] = [
     symbol: '£',
     icon: <Icon icon={'emojione-v1:flag-for-united-kingdom'} className="h-6 w-6 text-2xl" />,
   },
+  {
+    abv: 'EUR',
+    country: 'Britain',
+    currency: 'Euro',
+    symbol: '€',
+    icon: <Icon icon={'emojione-v1:flag-for-united-kingdom'} className="h-6 w-6 text-2xl" />,
+  },
 ]
 
 type TCountryCurrency = {

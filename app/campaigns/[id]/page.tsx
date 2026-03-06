@@ -67,7 +67,8 @@ export default async function CampaignDetailsPage({ params }: CampaignPageProps)
             <span className="font-bold text-primary">{post.user}</span>{' '}
             <p className="mt text-base">Created this campaign</p>
           </div>
-          <p className="mb-6 mt-5 border-t border-textcolor text-gray-700">
+          <p className='border-t border-textcolor text-gray-700 mt-5 '></p>
+          <p className="space-y-4 mt-4">
             {post.description}
           </p>
         </section>
