@@ -91,7 +91,7 @@ export default function ProfilePageLayout() {
     {
       step: 2,
       name: 'campaigns',
-      component: () => <PreviewCampaignTab goForward={goForward} />,
+      component: () => <PreviewCampaignTab goForward={goForward} formData={FormData} />,
     },
     {
       step: 3,

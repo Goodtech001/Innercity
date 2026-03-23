@@ -14,6 +14,7 @@ import { getTestimonialsService } from '@/app/auth/auth.service'
 
 export default function PartnersCorners() {
   // const [isMobile, setIsMobile] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [testimonials, setTestimonials] = useState<any[]>([])
 
   useEffect(() => {
@@ -21,6 +22,7 @@ export default function PartnersCorners() {
       try {
         const data = await getTestimonialsService()
         setTestimonials(data.data || data)
+         setLoading(false)
       } catch (err) {
         console.error('Failed to fetch testimonials', err)
       }
@@ -64,17 +66,20 @@ export default function PartnersCorners() {
             slidesPerView={isMobile ? 1 : 2}
             spaceBetween={5}
             freeMode={true}
-            pagination={{
-              clickable: true,
-            }}
+            pagination={{ clickable: true }}
             modules={[FreeMode, Pagination]}
-            className=""
           >
-            {testimonials.map((item) => (
-              <SwiperSlide key={item.id} className="px-8 py-6 pb-20">
-                <PartnersCornersCard testimonial={item} />
-              </SwiperSlide>
-            ))}
+            {loading
+              ? Array.from({ length: 4 }).map((_, index) => (
+                  <SwiperSlide key={index} className="px-8 py-6 pb-20">
+                    <PartnersCornersCardSkeleton />
+                  </SwiperSlide>
+                ))
+              : testimonials.map((item) => (
+                  <SwiperSlide key={item.id} className="px-8 py-6 pb-20">
+                    <PartnersCornersCard testimonial={item} />
+                  </SwiperSlide>
+                ))}
           </Swiper>
         </div>
       </section>
@@ -88,7 +93,13 @@ export function PartnersCornersCard({ testimonial }: any) {
       <div className="min-h-24 max-w-lg rounded-lg border bg-complementary px-2 py-2 text-textcolor md:grid md:min-w-96 md:grid-cols-12 md:px-3 md:py-3">
         <div className="relative col-span-3 flex justify-between md:flex-col">
           <span className="before:absolute before:-left-2 before:-top-2 before:hidden before:size-9 before:rounded-lg before:border-2 before:border-primary before:content-[''] md:mb-6 md:w-full before:md:-left-8 before:md:-top-8 before:md:inline-block before:md:size-24">
-            <img alt="partner" src={testimonial.avatar?.url} width={100} height={100} className="relative z-10 aspect-1 rounded-md md:-ml-5 md:-mt-5 object-cover" />
+            <img
+              alt="partner"
+              src={testimonial.avatar?.url}
+              width={100}
+              height={100}
+              className="relative z-10 aspect-1 rounded-md object-cover md:-ml-5 md:-mt-5"
+            />
           </span>
 
           <div className="flex flex-col gap-2 text-right md:text-left">
@@ -120,5 +131,41 @@ export function PartnersCornersCard({ testimonial }: any) {
         </div>
       </div>
     </>
+  )
+}
+
+export function PartnersCornersCardSkeleton() {
+  return (
+    <div className="min-h-24 max-w-lg animate-pulse rounded-lg border bg-complementary px-2 py-2 md:grid md:min-w-96 md:grid-cols-12 md:px-3 md:py-3">
+      {/* Avatar */}
+      <div className="col-span-3 flex justify-between md:flex-col">
+        <div className="h-16 w-16 rounded-md bg-gray-300 md:h-20 md:w-20"></div>
+
+        <div className="mt-2 flex flex-col gap-2">
+          <div className="h-3 w-16 rounded bg-gray-300"></div>
+          <div className="h-3 w-20 rounded bg-gray-300 md:hidden"></div>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="col-span-9 mt-2 md:mt-0">
+        <div className="mb-3 flex justify-between">
+          <div>
+            <div className="mb-2 h-4 w-32 rounded bg-gray-300"></div>
+            <div className="h-3 w-24 rounded bg-gray-300"></div>
+          </div>
+
+          <div className="hidden h-3 w-20 rounded bg-gray-300 md:block"></div>
+        </div>
+
+        <div className="mb-3 h-3 w-full rounded bg-gray-300"></div>
+        <div className="mb-3 h-3 w-5/6 rounded bg-gray-300"></div>
+        <div className="mb-3 h-3 w-2/3 rounded bg-gray-300"></div>
+
+        <div className="mt-4 flex justify-end">
+          <div className="h-3 w-24 rounded bg-gray-300"></div>
+        </div>
+      </div>
+    </div>
   )
 }

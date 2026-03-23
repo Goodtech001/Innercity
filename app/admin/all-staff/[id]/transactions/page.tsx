@@ -4,33 +4,38 @@
 import { useEffect, useState } from "react"
 import { baseUrl } from "@/constants"
 
-export default function AdminTransactionsPage() {
+export default function UserTransactionsPage() {
 
   const [transactions, setTransactions] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   const fetchTransactions = async () => {
-  try {
 
-    const token = localStorage.getItem("token")
+    try {
 
-    const res = await fetch(`${baseUrl}/payments/admin/all`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
-      }
-    })
+      const stored = localStorage.getItem("course-training-profile")
+      const parsed = stored ? JSON.parse(stored) : null
+      const token = parsed?.token
 
-    const data = await res.json()
+      const res = await fetch(`${baseUrl}/payments/history`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      })
 
-    setTransactions(Array.isArray(data) ? data : [])
+      const data = await res.json()
 
-  } catch (err) {
-    console.error(err)
-  } finally {
-    setLoading(false)
+      console.log("User transactions:", data)
+
+      setTransactions(Array.isArray(data) ? data : [])
+
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
   }
-}
 
   useEffect(() => {
     fetchTransactions()
@@ -40,7 +45,7 @@ export default function AdminTransactionsPage() {
     <div className="p-8">
 
       <h1 className="mb-6 text-2xl font-bold">
-        Transaction History
+        My Donation History
       </h1>
 
       <div className="overflow-x-auto rounded-xl border bg-white shadow-sm">
@@ -49,14 +54,12 @@ export default function AdminTransactionsPage() {
 
           <thead className="bg-gray-50 text-left text-gray-600">
             <tr>
-              <th className="p-4">ID</th>
               <th className="p-4">Reference</th>
-              <th className="p-4">Donor Email</th>
               <th className="p-4">Campaign</th>
-              <th className="p-4">Campaign Owner</th>
               <th className="p-4">Method</th>
               <th className="p-4">Amount</th>
               <th className="p-4">Status</th>
+              <th className="p-4">Date</th>
             </tr>
           </thead>
 
@@ -64,14 +67,14 @@ export default function AdminTransactionsPage() {
 
             {loading ? (
               <tr>
-                <td colSpan={8} className="p-6 text-center">
+                <td colSpan={6} className="p-6 text-center">
                   Loading transactions...
                 </td>
               </tr>
             ) : transactions.length === 0 ? (
               <tr>
-                <td colSpan={8} className="p-6 text-center">
-                  No transactions found
+                <td colSpan={6} className="p-6 text-center">
+                  No donations yet
                 </td>
               </tr>
             ) : (
@@ -83,24 +86,12 @@ export default function AdminTransactionsPage() {
                   className="border-t hover:bg-gray-50"
                 >
 
-                  <td className="p-4 font-medium">
-                    {tx.id}
-                  </td>
-
                   <td className="p-4 font-mono text-xs">
                     {tx.reference}
                   </td>
 
                   <td className="p-4">
-                    {tx.email}
-                  </td>
-
-                  <td className="p-4">
                     {tx.campaign?.title}
-                  </td>
-
-                  <td className="p-4">
-                    {tx.campaign?.user?.fullname}
                   </td>
 
                   <td className="p-4 capitalize">
@@ -133,6 +124,10 @@ export default function AdminTransactionsPage() {
 
                   </td>
 
+                  <td className="p-4 text-gray-500">
+                    {new Date(tx.created_at).toLocaleString()}
+                  </td>
+
                 </tr>
 
               ))
@@ -140,8 +135,11 @@ export default function AdminTransactionsPage() {
             )}
 
           </tbody>
+
         </table>
+
       </div>
+
     </div>
   )
 }

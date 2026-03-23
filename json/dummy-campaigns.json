@@ -8,7 +8,10 @@
     "target": 8409,
     "donations": 1481,
     "category": "food",
-    "createdAt": "2025-03-11T00:27:41Z"
+    "createdAt": "2025-03-11T00:27:41Z",
+    "raised": 25804,
+    "goal": 58046,
+    "donors": 100
   },
   {
     "id": 2,
@@ -19,7 +22,10 @@
     "target": 5340,
     "donations": 118,
     "category": "food",
-    "createdAt": "2025-04-22T18:02:03Z"
+    "createdAt": "2025-04-22T18:02:03Z",
+    "raised": 5804,
+    "goal": 58046,
+    "donors": 1000
   },
   {
     "id": 3,
@@ -30,7 +36,10 @@
     "target": 5711,
     "donations": 2626,
     "category": "food",
-    "createdAt": "2025-05-07T20:35:23Z"
+    "createdAt": "2025-05-07T20:35:23Z",
+    "raised": 0,
+    "goal": 58046,
+    "donors": 0
   },
   {
     "id": 4,
@@ -41,7 +50,10 @@
     "target": 6199,
     "donations": 647,
     "category": "education",
-    "createdAt": "2024-11-17T02:12:10Z"
+    "createdAt": "2024-11-17T02:12:10Z",
+    "raised": 123,
+    "goal": 58046,
+    "donors": 1000
   },
   {
     "id": 5,
@@ -52,7 +64,10 @@
     "target": 8089,
     "donations": 5451,
     "category": "education",
-    "createdAt": "2025-03-08T14:43:00Z"
+    "createdAt": "2025-03-08T14:43:00Z",
+    "raised": 55804,
+    "goal": 58046,
+    "donors": 100000
   },
   {
     "id": 6,
@@ -63,7 +78,10 @@
     "target": 8634,
     "donations": 6760,
     "category": "education",
-    "createdAt": "2024-09-14T05:41:12Z"
+    "createdAt": "2024-09-14T05:41:12Z",
+    "raised": 5804,
+    "goal": 58046,
+    "donors": 10000
   },
   {
     "id": 7,
@@ -74,7 +92,10 @@
     "target": 5319,
     "donations": 5039,
     "category": "women",
-    "createdAt": "2024-12-10T09:32:50Z"
+    "createdAt": "2024-12-10T09:32:50Z",
+    "raised": 512804,
+    "goal": 58046,
+    "donors": 10000
   },
   {
     "id": 8,
@@ -85,7 +106,10 @@
     "target": 35780,
     "donations": 8889,
     "category": "women",
-    "createdAt": "2025-08-05T20:55:20Z"
+    "createdAt": "2025-08-05T20:55:20Z",
+    "raised": 5431,
+    "goal": 58046,
+    "donors": 100000
   },
   {
     "id": 9,
@@ -96,7 +120,10 @@
     "target": 4453,
     "donations": 95,
     "category": "community",
-    "createdAt": "2024-09-02T17:57:43Z"
+    "createdAt": "2024-09-02T17:57:43Z",
+    "raised": 236,
+    "goal": 58046,
+    "donors": 100000
   },
   {
     "id": 10,
@@ -107,6 +134,9 @@
     "target": 6987,
     "donations": 3677,
     "category": "community",
-    "createdAt": "2025-07-02T15:41:00Z"
+    "createdAt": "2025-07-02T15:41:00Z",
+    "raised": 51,
+    "goal": 58046,
+    "donors": 100000
   }
 ]

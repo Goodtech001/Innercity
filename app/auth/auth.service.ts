@@ -317,6 +317,80 @@ export const updateCategoryService = async (
   return result
 }
 
+
+export const getAllCampaignsService = async () => {
+  const token =
+    typeof window !== 'undefined'
+      ? JSON.parse(
+          sessionStorage.getItem('course-training-profile') || '{}'
+        )?.token
+      : null
+
+  const res = await fetch(
+    `${baseUrl}/camapign`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch campaigns')
+  }
+
+  return res.json()
+}
+
+// auth.service.ts
+
+// Create a new fundraising campaign
+export const createCampaignService = async (data: any) => {
+  const token = typeof window !== 'undefined'
+    ? JSON.parse(sessionStorage.getItem('course-training-profile') || '{}')?.token
+    : null;
+
+  const res = await fetch(`${baseUrl}/campaigns`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(data),
+  });
+
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result.message || 'Create campaign failed');
+  }
+  return result;
+};
+
+// (Optional) If you have an endpoint to upload images first:
+export const uploadImageService = async (file: File) => {
+  const token = typeof window !== 'undefined'
+    ? JSON.parse(sessionStorage.getItem('course-training-profile') || '{}')?.token
+    : null;
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const res = await fetch(`${baseUrl}/upload`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    body: formData
+  });
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result.message || 'Image upload failed');
+  }
+  return result; // Assuming result contains { id: number, url: string, ... }
+};
+
+
 // const getKingChatProfile = async ({
 //   accessToken,
 //   refreshToken,

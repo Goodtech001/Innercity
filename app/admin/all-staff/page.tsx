@@ -6,11 +6,14 @@
 import { useEffect, useState } from 'react'
 import { Icon } from '@iconify/react'
 import { getUsersService, deleteUserService } from '@/app/auth/auth.service'
+import { useRouter } from 'next/navigation'
+// import router from 'next/router'
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
+  const router = useRouter()
 
   const [search, setSearch] = useState('')
   const [adminFilter, setAdminFilter] = useState('all')
@@ -226,178 +229,155 @@ export default function AdminUsersPage() {
 
       {/* ✅ User Detail Drawer */}
       {/* 🔥 Premium Animated Drawer */}
-{selectedUser && (
-  <div className="fixed inset-0 z-50 flex">
-    
-    {/* Backdrop */}
-    <div
-      className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-      onClick={() => setSelectedUser(null)}
-    />
+      {selectedUser && (
+        <div className="fixed inset-0 z-50 flex">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            onClick={() => setSelectedUser(null)}
+          />
 
-    {/* Drawer */}
-    <div className="ml-auto w-[420px] h-full bg-white shadow-2xl relative animate-slideIn flex flex-col">
+          {/* Drawer */}
+          <div className="animate-slideIn relative ml-auto flex h-full w-[420px] flex-col bg-white shadow-2xl">
+            {/* Header */}
+            <div className="relative bg-gradient-to-r from-primary to-purple-600 p-6 text-white">
+              <button onClick={() => setSelectedUser(null)} className="absolute right-4 top-4">
+                <Icon icon="solar:close-circle-bold" width={24} />
+              </button>
 
-      {/* Header */}
-      <div className="relative bg-gradient-to-r from-primary to-purple-600 p-6 text-white">
+              <div className="flex items-center gap-4">
+                {selectedUser.avatar ? (
+                  <img
+                    src={selectedUser.avatar}
+                    className="h-20 w-20 rounded-full border-4 border-white object-cover shadow"
+                  />
+                ) : (
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white text-2xl font-bold text-primary shadow">
+                    {getInitials(selectedUser.fullname)}
+                  </div>
+                )}
 
-        <button
-          onClick={() => setSelectedUser(null)}
-          className="absolute top-4 right-4"
-        >
-          <Icon icon="solar:close-circle-bold" width={24} />
-        </button>
+                <div>
+                  <h2 className="text-xl font-semibold">{selectedUser.fullname}</h2>
+                  <p className="text-sm opacity-90">@{selectedUser.username}</p>
 
-        <div className="flex items-center gap-4">
-          {selectedUser.avatar ? (
-            <img
-              src={selectedUser.avatar}
-              className="h-20 w-20 rounded-full object-cover border-4 border-white shadow"
-            />
-          ) : (
-            <div className="h-20 w-20 rounded-full bg-white text-primary flex items-center justify-center text-2xl font-bold shadow">
-              {getInitials(selectedUser.fullname)}
+                  <div className="mt-2 flex gap-2">
+                    {selectedUser.admin && (
+                      <span className="rounded-full bg-white/20 px-2 py-1 text-xs">Admin</span>
+                    )}
+                    {selectedUser.emailVerified && (
+                      <span className="rounded-full bg-green-500 px-2 py-1 text-xs">Verified</span>
+                    )}
+                    {selectedUser.status === 'suspended' && (
+                      <span className="rounded-full bg-red-500 px-2 py-1 text-xs">Suspended</span>
+                    )}
+                  </div>
+
+                  
+                </div>
+              </div>
             </div>
-          )}
 
-          <div>
-            <h2 className="text-xl font-semibold">
-              {selectedUser.fullname}
-            </h2>
-            <p className="text-sm opacity-90">
-              @{selectedUser.username}
-            </p>
+            {/* Body */}
+            <div className="flex-1 space-y-6 overflow-y-auto p-6 text-sm">
+              <div>
+                <h3 className="mb-2 font-semibold text-gray-700">Personal Information</h3>
+                <div className="space-y-2 text-gray-600">
+                  <p>
+                    <strong>Email:</strong> {selectedUser.email}
+                  </p>
+                  <p>
+                    <strong>Telephone:</strong> {selectedUser.telephone}
+                  </p>
+                  <p>
+                    <strong>Birthday:</strong> {selectedUser.birthday}
+                  </p>
+                  <p>
+                    <strong>Created:</strong> {new Date(selectedUser.created_at).toLocaleString()}
+                  </p>
+                </div>
+              </div>
 
-            <div className="flex gap-2 mt-2">
-              {selectedUser.admin && (
-                <span className="px-2 py-1 text-xs rounded-full bg-white/20">
-                  Admin
-                </span>
-              )}
-              {selectedUser.emailVerified && (
-                <span className="px-2 py-1 text-xs rounded-full bg-green-500">
-                  Verified
-                </span>
-              )}
-              {selectedUser.status === "suspended" && (
-                <span className="px-2 py-1 text-xs rounded-full bg-red-500">
-                  Suspended
-                </span>
-              )}
+              {/* Toggle Admin */}
+              <div className="flex items-center justify-between border-t pt-4">
+                <span className="font-medium text-gray-700">Admin Access</span>
+
+                <button
+                  onClick={() => {
+                    setUsers((prev) =>
+                      prev.map((u) => (u.id === selectedUser.id ? { ...u, admin: !u.admin } : u)),
+                    )
+
+                    setSelectedUser((prev: any) => ({
+                      ...prev,
+                      admin: !prev.admin,
+                    }))
+                  }}
+                  className={`relative h-6 w-12 rounded-full transition ${
+                    selectedUser.admin ? 'bg-purple-600' : 'bg-gray-300'
+                  }`}
+                >
+                  <span
+                    className={`absolute left-1 top-1 h-4 w-4 rounded-full bg-white transition ${
+                      selectedUser.admin ? 'translate-x-6' : ''
+                    }`}
+                  />
+                </button>
+              </div>
+              <button
+                    onClick={() => router.push(`/admin/all-staff/${selectedUser.id}/transactions`)}
+                    className="btn-primary mt-3 text-xs"
+                  >
+                    View Transaction History
+                  </button>
+
+              {/* Suspend / Activate */}
+              <div className="flex items-center justify-between border-t pt-4">
+                <span className="font-medium text-gray-700">Account Status</span>
+
+                <button
+                  onClick={() => {
+                    const newStatus = selectedUser.status === 'suspended' ? 'active' : 'suspended'
+
+                    setUsers((prev) =>
+                      prev.map((u) => (u.id === selectedUser.id ? { ...u, status: newStatus } : u)),
+                    )
+
+                    setSelectedUser((prev: any) => ({
+                      ...prev,
+                      status: newStatus,
+                    }))
+                  }}
+                  className={`rounded-full px-4 py-1.5 text-xs ${
+                    selectedUser.status === 'suspended'
+                      ? 'bg-green-100 text-green-600'
+                      : 'bg-red-100 text-red-600'
+                  }`}
+                >
+                  {selectedUser.status === 'suspended' ? 'Activate' : 'Suspend'}
+                </button>
+                
+              </div>
             </div>
+            
           </div>
+
+          {/* Animation */}
+          <style jsx>{`
+            .animate-slideIn {
+              animation: slideIn 0.3s ease-out forwards;
+            }
+            @keyframes slideIn {
+              from {
+                transform: translateX(100%);
+              }
+              to {
+                transform: translateX(0);
+              }
+            }
+          `}</style>
         </div>
-      </div>
-
-      {/* Body */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-6 text-sm">
-
-        <div>
-          <h3 className="font-semibold mb-2 text-gray-700">
-            Personal Information
-          </h3>
-          <div className="space-y-2 text-gray-600">
-            <p><strong>Email:</strong> {selectedUser.email}</p>
-            <p><strong>Telephone:</strong> {selectedUser.telephone}</p>
-            <p><strong>Birthday:</strong> {selectedUser.birthday}</p>
-            <p><strong>Created:</strong> {new Date(selectedUser.created_at).toLocaleString()}</p>
-          </div>
-        </div>
-
-        {/* Toggle Admin */}
-        <div className="flex items-center justify-between border-t pt-4">
-          <span className="font-medium text-gray-700">
-            Admin Access
-          </span>
-
-          <button
-            onClick={() => {
-              setUsers(prev =>
-                prev.map(u =>
-                  u.id === selectedUser.id
-                    ? { ...u, admin: !u.admin }
-                    : u
-                )
-              )
-
-              setSelectedUser((prev: any) => ({
-                ...prev,
-                admin: !prev.admin,
-              }))
-            }}
-            className={`relative w-12 h-6 rounded-full transition ${
-              selectedUser.admin
-                ? "bg-purple-600"
-                : "bg-gray-300"
-            }`}
-          >
-            <span
-              className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition ${
-                selectedUser.admin
-                  ? "translate-x-6"
-                  : ""
-              }`}
-            />
-          </button>
-        </div>
-
-        {/* Suspend / Activate */}
-        <div className="flex items-center justify-between border-t pt-4">
-          <span className="font-medium text-gray-700">
-            Account Status
-          </span>
-
-          <button
-            onClick={() => {
-              const newStatus =
-                selectedUser.status === "suspended"
-                  ? "active"
-                  : "suspended"
-
-              setUsers(prev =>
-                prev.map(u =>
-                  u.id === selectedUser.id
-                    ? { ...u, status: newStatus }
-                    : u
-                )
-              )
-
-              setSelectedUser((prev: any) => ({
-                ...prev,
-                status: newStatus,
-              }))
-            }}
-            className={`px-4 py-1.5 text-xs rounded-full ${
-              selectedUser.status === "suspended"
-                ? "bg-green-100 text-green-600"
-                : "bg-red-100 text-red-600"
-            }`}
-          >
-            {selectedUser.status === "suspended"
-              ? "Activate"
-              : "Suspend"}
-          </button>
-        </div>
-
-      </div>
-    </div>
-
-    {/* Animation */}
-    <style jsx>{`
-      .animate-slideIn {
-        animation: slideIn 0.3s ease-out forwards;
-      }
-      @keyframes slideIn {
-        from {
-          transform: translateX(100%);
-        }
-        to {
-          transform: translateX(0);
-        }
-      }
-    `}</style>
-  </div>
-)}
+      )}
     </div>
   )
 }

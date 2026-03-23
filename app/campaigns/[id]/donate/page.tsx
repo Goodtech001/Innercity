@@ -48,10 +48,22 @@ export default async function CampaignDonatePage({ params }: CampaignPageProps) 
               <div className="flex gap-6 items-center">
                 <ProgressCircle />
                 <div className="text-white">
-                  <h1 className="my-auto mt-[px] line-clamp-2 text-base font-bold text-white md:max-w-80">
+                  <h1 className="my-auto mt-[px] md:line-clamp-2 text-base font-bold text-white md:max-w-80">
                     {post.title}
                   </h1>
-                  <p>Ends on: 22nd March 2025</p>
+                  <p className='truncate'>Ends on: 22nd March 2025</p>
+                  <div className="mb-6 ml-auto mt-auto text-white">
+                <div className="flex items-center gap-8 text-sm text-white">
+                  <div className="md:hidden block">
+                    <p className="text-left">Target</p>
+                    <p> 82,239.43</p>
+                  </div>
+                  <div className="md:hidden block ">
+                    <p className="text-left">Raised</p>
+                    <p> 82,239.43</p>
+                  </div>
+                </div>
+              </div>
                 </div>
               </div>
 
