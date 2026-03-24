@@ -8,7 +8,7 @@ import { IInputState } from '@/components/input/useInput'
 import Select from '@/components/select'
 import Tooltip from '@/components/ui/tooltip'
 import { Icon } from '@iconify/react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import dummyCategrories from '@/json/dummy-category.json'
 import fundraiseBannerExample from '@/public/assets/images/fundraise-banner-example.jpg'
 import { createSelectOptions } from '@/components/select/useSelect'
@@ -86,6 +86,13 @@ export function CampaignInformationTab({ goForward, formData, setFormData }: For
     fetchCategories()
   }, [])
 
+  const handleInputChange = (key: string, value: any) => {
+    setFormData((prev: any) => ({
+      ...prev,
+      [key]: value,
+    }))
+  }
+
   const syncForm = (key: string, value: string) => {
     setFormData((prev: any) => ({
       ...prev,
@@ -143,7 +150,7 @@ export function CampaignInformationTab({ goForward, formData, setFormData }: For
               setFormData((prev: any) => ({ ...prev, category_id: e.target.value }))
             }
             required
-            className='w-full border-2 rounded-lg border-gray-300'
+            className="w-full rounded-lg border-2 border-gray-300"
           >
             <option value="">Categories</option>
             {createSelectOptions(categories, 'name', 'id').map((option) => (
@@ -447,25 +454,55 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
 
 // --- STEP 3: PREVIEW & PUBLISH ---
 export function PreviewCampaignTab({ goForward, formData }: PreviewProps) {
+  const [loading, setLoading] = useState(false)
   const handlePublish = async () => {
     try {
-      console.log('Submitting to API:', formData)
+      const token = JSON.parse(localStorage.getItem('course-training-profile') || '{}')?.token
 
-      // Example API call
-      // await fetch("/api/campaigns", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(formData)
-      // })
+      const body = new FormData()
+
+      body.append('title', formData.title)
+      body.append('category_id', formData.category_id)
+      body.append('period', formData.period)
+      body.append('goal', formData.goal)
+      body.append('excerpt', formData.excerpt)
+
+      if (formData.campaign_image) {
+        body.append('campaign_image', formData.campaign_image)
+      }
+
+      if (formData.ecard_image) {
+        body.append('ecard_image', formData.ecard_image)
+      }
+
+      const res = await fetch(`${baseUrl}/campaigns/`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body,
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        console.error(data)
+        throw new Error(data?.message || 'Campaign creation failed')
+      }
+
+      console.log('Campaign created:', data)
+
+      alert('Campaign published successfully 🎉')
     } catch (error) {
       console.error('Publish failed:', error)
+      alert('Failed to publish campaign')
     }
+    setLoading(true)
   }
 
   const template = formData?.template || null
 
-  const templateImage =
-    template?.image || (formData?.ecard_image )
+  const templateImage = template?.image || formData?.ecard_image
 
   const userImage = formData?.campaign_image ? URL.createObjectURL(formData.campaign_image) : null
 
@@ -477,12 +514,12 @@ export function PreviewCampaignTab({ goForward, formData }: PreviewProps) {
 
       <div className="mb-3 flex aspect-2 w-full items-center justify-center overflow-hidden rounded-lg bg-gray-100">
         {templateImage && (
-          <div className="relative w-full max-w-[600px]">
+          <div className="relative w-full max-w-[400px]">
             {/* TEMPLATE BACKGROUND */}
 
             <Image
               src={templateImage}
-              width={1200}
+              width={1400}
               height={600}
               alt="ecard-template"
               className="w-full object-cover"
@@ -521,7 +558,7 @@ export function PreviewCampaignTab({ goForward, formData }: PreviewProps) {
                   maxWidth: '250px',
                 }}
               >
-                {formData.excerpt}
+                {/* {formData.excerpt} */}
               </p>
             )}
           </div>
@@ -576,8 +613,8 @@ export function PreviewCampaignTab({ goForward, formData }: PreviewProps) {
       ======================= */}
 
       <div className="mt-10 flex items-center gap-4">
-        <button onClick={handlePublish} className="btn-primary w-fit !px-10">
-          Publish Campaign
+        <button disabled={loading} onClick={handlePublish} className="btn-primary w-fit !px-10">
+          {loading ? 'Publishing...' : 'Publish Campaign'}
         </button>
 
         <button
@@ -590,8 +627,6 @@ export function PreviewCampaignTab({ goForward, formData }: PreviewProps) {
     </div>
   )
 }
-
-
 
 // 'use client'
 // import Input from '@/components/input'

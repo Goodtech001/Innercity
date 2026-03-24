@@ -35,6 +35,7 @@ const links: NavLink[] = [
     icon: 'material-symbols:campaign',
     children: [
       { label: 'Categories', href: '/admin/category', icon: 'nrk:category-active' },
+      { label: 'Campaigns', href: '/admin/campaigns', icon: 'noto:bookmark-tabs' },
     ],
   },
   { href: '/admin/voucher', label: 'Vouchers', icon: 'mdi:voucher' },
