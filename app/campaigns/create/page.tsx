@@ -20,14 +20,14 @@ export default function CreateCampaignPage() {
    * title, banner_id, category_id, goal, published, excerpt, period
    */
   const [formData, setFormData] = useState({
-    title: '',
-    banner_id: 16, // Default as per your Postman example
-    category_id: '',
-    goal: '',
-    published: true,
-    excerpt: '',
-    period: '', // This maps to "Campaign End Date"
-  })
+  title: '',
+  category_id: '',
+  period: '',
+  goal: '',
+  excerpt: '',
+  campaign_image: null,
+  ecard_image: ''
+})
 
   const [tabs] = useState([
     {

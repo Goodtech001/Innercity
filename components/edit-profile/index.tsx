@@ -172,11 +172,11 @@ function Editpage({user}: Readonly<TUserProfileDropdownProps>) {
 
           <div>
             <label htmlFor="text">Phone</label>
-          <p className="font-medium text-black">+234 {user?.telephone || ProfilePhone}</p>
+          <p className="font-medium text-black"> {user?.telephone || ProfilePhone}</p>
           </div>
 
          <div>
-           <label htmlFor="text">Joined</label>
+           <label htmlFor="text">Birthday</label>
           <p className="font-medium text-black">{user?.birthday}</p>
          </div>
 

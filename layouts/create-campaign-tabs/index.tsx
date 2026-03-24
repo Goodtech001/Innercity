@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -23,6 +24,7 @@ import Cropper from 'react-easy-crop'
 import getCroppedImg from '@/utils/cropImage'
 import AvatarCard from '@/components/avatar-card'
 import { getAllCategoryService } from '@/app/auth/auth.service'
+import { baseUrl } from '@/constants'
 // import CampaignEcardPreview from '@/components/campaign-ecard/campaign-ecard-preview'
 
 type TabsProps = {
@@ -43,8 +45,18 @@ type PreviewProps = BaseTabsProps & {
   formData: any
 }
 
+// const [formData, setFormData] = useState({
+//   title: '',
+//   category_id: '',
+//   period: '',
+//   goal: '',
+//   excerpt: '',
+//   campaign_image: null,
+//   ecard_image: '',
+// })
+
 // --- STEP 1: CAMPAIGN INFORMATION ---
-export function CampaignInformationTab({ goForward }: FormTabsProps) {
+export function CampaignInformationTab({ goForward, formData, setFormData }: FormTabsProps) {
   const [categories, setCategories] = useState<any[]>([])
 
   const [titleState, setTitleState] = useState<IInputState>({ value: '' })
@@ -52,13 +64,13 @@ export function CampaignInformationTab({ goForward }: FormTabsProps) {
   const [periodState, setPeriodState] = useState<IInputState>({ value: '' })
   const [goalState, setGoalState] = useState<IInputState>({ value: '' })
   const [excerptState, setExcerptState] = useState<IInputState>({ value: '' })
-  const [formData, setFormData] = useState({
-    title: '',
-    category_id: '',
-    period: '',
-    goal: '',
-    excerpt: '',
-  })
+  // const [formData, setFormData] = useState({
+  //   title: '',
+  //   category_id: '',
+  //   period: '',
+  //   goal: '',
+  //   excerpt: '',
+  // })
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -90,7 +102,7 @@ export function CampaignInformationTab({ goForward }: FormTabsProps) {
             <p>Campaign Title</p>
           </label>
 
-          <Input
+          {/* <Input
             name="name"
             state={titleState}
             setState={(val: any) => {
@@ -101,6 +113,20 @@ export function CampaignInformationTab({ goForward }: FormTabsProps) {
             type="text"
             required
             placeholder="Aiding the Homeless"
+          /> */}
+
+          <input
+            name="name"
+            type="text"
+            value={formData.title || ''}
+            onChange={(e) =>
+              setFormData((prev: any) => ({
+                ...prev,
+                title: e.target.value,
+              }))
+            }
+            placeholder="Aiding the Homeless"
+            className="w-full rounded-lg border-2 border-gray-300 outline-2"
           />
         </div>
 
@@ -110,26 +136,22 @@ export function CampaignInformationTab({ goForward }: FormTabsProps) {
             <p>Select Campaign Category</p>
           </label>
 
-          <Select
+          <select
             name="category"
-            options={createSelectOptions(categories, 'name', 'id')}
-            placeholder="Categories"
-            state={categoryState}
-            setState={(val: any) => {
-              const newVal = typeof val === 'function' ? val(categoryState) : val
-
-              setCategoryState(newVal)
-
-              const selectedCategory = categories.find((c) => c.id == newVal.value)
-
-              setFormData((prev: any) => ({
-                ...prev,
-                category_id: newVal.value,
-                ecard_image: selectedCategory?.ecard_image || fundraiseBannerExample
-              }))
-            }}
+            value={formData.category_id || ''}
+            onChange={(e: any) =>
+              setFormData((prev: any) => ({ ...prev, category_id: e.target.value }))
+            }
             required
-          />
+            className='w-full border-2 rounded-lg border-gray-300'
+          >
+            <option value="">Categories</option>
+            {createSelectOptions(categories, 'name', 'id').map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* End Date */}
@@ -138,16 +160,16 @@ export function CampaignInformationTab({ goForward }: FormTabsProps) {
             <p>Campaign End Date</p>
           </label>
 
-          <Input
-            name="campaignEndDate"
-            state={periodState}
-            setState={(val: any) => {
-              const newVal = typeof val === 'function' ? val(periodState) : val
-              setPeriodState(newVal)
-              syncForm('period', newVal.value)
-            }}
+          <input
             type="date"
-            required
+            value={formData.period || ''}
+            onChange={(e) =>
+              setFormData((prev: any) => ({
+                ...prev,
+                period: e.target.value,
+              }))
+            }
+            className="w-full rounded-lg border-2 border-gray-300"
           />
         </div>
 
@@ -157,21 +179,22 @@ export function CampaignInformationTab({ goForward }: FormTabsProps) {
             <p>Target Amount</p>
           </label>
 
-          <div className="relative overflow-hidden rounded-md">
-            <div className="absolute left-0.5 top-[4%] z-10 flex h-full max-h-11 items-center justify-center rounded-l bg-primary/25 px-2 text-primary md:top-[3%] md:max-h-10">
+          <div className="relative flex h-10 w-full items-center overflow-hidden rounded-md border-2 border-gray-300">
+            <div className="absolute left-0.5 top-[0] z-10 flex h-full max-h-11 items-center justify-center rounded-l bg-primary/25 px-2 text-primary md:top-[3%] md:max-h-10">
               $
             </div>
 
-            <Input
+            <input
               name="targetAmount"
-              state={goalState}
-              setState={(val: any) => {
-                const newVal = typeof val === 'function' ? val(goalState) : val
-                setGoalState(newVal)
-                syncForm('goal', newVal.value)
-              }}
+              value={formData.goal || ''}
+              onChange={(e) =>
+                setFormData((prev: any) => ({
+                  ...prev,
+                  goal: e.target.value,
+                }))
+              }
               type="amount"
-              className="pl-8"
+              className="w-full pl-8 outline-none"
               required
               placeholder="100"
             />
@@ -184,17 +207,19 @@ export function CampaignInformationTab({ goForward }: FormTabsProps) {
             <p>Campaign Description</p>
           </label>
 
-          <Input
+          <textarea
             name="campaignDescription"
-            state={excerptState}
-            setState={(val: any) => {
-              const newVal = typeof val === 'function' ? val(excerptState) : val
-              setExcerptState(newVal)
-              syncForm('excerpt', newVal.value)
-            }}
-            type="text-area"
+            value={formData.excerpt || ''}
+            onChange={(e) =>
+              setFormData((prev: any) => ({
+                ...prev,
+                excerpt: e.target.value,
+              }))
+            }
+            // type="text-area "
             required
             placeholder="Take a moment to share the story behind your campaign..."
+            className="h-200 w-full rounded-lg border-2 border-gray-300"
           />
         </div>
       </div>
@@ -225,13 +250,51 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null)
 
   useEffect(() => {
-  if (images.length > 0 && setFormData) {
-    setFormData((prev: any) => ({
-      ...prev,
-      campaign_image: images[0],
-    }))
+    if (images.length > 0 && setFormData) {
+      setFormData((prev: any) => ({
+        ...prev,
+        campaign_image: images[0],
+      }))
+    }
+  }, [images, setFormData])
+
+  const generateAvatarCard = async (file: File) => {
+    try {
+      if (!formData?.category_id) {
+        console.error('Category not selected')
+        return
+      }
+
+      const form = new FormData()
+
+      form.append('name', formData.title || 'Campaign')
+      form.append('userImage', file)
+      form.append('excerpt', formData.excerpt || '')
+
+      const res = await fetch(
+        `${baseUrl}/card-template/generate/category/${formData.category_id}`,
+        {
+          method: 'POST',
+          body: form,
+        },
+      )
+
+      const data = await res.json()
+
+      console.log('GENERATED CARD:', data)
+
+      if (!res.ok) throw new Error('Avatar generation failed')
+
+      if (setFormData) {
+        setFormData((prev: any) => ({
+          ...prev,
+          ecard_image: data?.url || data?.data?.url,
+        }))
+      }
+    } catch (err) {
+      console.error('Avatar generation error:', err)
+    }
   }
-}, [images, setFormData])
 
   return (
     <div className="lg:max-w-3xl">
@@ -269,7 +332,15 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
           containerClassName="bg-primary/15"
           onChange={(e) => {
             const fileList = e.target.files
-            if (fileList) setImages([...images, ...Array.from(fileList)])
+
+            if (!fileList) return
+
+            const file = fileList[0]
+
+            setImages([file])
+
+            // 🔥 generate avatar automatically
+            generateAvatarCard(file)
           }}
           setFiles={setImages}
         />
@@ -393,7 +464,8 @@ export function PreviewCampaignTab({ goForward, formData }: PreviewProps) {
 
   const template = formData?.template || null
 
-  const templateImage = template?.image || formData?.ecard_image || fundraiseBannerExample
+  const templateImage =
+    template?.image || (formData?.ecard_image )
 
   const userImage = formData?.campaign_image ? URL.createObjectURL(formData.campaign_image) : null
 
@@ -518,6 +590,8 @@ export function PreviewCampaignTab({ goForward, formData }: PreviewProps) {
     </div>
   )
 }
+
+
 
 // 'use client'
 // import Input from '@/components/input'
