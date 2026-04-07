@@ -3,7 +3,7 @@ import OpenAI from "openai"
 // import { getCampaignStats } from "@/utils/aiTools"
 
 const openai = new OpenAI({
-  apiKey: "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"
+  apiKey: process.env.OPENAI_API_KEY
 })
 
 export async function POST(req:Request){
