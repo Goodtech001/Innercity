@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
+import ChatBot from '@/components/chat-bot'
 import DpUploader from '@/components/dp-uploader'
 import Editpage from '@/components/edit-profile'
 import ImageUploader from '@/components/image-uploader'
@@ -12,37 +13,50 @@ import React, { useEffect, useState } from 'react'
 export default function ProfilePageLayout() {
   const searchParams = useSearchParams()
   const [urlQueryTab, setUrlQueryTab] = useState<string | null>(null)
+  const [notificationCount, setNotificationCount] = useState(0)
   // const router = useRouter()
-    const [user, setUser] = useState<any>(null)
-    const router = useRouter()
-  
-    /* ================================
+  const [user, setUser] = useState<any>(null)
+  const router = useRouter()
+
+  /* ================================
        LOAD USER FROM SESSION STORAGE
     ================================= */
-    useEffect(() => {
-      const loadUser = () => {
-        try {
-          const stored = sessionStorage.getItem('course-training-profile')
-          if (!stored) return setUser(null)
-  
-          const parsed = JSON.parse(stored)
-  
-          if (parsed?.token) {
-            setUser(parsed.user || parsed)
-          } else {
-            setUser(null)
-          }
-        } catch (err) {
-          console.error('Navbar auth parse error:', err)
+  useEffect(() => {
+    const loadUser = () => {
+      try {
+        const stored = sessionStorage.getItem('course-training-profile')
+        if (!stored) return setUser(null)
+
+        const parsed = JSON.parse(stored)
+
+        if (parsed?.token) {
+          setUser(parsed.user || parsed)
+        } else {
           setUser(null)
         }
+      } catch (err) {
+        console.error('Navbar auth parse error:', err)
+        setUser(null)
       }
-  
-      loadUser()
-      window.addEventListener('storage', loadUser)
-  
-      return () => window.removeEventListener('storage', loadUser)
-    }, [])
+    }
+
+    loadUser()
+    window.addEventListener('storage', loadUser)
+
+    return () => window.removeEventListener('storage', loadUser)
+  }, [])
+
+  useEffect(() => {
+    if (!user?.id) return
+
+    const stored = localStorage.getItem('user-notifications')
+
+    const all = stored ? JSON.parse(stored) : {}
+
+    const count = all[user.id]?.length || 0
+
+    setNotificationCount(count)
+  }, [user])
   // const urlQueryTab = new URLSearchParams(window.location.search).get('tab')
   const [activeStep, setActiveStep] = useState(1)
   const [tabs] = useState([
@@ -96,12 +110,12 @@ export default function ProfilePageLayout() {
     {
       step: 3,
       name: 'notifications',
-      component: () => <Notifications />,
+      component: () => <Notifications user={user} />,
     },
     {
       step: 4,
       name: 'chat',
-      component: () => <>CHAT SUPPORT</>,
+      component: () => <ChatBot/>,
     },
   ]
 
@@ -167,9 +181,18 @@ export default function ProfilePageLayout() {
                   <Icon icon={tab.icon} />
                 </button>
                 <div className="text-sm">
-                  <h4 className="text-center text-xs font-semibold text-dark md:text-left md:text-sm">
+                  {/* <h4 className="text-center text-xs font-semibold text-dark md:text-left md:text-sm">
                     <span className="inline">{tab.title}</span>
-                  </h4>
+                  </h4> */}
+                  <div className="flex items-center gap-2">
+                    <span>{tab.title}</span>
+
+                    {tab.slug === 'notifications' && notificationCount > 0 && (
+                      <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-xs text-white">
+                        {notificationCount}
+                      </span>
+                    )}
+                  </div>
                   <p className="hidden md:inline">{tab.description}</p>
                 </div>
               </div>

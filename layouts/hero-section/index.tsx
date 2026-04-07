@@ -1,8 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 import React, { useRef } from 'react'
 import Link from 'next/link'
 import HeroCardStack from '@/components/hero-card-stack'
 import { AnimatePresence, circInOut, motion, spring, useInView } from 'framer-motion'
+import easter from "@/public/assets/images/still-life-crown-thorns.png"
+import Image from 'next/image'
 // import HeroImage from '@/components/hero-image'
 
 function HeroSection() {
@@ -11,7 +14,7 @@ function HeroSection() {
   const transitionSpring = { duration: 0.4, ease: circInOut, type: spring, stiffness: 150 }
 
   return (
-    <main className="bg-hero-blue-specs-pattern min-h-96 bg-[100%,100%] py-16 pb-0 md:py-28 md:pb-36">
+    <main className="bg-hero-blue-specs-pattern min-h-96 bg-[100%,100%] py-16 pb-0 md:py-28 md:pb-36 relative">
       <AnimatePresence>
         <motion.div
           ref={ref}
@@ -45,6 +48,7 @@ function HeroSection() {
             </div>
           </div>
         </motion.div>
+        {/* <Image src={easter} alt="" width={120} height={120} className='absolute top-14 left-12' /> */}
       </AnimatePresence>
     </main>
   )

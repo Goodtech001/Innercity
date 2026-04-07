@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 'use client'
-import React, { Suspense, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import campaigns from '@/json/dummy-campaigns.json'
 import { Campaign } from '@/types/Campaign'
 import TopNavbar from '@/layouts/topnavbar'
@@ -15,6 +16,7 @@ import food from '@/public/assets/images/food-7bmc.jpg'
 import women from '@/public/assets/images/women-empowerment-gathering.jpg'
 import community from '@/public/assets/images/community-development-construction.jpg'
 import Image from 'next/image'
+import { baseUrl } from '@/constants'
 // import useTopnavbar from '@/layouts/topnavbar/useTopnavbar'
 
 function CampaignsContent() {
@@ -22,14 +24,14 @@ function CampaignsContent() {
   const query = searchParams.get('query')?.toLowerCase() || ''
   const category = searchParams.get('category')
 
-  const filteredCampaignsByQuery = (campaigns as unknown as Campaign[]).filter((campaign) =>
-    campaign.title.toLowerCase().includes(query.toLowerCase()),
-  )
+  // const filteredCampaignsByQuery = (campaigns as unknown as Campaign[]).filter((campaign) =>
+  //   campaign.title.toLowerCase().includes(query.toLowerCase()),
+  // )
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
 
-  const filteredCampaigns = category
-    ? filteredCampaignsByQuery.filter((campaign) => campaign.category === category)
-    : filteredCampaignsByQuery
+  // const filteredCampaigns = category
+  //   ? filteredCampaignsByQuery.filter((campaign) => campaign.category === category)
+  //   : filteredCampaignsByQuery
 
   const { setSubMenuClicked } = useTopnavbar()
   const handleSubMenuClick = (path: string) => {
@@ -46,6 +48,38 @@ function CampaignsContent() {
   const activeGlow =
     'border-blue-200 border text-primary shadow-[0_0_8px_rgba(0,123,255,0.7)] bg-primary/10'
 
+  const [campaigns, setCampaigns] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchCampaigns()
+  }, [])
+
+  const fetchCampaigns = async () => {
+    try {
+      const res = await fetch(`${baseUrl}/campaigns`)
+      const data = await res.json()
+
+      const campaignsArray = Array.isArray(data) ? data : data.data || data.campaigns || []
+
+      setCampaigns(campaignsArray)
+    } catch (error) {
+      console.error('Failed to fetch campaigns:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 gap-6 px-6 py-10 md:grid-cols-3 md:px-14">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <CampaignCardSkeleton key={index} />
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div>
       <div className="container !h-auto">
@@ -56,60 +90,54 @@ function CampaignsContent() {
           <SearchInput />
         </div>
 
-        <div className="mt-3 flex w-full md:justify-between justify-center overflow-x-auto no-scrollbar ">
-          <div className="flex space- md:gap-4 gap-4 text-sm md:mb-0 md:space-x-2 justify-center">
+        <div className="mt-3 flex w-full justify-center overflow-x-auto no-scrollbar md:justify-between">
+          <div className="space- flex justify-center gap-4 text-sm md:mb-0 md:gap-4 md:space-x-2">
             <button onClick={() => handleSubMenuClick('?category=food')}>
               <div className="flex flex-col items-center justify-center">
                 <Image
                   src={food}
                   alt="food"
-                  className={`h-10 w-10 rounded-full font-light object-cover  ${
+                  className={`h-10 w-10 rounded-full object-cover font-light ${
                     activeCategory === '?category=food' ? activeGlow : ''
                   }`}
                 />
                 <p>Food</p>
               </div>
             </button>
-            <button
-              onClick={() => handleSubMenuClick('?category=education')}
-            >
+            <button onClick={() => handleSubMenuClick('?category=education')}>
               <div className="flex flex-col items-center justify-center">
                 <Image
                   src={community}
                   alt="education"
-                  className={`h-10 w-10 rounded-full font-light object-cover  ${
+                  className={`h-10 w-10 rounded-full object-cover font-light ${
                     activeCategory === '?category=food' ? activeGlow : ''
                   }`}
                 />
                 <p>Education</p>
               </div>
             </button>
-            <button
-              onClick={() => handleSubMenuClick('?category=women')}
-            >
+            <button onClick={() => handleSubMenuClick('?category=women')}>
               <div className="flex flex-col items-center justify-center">
                 <Image
                   src={women}
                   alt="women"
-                  className={`h-10 w-10 rounded-full font-light object-cover  ${
+                  className={`h-10 w-10 rounded-full object-cover font-light ${
                     activeCategory === '?category=food' ? activeGlow : ''
                   }`}
                 />
                 <p>Women</p>
               </div>
             </button>
-            <button
-              onClick={() => handleSubMenuClick('?category=community')}
-            >
-             <div className="flex flex-col items-center justify-center">
+            <button onClick={() => handleSubMenuClick('?category=community')}>
+              <div className="flex flex-col items-center justify-center">
                 <Image
                   src={community}
                   alt="community"
-                  className={`h-10 w-10 rounded-full font-light object-cover  ${
+                  className={`h-10 w-10 rounded-full object-cover font-light ${
                     activeCategory === '?category=food' ? activeGlow : ''
                   }`}
                 />
-                <p className=''>Community</p>
+                <p className="">Community</p>
               </div>
             </button>
           </div>
@@ -129,37 +157,18 @@ function CampaignsContent() {
           <div className="flex justify-between">
             <div className="flex space-x-4 md:space-x-5"></div>
             <div className="flex text-black">
-              <h1 className="  text-sm font-semibold text-black hidden">Sort by</h1>
-              <Icon
-                icon="iconamoon:arrow-down-2"
-                width="20"
-                height="20"
-                className=" hidden"
-              />
+              <h1 className="hidden text-sm font-semibold text-black">Sort by</h1>
+              <Icon icon="iconamoon:arrow-down-2" width="20" height="20" className="hidden" />
             </div>
           </div>
         </div>
       </div>
 
-      <section>
-        <div className="container py-8 pb-6 md:py-14 md:pb-8">
-          {query && (
-            <p className="mb-6 text-sm text-gray-500">
-              Showing results for <span className="font-semibold">{query}</span>
-            </p>
-          )}
-          {filteredCampaignsByQuery.length === 0 ? (
-            <p className="text-gray-500">No campaigns found.</p>
-          ) : (
-            <div className="flex flex-col justify-center gap-5 md:grid md:grid-cols-3">
-              {/* fundraise campaign card */}
-              {filteredCampaigns.map((campaign) => (
-                <FundraiseCampaignCard key={campaign.id} campaign={campaign} />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+      <div className="grid grid-cols-1 gap-6 px-6 py-10 md:grid-cols-3 md:px-14">
+        {campaigns.map((campaign) => (
+          <FundraiseCampaignCard key={campaign.id} campaign={campaign} />
+        ))}
+      </div>
     </div>
   )
 }
@@ -172,6 +181,28 @@ export default function MoreFundraisingCampaigns() {
         <CampaignsContent />
       </Suspense>
       <Footer />
+    </div>
+  )
+}
+
+function CampaignCardSkeleton() {
+  return (
+    <div className="animate-pulse rounded-xl border bg-white shadow-sm">
+      {/* Image */}
+      <div className="h-48 w-full rounded-t-xl bg-gray-200"></div>
+
+      {/* Content */}
+      <div className="space-y-3 p-4">
+        <div className="h-4 w-3/4 rounded bg-gray-200"></div>
+        <div className="h-4 w-1/2 rounded bg-gray-200"></div>
+
+        <div className="mt-4 h-2 w-full rounded bg-gray-200"></div>
+
+        <div className="flex justify-between pt-3">
+          <div className="h-4 w-16 rounded bg-gray-200"></div>
+          <div className="h-4 w-16 rounded bg-gray-200"></div>
+        </div>
+      </div>
     </div>
   )
 }

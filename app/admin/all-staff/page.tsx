@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react'
 import { Icon } from '@iconify/react'
 import { getUsersService, deleteUserService } from '@/app/auth/auth.service'
 import { useRouter } from 'next/navigation'
+import templates from '@/json/admin-notification-templates.json'
+import { sendNotificationToUser } from '@/utils/notificationService'
 // import router from 'next/router'
 
 export default function AdminUsersPage() {
@@ -14,6 +16,7 @@ export default function AdminUsersPage() {
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
   const router = useRouter()
+  const [showNotificationModal, setShowNotificationModal] = useState(false)
 
   const [search, setSearch] = useState('')
   const [adminFilter, setAdminFilter] = useState('all')
@@ -83,7 +86,7 @@ export default function AdminUsersPage() {
   const paginatedUsers = filteredUsers.slice((page - 1) * itemsPerPage, page * itemsPerPage)
 
   return (
-    <div className="p-8">
+    <div className="md:p-8">
       <h1 className="mb-6 text-2xl font-bold">Users</h1>
 
       {/* 🔎 Search + Filters (minimal, clean, no design disruption) */}
@@ -117,7 +120,6 @@ export default function AdminUsersPage() {
         </select>
       </div>
 
-      {/* ✅ YOUR EXACT TABLE (UNCHANGED DESIGN) */}
       <div className="overflow-x-auto rounded-xl border bg-white shadow-sm">
         <table className="w-full text-sm">
           <thead className="bg-gray-50 text-left text-gray-600">
@@ -228,7 +230,6 @@ export default function AdminUsersPage() {
       </div>
 
       {/* ✅ User Detail Drawer */}
-      {/* 🔥 Premium Animated Drawer */}
       {selectedUser && (
         <div className="fixed inset-0 z-50 flex">
           {/* Backdrop */}
@@ -272,8 +273,6 @@ export default function AdminUsersPage() {
                       <span className="rounded-full bg-red-500 px-2 py-1 text-xs">Suspended</span>
                     )}
                   </div>
-
-                  
                 </div>
               </div>
             </div>
@@ -325,11 +324,22 @@ export default function AdminUsersPage() {
                 </button>
               </div>
               <button
-                    onClick={() => router.push(`/admin/all-staff/${selectedUser.id}/transactions`)}
-                    className="btn-primary mt-3 text-xs"
-                  >
-                    View Transaction History
-                  </button>
+                onClick={() =>
+                  router.push(
+                    `/admin/all-staff/${selectedUser.id}/transactions?name=${selectedUser.fullname}&avatar=${selectedUser.avatar}`,
+                  )
+                }
+                className="btn-primary mt-3 text-xs"
+              >
+                View Transaction History
+              </button>
+
+              <button
+                onClick={() => setShowNotificationModal(true)}
+                className="btn-primary mt-3 text-xs"
+              >
+                Send Notification
+              </button>
 
               {/* Suspend / Activate */}
               <div className="flex items-center justify-between border-t pt-4">
@@ -356,10 +366,8 @@ export default function AdminUsersPage() {
                 >
                   {selectedUser.status === 'suspended' ? 'Activate' : 'Suspend'}
                 </button>
-                
               </div>
             </div>
-            
           </div>
 
           {/* Animation */}
@@ -376,6 +384,35 @@ export default function AdminUsersPage() {
               }
             }
           `}</style>
+        </div>
+      )}
+
+      {/* notification drawer */}
+      {showNotificationModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="w-[420px] rounded-xl bg-white p-6 shadow-xl">
+            <h2 className="mb-4 text-lg font-semibold">
+              Send Notification to {selectedUser.fullname}
+            </h2>
+
+            <div className="space-y-3">
+              {templates.map((template) => (
+                <button
+                  key={template.id}
+                  onClick={() => {
+                    sendNotificationToUser(selectedUser.id, template)
+                    setShowNotificationModal(false)
+                    alert('Notification sent successfully 🚀')
+                  }}
+                  className="w-full rounded-lg border p-3 text-left transition hover:bg-gray-50"
+                >
+                  <p className="font-semibold text-primary">{template.title}</p>
+
+                  <p className="text-sm text-gray-600">{template.description}</p>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>

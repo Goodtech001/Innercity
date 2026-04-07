@@ -14,27 +14,31 @@ import BankTransfer from '@/components/bank-transfer'
 import Image from 'next/image'
 import me from '@/public/assets/images/me.jpg'
 import { useParams } from 'next/navigation'
+import { Campaign } from '@/types/Campaign'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function DonationTabsClient({ espees, paystack }: { espees: any; paystack: any }) {
+export default function DonationTabsClient({ espees, paystack, campaign }: { espees: any; paystack: any; campaign:Campaign }) {
   const [activeStep, setActiveStep] = useState(1)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const params = useParams()
 
-const campaignId = Number(params?.id)
+  const avatar = campaign.user?.avatar
+    ? `https://fundraise.theinnercitymission.ngo/${campaign.user?.avatar}`
+    : campaign.banner?.url
 
-const [email, setEmail] = useState('')
+  const campaignId = Number(params?.id)
 
-useEffect(() => {
-  const user = localStorage.getItem('course-training-profile')
+  const [email, setEmail] = useState('')
 
-  if (user) {
-    const parsed = JSON.parse(user)
-    setEmail(parsed?.email || '')
-  }
-}, [])
+  useEffect(() => {
+    const user = localStorage.getItem('course-training-profile')
 
+    if (user) {
+      const parsed = JSON.parse(user)
+      setEmail(parsed?.email || '')
+    }
+  }, [])
 
   const scroll = (dir: 'left' | 'right') => {
     const el = scrollRef.current
@@ -56,31 +60,28 @@ useEffect(() => {
     { id: 1, component: <EspeeForm /> },
     { id: 2, component: <StripeForm /> },
     { id: 3, component: <PaypalForm /> },
-    { id: 4, component: <PaystackForm/> },
+    { id: 4, component: <PaystackForm /> },
     { id: 5, component: <VoucherForm /> },
     { id: 6, component: <BankTransfer /> },
   ]
 
   const current = steps.find((s) => s.id === activeStep)?.component
 
-
-  
-
   return (
-    <section className="flex justify-center border ">
+    <section className="flex justify-center border">
       {/* User info */}
       <div>
         <div className="flex w-full gap-2 p-3 md:mt-10">
           <Image
-            src={me}
+            src={avatar as string}
             alt="me"
             height={50}
             width={50}
             className="h-[50px] w-[50px] rounded-full object-cover"
           />
           <div>
-            <span className="font-bold text-primary">Pastor Daniel</span>
-            <p className="text-sm text-textcolor">Joined on: 12 Sep 2025</p>
+            <span className="font-bold text-primary">{campaign.user?.fullname}</span>
+            <p className="text-sm text-textcolor">Joined on: {campaign.user?.created_at}</p>
           </div>
         </div>
 

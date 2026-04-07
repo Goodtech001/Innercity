@@ -97,6 +97,24 @@ h6,
 .font-commissioner {
   font-family: 'Commissioner', sans-serif;
 }
+.share-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+  border-radius: 16px;
+  background: #f7f7f7;
+  font-size: 12px;
+  font-weight: 500;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.share-card:hover {
+  transform: translateY(-4px);
+  background: #efefef;
+}
 
 .wrapper,
 .container {

@@ -39,6 +39,7 @@ const links: NavLink[] = [
     ],
   },
   { href: '/admin/voucher', label: 'Vouchers', icon: 'mdi:voucher' },
+  { href: '/admin/complaints', label: 'Chat', icon: 'mdi:alert-circle' },
   { href: '/admin/all-staff', label: 'Users', icon: 'fa:users' },
   { href: '/admin/all-transaction', label: 'Transaction', icon: 'hugeicons:transaction' },
   {
@@ -157,3 +158,5 @@ export default function AdminSidebar() {
     </>
   )
 }
+
+

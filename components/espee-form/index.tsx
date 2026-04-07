@@ -1,7 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import espees from '@/public/assets/images/espees.png'
 import Image from 'next/image'
+import { useParams } from 'next/navigation'
+import { getUsersService } from '@/app/auth/auth.service'
+import { baseUrl } from '@/constants'
 
 function EspeeForm() {
   const [ifscCode, setIfscCode] = useState('')
@@ -12,8 +16,75 @@ function EspeeForm() {
       ifscCode,
     })
   }
+   const params = useParams()
+  const campaignId = Number(params?.id)
+  
+    const [amount, setAmount] = useState('')
+    const [email, setEmail] = useState('')
+    const [userId, setUserId] = useState<number | null>(null)
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        const fetchUser = async () => {
+          try {
+            const res = await getUsersService()
+            const users = res.data || res
+    
+            const currentUser = users?.[0]
+    
+            setEmail(currentUser?.email || '')
+            setUserId(currentUser?.id || null)
+          } catch (err) {
+            console.error(err)
+          }
+        }
+    
+        fetchUser()
+      }, [])  
+
+  const startedPayment = async (e: React.FormEvent) => {
+      e.preventDefault()
+  
+      if (!campaignId || !email || !userId || !amount) {
+        alert('Missing payment information')
+        return
+      }
+  
+      try {
+        setLoading(true)
+  
+        const res = await fetch(`${baseUrl}/payments/initialize/espees`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            campaignId,
+            amount: Number(amount),
+            email,
+            userId,
+          }),
+        })
+  
+        const data = await res.json()
+  
+        console.log('PAYSTACK RESPONSE:', res.status, data)
+  
+        if (!res.ok) {
+          throw new Error(JSON.stringify(data))
+        }
+  
+        // Redirect to Paystack
+        window.location.href = data.authorization_url
+      } catch (error: any) {
+        console.error(error)
+        alert(error.message)
+      } finally {
+        setLoading(false)
+      }
+    }
   return (
-    <form onSubmit={handleSubmit} className="mx-auto max-w-md p-4">
+    <form onSubmit={startedPayment} className="mx-auto max-w-md p-4">
       <p className='text-primary'>Dear Goodnews,</p>
       <small className='text-primary'>
         Thank you for your sponsorship. You will now be redirected to our Espee gateway. After
@@ -39,8 +110,8 @@ function EspeeForm() {
             <div>Espees</div>
           </div>
         </div>
-        <button type="submit" className="btn-primary mt-4 w-fit">
-          Donate
+        <button type="submit" className="btn-primary mt-4 w-fit" disabled={loading}>
+          {loading ? 'Processing...' : 'Donate'}
         </button>
       </div>
     </form>

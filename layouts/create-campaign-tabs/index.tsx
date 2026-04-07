@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -8,7 +9,7 @@ import { IInputState } from '@/components/input/useInput'
 import Select from '@/components/select'
 import Tooltip from '@/components/ui/tooltip'
 import { Icon } from '@iconify/react'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import dummyCategrories from '@/json/dummy-category.json'
 import fundraiseBannerExample from '@/public/assets/images/fundraise-banner-example.jpg'
 import { createSelectOptions } from '@/components/select/useSelect'
@@ -25,6 +26,7 @@ import getCroppedImg from '@/utils/cropImage'
 import AvatarCard from '@/components/avatar-card'
 import { getAllCategoryService } from '@/app/auth/auth.service'
 import { baseUrl } from '@/constants'
+import { useRouter } from 'next/navigation'
 // import CampaignEcardPreview from '@/components/campaign-ecard/campaign-ecard-preview'
 
 type TabsProps = {
@@ -58,19 +60,12 @@ type PreviewProps = BaseTabsProps & {
 // --- STEP 1: CAMPAIGN INFORMATION ---
 export function CampaignInformationTab({ goForward, formData, setFormData }: FormTabsProps) {
   const [categories, setCategories] = useState<any[]>([])
-
-  const [titleState, setTitleState] = useState<IInputState>({ value: '' })
-  const [categoryState, setCategoryState] = useState<IInputState>({ value: '' })
-  const [periodState, setPeriodState] = useState<IInputState>({ value: '' })
-  const [goalState, setGoalState] = useState<IInputState>({ value: '' })
-  const [excerptState, setExcerptState] = useState<IInputState>({ value: '' })
-  // const [formData, setFormData] = useState({
-  //   title: '',
-  //   category_id: '',
-  //   period: '',
-  //   goal: '',
-  //   excerpt: '',
-  // })
+  const router = useRouter()
+  const [title, setTitle] = useState('')
+  const [categoryId, setCategoryId] = useState<number | ''>('')
+  const [goal, setGoal] = useState<number | ''>('')
+  const [period, setPeriod] = useState('')
+  const [excerpt, setExcerpt] = useState('')
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -85,7 +80,7 @@ export function CampaignInformationTab({ goForward, formData, setFormData }: For
 
     fetchCategories()
   }, [])
-
+  
   const handleInputChange = (key: string, value: any) => {
     setFormData((prev: any) => ({
       ...prev,
@@ -93,12 +88,68 @@ export function CampaignInformationTab({ goForward, formData, setFormData }: For
     }))
   }
 
-  const syncForm = (key: string, value: string) => {
-    setFormData((prev: any) => ({
-      ...prev,
-      [key]: value,
-    }))
+  const handleCreateCampaign = async () => {
+    try {
+      const token = localStorage.getItem('token')
+
+      if (!token) {
+        alert('Session expired: please login again')
+        return
+      }
+
+      const payload = {
+        title,
+        category_id: Number(categoryId),
+        goal: Number(goal),
+        period,
+        excerpt,
+      }
+
+      console.log('SENDING JSON:', payload)
+
+      const res = await fetch(`${baseUrl}/campaigns`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      })
+
+      const data = await res.json()
+
+      console.log('API RESPONSE:', data)
+
+      if (!res.ok) {
+        throw new Error(data?.message)
+      }
+
+      const campaignId = data?.id ?? data?.data?.id
+
+      console.log('CAMPAIGN ID:', campaignId)
+
+      setFormData((prev: any) => ({
+        ...prev,
+        id: campaignId,
+        title,
+        category_id: Number(categoryId),
+        goal: Number(goal),
+        period,
+        excerpt,
+      }))
+
+      goForward()
+    } catch (err) {
+      console.error(err)
+    }
   }
+
+  // const syncForm = (key: string, value: string) => {
+  //   setFormData((prev: any) => ({
+  //     ...prev,
+  //     [key]: value,
+  //   }))
+  // }
 
   return (
     <div className="lg:max-w-3xl">
@@ -125,15 +176,10 @@ export function CampaignInformationTab({ goForward, formData, setFormData }: For
           <input
             name="name"
             type="text"
-            value={formData.title || ''}
-            onChange={(e) =>
-              setFormData((prev: any) => ({
-                ...prev,
-                title: e.target.value,
-              }))
-            }
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             placeholder="Aiding the Homeless"
-            className="w-full rounded-lg border-2 border-gray-300 outline-2"
+            className="w-full rounded-lg border-2 border-gray-300 outline-none"
           />
         </div>
 
@@ -145,10 +191,8 @@ export function CampaignInformationTab({ goForward, formData, setFormData }: For
 
           <select
             name="category"
-            value={formData.category_id || ''}
-            onChange={(e: any) =>
-              setFormData((prev: any) => ({ ...prev, category_id: e.target.value }))
-            }
+            value={categoryId}
+            onChange={(e) => setCategoryId(Number(e.target.value))}
             required
             className="w-full rounded-lg border-2 border-gray-300"
           >
@@ -169,13 +213,8 @@ export function CampaignInformationTab({ goForward, formData, setFormData }: For
 
           <input
             type="date"
-            value={formData.period || ''}
-            onChange={(e) =>
-              setFormData((prev: any) => ({
-                ...prev,
-                period: e.target.value,
-              }))
-            }
+            value={period}
+            onChange={(e) => setPeriod(e.target.value)}
             className="w-full rounded-lg border-2 border-gray-300"
           />
         </div>
@@ -193,14 +232,9 @@ export function CampaignInformationTab({ goForward, formData, setFormData }: For
 
             <input
               name="targetAmount"
-              value={formData.goal || ''}
-              onChange={(e) =>
-                setFormData((prev: any) => ({
-                  ...prev,
-                  goal: e.target.value,
-                }))
-              }
-              type="amount"
+              value={goal}
+              onChange={(e) => setGoal(Number(e.target.value))}
+              type="number"
               className="w-full pl-8 outline-none"
               required
               placeholder="100"
@@ -216,28 +250,16 @@ export function CampaignInformationTab({ goForward, formData, setFormData }: For
 
           <textarea
             name="campaignDescription"
-            value={formData.excerpt || ''}
-            onChange={(e) =>
-              setFormData((prev: any) => ({
-                ...prev,
-                excerpt: e.target.value,
-              }))
-            }
-            // type="text-area "
+            value={excerpt}
+            onChange={(e) => setExcerpt(e.target.value)}
             required
             placeholder="Take a moment to share the story behind your campaign..."
-            className="h-200 w-full rounded-lg border-2 border-gray-300"
+            className="h-[200px] w-full rounded-lg border-2 border-gray-300"
           />
         </div>
       </div>
 
-      <button
-        onClick={() => {
-          console.log('STEP 1 DATA:', formData)
-          goForward()
-        }}
-        className="btn-primary mt-5 w-fit !px-10"
-      >
+      <button onClick={handleCreateCampaign} className="btn-primary mt-5 w-fit !px-10">
         Next Step
       </button>
     </div>
@@ -257,52 +279,176 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null)
 
   useEffect(() => {
-    if (images.length > 0 && setFormData) {
+    if (!images.length) return
+
+    const processImage = async () => {
+      const file = images[0]
+
+      // store campaign image locally
       setFormData((prev: any) => ({
         ...prev,
-        campaign_image: images[0],
+        campaign_image: file,
       }))
-    }
-  }, [images, setFormData])
 
-  const generateAvatarCard = async (file: File) => {
+      try {
+        // 1️⃣ upload image
+        const imageId = await uploadImage(file)
+
+        if (!formData.category_id) {
+          console.error('Category missing before avatar generation')
+          return
+        }
+
+        if (!imageId) {
+          console.error('Image upload failed')
+          return
+        }
+
+        // 2️⃣ generate avatar banner
+        const thumbnailId = await generateAvatarCard(imageId)
+
+        setFormData((prev: any) => ({
+          ...prev,
+          thumbnail_id: thumbnailId,
+        }))
+
+        // 3️⃣ save banner id
+        // setFormData((prev: any) => ({
+        //   ...prev,
+        //   banner_id: bannerId,
+        // }))
+
+        console.log('Banner ID stored:', thumbnailId)
+      } catch (err) {
+        console.error('Avatar pipeline failed:', err)
+      }
+    }
+
+    processImage()
+  }, [images])
+
+  useEffect(() => {
+    console.log('STEP 2 FORM DATA:', formData)
+  }, [formData])
+
+  const generateAvatarCard = async (imageId: number) => {
     try {
-      if (!formData?.category_id) {
-        console.error('Category not selected')
-        return
+      const token = localStorage.getItem('token')
+
+      if (!token) {
+        alert('Please login again')
+        return null
       }
 
       const form = new FormData()
 
       form.append('name', formData.title || 'Campaign')
-      form.append('userImage', file)
+      form.append('userImage', String(imageId))
       form.append('excerpt', formData.excerpt || '')
 
       const res = await fetch(
         `${baseUrl}/card-template/generate/category/${formData.category_id}`,
         {
           method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           body: form,
         },
       )
 
       const data = await res.json()
 
-      console.log('GENERATED CARD:', data)
+      console.log('AVATAR RESPONSE:', data)
 
-      if (!res.ok) throw new Error('Avatar generation failed')
-
-      if (setFormData) {
-        setFormData((prev: any) => ({
-          ...prev,
-          ecard_image: data?.url || data?.data?.url,
-        }))
+      if (!res.ok) {
+        console.error(data)
+        return null
       }
+
+      // return thumbnail id
+      return data?.thumbnail?.id || data?.thumbnail_id || data?.id || null
     } catch (err) {
       console.error('Avatar generation error:', err)
+      return null
     }
   }
 
+  const uploadImage = async (file: File) => {
+    const token = localStorage.getItem('token')
+
+    const form = new FormData()
+    form.append('file', file)
+
+    const res = await fetch(`${baseUrl}/uploads`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: form,
+    })
+
+    const data = await res.json()
+
+    console.log('UPLOAD RESPONSE:', data)
+
+    return data?.id
+  }
+
+  const handleUploadImage = async () => {
+    try {
+      const token = localStorage.getItem('token')
+
+      if (!token) {
+        alert('Please login again')
+        return
+      }
+
+      if (!formData?.id) {
+        console.error('Campaign ID missing')
+        return
+      }
+
+      const payload = {
+        id: formData.id,
+        title: formData.title,
+        category_id: Number(formData.category_id),
+        goal: Number(formData.goal),
+        period: formData.period,
+        excerpt: formData.excerpt,
+        thumbnail_id: Number(formData.thumbnail_id),
+      }
+
+      if (!formData.thumbnail_id) {
+        alert('Image still processing. Please wait.')
+        return
+      }
+
+      console.log('UPDATING CAMPAIGN:', payload)
+
+      const res = await fetch(`${baseUrl}/campaigns`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      })
+
+      const data = await res.json()
+
+      console.log('UPDATE RESPONSE:', data)
+
+      if (!res.ok) {
+        throw new Error(data?.message || 'Campaign update failed')
+      }
+
+      goForward()
+    } catch (err) {
+      console.error('Update error:', err)
+      alert('Failed to update campaign')
+    }
+  }
   return (
     <div className="lg:max-w-3xl">
       <div className="col-span-2">
@@ -347,14 +493,14 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
             setImages([file])
 
             // 🔥 generate avatar automatically
-            generateAvatarCard(file)
+            // generateAvatarCard(file)
           }}
           setFiles={setImages}
         />
       </div>
 
       <div className="mt-5 flex items-center gap-4">
-        <button onClick={goForward} className="btn-primary w-fit !px-10">
+        <button onClick={handleUploadImage} className="btn-primary w-fit !px-10">
           Next Step
         </button>
         <button onClick={goBack} className="btn-white w-fit !px-10">
@@ -455,56 +601,148 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
 // --- STEP 3: PREVIEW & PUBLISH ---
 export function PreviewCampaignTab({ goForward, formData }: PreviewProps) {
   const [loading, setLoading] = useState(false)
+
+  //  const handlePublish = async () => {
+  //   setLoading(true)
+
+  //   try {
+  //     const token = localStorage.getItem("token")
+
+  //     if (!token) {
+  //       alert("Please login again")
+  //       setLoading(false)
+  //       return
+  //     }
+
+  //     // extract real values
+  //     const title =
+  //       typeof formData.title === "object"
+  //         ? formData.title.value
+  //         : formData.title
+
+  //     const category_id =
+  //       typeof formData.category_id === "object"
+  //         ? Number(formData.category_id.value)
+  //         : Number(formData.category_id)
+
+  //     const goal =
+  //       typeof formData.goal === "object"
+  //         ? Number(formData.goal.value)
+  //         : Number(formData.goal)
+
+  //     const period =
+  //       typeof formData.period === "object"
+  //         ? formData.period.value
+  //         : formData.period
+
+  //     const excerpt =
+  //       typeof formData.excerpt === "object"
+  //         ? formData.excerpt.value
+  //         : formData.excerpt
+
+  //     console.log("Payload:", {
+  //       title,
+  //       category_id,
+  //       goal,
+  //       period,
+  //       excerpt,
+  //     })
+
+  //     const body = new FormData()
+
+  //     body.append("title", title)
+  //     body.append("category_id", String(category_id))
+  //     body.append("goal", String(goal))
+  //     body.append("period", period || "")
+  //     body.append("excerpt", excerpt || "")
+
+  //     if (formData.campaign_image) {
+  //       body.append("campaign_image", formData.campaign_image)
+  //     }
+
+  //     if (formData.ecard_image) {
+  //       body.append("ecard_image", formData.ecard_image)
+  //     }
+
+  //     const res = await fetch(`${baseUrl}/campaigns/`, {
+  //       method: "POST",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       body,
+  //     })
+
+  //     const data = await res.json()
+
+  //     if (!res.ok) {
+  //       console.error(data)
+  //       throw new Error(data?.message || "Campaign creation failed")
+  //     }
+
+  //     alert("Campaign published successfully 🎉")
+
+  //   } catch (error) {
+  //     console.error("Publish failed:", error)
+  //     alert("Failed to publish campaign")
+  //   }
+
+  //   setLoading(false)
+  // }
+
   const handlePublish = async () => {
+    setLoading(true)
+
     try {
-      const token = JSON.parse(localStorage.getItem('course-training-profile') || '{}')?.token
+      const token = localStorage.getItem('token')
 
-      const body = new FormData()
-
-      body.append('title', formData.title)
-      body.append('category_id', formData.category_id)
-      body.append('period', formData.period)
-      body.append('goal', formData.goal)
-      body.append('excerpt', formData.excerpt)
-
-      if (formData.campaign_image) {
-        body.append('campaign_image', formData.campaign_image)
+      if (!token) {
+        alert('Please login again')
+        return
       }
 
-      if (formData.ecard_image) {
-        body.append('ecard_image', formData.ecard_image)
+      if (!formData?.id) {
+        alert('Campaign ID missing')
+        return
       }
 
-      const res = await fetch(`${baseUrl}/campaigns/`, {
-        method: 'POST',
+      const res = await fetch(`${baseUrl}/campaigns/${formData.id}`, {
+        method: 'PATCH',
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body,
+        body: JSON.stringify({
+          published: true,
+        }),
       })
 
       const data = await res.json()
 
       if (!res.ok) {
         console.error(data)
-        throw new Error(data?.message || 'Campaign creation failed')
+        throw new Error(data?.message || 'Publish failed')
       }
 
-      console.log('Campaign created:', data)
+      console.log('Campaign published:', data)
 
       alert('Campaign published successfully 🎉')
-    } catch (error) {
-      console.error('Publish failed:', error)
+    } catch (err) {
+      console.error('Publish failed:', err)
       alert('Failed to publish campaign')
     }
-    setLoading(true)
+
+    setLoading(false)
   }
 
   const template = formData?.template || null
 
-  const templateImage = template?.image || formData?.ecard_image
+  const templateImage =
+    template?.image || '/assets/images/fundraise-banner-example.jpg'
 
-  const userImage = formData?.campaign_image ? URL.createObjectURL(formData.campaign_image) : null
+  const userImage = useMemo(() => {
+    if (!formData?.campaign_image) return null
+    return URL.createObjectURL(formData.campaign_image)
+  }, [formData?.campaign_image])
 
   return (
     <div>
@@ -513,56 +751,54 @@ export function PreviewCampaignTab({ goForward, formData }: PreviewProps) {
       ======================= */}
 
       <div className="mb-3 flex aspect-2 w-full items-center justify-center overflow-hidden rounded-lg bg-gray-100">
-        {templateImage && (
-          <div className="relative w-full max-w-[400px]">
-            {/* TEMPLATE BACKGROUND */}
+        <div className="relative w-full max-w-[400px]">
+          {/* TEMPLATE BACKGROUND */}
 
-            <Image
+          {templateImage && (
+            <img
               src={templateImage}
               width={1400}
               height={600}
               alt="ecard-template"
               className="w-full object-cover"
             />
+          )}
 
-            {/* USER IMAGE */}
+          {/* USER IMAGE */}
 
-            {userImage && template && (
-              <Image
-                src={userImage}
-                alt="user"
-                width={template.holeWidth || 120}
-                height={template.holeHeight || 120}
-                style={{
-                  position: 'absolute',
-                  left: template.holeX || 100,
-                  top: template.holeY || 100,
-                  width: template.holeWidth || 120,
-                  height: template.holeHeight || 120,
-                  objectFit: 'cover',
-                  borderRadius: '50%',
-                }}
-              />
-            )}
+          {/* {userImage && (
+            <img
+              src={userImage}
+              alt="user"
+              style={{
+                position: 'absolute',
+                left: template?.holeX || 100,
+                top: template?.holeY || 100,
+                width: template?.holeWidth || 120,
+                height: template?.holeHeight || 120,
+                objectFit: 'cover',
+                borderRadius: '50%',
+              }}
+            />
+          )} */}
 
-            {/* TEXT */}
+          {/* TEXT */}
 
-            {formData?.excerpt && (
-              <p
-                style={{
-                  position: 'absolute',
-                  left: template?.excerptX || 200,
-                  top: template?.excerptY || 400,
-                  color: template?.textColor || 'black',
-                  fontWeight: 'bold',
-                  maxWidth: '250px',
-                }}
-              >
-                {/* {formData.excerpt} */}
-              </p>
-            )}
-          </div>
-        )}
+          {formData?.excerpt && (
+            <p
+              style={{
+                position: 'absolute',
+                left: template?.excerptX || 200,
+                top: template?.excerptY || 400,
+                color: template?.textColor || 'black',
+                fontWeight: 'bold',
+                maxWidth: '250px',
+              }}
+            >
+              {formData.excerpt}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* ======================
@@ -613,16 +849,31 @@ export function PreviewCampaignTab({ goForward, formData }: PreviewProps) {
       ======================= */}
 
       <div className="mt-10 flex items-center gap-4">
-        <button disabled={loading} onClick={handlePublish} className="btn-primary w-fit !px-10">
+        <button
+          disabled={loading}
+          onClick={handlePublish}
+          className="btn-primary w-fit truncate !px-10"
+        >
           {loading ? 'Publishing...' : 'Publish Campaign'}
         </button>
 
         <button
           onClick={() => console.log('Saved Draft:', formData)}
-          className="btn-white w-fit !px-10"
+          className="btn-white w-fit truncate !px-10"
         >
           Save as Draft
         </button>
+      </div>
+
+      <div className="mt-6 flex justify-center px-6 text-center">
+        {
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+          formData.published ? (
+            <p>Campaign published successfully 🎉</p>
+          ) : (
+            <p>Campaign not published</p>
+          )
+        }
       </div>
     </div>
   )

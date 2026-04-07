@@ -1,14 +1,17 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import Image from 'next/image'
+import Image, { StaticImageData } from 'next/image'
+import white from "@/public/assets/images/white1.jpeg"
+import white2 from "@/public/assets/images/white2.jpeg"
+import white3 from "@/public/assets/images/white3.jpeg"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let interval: any
 
 type Card = {
   id: number | string
-  image: string
+  image: string | StaticImageData
 }
 
 type CardStackProp = {
@@ -48,6 +51,21 @@ const CARDS = [
     image:
       'https://images.unsplash.com/photo-1627394677822-a9c3351e57d7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDIzNnx8fGVufDB8fHx8fA%3D%3D',
   },
+  {
+    id: 6,
+    image:
+      white,
+  },
+  {
+    id: 7,
+    image:
+      white2,
+  },
+  {
+    id: 8,
+    image:
+      white3,
+  },
 ]
 
 export default function HeroCardStack({
@@ -67,7 +85,7 @@ export default function HeroCardStack({
         newArray.unshift(newArray.pop()!) // move the last element to the front
         return newArray
       })
-    }, 5000)
+    }, 2000)
   }
 
   useEffect(() => {

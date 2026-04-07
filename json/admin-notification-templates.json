@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Congratulations 🎉",
+    "description": "Your campaign has successfully reached its target!",
+    "type": "celebration"
+  },
+  {
+    "id": 2,
+    "title": "Welcome 👋",
+    "description": "Welcome to the fundraising platform. Start creating impact today.",
+    "type": "info"
+  },
+  {
+    "id": 3,
+    "title": "Thank You ❤️",
+    "description": "Thank you for supporting our community through your donations.",
+    "type": "message"
+  },
+  {
+    "id": 4,
+    "title": "Act Now ⚡",
+    "description": "Your campaign needs attention. Take action now to keep it active.",
+    "type": "alert"
+  }
+]
