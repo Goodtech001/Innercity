@@ -102,7 +102,7 @@ export default function CreateTestimonialPage() {
             {/* Grid Fields */}
             <div className="grid gap-6 md:grid-cols-2">
               <div>
-                <label className="text-sm font-medium text-gray-700">Client Name</label>
+                <label className="text-sm font-medium text-gray-700">Name</label>
                 <input
                   name="clientName"
                   onChange={handleChange}
