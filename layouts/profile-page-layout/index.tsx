@@ -9,6 +9,7 @@ import Notifications from '@/layouts/profile-tabs/notification'
 import { Icon } from '@iconify/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import UserCampaignDetailsPage from '../user-campaign/[id]'
 
 export default function ProfilePageLayout() {
   const searchParams = useSearchParams()
@@ -105,7 +106,7 @@ export default function ProfilePageLayout() {
     {
       step: 2,
       name: 'campaigns',
-      component: () => <PreviewCampaignTab goForward={goForward} formData={FormData} />,
+      component: () => <UserCampaignDetailsPage />,
     },
     {
       step: 3,

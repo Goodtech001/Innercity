@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
@@ -72,7 +73,7 @@ export default function DonationTabsClient({ espees, paystack, campaign }: { esp
       {/* User info */}
       <div>
         <div className="flex w-full gap-2 p-3 md:mt-10">
-          <Image
+          <img
             src={avatar as string}
             alt="me"
             height={50}

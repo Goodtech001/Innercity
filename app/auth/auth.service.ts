@@ -91,20 +91,24 @@ export const postRegisterService = async (credentials: {
 //   return profile
 // }
 export const loginWithKingsChat = async () => {
-  await kingsChatWebSdk
-    .login({
+  try {
+
+    const kcLogin = await kingsChatWebSdk.login({
       scopes: ['profile', 'message', 'conference_call', 'send_chat_message'],
       clientId: kingsChatClientId,
     })
-    .then((res) => {
-      getKingChatProfile({ accessToken: res.accessToken, refreshToken: res.refreshToken })
 
-      return { ...res }
+    const profile = await getKingChatProfile({
+      accessToken: kcLogin.accessToken,
+      refreshToken: kcLogin.refreshToken
     })
-    .catch((error) => {
-      console.log(error)
-      return { ...error }
-    })
+
+    return profile
+
+  } catch (error) {
+    console.log("KingsChat login error:", error)
+    throw error
+  }
 }
 
 export const getKingChatProfile = async ({

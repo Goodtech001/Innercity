@@ -59,27 +59,48 @@ import Image from "next/image"
 import kingsChatIcon from '@/public/assets/icons/kingschat-logo.png'
 
 export default function KingsChatButton() {
+
   const router = useRouter()
 
   const handleKingsChatLogin = async () => {
-  try {
-    await loginWithKingsChat()
-    router.push("/")
-  } catch (err) {
-    console.error("KC error:", err)
-    alert("KingsChat login failed")
+
+    try {
+
+      const data = await loginWithKingsChat()
+
+      /* STORE SESSION SAME AS EMAIL LOGIN */
+
+      sessionStorage.setItem(
+        "course-training-profile",
+        JSON.stringify(data)
+      )
+
+      localStorage.setItem("token", data.token)
+
+      router.push("/")
+
+    } catch (err) {
+
+      console.error("KC error:", err)
+      alert("KingsChat login failed")
+
+    }
+
   }
-}
-
-
 
   return (
     <button
-    type="button"
+      type="button"
       onClick={handleKingsChatLogin}
-      className="flex btn-white space-x-2" 
+      className="flex btn-white space-x-2"
     >
-      <Image alt="kingschat" className="size-6" width={20} height={20} src={kingsChatIcon} />
+      <Image
+        alt="kingschat"
+        className="size-6"
+        width={20}
+        height={20}
+        src={kingsChatIcon}
+      />
       <p>Continue with KingsChat</p>
     </button>
   )
