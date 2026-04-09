@@ -10,15 +10,19 @@ import DonatePercentageCircle from '@/components/donate-percentage-circle'
 
 const baseUrl = "https://fundraise-api.onrender.com/api/v1"
 
+// interface CampaignPageProps {
+//   params: {
+//     id: string
+//   }
+// }
 interface CampaignPageProps {
-  params: {
-    id: string
-  }
+  params: Promise<{ id: string }>
 }
 
-export default async function CampaignDonatePage({ params }: CampaignPageProps) {
 
-  const res = await fetch(`${baseUrl}/campaigns/${params.id}`, {
+export default async function CampaignDonatePage({ params }: CampaignPageProps) {
+  const { id } = await params;
+  const res = await fetch(`${baseUrl}/campaigns/${(await params).id}`, {
     cache: "no-store"
   })
 
