@@ -62,7 +62,11 @@ function CampaignsContent() {
 
       const campaignsArray = Array.isArray(data) ? data : data.data || data.campaigns || []
 
-      setCampaigns(campaignsArray)
+       const sortedCampaigns = campaignsArray.sort(
+        (a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      )
+
+      setCampaigns(sortedCampaigns)
     } catch (error) {
       console.error('Failed to fetch campaigns:', error)
     } finally {

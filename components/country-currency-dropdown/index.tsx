@@ -67,7 +67,7 @@ const countryCurrencyList: TCountryCurrency[] = [
 ]
 
 // Type for currency
-type TCountryCurrency = {
+export type TCountryCurrency = {
   abv: string
   country: string
   currency: string

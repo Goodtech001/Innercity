@@ -7,6 +7,7 @@ import espees from '@/public/assets/images/espees.png'
 import { getUsersService } from '@/app/auth/auth.service'
 import { useParams } from 'next/navigation'
 import { baseUrl } from '@/constants'
+import CountryCurrencyDropdown, { TCountryCurrency } from '../country-currency-dropdown'
 
 function PaystackForm() {
   const params = useParams()
@@ -16,24 +17,24 @@ function PaystackForm() {
   const [email, setEmail] = useState('')
   const [userId, setUserId] = useState<number | null>(null)
   const [loading, setLoading] = useState(false)
+  const [currency, setCurrency] = useState<TCountryCurrency  | null>(null)
 
   // ✅ SAME USER FETCH PATTERN AS STRIPE
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await getUsersService()
-        const users = res.data || res
+    try {
+      const stored = sessionStorage.getItem('course-training-profile')
 
-        const currentUser = users?.[0]
+      if (!stored) return
 
-        setEmail(currentUser?.email || '')
-        setUserId(currentUser?.id || null)
-      } catch (err) {
-        console.error(err)
-      }
+      const parsed = JSON.parse(stored)
+
+      const user = parsed?.user
+
+      setEmail(user?.email || '')
+      setUserId(user?.id || null)
+    } catch (err) {
+      console.error('User session parse error:', err)
     }
-
-    fetchUser()
   }, [])
 
   const startPayment = async (e: React.FormEvent) => {
@@ -55,6 +56,7 @@ function PaystackForm() {
         body: JSON.stringify({
           campaignId,
           amount: Number(amount),
+          currency,
           email,
           userId,
         }),
@@ -100,8 +102,10 @@ function PaystackForm() {
           />
 
           <div className="flex space-x-1 rounded-r border bg-gray-200 p-2 pr-7">
-            <Image src={espees} alt="espees" height={24} width={24} />
-            <div>Espees</div>
+            <CountryCurrencyDropdown
+              // value={currency}
+              onChange={(value: TCountryCurrency) => setCurrency(value)}
+            />
           </div>
         </div>
 
