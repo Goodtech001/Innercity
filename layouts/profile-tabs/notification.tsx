@@ -37,14 +37,10 @@ export default function Notifications({ user }: props) {
   useEffect(() => {
     if (!user?.id) return
 
-    const loadNotifications = () => {
-      const stored = localStorage.getItem('user-notifications')
-
-      const all = stored ? JSON.parse(stored) : {}
-
-      const userNotifications = all[user.id] || []
-
-      setNotifications(userNotifications)
+    const loadNotifications = async () => {
+      const res = await fetch(`/api/notification/${user.id}`)
+      const data = await res.json()
+      setNotifications(data)
     }
 
     loadNotifications()

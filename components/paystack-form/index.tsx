@@ -56,7 +56,7 @@ function PaystackForm() {
         body: JSON.stringify({
           campaignId,
           amount: Number(amount),
-          currency,
+          currency: currency?. currency || "NGN",
           email,
           userId,
         }),

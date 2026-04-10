@@ -24,9 +24,13 @@ export default function CampaignDetailsPage() {
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
+    if (!id || typeof id !== 'string') return
+
     const fetchCampaign = async () => {
       try {
-        const res = await fetch(`${baseUrl}/campaigns/${id}`)
+        const res = await fetch(`${baseUrl}/campaigns/${id}`, {
+          cache: 'no-store', // 👈 important for Vercel
+        })
         const data = await res.json()
 
         setCampaign(data?.data || data)
@@ -37,7 +41,7 @@ export default function CampaignDetailsPage() {
       }
     }
 
-    if (id) fetchCampaign()
+    fetchCampaign()
   }, [id])
 
   if (loading) return <CampaignDetailsSkeleton />
