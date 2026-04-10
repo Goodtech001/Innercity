@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Image from 'next/image'
 import espees from '@/public/assets/images/espees.png'
-import CountryCurrencyDropdown from '../country-currency-dropdown'
+import CountryCurrencyDropdown, { TCountryCurrency } from '../country-currency-dropdown'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements, useStripe, useElements, CardElement } from '@stripe/react-stripe-js'
 import { getUsersService } from '@/app/auth/auth.service'
@@ -22,49 +22,63 @@ function StripeForm() {
   const [amount, setAmount] = useState('')
   const [email, setEmail] = useState('')
   const [paymentData, setPaymentData] = useState<any>(null)
+  const [userId, setUserId] = useState<number | null>(null)
+  const [currency, setCurrency] = useState<TCountryCurrency | null>(null)
+  const [loading, setLoading] = useState(false)
 
   // ✅ Fetch logged in user (same pattern as AdminUsersPage)
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await getUsersService()
-        const users = res.data || res
-        // assuming backend returns logged-in user first
-        const currentUser = users?.[0]
+    try {
+      const stored = sessionStorage.getItem('course-training-profile')
 
-        setEmail(currentUser?.email || '')
-      } catch (err) {
-        console.error(err)
-      }
+      if (!stored) return
+
+      const parsed = JSON.parse(stored)
+      const user = parsed?.user
+
+      setEmail(user?.email || '')
+      setUserId(user?.id || null)
+    } catch (err) {
+      console.error('User session parse error:', err)
     }
-
-    fetchUser()
   }, [])
 
-  const startPayment = async () => {
 
-    console.log({
-      campaignId,
-      amount: Number(amount) * 100,
-      email,
-    })
+  const startPayment = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!campaignId || !email || !userId || !amount) {
+      alert('Missing payment information')
+      return
+    }
+
     try {
-      const { data } = await axios.post(`${baseUrl}/payments/initialize/stripe`, {
-        campaignId,
-        amount: Number(amount),
-        email
-      })
+      setLoading(true)
 
+      const { data } = await axios.post(
+        `${baseUrl}/payments/initialize/stripe`,
+        {
+          campaignId,
+          amount: Number(amount),
+          currency: currency?.currency || 'NGN', // ⚠️ Stripe prefers USD
+          email,
+          userId,
+        },
+      )
+
+      // ✅ Stripe expects clientSecret
       setPaymentData(data)
-    } catch (err) {
+    } catch (err: any) {
       console.error(err)
-      alert('Payment initialization failed')
+      alert(err?.response?.data?.message || 'Stripe initialization failed')
+    } finally {
+      setLoading(false)
     }
   }
 
   if (!paymentData) {
     return (
-      <form className="mx-auto max-w-md p-4">
+      <form onSubmit={startPayment} className="mx-auto max-w-md p-4">
         <div className="mb-4">
           <label className="mb-2 block text-sm font-medium">
             Pledged Amount
@@ -80,16 +94,20 @@ function StripeForm() {
             />
 
             <div className="flex space-x-1 rounded-r border bg-gray-200 p-2 pr-7">
-              <CountryCurrencyDropdown />
+              <CountryCurrencyDropdown 
+              onChange={(value: TCountryCurrency) =>
+                  setCurrency(value)
+                }
+              />
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={startPayment}
+           <button
+            type="submit"
             className="btn-primary mt-4 w-fit"
+            disabled={loading}
           >
-            Donate
+            {loading ? 'Processing...' : 'Donate'}
           </button>
         </div>
       </form>

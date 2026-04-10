@@ -38,11 +38,25 @@ export default function Notifications({ user }: props) {
     if (!user?.id) return
 
     const loadNotifications = async () => {
-      const res = await fetch(`/api/notification/${user.id}`)
-      const data = await res.json()
-      setNotifications(data)
-    }
+  try {
+    const res = await fetch(`/api/notifications/${user.id}`)
+    const data = await res.json()
 
+    if (data?.length) {
+      setNotifications(data)
+    } else {
+      // fallback
+      const stored = localStorage.getItem('user-notifications')
+      const all = stored ? JSON.parse(stored) : {}
+      setNotifications(all[user.id] || [])
+    }
+  } catch {
+    // fallback if API fails
+    const stored = localStorage.getItem('user-notifications')
+    const all = stored ? JSON.parse(stored) : {}
+    setNotifications(all[user.id] || [])
+  }
+}
     loadNotifications()
 
     const handleStorage = () => {

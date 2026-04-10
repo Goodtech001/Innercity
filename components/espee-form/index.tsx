@@ -16,77 +16,75 @@ function EspeeForm() {
       ifscCode,
     })
   }
-   const params = useParams()
+  const params = useParams()
   const campaignId = Number(params?.id)
-  
-    const [amount, setAmount] = useState('')
-    const [email, setEmail] = useState('')
-    const [userId, setUserId] = useState<number | null>(null)
-    const [loading, setLoading] = useState(false)
 
-    useEffect(() => {
-        const fetchUser = async () => {
-          try {
-            const res = await getUsersService()
-            const users = res.data || res
-    
-            const currentUser = users?.[0]
-    
-            setEmail(currentUser?.email || '')
-            setUserId(currentUser?.id || null)
-          } catch (err) {
-            console.error(err)
-          }
-        }
-    
-        fetchUser()
-      }, [])  
+  const [amount, setAmount] = useState('')
+  const [email, setEmail] = useState('')
+  const [userId, setUserId] = useState<number | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    try {
+      const stored = sessionStorage.getItem('course-training-profile')
+
+      if (!stored) return
+
+      const parsed = JSON.parse(stored)
+      const user = parsed?.user
+
+      setEmail(user?.email || '')
+      setUserId(user?.id || null)
+    } catch (err) {
+      console.error('User session parse error:', err)
+    }
+  }, [])
 
   const startedPayment = async (e: React.FormEvent) => {
-      e.preventDefault()
-  
-      if (!campaignId || !email || !userId || !amount) {
-        alert('Missing payment information')
-        return
-      }
-  
-      try {
-        setLoading(true)
-  
-        const res = await fetch(`${baseUrl}/payments/initialize/espees`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            campaignId,
-            amount: Number(amount),
-            email,
-            userId,
-          }),
-        })
-  
-        const data = await res.json()
-  
-        console.log('PAYSTACK RESPONSE:', res.status, data)
-  
-        if (!res.ok) {
-          throw new Error(JSON.stringify(data))
-        }
-  
-        // Redirect to Paystack
-        window.location.href = data.authorization_url
-      } catch (error: any) {
-        console.error(error)
-        alert(error.message)
-      } finally {
-        setLoading(false)
-      }
+    e.preventDefault()
+
+    if (!campaignId || !email || !userId || !amount) {
+      alert('Missing payment information')
+      return
     }
+
+    try {
+      setLoading(true)
+
+      const res = await fetch(`${baseUrl}/payments/initialize/espees`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          campaignId,
+          amount: Number(amount),
+          email,
+          userId,
+        }),
+      })
+
+      const data = await res.json()
+
+      console.log('PAYSTACK RESPONSE:', res.status, data)
+
+      if (!res.ok) {
+        throw new Error(JSON.stringify(data))
+      }
+
+      // Redirect to Paystack
+      window.location.href = data.authorization_url
+    } catch (error: any) {
+      console.error(error)
+      alert(error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
   return (
     <form onSubmit={startedPayment} className="mx-auto max-w-md p-4">
-      <p className='text-primary'>Dear Goodnews,</p>
-      <small className='text-primary'>
+      <p className="text-primary">Dear Goodnews,</p>
+      <small className="text-primary">
         Thank you for your sponsorship. You will now be redirected to our Espee gateway. After
         making your payment, kindly wait till you are redirected back to our website, so your
         payment is credited into the campaign. <br /> Thank you!
@@ -99,8 +97,8 @@ function EspeeForm() {
           <input
             type="number"
             id="ifsc-code"
-            value={ifscCode}
-            onChange={(e) => setIfscCode(e.target.value)}
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
             placeholder=""
             className="block w-full rounded-l border border-gray-300 p-2"
             required

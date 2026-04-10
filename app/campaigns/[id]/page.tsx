@@ -15,7 +15,9 @@ const baseUrl = 'https://fundraise-api.onrender.com/api/v1'
 
 export default function CampaignDetailsPage() {
   const params = useParams()
-  const id = params?.id
+
+  const id = Array.isArray(params?.id) ? params.id[0] : params?.id
+  const campaignId = String(id)
 
   const [campaign, setCampaign] = useState<Campaign | null>(null)
   const [loading, setLoading] = useState(true)
@@ -24,13 +26,11 @@ export default function CampaignDetailsPage() {
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
-    if (!id || typeof id !== 'string') return
+    if (!id) return
 
     const fetchCampaign = async () => {
       try {
-        const res = await fetch(`${baseUrl}/campaigns/${id}`, {
-          cache: 'no-store', // 👈 important for Vercel
-        })
+        const res = await fetch(`${baseUrl}/campaigns/${campaignId}`)
         const data = await res.json()
 
         setCampaign(data?.data || data)
