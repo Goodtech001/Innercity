@@ -68,6 +68,16 @@ export function CampaignInformationTab({ goForward, formData, setFormData }: For
   const [excerpt, setExcerpt] = useState('')
 
   useEffect(() => {
+    const stored = sessionStorage.getItem('course-training-profile')
+    const parsed = stored ? JSON.parse(stored) : null
+    const token = parsed?.token
+
+    if (!token) {
+      router.replace('/sign-up')
+    }
+  }, [])
+
+  useEffect(() => {
     const fetchCategories = async () => {
       try {
         const res = await getAllCategoryService()

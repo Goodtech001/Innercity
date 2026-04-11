@@ -16,8 +16,8 @@ const baseUrl = 'https://fundraise-api.onrender.com/api/v1'
 export default function CampaignDetailsPage() {
   const params = useParams()
 
-  const id = Array.isArray(params?.id) ? params.id[0] : params?.id
-  const campaignId = String(id)
+  const id = params?.id
+  const campaignId = Array.isArray(id) ? id[0] : id
 
   const [campaign, setCampaign] = useState<Campaign | null>(null)
   const [loading, setLoading] = useState(true)
@@ -26,31 +26,36 @@ export default function CampaignDetailsPage() {
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
-    if (!id) return
+  if (!campaignId) return
 
-    const fetchCampaign = async () => {
-      try {
-        const res = await fetch(`${baseUrl}/campaigns/${campaignId}`)
-        const data = await res.json()
+  const fetchCampaign = async () => {
+    try {
+      const res = await fetch(`${baseUrl}/campaigns/${campaignId}`)
 
-        setCampaign(data?.data || data)
-      } catch (err) {
-        console.error('Failed to fetch campaign', err)
-      } finally {
-        setLoading(false)
+      if (!res.ok) {
+        throw new Error('Failed to fetch campaign')
       }
-    }
 
-    fetchCampaign()
-  }, [id])
+      const data = await res.json()
+      setCampaign(data?.data || data)
+    } catch (err) {
+      console.error('Failed to fetch campaign', err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  fetchCampaign()
+}, [campaignId])
 
   if (loading) return <CampaignDetailsSkeleton />
 
   if (!campaign) return <div className="p-10">Campaign not found</div>
 
-  const image = campaign.thumbnail_large
+  const image =
+  campaign.thumbnail_large
     ? `https://fundraise.theinnercitymission.ngo/${campaign.thumbnail_large}`
-    : campaign.thumbnail?.url
+    : campaign.thumbnail?.url || '/placeholder.jpg'
 
   const avatar = campaign.user?.avatar
     ? `https://fundraise.theinnercitymission.ngo/${campaign.user?.avatar}`

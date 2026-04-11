@@ -26,18 +26,18 @@ export default function DiscoverMoreCategories() {
             <Marquee direction="left">
               <div className="flex gap-4">
                 <CategoryLinkButton />
-                <CategoryLinkButton />
-                <CategoryLinkButton />
-                <CategoryLinkButton />
+                <CategoryLinkButton2 />
+                <CategoryLinkButton3 />
+                <CategoryLinkButton4 />
                 <CategoryLinkButton />
               </div>
             </Marquee>
             <Marquee direction="right">
               <div className="flex gap-4">
                 <CategoryLinkButton />
-                <CategoryLinkButton />
-                <CategoryLinkButton />
-                <CategoryLinkButton />
+                <CategoryLinkButton2 />
+                <CategoryLinkButton3 />
+                <CategoryLinkButton4 />
                 <CategoryLinkButton />
               </div>
             </Marquee>
@@ -52,6 +52,30 @@ const CategoryLinkButton = () => {
   return (
     <button className="rounded-lg border-2 border-textcolor/25 bg-white px-8 py-3 text-center text-textcolor shadow-[0px_0px_6px_1px_rgba(0,_0,_0,_0.1)] hover:border-primary hover:text-primary md:text-base">
       <p className="font-medium !leading-[100%]">Send Children Back to School</p>
+    </button>
+  )
+}
+
+const CategoryLinkButton2 = () => {
+  return (
+    <button className="rounded-lg border-2 border-textcolor/25 bg-white px-8 py-3 text-center text-textcolor shadow-[0px_0px_6px_1px_rgba(0,_0,_0,_0.1)] hover:border-primary hover:text-primary md:text-base">
+      <p className="font-medium !leading-[100%]">Send Portions</p>
+    </button>
+  )
+}
+
+const CategoryLinkButton3 = () => {
+  return (
+    <button className="rounded-lg border-2 border-textcolor/25 bg-white px-8 py-3 text-center text-textcolor shadow-[0px_0px_6px_1px_rgba(0,_0,_0,_0.1)] hover:border-primary hover:text-primary md:text-base">
+      <p className="font-medium !leading-[100%]">Child Care and Support</p>
+    </button>
+  )
+}
+
+const CategoryLinkButton4 = () => {
+  return (
+    <button className="rounded-lg border-2 border-textcolor/25 bg-white px-8 py-3 text-center text-textcolor shadow-[0px_0px_6px_1px_rgba(0,_0,_0,_0.1)] hover:border-primary hover:text-primary md:text-base">
+      <p className="font-medium !leading-[100%]">#endofpoverty</p>
     </button>
   )
 }

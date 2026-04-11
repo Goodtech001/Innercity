@@ -4,8 +4,9 @@ import React, { useRef } from 'react'
 import Link from 'next/link'
 import HeroCardStack from '@/components/hero-card-stack'
 import { AnimatePresence, circInOut, motion, spring, useInView } from 'framer-motion'
-import easter from "@/public/assets/images/still-life-crown-thorns.png"
+import easter from '@/public/assets/images/still-life-crown-thorns.png'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 // import HeroImage from '@/components/hero-image'
 
 function HeroSection() {
@@ -13,8 +14,25 @@ function HeroSection() {
   const isInView = useInView(ref, { once: true, margin: '-50px' })
   const transitionSpring = { duration: 0.4, ease: circInOut, type: spring, stiffness: 150 }
 
+ 
+    const router = useRouter()
+
+    const handleClick = () => {
+      const stored = sessionStorage.getItem('course-training-profile')
+        const parsed = stored ? JSON.parse(stored) : null
+        const token = parsed?.token
+
+      if (!token) {
+        router.push('/sign-up')
+        return
+      }
+
+      router.push('/campaigns/create')
+    }
+  
+
   return (
-    <main className="bg-hero-blue-specs-pattern min-h-96 bg-[100%,100%] py-16 pb-0 md:py-28 md:pb-36 relative">
+    <main className="bg-hero-blue-specs-pattern relative min-h-96 bg-[100%,100%] py-16 pb-0 md:py-28 md:pb-36">
       <AnimatePresence>
         <motion.div
           ref={ref}
@@ -33,9 +51,9 @@ function HeroSection() {
                 because,” every campaign helps a child eat, learn, and thrive.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-6">
-                <Link className="btn-primary w-fit" href={'/campaigns/create'}>
+                <button onClick={handleClick} className="btn-primary w-fit">
                   Create your campaign
-                </Link>
+                </button>
                 <Link className="btn-white w-fit" href={'/campaigns'}>
                   Support a campaign
                 </Link>
