@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Image from 'next/image'
 import espees from '@/public/assets/images/espees.png'
-import CountryCurrencyDropdown, { TCountryCurrency } from '../country-currency-dropdown'
+import CountryCurrencyDropdown, { Currency } from '../country-currency-dropdown'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements, useStripe, useElements, CardElement } from '@stripe/react-stripe-js'
 import { getUsersService } from '@/app/auth/auth.service'
@@ -23,7 +23,7 @@ function StripeForm() {
   const [email, setEmail] = useState('')
   const [paymentData, setPaymentData] = useState<any>(null)
   const [userId, setUserId] = useState<number | null>(null)
-  const [currency, setCurrency] = useState<TCountryCurrency | null>(null)
+  const [currency, setCurrency] = useState<Currency | null>(null)
   const [loading, setLoading] = useState(false)
 
   // ✅ Fetch logged in user (same pattern as AdminUsersPage)
@@ -60,7 +60,7 @@ function StripeForm() {
         {
           campaignId,
           amount: Number(amount),
-          currency: currency?.currency || 'NGN', // ⚠️ Stripe prefers USD
+          currency: currency?.code || 'NGN', // ⚠️ Stripe prefers USD
           email,
           userId,
         },
@@ -95,7 +95,7 @@ function StripeForm() {
 
             <div className="flex space-x-1 rounded-r border bg-gray-200 p-2 pr-7">
               <CountryCurrencyDropdown 
-              onChange={(value: TCountryCurrency) =>
+              onChange={(value: Currency) =>
                   setCurrency(value)
                 }
               />

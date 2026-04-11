@@ -80,7 +80,7 @@ export function CampaignInformationTab({ goForward, formData, setFormData }: For
 
     fetchCategories()
   }, [])
-  
+
   const handleInputChange = (key: string, value: any) => {
     setFormData((prev: any) => ({
       ...prev,
@@ -278,80 +278,129 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
   const [avatarPreview, setAvatarPreview] = useState<string>('')
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null)
 
+  // useEffect(() => {
+  //   if (!images.length) return
+
+  //   const processImage = async () => {
+  //     const file = images[0]
+
+  //     // store campaign image locally
+  //     setFormData((prev: any) => ({
+  //       ...prev,
+  //       campaign_image: file,
+  //     }))
+
+  //     try {
+  //       // 1️⃣ upload image
+  //       const imageId = await uploadImage(file)
+
+  //       if (!formData.category_id) {
+  //         console.error('Category missing before avatar generation')
+  //         return
+  //       }
+
+  //       if (!imageId) {
+  //         console.error('Image upload failed')
+  //         return
+  //       }
+
+  //       // 2️⃣ generate avatar banner
+  //       const thumbnailId = await generateAvatarCard(imageId)
+
+  //       setFormData((prev: any) => ({
+  //         ...prev,
+  //         thumbnail_id: thumbnailId,
+  //       }))
+
+  //       // 3️⃣ save banner id
+  //       // setFormData((prev: any) => ({
+  //       //   ...prev,
+  //       //   banner_id: bannerId,
+  //       // }))
+
+  //       console.log('Banner ID stored:', thumbnailId)
+  //     } catch (err) {
+  //       console.error('Avatar pipeline failed:', err)
+  //     }
+  //   }
+
+  //   processImage()
+  // }, [images])
+
   useEffect(() => {
     if (!images.length) return
+    if (!formData?.category_id) return // wait properly
 
     const processImage = async () => {
-      const file = images[0]
-
-      // store campaign image locally
-      setFormData((prev: any) => ({
-        ...prev,
-        campaign_image: file,
-      }))
-
       try {
-        // 1️⃣ upload image
-        const imageId = await uploadImage(file)
+        const file = images[0]
 
-        if (!formData.category_id) {
-          console.error('Category missing before avatar generation')
+        if (!(file instanceof File)) {
+          console.error('❌ Not a valid file')
           return
         }
+
+        // const thumbnailId = await generateAvatarCard(file)
+        setFormData((prev: any) => ({
+          ...prev,
+          campaign_image: file,
+        }))
+
+        // 1️⃣ upload image
+        const imageId = await uploadImage(file)
 
         if (!imageId) {
           console.error('Image upload failed')
           return
         }
 
-        // 2️⃣ generate avatar banner
-        const thumbnailId = await generateAvatarCard(imageId)
+        // 2️⃣ generate thumbnail
+        const thumbnailId = await generateAvatarCard(file)
 
+        if (!thumbnailId) {
+          console.error('Thumbnail generation failed')
+          return
+        }
+
+        // ✅ IMPORTANT FIX
         setFormData((prev: any) => ({
           ...prev,
-          thumbnail_id: thumbnailId,
+          thumbnail_id: Number(thumbnailId),
         }))
 
-        // 3️⃣ save banner id
-        // setFormData((prev: any) => ({
-        //   ...prev,
-        //   banner_id: bannerId,
-        // }))
-
-        console.log('Banner ID stored:', thumbnailId)
+        console.log('✅ Thumbnail ID stored:', thumbnailId)
       } catch (err) {
         console.error('Avatar pipeline failed:', err)
       }
     }
 
     processImage()
-  }, [images])
+  }, [images, formData.category_id]) // ✅ FIXED
 
   useEffect(() => {
     console.log('STEP 2 FORM DATA:', formData)
   }, [formData])
 
-  const generateAvatarCard = async (imageId: number) => {
+  const generateAvatarCard = async (file: File) => {
     try {
       const token = localStorage.getItem('token')
 
-      if (!token) {
-        alert('Please login again')
-        return null
-      }
-
       const form = new FormData()
-
       form.append('name', formData.title || 'Campaign')
-      form.append('userImage', String(imageId))
+      form.append('userImage', file) // ✅ EXACT KEY FROM POSTMAN
       form.append('excerpt', formData.excerpt || '')
+
+      console.log('📦 FormData entries:')
+      for (const pair of form.entries()) {
+        console.log(pair[0], pair[1])
+      }
 
       const res = await fetch(
         `${baseUrl}/card-template/generate/category/${formData.category_id}`,
         {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, // ✅ ONLY THIS
           },
           body: form,
         },
@@ -359,17 +408,16 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
 
       const data = await res.json()
 
-      console.log('AVATAR RESPONSE:', data)
+      console.log('📥 RESPONSE:', data)
 
       if (!res.ok) {
-        console.error(data)
+        console.error('❌ ERROR RESPONSE:', data)
         return null
       }
 
-      // return thumbnail id
-      return data?.thumbnail?.id || data?.thumbnail_id || data?.id || null
+      return data?.id
     } catch (err) {
-      console.error('Avatar generation error:', err)
+      console.error('❌ FETCH ERROR:', err)
       return null
     }
   }
@@ -486,22 +534,33 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
           onChange={(e) => {
             const fileList = e.target.files
 
-            if (!fileList) return
+            if (!fileList || fileList.length === 0) {
+              console.error('❌ No file selected')
+              return
+            }
 
             const file = fileList[0]
 
-            setImages([file])
+            console.log('📁 FILE DEBUG:', {
+              name: file.name,
+              type: file.type,
+              size: file.size,
+              isFile: file instanceof File,
+            })
 
-            // 🔥 generate avatar automatically
-            // generateAvatarCard(file)
+            setImages([file])
           }}
           setFiles={setImages}
         />
       </div>
 
       <div className="mt-5 flex items-center gap-4">
-        <button onClick={handleUploadImage} className="btn-primary w-fit !px-10">
-          Next Step
+        <button
+          onClick={handleUploadImage}
+          // disabled={isProcessing || !formData.thumbnail_id}
+          className="btn-primary w-fit !px-10 disabled:opacity-50"
+        >
+          Next step
         </button>
         <button onClick={goBack} className="btn-white w-fit !px-10">
           Prev Step
@@ -704,17 +763,27 @@ export function PreviewCampaignTab({ goForward, formData }: PreviewProps) {
         alert('Campaign ID missing')
         return
       }
+      const payload = {
+        id: formData.id,
+        title: formData.title,
+        category_id: Number(formData.category_id),
+        goal: Number(formData.goal),
+        period: formData.period,
+        excerpt: formData.excerpt,
+        thumbnail_id: Number(formData.thumbnail_id),
+        published: true,
+      }
 
-      const res = await fetch(`${baseUrl}/campaigns/${formData.id}`, {
-        method: 'PATCH',
+      const res = await fetch(`${baseUrl}/campaigns`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          published: true,
-        }),
+        body: JSON.stringify(payload),
       })
+
+      console.log(payload)
 
       const data = await res.json()
 
@@ -736,8 +805,7 @@ export function PreviewCampaignTab({ goForward, formData }: PreviewProps) {
 
   const template = formData?.template || null
 
-  const templateImage =
-    template?.image || '/assets/images/fundraise-banner-example.jpg'
+  const templateImage = formData.thumbnail?.url || '/assets/images/fundraise-banner-example.jpg'
 
   const userImage = useMemo(() => {
     if (!formData?.campaign_image) return null

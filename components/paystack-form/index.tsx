@@ -7,7 +7,7 @@ import espees from '@/public/assets/images/espees.png'
 import { getUsersService } from '@/app/auth/auth.service'
 import { useParams } from 'next/navigation'
 import { baseUrl } from '@/constants'
-import CountryCurrencyDropdown, { TCountryCurrency } from '../country-currency-dropdown'
+import CountryCurrencyDropdown, { Currency } from '../country-currency-dropdown'
 
 function PaystackForm() {
   const params = useParams()
@@ -17,7 +17,7 @@ function PaystackForm() {
   const [email, setEmail] = useState('')
   const [userId, setUserId] = useState<number | null>(null)
   const [loading, setLoading] = useState(false)
-  const [currency, setCurrency] = useState<TCountryCurrency  | null>(null)
+  const [currency, setCurrency] = useState<Currency  | null>(null)
 
   // ✅ SAME USER FETCH PATTERN AS STRIPE
   useEffect(() => {
@@ -56,7 +56,7 @@ function PaystackForm() {
         body: JSON.stringify({
           campaignId,
           amount: Number(amount),
-          currency: currency?. currency || "NGN",
+          currency: currency?. code ,
           email,
           userId,
         }),
@@ -104,7 +104,7 @@ function PaystackForm() {
           <div className="flex space-x-1 rounded-r border bg-gray-200 p-2 pr-7">
             <CountryCurrencyDropdown
               // value={currency}
-              onChange={(value: TCountryCurrency) => setCurrency(value)}
+              onChange={(value: Currency) => setCurrency(value)}
             />
           </div>
         </div>

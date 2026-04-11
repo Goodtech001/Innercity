@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 import React from 'react'
 import { Icon } from '@iconify/react'
@@ -26,7 +27,7 @@ function ResourceCard({ asset, onClick, onDownload }: TResourceCardProps) {
           </>
         ) : (
           <>
-            <Image
+            <img
               alt={asset.name}
               src={asset.src}
               width={100}

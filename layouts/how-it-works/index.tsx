@@ -22,7 +22,7 @@ function HowItWorks() {
         <div className="mb-20 text-center">
           <h1 className="text-2xl font-bold md:text-4xl">How Fundraising Works</h1>
           <p className="text-sm md:text-base">
-            It takes less than 5 minutes to start a Fundrise. And the impact? Lifelong.
+            It takes less than 5 minutes to start a Fundraise. And the impact? Lifelong.
           </p>
         </div>
 

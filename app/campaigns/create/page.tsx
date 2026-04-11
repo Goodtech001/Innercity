@@ -27,6 +27,12 @@ export default function CreateCampaignPage() {
     campaign_image: null,
     banner_id: null,
     thumbnail_id: null,
+
+    // ✅ ADD THIS
+    thumbnail: null as null | {
+      id: number
+      url: string
+    },
   })
 
   const tabs = [
@@ -86,9 +92,7 @@ export default function CreateCampaignPage() {
     }
   }
 
-  const CurrentComponent = stepsTab.find(
-    (step) => step.step === activeStep
-  )?.component
+  const CurrentComponent = stepsTab.find((step) => step.step === activeStep)?.component
 
   return (
     <>
@@ -109,7 +113,6 @@ export default function CreateCampaignPage() {
         </div>
 
         <div className="mb-6 flex flex-col-reverse gap-4 md:grid md:grid-cols-12">
-          
           {/* Main Form */}
           <div className="rounded-xl border p-1 md:col-span-7 md:p-2 lg:col-span-8">
             <div className="mb-6 flex items-center justify-between">
@@ -146,9 +149,7 @@ export default function CreateCampaignPage() {
               >
                 <button
                   className={`rounded-md border border-primary p-1.5 text-lg md:p-2 md:text-2xl ${
-                    activeStep >= tab.id
-                      ? 'bg-primary text-light'
-                      : 'bg-complementary text-primary'
+                    activeStep >= tab.id ? 'bg-primary text-light' : 'bg-complementary text-primary'
                   }`}
                 >
                   <Icon icon={tab.icon} />
@@ -165,7 +166,6 @@ export default function CreateCampaignPage() {
               </div>
             ))}
           </div>
-
         </div>
       </div>
 

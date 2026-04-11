@@ -9,6 +9,8 @@ import rita from '@/public/assets/images/rita.jpg'
 import difference from '@/public/assets/images/difference.jpg'
 import tosin from '@/public/assets/images/Tosin.jpg'
 import amaechi from '@/public/assets/images/P-Amaechi.jpg'
+import ikeja from "@/public/assets/images/ikeja-campus.jpg"
+import sponsor from "@/public/assets/images/sponsor.jpg"
 
 import hungry from '@/public/assets/images/hungry.jpg'
 import chuka2 from '@/public/assets/images/chuka2.jpg'
@@ -22,8 +24,8 @@ export default function TopFundraisersVideo() {
 
   const [isMobile, setIsMobile] = useState(false)
   const [currentVideo, setCurrentVideo] = useState({
-    src: 'https://vimeo.com/1037756541/2f13d91b44',
-    thumb: rita,
+    src: 'https://vimeo.com/1177794733/612c542466?fl=tl&fe=ec',
+    thumb: ikeja,
   })
 
   const videos = [
@@ -50,6 +52,14 @@ export default function TopFundraisersVideo() {
     {
       thumb: hungry,
       src: 'https://player.vimeo.com/video/731472228/?h=709298ca1b',
+    },
+     {
+      thumb: sponsor,
+      src: 'https://vimeo.com/1170952791/5c89a7ca54?share=copy&fl=sv&fe=ci',
+    },
+     {
+      thumb: ikeja,
+      src: 'https://vimeo.com/1169079907/7b22336950?share=copy&fl=sv&fe=ci',
     },
     // ...
   ]

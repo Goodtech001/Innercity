@@ -39,7 +39,7 @@ function Editpage({user}: Readonly<TUserProfileDropdownProps>) {
     setShowEditModal(false) // close modal
   }
 
-  const ProfileName = 'Goodnews'
+  const ProfileName = 'your name'
   const ProfileUsername = 'goodnews_'
   const ProfileEmail = 'youremail.com'
   const ProfilePhone = '1234 567 8910'
@@ -150,7 +150,7 @@ function Editpage({user}: Readonly<TUserProfileDropdownProps>) {
 
           <div>
             <label htmlFor="text">Username</label>
-            <p className="font-medium text-black">@ {formData.username || ProfileUsername}</p>
+            <p className="font-medium text-black">@ {formData.username || user?.fullname}</p>
           </div>
 
           <div>
@@ -158,10 +158,10 @@ function Editpage({user}: Readonly<TUserProfileDropdownProps>) {
             <p className="font-medium text-black">-</p>
           </div>
 
-          <div>
+          {/* <div>
             <label htmlFor="text">Gender</label>
             <p className="font-medium text-black">Male</p>
-          </div>
+          </div> */}
         </div>
 
         <div className="mx-auto space-y-3">

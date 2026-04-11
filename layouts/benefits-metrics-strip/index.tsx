@@ -20,7 +20,7 @@ export default function BenefitsMetricsStrip() {
       className="bg-complementary py-3 text-dark"
     >
       <div className="container flex flex-wrap items-center justify-between gap-5 gap-y-4 md:flex-row">
-        <Link className="flex items-center gap-3" target="_blank" href={'https://icm.ngo/support-project/partner-with-us'}>
+        <Link className="flex items-center gap-3" target="_blank" href={'https://theinnercitymission.ngo/partner-with-us'}>
           <Icon icon={'ri:seedling-fill'} className="size-6 text-2xl" />
           <p className="font-semibold underline">Give Every Month (G.E.M)</p>
         </Link>
