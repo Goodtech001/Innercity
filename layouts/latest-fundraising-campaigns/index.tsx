@@ -61,7 +61,7 @@ export default function LatestFundraisingCampaigns() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 px-6 py-6 md:grid-cols-3 md:px-14">
+          <div className="grid grid-cols-1 gap-10 px-4 py-6 md:grid-cols-3 md:px-6">
             {loading
               ? Array.from({ length: 3 }).map((_, index) => <CampaignCardSkeleton key={index} />)
               : campaigns

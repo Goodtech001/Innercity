@@ -15,7 +15,6 @@ import { baseUrl } from '@/constants'
 const stripePromise = loadStripe('pk_test_i1sOzDxjO6tTKVhVvNeupIAh')
 
 function StripeForm() {
-
   const params = useParams()
   const campaignId = Number(params?.id)
 
@@ -43,7 +42,6 @@ function StripeForm() {
     }
   }, [])
 
-
   const startPayment = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -55,19 +53,18 @@ function StripeForm() {
     try {
       setLoading(true)
 
-      const { data } = await axios.post(
-        `${baseUrl}/payments/initialize/stripe`,
-        {
-          campaignId,
-          amount: Number(amount),
-          currency: currency?.code || 'NGN', // ⚠️ Stripe prefers USD
-          email,
-          userId,
-        },
-      )
+      const { data } = await axios.post(`${baseUrl}/payments/initialize/stripe`, {
+        campaignId,
+        amount: Number(amount),
+        currency: 'USD',
+        email,
+        userId,
+      })
 
       // ✅ Stripe expects clientSecret
       setPaymentData(data)
+      console.log('STRIPE INIT RESPONSE:', data)
+      console.log('PAYMENT DATA:', paymentData)
     } catch (err: any) {
       console.error(err)
       alert(err?.response?.data?.message || 'Stripe initialization failed')
@@ -80,9 +77,7 @@ function StripeForm() {
     return (
       <form onSubmit={startPayment} className="mx-auto max-w-md p-4">
         <div className="mb-4">
-          <label className="mb-2 block text-sm font-medium">
-            Pledged Amount
-          </label>
+          <label className="mb-2 block text-sm font-medium">Pledged Amount</label>
 
           <div className="flex w-full">
             <input
@@ -94,19 +89,11 @@ function StripeForm() {
             />
 
             <div className="flex space-x-1 rounded-r border bg-gray-200 p-2 pr-7">
-              <CountryCurrencyDropdown 
-              onChange={(value: Currency) =>
-                  setCurrency(value)
-                }
-              />
+              <CountryCurrencyDropdown onChange={(value: Currency) => setCurrency(value)} />
             </div>
           </div>
 
-           <button
-            type="submit"
-            className="btn-primary mt-4 w-fit"
-            disabled={loading}
-          >
+          <button type="submit" className="btn-primary mt-4 w-fit" disabled={loading}>
             {loading ? 'Processing...' : 'Donate'}
           </button>
         </div>
@@ -114,18 +101,42 @@ function StripeForm() {
     )
   }
 
-  return (
+  return paymentData ? (
     <Elements stripe={stripePromise} options={{ clientSecret: paymentData.clientSecret }}>
       <CheckoutForm
         clientSecret={paymentData.clientSecret}
         reference={paymentData.id}
+        email={email}
       />
     </Elements>
+  ) : (
+    <form onSubmit={startPayment} className="mx-auto max-w-md p-4">
+      <div className="mb-4">
+        <label className="mb-2 block text-sm font-medium">Pledged Amount</label>
+
+        <div className="flex w-full">
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            className="block w-full rounded-l border border-gray-300 p-2"
+            required
+          />
+
+          <div className="flex space-x-1 rounded-r border bg-gray-200 p-2 pr-7">
+            <CountryCurrencyDropdown onChange={(value: Currency) => setCurrency(value)} />
+          </div>
+        </div>
+
+        <button type="submit" className="btn-primary mt-4 w-fit" disabled={loading}>
+          {loading ? 'Processing...' : 'Donate'}
+        </button>
+      </div>
+    </form>
   )
 }
 
-function CheckoutForm({ clientSecret, reference }: any) {
-
+function CheckoutForm({ clientSecret, reference, email }: any) {
   const stripe = useStripe()
   const elements = useElements()
 
@@ -143,20 +154,16 @@ function CheckoutForm({ clientSecret, reference }: any) {
     if (result.error) {
       alert(result.error.message)
     } else if (result.paymentIntent?.status === 'succeeded') {
+      await axios.get(`/payments/verify/${reference}`)
 
-        await axios.get(`/payments/verify/${reference}`)
-
-        alert('Donation Successful!')
-      }
+      alert('Donation Successful!')
+    }
   }
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-md p-4">
-
       <div className="mb-4 rounded border border-gray-300 p-2">
-        <label className="mb-2 block text-sm font-bold text-black">
-          Card or debit card
-        </label>
+        <label className="mb-2 block text-sm font-bold text-black">Card or debit card</label>
 
         <CardElement className="p-2" />
       </div>
@@ -164,7 +171,6 @@ function CheckoutForm({ clientSecret, reference }: any) {
       <button disabled={!stripe} className="btn-primary mt-4 w-fit">
         Donate
       </button>
-
     </form>
   )
 }

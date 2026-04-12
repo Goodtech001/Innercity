@@ -74,9 +74,11 @@ export default function AdminOverviewPage() {
           },
         })
 
-        const paymentsJson = await paymentsRes.json()
+        const data = await paymentsRes.json()
 
-        const paymentsData = paymentsJson?.data?.data || paymentsJson?.data || paymentsJson || []
+        const paymentsData = Array.isArray(data)
+  ? data
+  : data?.data || data?.payments || []
 
         setPayments(paymentsData)
 

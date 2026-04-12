@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // types/Campaign.ts
 export interface Campaign {
+  impactMetric: string
   id: number
   title: string
   excerpt?: string

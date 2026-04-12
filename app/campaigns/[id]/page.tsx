@@ -7,15 +7,15 @@ import Image from 'next/image'
 import PercentageBar from '@/components/percentage-bar'
 import { Campaign } from '@/types/Campaign'
 import Link from 'next/link'
-import { Icon } from '@iconify/react/dist/iconify.js'
+import { Icon } from '@iconify/react'
 import PercentageCircle from '@/components/percentage-circle'
 import TopNavbar from '@/layouts/topnavbar'
+import { motion } from 'framer-motion'
 
 const baseUrl = 'https://fundraise-api.onrender.com/api/v1'
 
 export default function CampaignDetailsPage() {
   const params = useParams()
-
   const id = params?.id
   const campaignId = Array.isArray(id) ? id[0] : id
 
@@ -26,34 +26,27 @@ export default function CampaignDetailsPage() {
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
-  if (!campaignId) return
+    if (!campaignId) return
 
-  const fetchCampaign = async () => {
-    try {
-      const res = await fetch(`${baseUrl}/campaigns/${campaignId}`)
-
-      if (!res.ok) {
-        throw new Error('Failed to fetch campaign')
+    const fetchCampaign = async () => {
+      try {
+        const res = await fetch(`${baseUrl}/campaigns/${campaignId}`)
+        const data = await res.json()
+        setCampaign(data?.data || data)
+      } catch (err) {
+        console.error(err)
+      } finally {
+        setLoading(false)
       }
-
-      const data = await res.json()
-      setCampaign(data?.data || data)
-    } catch (err) {
-      console.error('Failed to fetch campaign', err)
-    } finally {
-      setLoading(false)
     }
-  }
 
-  fetchCampaign()
-}, [campaignId])
+    fetchCampaign()
+  }, [campaignId])
 
   if (loading) return <CampaignDetailsSkeleton />
-
   if (!campaign) return <div className="p-10">Campaign not found</div>
 
-  const image =
-  campaign.thumbnail_large
+  const image = campaign.thumbnail_large
     ? `https://fundraise.theinnercitymission.ngo/${campaign.thumbnail_large}`
     : campaign.thumbnail?.url || '/placeholder.jpg'
 
@@ -63,7 +56,6 @@ export default function CampaignDetailsPage() {
 
   const goal = Number(campaign.goal || 0)
   const raised = Number(campaign.raised || 0)
-
   const progress = goal > 0 ? Math.min(Math.round((raised / goal) * 100), 100) : 0
 
   const campaignUrl =
@@ -77,236 +69,192 @@ export default function CampaignDetailsPage() {
 
   const handleNativeShare = async () => {
     if (navigator.share) {
-      try {
-        await navigator.share({
-          title: campaign.title,
-          text: campaign.excerpt,
-          url: campaignUrl,
-        })
-      } catch (err) {
-        console.log(err)
-      }
+      await navigator.share({
+        title: campaign.title,
+        text: campaign.excerpt,
+        url: campaignUrl,
+      })
     }
   }
 
   const handleSendEmail = () => {
-    const subject = encodeURIComponent(`Support this campaign: ${campaign.title}`)
-    const body = encodeURIComponent(
-      `Hi,\n\nI found this campaign and thought you might like to support it:\n\n${campaign.title}\n${campaignUrl}`,
-    )
-
+    const subject = encodeURIComponent(`Support: ${campaign.title}`)
+    const body = encodeURIComponent(`${campaign.title}\n${campaignUrl}`)
     window.location.href = `mailto:${email}?subject=${subject}&body=${body}`
   }
 
   return (
-    //
-
-    <div>
+    <div className="bg-white text-black dark:bg-neutral-950 dark:text-white">
       <TopNavbar />
-      {/* <div className='container ml-auto'>
-            <button onClick={() => router.back()} className="text-white rounded bg-red-200 p-2 mt-5 ">
-        ← Back
-      </button>
-         </div> */}
 
-      <div className="container h-[118vh] grid-cols-10 p-4 md:grid md:h-screen md:space-x-10">
+      <div className="container grid-cols-10 p-4 md:grid md:h-screen md:space-x-10">
+        {/* LEFT */}
         <section className="col-span-6 h-[180vh] overflow-y-auto no-scrollbar md:h-auto">
-          <img
-            src={image as string}
-            alt={campaign.title}
-            className="mb-6 h-auto max-h-[400px] w-full rounded-lg object-cover object-top"
-          />
+          {/* IMAGE */}
+          <motion.div
+            initial={{ scale: 1.05, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="relative mb-6 overflow-hidden rounded-xl"
+          >
+            <img
+              src={image}
+              alt={campaign.title}
+              className="h-auto max-h-[420px] w-full object-cover transition duration-700 hover:scale-[1.03]"
+            />
 
-          <h1 className="title mb-4 text-2xl font-semibold text-black">{campaign.title}</h1>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+          </motion.div>
 
-          <div className="md:flex md:space-x-6">
-            <div className="flex font-bold text-primary">
-              <Icon icon={'mdi:tag'} className="mt-1" />
-              <p>Send Children Back to School</p>
+          {/* TITLE */}
+          <h1 className="mb-3 text-2xl font-semibold tracking-tight md:text-3xl">
+            {campaign.title}
+          </h1>
+
+          {/* META */}
+          <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+            <div className="flex items-center gap-1 text-primary">
+              <Icon icon="mdi:tag" />
+              {campaign.category?.name || 'General'}
             </div>
-            <div className="flex font-bold text-primary">
-              <Icon icon={'mdi:location'} className="mt-1" />
-              <p>Lagos, Nigeria</p>
+
+            <div className="flex items-center gap-1">
+              <Icon icon="mdi:account" />
+              {campaign.user?.fullname || 'Anonymous'}
             </div>
           </div>
-          <div className="mt-4 flex gap-1">
-            <span className="font-bold text-primary">{campaign.user?.fullname || 'Anonymous'}</span>{' '}
-            <p className="mt text-base">Created this campaign</p>
+
+          {/* STORY */}
+          <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-gray-700 dark:text-gray-300">
+            {campaign.excerpt}
           </div>
-          <p className="mt-5 border-t border-textcolor text-gray-700"></p>
-          <p className="mt-4 space-y-4">{campaign.excerpt}</p>
         </section>
 
-        {/* LIVE CAMPAIGN PROGRESS */}
-
-        <div className="fixed bottom-10 w-11/12 rounded-md border bg-blue-200 p-2 md:relative md:top-0 md:col-span-4 md:w-full md:bg-white">
-          <div className="flex w-full justify-between border-b border-textcolor">
-            <div className="mb-3 flex gap-3">
+        {/* RIGHT PANEL */}
+        <div className="fixed bottom-6 w-11/12 rounded-2xl border border-gray-200 bg-white/80 p-4 shadow-xl backdrop-blur-md dark:border-white/10 dark:bg-white/5 md:relative md:top-0 md:col-span-4 md:w-full">
+          {/* PROGRESS HEADER */}
+          <div className="flex items-center justify-between border-b pb-3">
+            <div className="flex items-center gap-3">
               <PercentageCircle progress={progress} />
 
-              <div className="mt-2">
-                <span className="flex w-full justify-between">
-                  <p className="text-[15px] font-bold text-black">
-                    <strong>${raised.toLocaleString()} Raised</strong>
-                  </p>
-                </span>
-
-                <p className="md:mt-2"> 0+ Donors</p>
+              <div>
+                <p className="text-lg font-semibold">${raised.toLocaleString()}</p>
+                <p className="text-xs text-gray-500">of ${goal.toLocaleString()}</p>
               </div>
             </div>
 
             <Icon
               icon="solar:bookmark-bold"
-              width="24"
-              height="24"
-              className="ml-16 mt-2 text-primary md:ml-0"
+              className="cursor-pointer text-xl text-primary transition hover:scale-110"
             />
           </div>
 
-          <div className="mt-4 flex gap-4">
-            <p>
-              <strong>Goal:</strong>
-              <span className="text-primary">
-                <strong>${goal.toLocaleString()}</strong>
-              </span>
-            </p>
-
-            <p>•</p>
-
-            <p className="font-bold">End Date: {campaign.period || '22 Sept 2026'}</p>
+          {/* PROGRESS BAR */}
+          <div className="mt-4">
+            <PercentageBar value={progress} />
+            <p className="mt-1 text-xs text-gray-500">{progress}% funded</p>
           </div>
 
-          <div className="mt-8 flex space-x-4 md:block md:space-x-0 md:space-y-3">
-            <Link href={`/campaigns/${campaign.id}/donate`} className="btn-primary w-full gap-1">
-              Donate
+          {/* DETAILS */}
+          <div className="mt-4 flex items-center gap-3 text-sm">
+            <span>
+              Goal: <strong>${goal.toLocaleString()}</strong>
+            </span>
+            <span>•</span>
+            <p className=" text-sm text-zinc-500">
+              Ends on:{' '}
+              <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                {campaign.period
+                  ? new Intl.DateTimeFormat('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: '2-digit',
+                    }).format(new Date(campaign.period))
+                  : 'No end date'}
+              </span>
+            </p>
+          </div>
+
+          {/* CTA */}
+          <div className="mt-6 space-y-3">
+            <Link
+              href={`/campaigns/${campaign.id}/donate`}
+              className="block w-full rounded-xl bg-primary py-3 text-center text-sm font-semibold text-white shadow-md transition-all hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+            >
+              Donate now
             </Link>
 
             <button
               onClick={() => setShowShare(true)}
-              className="btn-white flex w-full items-center justify-center gap-1 truncate"
+              className="flex w-full items-center justify-center gap-2 rounded-xl border py-3 text-sm transition hover:bg-gray-50 dark:hover:bg-white/10"
             >
-              <Icon icon="solar:share-bold" width="18" />
+              <Icon icon="solar:share-bold" />
               Share campaign
             </button>
           </div>
 
-          <div className="mt-10 hidden w-full gap-2 rounded-xl border bg-[#0074E626] p-3 md:flex">
+          {/* CREATOR */}
+          <div className="mt-6 hidden items-center gap-3 rounded-xl bg-gray-50 p-3 dark:bg-white/5 md:flex">
             <Image
               src={avatar as string}
               alt=""
-              height={34}
-              width={34}
-              className="h-[50px] w-[50px] rounded-full object-cover"
+              height={40}
+              width={40}
+              className="rounded-full object-cover"
             />
-
             <div>
-              <span className="font-bold text-black">{campaign.user?.fullname}</span>
-              <p className="text-black">Joined on: {campaign.user?.created_at}</p>
+              <p className="text-sm font-semibold">{campaign.user?.fullname}</p>
+              <p className="text-xs text-gray-500">Campaign creator</p>
             </div>
           </div>
         </div>
       </div>
 
+      {/* SHARE MODAL */}
       {showShare && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-md">
-          <div className="animate-in fade-in zoom-in w-full max-w-lg rounded-3xl bg-white p-6 shadow-2xl duration-300">
-            {/* HEADER */}
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="flex items-center gap-2 text-xl font-semibold text-black">
-                <Icon icon="solar:share-bold" width="20" />
-                Share Campaign
-              </h2>
-
-              <button
-                onClick={() => setShowShare(false)}
-                className="rounded-full p-1 transition hover:bg-gray-100"
-              >
-                <Icon icon="solar:close-circle-bold" width="24" />
-              </button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl dark:bg-neutral-900">
+            <div className="mb-4 flex justify-between">
+              <h2 className="font-semibold">Share campaign</h2>
+              <button onClick={() => setShowShare(false)}>✕</button>
             </div>
 
-            {/* CAMPAIGN PREVIEW */}
-            <div className="mb-6 flex items-center gap-3 rounded-xl bg-gray-50 p-3">
-              <img src={image as string} className="h-14 w-14 rounded-lg object-cover" alt="" />
-
-              <div>
-                <p className="line-clamp-1 text-sm font-semibold text-black">{campaign.title}</p>
-                <p className="text-xs text-gray-500">by {campaign.user?.fullname || 'Anonymous'}</p>
-              </div>
-            </div>
-
-            {/* COPY LINK */}
-            <div className="mb-6 flex items-center gap-2 rounded-xl border p-2">
-              <Icon icon="solar:link-bold" width="18" className="text-gray-400" />
-
+            <div className="flex items-center gap-2 rounded-lg border p-2">
               <input
                 value={campaignUrl}
                 readOnly
                 className="flex-1 bg-transparent text-sm outline-none"
               />
-
-              <button
-                onClick={handleCopy}
-                className="flex items-center gap-1 rounded-lg bg-primary px-3 py-1.5 text-sm text-white transition hover:scale-105"
-              >
-                <Icon icon="solar:copy-bold" width="16" />
+              <button onClick={handleCopy} className="text-sm text-primary">
                 {copied ? 'Copied' : 'Copy'}
               </button>
             </div>
 
-            {/* SHARE OPTIONS */}
-            <p className="mb-3 text-sm font-semibold text-gray-700">Share to</p>
-
-            <div className="mb-6 grid grid-cols-4 gap-3">
-              <a href={`https://wa.me/?text=${campaignUrl}`} target="_blank" className="share-card">
-                <Icon icon="logos:whatsapp-icon" width="28" />
-                <span>WhatsApp</span>
+            <div className="mt-4 grid grid-cols-3 gap-3 text-sm">
+              <a href={`https://wa.me/?text=${campaignUrl}`} target="_blank">
+                WhatsApp
               </a>
-
-              <a
-                href={`https://twitter.com/intent/tweet?url=${campaignUrl}`}
-                target="_blank"
-                className="share-card"
-              >
-                <Icon icon="logos:twitter" width="26" />
-                <span>Twitter</span>
+              <a href={`https://twitter.com/intent/tweet?url=${campaignUrl}`} target="_blank">
+                Twitter
               </a>
-
-              <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${campaignUrl}`}
-                target="_blank"
-                className="share-card"
-              >
-                <Icon icon="logos:facebook" width="26" />
-                <span>Facebook</span>
+              <a href={`https://facebook.com/sharer/sharer.php?u=${campaignUrl}`} target="_blank">
+                Facebook
               </a>
-
-              <button onClick={handleNativeShare} className="share-card">
-                <Icon icon="solar:share-bold" width="26" />
-                <span>More</span>
-              </button>
             </div>
 
-            {/* EMAIL */}
-            <div>
-              <p className="mb-2 text-sm font-semibold text-gray-700">Send via email</p>
-
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="friend@email.com"
-                  className="flex-1 rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-
-                <button
-                  onClick={handleSendEmail}
-                  className="rounded-xl bg-primary px-4 py-2 text-sm font-medium text-white transition hover:scale-105"
-                >
-                  Send
-                </button>
-              </div>
+            <div className="mt-4 flex gap-2">
+              <input
+                type="email"
+                placeholder="email"
+                className="flex-1 rounded-lg border p-2 text-sm"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <button
+                onClick={handleSendEmail}
+                className="rounded-lg bg-primary px-4 text-sm text-white"
+              >
+                Send
+              </button>
             </div>
           </div>
         </div>
@@ -317,54 +265,10 @@ export default function CampaignDetailsPage() {
 
 function CampaignDetailsSkeleton() {
   return (
-    <div className="container h-[118vh] animate-pulse grid-cols-10 p-4 md:grid md:h-screen md:space-x-10">
-      {/* LEFT CONTENT */}
-      <section className="col-span-6">
-        <div className="mb-6 h-[400px] w-full rounded-lg bg-gray-200"></div>
-
-        <div className="mb-4 h-8 w-3/4 rounded bg-gray-200"></div>
-
-        <div className="flex gap-6">
-          <div className="h-4 w-32 rounded bg-gray-200"></div>
-          <div className="h-4 w-32 rounded bg-gray-200"></div>
-        </div>
-
-        <div className="mt-4 h-4 w-48 rounded bg-gray-200"></div>
-
-        <div className="mt-6 space-y-3">
-          <div className="h-4 w-full rounded bg-gray-200"></div>
-          <div className="h-4 w-full rounded bg-gray-200"></div>
-          <div className="h-4 w-5/6 rounded bg-gray-200"></div>
-          <div className="h-4 w-2/3 rounded bg-gray-200"></div>
-        </div>
-      </section>
-
-      {/* RIGHT PANEL */}
-      <div className="mt-10 rounded-md border p-4 md:col-span-4 md:mt-0">
-        <div className="mb-4 flex gap-3">
-          <div className="h-12 w-12 rounded-full bg-gray-200"></div>
-          <div>
-            <div className="mb-2 h-4 w-32 rounded bg-gray-200"></div>
-            <div className="h-4 w-24 rounded bg-gray-200"></div>
-          </div>
-        </div>
-
-        <div className="mb-3 h-4 w-40 rounded bg-gray-200"></div>
-        <div className="mb-6 h-4 w-32 rounded bg-gray-200"></div>
-
-        <div className="space-y-3">
-          <div className="h-10 w-full rounded bg-gray-200"></div>
-          <div className="h-10 w-full rounded bg-gray-200"></div>
-        </div>
-
-        <div className="mt-6 flex items-center gap-3">
-          <div className="h-12 w-12 rounded-full bg-gray-200"></div>
-          <div>
-            <div className="mb-2 h-4 w-32 rounded bg-gray-200"></div>
-            <div className="h-4 w-24 rounded bg-gray-200"></div>
-          </div>
-        </div>
-      </div>
+    <div className="animate-pulse space-y-4 p-6">
+      <div className="h-[300px] rounded-xl bg-gray-200" />
+      <div className="h-6 w-1/2 bg-gray-200" />
+      <div className="h-4 w-full bg-gray-200" />
     </div>
   )
 }

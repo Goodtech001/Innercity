@@ -66,14 +66,14 @@ function EspeeForm() {
 
       const data = await res.json()
 
-      console.log('PAYSTACK RESPONSE:', res.status, data)
+      console.log('ESPEE RESPONSE:', res.status, data)
 
       if (!res.ok) {
         throw new Error(JSON.stringify(data))
       }
 
       // Redirect to Paystack
-      window.location.href = data.authorization_url
+      window.location.href = data.paymentUrl
     } catch (error: any) {
       console.error(error)
       alert(error.message)

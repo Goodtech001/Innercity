@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import {
@@ -10,13 +9,39 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 
+// ✅ Strong type
+type Payment = {
+  status: string
+  created_at: string
+  amount: number | string
+}
+
+// ✅ Accept flexible API shape
 type Props = {
-  payments: any[]
+  payments: Payment[] | { data?: Payment[]; payments?: Payment[] } | null
+}
+
+// ✅ Normalize once
+const normalizePayments = (input: Props['payments']): Payment[] => {
+  if (!input) return []
+
+  if (Array.isArray(input)) return input
+
+  if ('data' in input && Array.isArray(input.data)) {
+    return input.data
+  }
+
+  if ('payments' in input && Array.isArray(input.payments)) {
+    return input.payments
+  }
+
+  return []
 }
 
 export default function RevenueChart({ payments }: Props) {
+  const safePayments = normalizePayments(payments)
 
-  const data = payments
+  const data = safePayments
     .filter((p) => p.status === 'success')
     .map((p) => ({
       date: new Date(p.created_at).toLocaleDateString(),
@@ -42,7 +67,6 @@ export default function RevenueChart({ payments }: Props) {
           <Line
             type="monotone"
             dataKey="amount"
-            stroke="#2563eb"
             strokeWidth={3}
             dot={false}
           />

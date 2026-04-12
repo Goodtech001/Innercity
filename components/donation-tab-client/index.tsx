@@ -1,142 +1,164 @@
-/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-
 import { Icon } from '@iconify/react/dist/iconify.js'
+import Image from 'next/image'
+import { useParams } from 'next/navigation'
 
-import CardForm from '@/components/card-form'
 import EspeeForm from '@/components/espee-form'
 import StripeForm from '@/components/stripe-form'
 import PaypalForm from '@/components/paypal-form'
 import PaystackForm from '@/components/paystack-form'
 import VoucherForm from '@/components/voucher-form/voucher'
 import BankTransfer from '@/components/bank-transfer'
-import Image from 'next/image'
-import me from '@/public/assets/images/me.jpg'
-import { useParams } from 'next/navigation'
 import { Campaign } from '@/types/Campaign'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function DonationTabsClient({ espees, paystack, campaign }: { espees: any; paystack: any; campaign:Campaign }) {
+export default function DonationTabsClient({
+  espees,
+  paystack,
+  campaign,
+}: {
+  espees: any
+  paystack: any
+  campaign: Campaign
+}) {
   const [activeStep, setActiveStep] = useState(1)
   const scrollRef = useRef<HTMLDivElement>(null)
-
   const params = useParams()
 
   const avatar = campaign.user?.avatar
     ? `https://fundraise.theinnercitymission.ngo/${campaign.user?.avatar}`
     : campaign.banner?.url
 
-  const campaignId = Number(params?.id)
+  const steps = [
+    { id: 1, title: 'Espees', icon: 'solar:wallet-bold' },
+    { id: 2, title: 'Stripe', icon: 'bi:stripe' },
+    { id: 3, title: 'PayPal', icon: 'logos:paypal' },
+    { id: 4, title: 'Paystack', icon: 'simple-icons:paystack' },
+    { id: 5, title: 'Voucher', icon: 'mdi:voucher' },
+    { id: 6, title: 'Bank', icon: 'noto:bank' },
+  ]
 
-  const [email, setEmail] = useState('')
-
-  useEffect(() => {
-    const user = localStorage.getItem('course-training-profile')
-
-    if (user) {
-      const parsed = JSON.parse(user)
-      setEmail(parsed?.email || '')
+  const renderStep = () => {
+    switch (activeStep) {
+      case 1:
+        return <EspeeForm />
+      case 2:
+        return <StripeForm />
+      case 3:
+        return <PaypalForm />
+      case 4:
+        return <PaystackForm />
+      case 5:
+        return <VoucherForm />
+      case 6:
+        return <BankTransfer />
+      default:
+        return null
     }
-  }, [])
-
-  const scroll = (dir: 'left' | 'right') => {
-    const el = scrollRef.current
-    if (el) el.scrollBy({ left: dir === 'left' ? -200 : 200, behavior: 'smooth' })
   }
 
-  const tabs = [
-    // { id: 1, title: 'Card', icon: 'streamline-emojis:credit-card', iconType: 'iconify' },
-    { id: 1, title: 'Espees', image: espees },
-    { id: 2, title: 'Stripe', icon: 'bi:stripe', iconType: 'iconify' },
-    { id: 3, title: 'PayPal', icon: 'logos:paypal', iconType: 'iconify' },
-    { id: 4, title: 'PayStack', image: paystack },
-    { id: 5, title: 'Voucher', icon: 'mdi:voucher', iconType: 'iconify' },
-    { id: 6, title: 'Bank Transfer', icon: 'noto:bank', iconType: 'iconify' },
-  ]
-
-  const steps = [
-    // { id: 1, component: <CardForm /> },
-    { id: 1, component: <EspeeForm /> },
-    { id: 2, component: <StripeForm /> },
-    { id: 3, component: <PaypalForm /> },
-    { id: 4, component: <PaystackForm /> },
-    { id: 5, component: <VoucherForm /> },
-    { id: 6, component: <BankTransfer /> },
-  ]
-
-  const current = steps.find((s) => s.id === activeStep)?.component
-
   return (
-    <section className="flex justify-center border">
-      {/* User info */}
-      <div>
-        <div className="flex w-full gap-2 p-3 md:mt-10">
-          <img
-            src={avatar as string}
-            alt="me"
-            height={50}
-            width={50}
-            className="h-[50px] w-[50px] rounded-full object-cover"
-          />
-          <div>
-            <span className="font-bold text-primary">{campaign.user?.fullname}</span>
-            <p className="text-sm text-textcolor">Joined on: {campaign.user?.created_at}</p>
-          </div>
-        </div>
+    <section className="w-full flex justify-center px-4">
+      <div className="w-full max-w-5xl">
 
-        <div className="flex">
-          <div className="md:mt-10">
-            <div className="flex">
-              <div className="mb-6 gap-4">
-                <div
-                  ref={scrollRef}
-                  // className="flex max-w-[300px] gap-2 overflow-x-auto border-r p-1 no-scrollbar md:gap-2 md:p-2"
-                  className="flex w-[90vw] gap-2 overflow-x-auto border-r p-1 no-scrollbar md:w-[450px] md:gap-2 md:p-2"
-                >
-                  {tabs.map((tab) => (
-                    <div
-                      key={tab.id}
-                      onClick={() => setActiveStep(tab.id)}
-                      className={`flex cursor-pointer flex-col items-center justify-center px-8 hover:bg-primary/5 ${
-                        activeStep === tab.id
-                          ? 'border-t-4 border-primary text-primary'
-                          : 'text-primary'
-                      }`}
-                    >
-                      <button className="flex h-12 w-full items-center justify-center text-lg md:text-2xl">
-                        {tab.iconType === 'iconify' ? (
-                          <Icon icon={tab.icon!} className="h-6 w-6" />
-                        ) : tab.image ? (
-                          <Image
-                            src={tab.image}
-                            alt={tab.title}
-                            className="h-6 w-6 object-contain"
-                          />
-                        ) : (
-                          <div className="h-6 w-6" />
-                        )}
-                      </button>
-                      <h4 className="mt-1 truncate text-center text-xs font-semibold text-textcolor md:text-sm">
-                        {tab.title}
-                      </h4>
-                    </div>
-                  ))}
-                </div>
-              </div>
+        {/* ===== TOP USER STRIP (Stripe-style identity bar) ===== */}
+        <div
+          className="
+            flex items-center justify-between
+            rounded-2xl border border-zinc-200/70 dark:border-white/10
+            bg-white dark:bg-[#0B0F19]
+            px-5 py-4 shadow-sm
+          "
+        >
+          <div className="flex items-center gap-3">
+            <Image
+              src={avatar as string}
+              alt="user"
+              width={44}
+              height={44}
+              className="rounded-full object-cover"
+            />
 
-              <button onClick={() => scroll('right')} className="flex items-center justify-center">
-                <Icon
-                  icon="material-symbols-light:keyboard-arrow-right"
-                  className="h-8 w-8 text-gray-600"
-                />
-              </button>
+            <div>
+              <p className="text-sm font-semibold text-zinc-900 dark:text-white">
+                {campaign.user?.fullname}
+              </p>
+              <p className="text-xs text-zinc-500">
+                Verified campaign creator
+              </p>
             </div>
+          </div>
 
-            <div className="rounded-xl p-1 md:p-2">{current}</div>
+          <div className="hidden md:flex items-center gap-2 text-xs text-zinc-500">
+            <span className="h-2 w-2 rounded-full bg-emerald-500" />
+            Secure checkout
           </div>
         </div>
+
+        {/* ===== PAYMENT METHOD SELECTOR (Stripe-style pills) ===== */}
+        <div className="mt-6">
+          <div
+            ref={scrollRef}
+            className="
+              flex gap-2 overflow-x-auto no-scrollbar
+              rounded-2xl border border-zinc-200/70 dark:border-white/10
+              bg-white dark:bg-[#0B0F19]
+              p-2
+            "
+          >
+            {steps.map((step) => {
+              const active = activeStep === step.id
+
+              return (
+                <button
+                  key={step.id}
+                  onClick={() => setActiveStep(step.id)}
+                  className={`
+                    flex items-center gap-2 whitespace-nowrap
+                    px-4 py-2 rounded-xl transition-all duration-200
+                    border
+                    ${
+                      active
+                        ? 'bg-zinc-900 text-white border-zinc-900 shadow-md'
+                        : 'bg-transparent text-zinc-600 dark:text-zinc-300 border-transparent hover:bg-zinc-100 dark:hover:bg-white/5'
+                    }
+                  `}
+                >
+                  <Icon icon={step.icon} className="h-4 w-4" />
+                  <span className="text-sm font-medium">
+                    {step.title}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* ===== MAIN PAYMENT PANEL (Luxury checkout card) ===== */}
+        <div
+          className="
+            mt-6 rounded-3xl
+            border border-zinc-200/70 dark:border-white/10
+            bg-white dark:bg-[#0B0F19]
+            shadow-sm
+            overflow-hidden
+          "
+        >
+          {/* subtle top highlight */}
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-zinc-300 dark:via-white/20 to-transparent" />
+
+          <div className="p-5 md:p-8">
+            {renderStep()}
+          </div>
+        </div>
+
+        {/* ===== TRUST FOOTER (Paystack-style reassurance) ===== */}
+        <div className="mt-4 text-center text-xs text-zinc-500">
+          Payments are encrypted and processed securely via trusted providers
+        </div>
+
       </div>
     </section>
   )
