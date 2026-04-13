@@ -15,19 +15,19 @@ import { calculateProgress } from '@/utils/percentage'
 // import { log } from 'console'
 
 const baseUrl = 'https://fundraise-api.onrender.com/api/v1'
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic'
 
 export default function CampaignDetailsPage() {
   const params = useParams()
-  const id = params?.id
-  const campaignId = Array.isArray(id) ? id[0] : id
+  // const id = params?.id
+  const campaignId = Array.isArray(params?.id) ? params.id[0] : params?.id
 
   const [campaign, setCampaign] = useState<Campaign | null>(null)
   const [loading, setLoading] = useState(true)
   const [showShare, setShowShare] = useState(false)
   const [email, setEmail] = useState('')
   const [copied, setCopied] = useState(false)
-  
+
   useEffect(() => {
     if (!campaignId) return
 
@@ -59,11 +59,9 @@ export default function CampaignDetailsPage() {
 
   const goal = Number(campaign.goal || 0)
   const raised = Number(campaign.raised || 0)
- const progress = calculateProgress(raised, goal);
- console.log(progress);
- console.log(campaign);
- 
- 
+  const progress = calculateProgress(raised, goal)
+  console.log(progress)
+  console.log(campaign)
 
   const campaignUrl =
     typeof window !== 'undefined' ? `${window.location.origin}/campaigns/${campaign.id}` : ''
@@ -167,7 +165,7 @@ export default function CampaignDetailsPage() {
               Goal: <strong>${goal.toLocaleString()}</strong>
             </span>
             <span>•</span>
-            <p className=" text-sm text-zinc-500">
+            <p className="text-sm text-zinc-500">
               Ends on:{' '}
               <span className="font-medium text-zinc-700 dark:text-zinc-300">
                 {campaign.period

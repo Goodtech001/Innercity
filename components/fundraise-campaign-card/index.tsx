@@ -27,6 +27,7 @@ export default function PremiumCampaignCard({ campaign }: { campaign: Campaign }
    const image = campaign.thumbnail_large
   ? `https://fundraise.theinnercitymission.ngo/${campaign.thumbnail_large}`
   : campaign.thumbnail?.url
+  
 
   const goal = Number(campaign.goal || 0)
   const raised = Number(campaign.raised || 0)
@@ -51,6 +52,7 @@ export default function PremiumCampaignCard({ campaign }: { campaign: Campaign }
   const rotateX = useTransform(y, [-100, 100], [6, -6])
   const rotateY = useTransform(x, [-100, 100], [-6, 6])
 
+  if (!campaign?.id) return null; // Safety check
   return (
     <motion.div
       onMouseMove={(e) => {
