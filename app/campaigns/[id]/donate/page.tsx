@@ -2,29 +2,48 @@
 import { notFound } from 'next/navigation'
 import TopNavbar from '@/layouts/topnavbar'
 import DonationTabsClient from '@/components/donation-tab-client'
-
 import espees from '@/public/assets/images/espees.png'
 import paystack from '@/public/assets/images/paystackk.png'
 import DonatePercentageCircle from '@/components/donate-percentage-circle'
+import { Campaign } from '@/types/Campaign'
 
 const baseUrl = 'https://fundraise-api.onrender.com/api/v1'
+
+// 1. Pre-generate paths for all campaigns so they are static on Vercel
+export async function generateStaticParams() {
+  try {
+    const res = await fetch(`${baseUrl}/campaigns`)
+    const result = await res.json()
+    const campaigns: Campaign[] = result?.data || result || []
+
+    return campaigns.map((campaign) => ({
+      id: campaign.id.toString(),
+    }))
+  } catch (error) {
+    console.error('Error generating static params for donate page:', error)
+    return []
+  }
+}
 
 interface CampaignPageProps {
   params: Promise<{ id: string }>
 }
 
+// 2. Main Server Component
 export default async function CampaignDonatePage({ params }: CampaignPageProps) {
   const { id } = await params
 
+  // Fetch campaign data
   const res = await fetch(`${baseUrl}/campaigns/${id}`, {
-    cache: 'no-store',
+    next: { revalidate: 60 }, // Revalidate every minute
   })
 
   if (!res.ok) notFound()
 
   const data = await res.json()
-  const campaign = data?.data || data
+  const campaign: Campaign = data?.data || data
 
+  // Calculate Progress
   const goal = Number(campaign.goal || 0)
   const raised = Number(campaign.raised || 0)
   const progress = goal > 0 ? Math.min(Math.round((raised / goal) * 100), 100) : 0
@@ -50,7 +69,6 @@ export default async function CampaignDonatePage({ params }: CampaignPageProps) 
       <div className="container mx-auto mt-8 px-4 pb-20">
         {/* HERO FINTECH CARD */}
         <div className="relative overflow-hidden rounded-3xl border border-zinc-200/70 bg-white shadow-sm dark:border-white/10 dark:bg-[#0B0F19]">
-          {/* soft glow accent */}
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-sky-500/5" />
 
           <div className="relative p-6 md:p-10">
@@ -79,7 +97,6 @@ export default async function CampaignDonatePage({ params }: CampaignPageProps) 
                     </span>
                   </p>
 
-                  {/* mobile stats */}
                   <div className="mt-4 flex gap-6 text-sm md:hidden">
                     <div>
                       <p className="text-zinc-500">Target</p>
@@ -87,7 +104,6 @@ export default async function CampaignDonatePage({ params }: CampaignPageProps) 
                         ${goal.toLocaleString()}
                       </p>
                     </div>
-
                     <div>
                       <p className="text-zinc-500">Raised</p>
                       <p className="font-medium text-zinc-900 dark:text-white">
@@ -98,21 +114,19 @@ export default async function CampaignDonatePage({ params }: CampaignPageProps) 
                 </div>
               </div>
 
-              {/* CENTER: TRUST / PAYMENT INDICATORS */}
+              {/* CENTER: TRUST INDICATORS */}
               <div className="hidden flex-col items-center justify-center gap-3 md:flex">
                 <div className="text-xs uppercase tracking-wider text-zinc-400">
                   Secure Payments
                 </div>
-
                 <div className="flex items-center gap-3 opacity-80">
                   <img src={paystack.src} alt="Paystack" className="h-5" />
-                  <img src={espees.src} alt="Espes" className="h-5" />
+                  <img src={espees.src} alt="Espees" className="h-5" />
                 </div>
-
                 <div className="text-xs text-zinc-400">Encrypted • Trusted • Verified</div>
               </div>
 
-              {/* RIGHT: STATS (Stripe-style KPI cards) */}
+              {/* RIGHT: STATS */}
               <div className="hidden justify-end md:flex">
                 <div className="grid gap-4 text-right">
                   <div>
@@ -121,14 +135,12 @@ export default async function CampaignDonatePage({ params }: CampaignPageProps) 
                       ${goal.toLocaleString()}
                     </p>
                   </div>
-
                   <div>
                     <p className="text-xs text-zinc-500">Raised</p>
                     <p className="text-lg font-semibold text-zinc-900 dark:text-white">
                       ${raised.toLocaleString()}
                     </p>
                   </div>
-
                   <div>
                     <p className="text-xs text-zinc-500">Progress</p>
                     <p className="text-lg font-semibold text-indigo-500">{progress}%</p>
@@ -137,17 +149,17 @@ export default async function CampaignDonatePage({ params }: CampaignPageProps) 
               </div>
             </div>
 
-            {/* subtle progress bar (Stripe-like detail) */}
+            {/* PROGRESS BAR */}
             <div className="mt-8 h-1 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-white/10">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-sky-500"
+                className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-sky-500 transition-all duration-1000"
                 style={{ width: `${progress}%` }}
               />
             </div>
           </div>
         </div>
 
-        {/* DONATION TABS */}
+        {/* DONATION TABS - Pass the campaign data to the client component */}
         <div className="mt-10">
           <DonationTabsClient campaign={campaign} espees={espees} paystack={paystack} />
         </div>

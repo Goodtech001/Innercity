@@ -85,7 +85,7 @@ function PaystackForm({campaign} : {campaign: Campaign}) {
 
   return (
     <form onSubmit={startPayment} className="mx-auto max-w-md p-4">
-      <p className="text-primary">Dear {campaign.user?.fullname},</p>
+      {/* <p className="text-primary">Dear {campaign.user?.fullname},</p> */}
 
       <small className="text-primary">
         Thank you for your sponsorship. You will now be redirected to our payment gateway. After
