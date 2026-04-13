@@ -76,9 +76,7 @@ export default function AdminOverviewPage() {
 
         const data = await paymentsRes.json()
 
-        const paymentsData = Array.isArray(data)
-  ? data
-  : data?.data || data?.payments || []
+        const paymentsData = Array.isArray(data) ? data : data?.data || data?.payments || []
 
         setPayments(paymentsData)
 
