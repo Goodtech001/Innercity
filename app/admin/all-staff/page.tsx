@@ -5,7 +5,7 @@
 
 import { useEffect, useState } from 'react'
 import { Icon } from '@iconify/react'
-import { getUsersService, deleteUserService } from '@/app/auth/auth.service'
+import { getUsersService, deleteUserService, sendManualEmailService } from '@/app/auth/auth.service'
 import { useRouter } from 'next/navigation'
 import templates from '@/json/admin-notification-templates.json'
 import { sendNotificationToUser } from '@/utils/notificationService'
@@ -23,6 +23,20 @@ export default function AdminUsersPage() {
   const [verifiedFilter, setVerifiedFilter] = useState('all')
 
   const [selectedUser, setSelectedUser] = useState<any>(null)
+
+  const [showEmailModal, setShowEmailModal] = useState(false)
+  // const [selectedUser, setSelectedUser] = useState<any>(null)
+  const [sendToAll, setSendToAll] = useState(false)
+
+  const [subject, setSubject] = useState('')
+  const [message, setMessage] = useState('')
+  const [sending, setSending] = useState(false)
+
+  const openEmailModal = (user?: any, all = false) => {
+    setSelectedUser(user || null)
+    setSendToAll(all)
+    setShowEmailModal(true)
+  }
 
   const itemsPerPage = 10
 
@@ -59,6 +73,36 @@ export default function AdminUsersPage() {
       alert('Delete failed')
     }
   }
+
+  const handleSendEmail = async () => {
+  try {
+    setSending(true)
+
+    let recipients: string | string[]
+
+    if (sendToAll) {
+      recipients = users.map((u: any) => u.email)
+    } else {
+      recipients = selectedUser.email
+    }
+
+    await sendManualEmailService({
+      to: recipients,
+      subject,
+      message,
+    })
+
+    alert('Email sent successfully ✅')
+    setShowEmailModal(false)
+    setSubject('')
+    setMessage('')
+  } catch (err: any) {
+    console.error(err)
+    alert(err.message)
+  } finally {
+    setSending(false)
+  }
+}
 
   // ✅ FILTERING (does NOT affect design)
   const filteredUsers = users
@@ -118,6 +162,10 @@ export default function AdminUsersPage() {
           <option value="verified">Verified</option>
           <option value="not">Not Verified</option>
         </select>
+
+        <button onClick={() => openEmailModal(null, true)} className="btn-primary mb-4">
+          Send Email to All Users
+        </button>
       </div>
 
       <div className="overflow-x-auto rounded-xl border bg-white shadow-sm">
@@ -329,16 +377,22 @@ export default function AdminUsersPage() {
                     `/admin/all-staff/${selectedUser.id}/transactions?name=${selectedUser.fullname}&avatar=${selectedUser.avatar}`,
                   )
                 }
-                className="btn-primary mt-3 text-xs"
+                className="btn-white mt-3 text-xs"
               >
                 View Transaction History
               </button>
 
               <button
                 onClick={() => setShowNotificationModal(true)}
-                className="btn-primary mt-3 text-xs"
+                className="btn-white mt-3 text-xs"
               >
                 Send Notification
+              </button>
+              <button
+                onClick={() => openEmailModal(users)}
+                className="text-sm btn-white mt-3"
+              >
+                Send Email
               </button>
 
               {/* Suspend / Activate */}
@@ -411,6 +465,43 @@ export default function AdminUsersPage() {
                   <p className="text-sm text-gray-600">{template.description}</p>
                 </button>
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showEmailModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="w-full max-w-lg rounded-xl bg-white p-6">
+            <h2 className="mb-4 text-lg font-bold">
+              {sendToAll ? 'Send Email to All Users' : `Send Email to ${selectedUser?.email}`}
+            </h2>
+
+            {/* SUBJECT */}
+            <input
+              placeholder="Subject"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              className="mb-3 w-full rounded border p-2"
+            />
+
+            {/* MESSAGE */}
+            <textarea
+              placeholder="Write your message (HTML supported)"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className="mb-4 h-32 w-full rounded border p-2"
+            />
+
+            {/* ACTIONS */}
+            <div className="flex justify-end gap-2">
+              <button onClick={() => setShowEmailModal(false)} className="btn-white">
+                Cancel
+              </button>
+
+              <button disabled={sending} onClick={handleSendEmail} className="btn-primary">
+                {sending ? 'Sending...' : 'Send Email'}
+              </button>
             </div>
           </div>
         </div>

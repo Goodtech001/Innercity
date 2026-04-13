@@ -394,6 +394,38 @@ export const uploadImageService = async (file: File) => {
   return result; // Assuming result contains { id: number, url: string, ... }
 };
 
+export const sendManualEmailService = async (payload: {
+  to: string | string[]
+  subject: string
+  message: string
+}) => {
+  const token = localStorage.getItem('token')
+
+  const res = await fetch(`${baseUrl}/mailing/send-manual`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      to: payload.to,
+      subject: payload.subject,
+      template: 'generic-manual-email',
+      variables: {
+        message: payload.message,
+      },
+    }),
+  })
+
+  const data = await res.json()
+
+  if (!res.ok) {
+    throw new Error(data?.message || 'Failed to send email')
+  }
+
+  return data
+}
+
 
 // const getKingChatProfile = async ({
 //   accessToken,
