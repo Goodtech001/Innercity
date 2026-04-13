@@ -78,6 +78,7 @@ export default function PremiumCampaignCard({ campaign }: { campaign: Campaign }
             <Image
               src={image as string}
               alt={campaign.title}
+              unoptimized
               fill
               className="object-cover"
               priority={false}
@@ -115,7 +116,7 @@ export default function PremiumCampaignCard({ campaign }: { campaign: Campaign }
 
             {/* TITLE */}
             <Link
-              href={`/campaigns/${campaign.id}`}
+              href={`/campaigns/${campaign.id}`} prefetch
               className="line-clamp-2 text-lg font-bold text-black transition group-hover:text-primary dark:text-white"
             >
               {campaign.title}
@@ -205,7 +206,7 @@ export default function PremiumCampaignCard({ campaign }: { campaign: Campaign }
 
             {/* CTA */}
             <Link
-              href={`/campaigns/${campaign.id}`}
+              href={`/campaigns/${campaign.id}` } prefetch
               className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:scale-[1.02] hover:shadow-lg active:scale-95"
             >
               <Icon icon="solar:heart-bold" />

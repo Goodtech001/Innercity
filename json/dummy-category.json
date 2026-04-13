@@ -5,6 +5,7 @@
     "category": "Food Campaign",
     "description": "Feed the hungry through different food support programs.",
     "path":"?category=food",
+    "icon": "solar:heart-bold",
     "subCategory": [
       {
         "id": 1,

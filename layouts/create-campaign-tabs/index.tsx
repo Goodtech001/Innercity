@@ -386,6 +386,17 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
 
     processImage()
   }, [images, formData.category_id]) // ✅ FIXED
+  const getThumbnailById = async (id: number) => {
+  try {
+    const res = await fetch(`${baseUrl}/uploads/${id}`)
+    const data = await res.json()
+
+    return data?.data || data
+  } catch (err) {
+    console.error('Failed to fetch thumbnail', err)
+    return null
+  }
+}
 
   useEffect(() => {
     console.log('STEP 2 FORM DATA:', formData)

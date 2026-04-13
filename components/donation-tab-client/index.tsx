@@ -29,7 +29,7 @@ export default function DonationTabsClient({
 
   const avatar = campaign.user?.avatar
     ? `https://fundraise.theinnercitymission.ngo/${campaign.user?.avatar}`
-    : campaign.banner?.url
+    : campaign.thumbnail?.url
 
   const steps = [
     { id: 1, title: 'Espees', icon: 'solar:wallet-bold' },
@@ -43,13 +43,13 @@ export default function DonationTabsClient({
   const renderStep = () => {
     switch (activeStep) {
       case 1:
-        return <EspeeForm />
+        return <EspeeForm campaign={campaign}/>
       case 2:
         return <StripeForm />
       case 3:
         return <PaypalForm />
       case 4:
-        return <PaystackForm />
+        return <PaystackForm campaign={campaign}/>
       case 5:
         return <VoucherForm />
       case 6:
@@ -75,6 +75,7 @@ export default function DonationTabsClient({
           <div className="flex items-center gap-3">
             <Image
               src={avatar as string}
+              unoptimized
               alt="user"
               width={44}
               height={44}

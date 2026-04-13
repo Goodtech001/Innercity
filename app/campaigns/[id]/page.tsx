@@ -196,6 +196,7 @@ export default function CampaignDetailsPage() {
           <div className="mt-6 hidden items-center gap-3 rounded-xl bg-gray-50 p-3 dark:bg-white/5 md:flex">
             <Image
               src={avatar as string}
+              unoptimized
               alt=""
               height={40}
               width={40}

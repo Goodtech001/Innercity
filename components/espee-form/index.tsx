@@ -6,8 +6,9 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { getUsersService } from '@/app/auth/auth.service'
 import { baseUrl } from '@/constants'
+import { Campaign } from '@/types/Campaign'
 
-function EspeeForm() {
+function EspeeForm({campaign} : {campaign: Campaign}) {
   const [ifscCode, setIfscCode] = useState('')
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault()
@@ -83,7 +84,7 @@ function EspeeForm() {
   }
   return (
     <form onSubmit={startedPayment} className="mx-auto max-w-md p-4">
-      <p className="text-primary">Dear Goodnews,</p>
+      <p className="text-primary">Dear {campaign.user?.fullname},</p>
       <small className="text-primary">
         Thank you for your sponsorship. You will now be redirected to our Espee gateway. After
         making your payment, kindly wait till you are redirected back to our website, so your

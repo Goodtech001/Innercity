@@ -1,16 +1,17 @@
-"use client";
+'use client'
 import Link from 'next/link'
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import dummyCategoryData from '@/json/dummy-category.json'
 import CampaignCategoryCard from '@/components/campaign-category-card'
-import { motion, useInView } from "framer-motion";
+import { motion, useInView } from 'framer-motion'
 
 export default function ICMCampaignCategories() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: '-50px' })
+  const [activeCategory, setActiveCategory] = useState<string | null>(null)
 
   return (
-    <motion.div 
+    <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -22,8 +23,8 @@ export default function ICMCampaignCategories() {
             <h3 className="text-balance text-3xl font-bold text-dark md:text-4xl">
               ICM <span className="hidden md:inline">Campaign</span> Categories
             </h3>
-            <Link 
-              className="font-semibold underline hover:text-primary transition-colors"
+            <Link
+              className="font-semibold underline transition-colors hover:text-primary"
               href={'/campaigns'}
             >
               See more <span className="hidden md:inline">category</span>
@@ -31,7 +32,12 @@ export default function ICMCampaignCategories() {
           </div>
           <div className="grid grid-cols-2 gap-4 gap-y-8 md:grid-cols-4 md:gap-10 lg:gap-12">
             {dummyCategoryData.map((data) => (
-              <CampaignCategoryCard data={data} key={data.id} />
+              <CampaignCategoryCard
+                data={data}
+                key={data.id}
+                activeCategory={activeCategory}
+                setActiveCategory={setActiveCategory}
+              />
             ))}
           </div>
         </div>

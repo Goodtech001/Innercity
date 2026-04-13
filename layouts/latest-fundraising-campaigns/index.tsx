@@ -7,7 +7,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import FundraiseCampaignCard from '@/components/fundraise-campaign-card'
 import { motion, useInView } from 'framer-motion'
 import { baseUrl } from '@/constants'
-import ball from "@/public/assets/images/ball-new.png"
+import ball from '@/public/assets/images/ball-new.png'
 import Image from 'next/image'
 
 export default function LatestFundraisingCampaigns() {
@@ -47,17 +47,34 @@ export default function LatestFundraisingCampaigns() {
       initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, ease: 'easeOut' }}
-      className='relative'
+      className="relative"
     >
       <section>
         <div className="container py-8 pb-6 md:py-14 md:pb-8">
-          <div className="mb-8 flex items-end justify-between">
-            <h3 className="text-balance text-3xl font-bold text-dark md:text-4xl">
-              Latest <span className="hidden md:inline">Fundraising</span> Campaigns
-            </h3>
+          <div className="mb-10 flex items-end justify-between gap-4">
+            {/* LEFT TITLE BLOCK */}
+            <div>
+              <h3 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white md:text-4xl">
+                Latest <span className="text-zinc-500 dark:text-zinc-400">Fundraising</span>{' '}
+                Campaigns
+              </h3>
 
-            <Link className="font-semibold underline" href={'/campaigns'}>
-              See more
+              <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                Discover active campaigns and support meaningful causes
+              </p>
+            </div>
+
+            {/* RIGHT CTA */}
+            <Link
+              href="/campaigns"
+              className="group relative inline-flex items-center gap-2 text-sm font-medium text-zinc-700 transition-colors hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
+            >
+              <span className="underline decoration-zinc-300 underline-offset-4 transition group-hover:decoration-zinc-900 dark:decoration-white/20 dark:group-hover:decoration-white">
+                See all campaigns
+              </span>
+
+              {/* subtle arrow like Stripe */}
+              <span className="transition-transform group-hover:translate-x-1">→</span>
             </Link>
           </div>
 

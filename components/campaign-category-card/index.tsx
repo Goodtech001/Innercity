@@ -1,108 +1,134 @@
-import useTopnavbar from '@/layouts/topnavbar/useTopnavbar'
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import React from 'react'
+'use client'
 
-export type TCampaignCategoryCard = {
-  data: {
-    id: number
-    banner: string
-    category: string
-    description: string
-    path?: string
-    subCategory: {
-      id: number
-      title: string
-      description: string
-    }[]
-    createdAt: string
-  }
+import { Icon } from '@iconify/react/dist/iconify.js'
+import { motion } from 'framer-motion'
+
+type Category = {
+  id: number
+  category: string
+  description: string
+  count?: number
+  trending?: boolean
+  icon?: string
 }
 
-export default function CampaignCategoryCard({
-  data: { banner, category, description, subCategory },
-}: TCampaignCategoryCard) {
-  useTopnavbar()
-  const router = useRouter()
+type Props = {
+  data: Category
+  activeCategory: string | null
+  setActiveCategory: (category: string) => void
+}
 
-  const handleCategoryClick = () => {
-    if (!category) return
-    router.push(`?category=${encodeURIComponent(category.toLowerCase())}`)
-  }
+const categoryConfig: Record<string, { icon: string; gradient: string }> = {
+  health: {
+    icon: 'solar:heart-bold',
+    gradient: 'from-rose-500/20 via-pink-500/10 to-transparent',
+  },
+  education: {
+    icon: 'solar:book-bold',
+    gradient: 'from-indigo-500/20 via-blue-500/10 to-transparent',
+  },
+  charity: {
+    icon: 'mdi:hand-heart',
+    gradient: 'from-emerald-500/20 via-green-500/10 to-transparent',
+  },
+  emergency: {
+    icon: 'mdi:alert',
+    gradient: 'from-orange-500/20 via-red-500/10 to-transparent',
+  },
+  default: {
+    icon: 'solar:category-bold',
+    gradient: 'from-zinc-500/20 via-zinc-400/10 to-transparent',
+  },
+}
+
+export default function CampaignCategoryCard({ data, activeCategory, setActiveCategory }: Props) {
+  const isActive = activeCategory === data.category.toLowerCase()
+
+  const config = categoryConfig[data.category.toLowerCase()] || categoryConfig.default
 
   return (
-    <div className="w-full max-w-72 group cursor-pointer">
-      <div
-        onClick={handleCategoryClick}
-        className="
-          relative overflow-hidden rounded-2xl
-          border border-black/10 dark:border-white/10
-          bg-white dark:bg-[#0B0F19]
-          shadow-sm hover:shadow-xl
-          transition-all duration-300
-          hover:-translate-y-1
-        "
-      >
-        {/* Image */}
-        <div className="relative h-56 w-full overflow-hidden">
-          <Image
-            src={banner}
-            alt={category}
-            fill
-            className="object-cover scale-105 group-hover:scale-110 transition-transform duration-500"
-          />
-
-          {/* Subtle fintech gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
-
-          {/* Top subtle highlight line (Stripe-style detail) */}
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-60" />
-        </div>
-
-        {/* Content */}
-        <div className="p-4 space-y-2">
-          {/* Category */}
-          <h5 className="text-base font-semibold tracking-tight text-zinc-900 dark:text-white">
-            {category}
-          </h5>
-
-          {/* Description */}
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 leading-relaxed">
-            {description}
-          </p>
-
-          {/* Sub categories */}
-          {subCategory?.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 pt-2">
-              {subCategory.slice(0, 3).map((sub) => (
-                <span
-                  key={sub.id}
-                  className="
-                    text-[11px] px-2 py-0.5 rounded-full
-                    border border-zinc-200 dark:border-white/10
-                    bg-zinc-50 dark:bg-white/5
-                    text-zinc-600 dark:text-zinc-300
-                  "
-                >
-                  {sub.title}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Subtle hover accent (Stripe-like focus glow) */}
-        <div
-          className="
-            pointer-events-none absolute inset-0
-            opacity-0 group-hover:opacity-100
-            transition-opacity duration-300
-            bg-gradient-to-br from-indigo-500/5 via-transparent to-sky-500/5
-          "
+    <motion.div
+      layout
+      whileHover={{ y: -6 }}
+      onClick={() => setActiveCategory(data.category.toLowerCase())}
+      className={`group relative w-full cursor-pointer overflow-hidden rounded-3xl border transition-all duration-300 ${
+        isActive
+          ? 'border-primary bg-primary/5 shadow-xl'
+          : 'border-zinc-200/70 bg-whit hover:shadow-lg from-rose-500/20 via-pink-500/10 to-transparent'
+      } `}
+    >
+      {/* ACTIVE GLOW */}
+      {isActive && (
+        <motion.div
+          layoutId="activeCategoryGlow"
+          className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5"
         />
+      )}
+
+      {/* HOVER GRADIENT */}
+      <div
+        className={`absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${
+          data.category.toLowerCase() === 'health'
+            ? 'bg-gradient-to-br from-rose-500/20 via-pink-500/10 to-transparent'
+            : data.category.toLowerCase() === 'education'
+              ? 'bg-gradient-to-br from-indigo-500/20 via-blue-500/10 to-transparent'
+              : data.category.toLowerCase() === 'charity'
+                ? 'bg-gradient-to-br from-emerald-500/20 via-green-500/10 to-transparent'
+                : data.category.toLowerCase() === 'emergency'
+                  ? 'bg-gradient-to-br from-orange-500/20 via-red-500/10 to-transparent'
+                  : 'bg-gradient-to-br from-zinc-500/20 via-zinc-400/10 to-transparent'
+        } `}
+      />
+
+      <div className="relative flex items-center justify-between p-6">
+        {/* LEFT */}
+        <div className="max-w-[65%]">
+          <div className="flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-zinc-900 dark:text-white md:text-xl">
+              {data.category}
+            </h3>
+
+            {/* 🔥 TRENDING BADGE */}
+            {data.trending && (
+              <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[10px] text-orange-600 dark:bg-orange-500/10">
+                Trending
+              </span>
+            )}
+          </div>
+
+          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{data.description}</p>
+
+          {/* COUNT + CTA */}
+          <div className="mt-3 flex items-center gap-4 text-sm">
+            <span className="text-zinc-500">{data.count ?? 0} campaigns</span>
+
+            <span className="flex items-center gap-1 font-medium text-primary">
+              View
+              <span className="transition-transform group-hover:translate-x-1">→</span>
+            </span>
+          </div>
+        </div>
+
+        {/* RIGHT ICON */}
+        <div
+          className={`flex h-14 w-14 items-center justify-center rounded-2xl border transition-all duration-300 ${
+            isActive
+              ? 'border-primary bg-primary text-white'
+              : 'border-zinc-200/60 bg-zinc-100 dark:border-white/10 dark:bg-white/5'
+          } `}
+        >
+          <Icon icon={config.icon} width={80} height={80} className="h-6 w-6" />
+        </div>
       </div>
-    </div>
+
+      {/* ACTIVE INDICATOR BAR */}
+      <div
+        className={`h-[2px] w-full transition-all duration-300 ${
+          isActive
+            ? 'bg-primary opacity-100'
+            : 'bg-transparent opacity-0 group-hover:bg-primary/40 group-hover:opacity-100'
+        } `}
+      />
+    </motion.div>
   )
 }
-
-

@@ -8,8 +8,9 @@ import { getUsersService } from '@/app/auth/auth.service'
 import { useParams } from 'next/navigation'
 import { baseUrl } from '@/constants'
 import CountryCurrencyDropdown, { Currency } from '../country-currency-dropdown'
+import { Campaign } from '@/types/Campaign'
 
-function PaystackForm() {
+function PaystackForm({campaign} : {campaign: Campaign}) {
   const params = useParams()
   const campaignId = Number(params?.id)
 
@@ -82,7 +83,7 @@ function PaystackForm() {
 
   return (
     <form onSubmit={startPayment} className="mx-auto max-w-md p-4">
-      <p className="text-primary">Dear Goodnews,</p>
+      <p className="text-primary">Dear {campaign.user?.fullname},</p>
 
       <small className="text-primary">
         Thank you for your sponsorship. You will now be redirected to our payment gateway. After
