@@ -1,7 +1,7 @@
 import Image from 'next/image'
-import logo from '@/public/assets/icons/logo.png'
-import logoWhite from '@/public/assets/icons/logo-white.png'
-import logoAlt from '@/public/assets/icons/logo-black-text.png'
+import logo from '@/public/assets/images/main-logo.png'
+import logoWhite from '@/public/assets/images/main-logo.png'
+import logoAlt from '@/public/assets/images/main-logo.png'
 
 type prop = {
   className?: string

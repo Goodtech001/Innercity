@@ -113,7 +113,7 @@ export default function TopNavbar() {
 
           {/* LOGO */}
           <Link href="/">
-            <Logo className="w-24" variant="alt" />
+            <Logo className="w-20" variant="alt" />
           </Link>
 
           {/* RIGHT */}
