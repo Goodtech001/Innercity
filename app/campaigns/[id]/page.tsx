@@ -28,7 +28,6 @@ export default function CampaignDetailsPage() {
   const [email, setEmail] = useState('')
   const [copied, setCopied] = useState(false)
   
-
   useEffect(() => {
     if (!campaignId) return
 

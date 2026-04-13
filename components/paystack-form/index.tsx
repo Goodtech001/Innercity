@@ -61,6 +61,7 @@ function PaystackForm({campaign} : {campaign: Campaign}) {
           email,
           userId,
           callback_url: `${window.location.origin}/payments/verify`,
+
         }),
       })
 
