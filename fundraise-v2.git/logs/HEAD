@@ -1,0 +1,179 @@
+0000000000000000000000000000000000000000 ba8cf9c9b1efa4cb112c57c072cf41d39d42b2cc goodtech001 <goodnewsnnebedim@gmail.com> 1755127133 +0100	commit (initial): Initial commit
+ba8cf9c9b1efa4cb112c57c072cf41d39d42b2cc ba8cf9c9b1efa4cb112c57c072cf41d39d42b2cc goodtech001 <goodnewsnnebedim@gmail.com> 1755127648 +0100	checkout: moving from master to main
+ba8cf9c9b1efa4cb112c57c072cf41d39d42b2cc ba8cf9c9b1efa4cb112c57c072cf41d39d42b2cc goodtech001 <goodnewsnnebedim@gmail.com> 1755127865 +0100	checkout: moving from main to master
+ba8cf9c9b1efa4cb112c57c072cf41d39d42b2cc ba8cf9c9b1efa4cb112c57c072cf41d39d42b2cc goodtech001 <goodnewsnnebedim@gmail.com> 1755127922 +0100	checkout: moving from master to main
+ba8cf9c9b1efa4cb112c57c072cf41d39d42b2cc 5fb54b85c935e963b7f417699d6337ce6bfa6f7d goodtech001 <goodnewsnnebedim@gmail.com> 1755128966 +0100	pull --rebase origin main (start): checkout 5fb54b85c935e963b7f417699d6337ce6bfa6f7d
+5fb54b85c935e963b7f417699d6337ce6bfa6f7d 7e6f610a129e72191bfeb0c2661dc6471c497d09 goodtech001 <goodnewsnnebedim@gmail.com> 1755128966 +0100	pull --rebase origin main (pick): Initial commit
+7e6f610a129e72191bfeb0c2661dc6471c497d09 7e6f610a129e72191bfeb0c2661dc6471c497d09 goodtech001 <goodnewsnnebedim@gmail.com> 1755128966 +0100	pull --rebase origin main (finish): returning to refs/heads/main
+7e6f610a129e72191bfeb0c2661dc6471c497d09 877793820ce1cb206cf8fbae714e2680b822dc5f goodtech001 <goodnewsnnebedim@gmail.com> 1755129514 +0100	commit: new change
+877793820ce1cb206cf8fbae714e2680b822dc5f bb8a3dd7ac2f87fe1a700273a82c1e5ba9ee0b1a goodtech001 <goodnewsnnebedim@gmail.com> 1755136308 +0100	commit: second change
+bb8a3dd7ac2f87fe1a700273a82c1e5ba9ee0b1a 45a37cbf9418ba11f744f46524ffa847470e8551 goodtech001 <goodnewsnnebedim@gmail.com> 1755137034 +0100	commit: analytic change
+45a37cbf9418ba11f744f46524ffa847470e8551 c6f9c6abd9294a5d97457969fb859212d29b0889 goodtech001 <goodnewsnnebedim@gmail.com> 1755137572 +0100	commit: vercel change
+c6f9c6abd9294a5d97457969fb859212d29b0889 de2c07ac890036f30c8729965d3b24576e050ab5 goodtech001 <goodnewsnnebedim@gmail.com> 1755138544 +0100	commit: vercel2 change
+de2c07ac890036f30c8729965d3b24576e050ab5 1b43c2dd3b1cd21f6db064afad88d8896c12d1eb goodtech001 <goodnewsnnebedim@gmail.com> 1755139666 +0100	commit: vercel3 change
+1b43c2dd3b1cd21f6db064afad88d8896c12d1eb 80e2ca8cc6c8f2a5a6542d4e1733e3bef738792a goodtech001 <goodnewsnnebedim@gmail.com> 1755140039 +0100	commit: vercel4 change
+80e2ca8cc6c8f2a5a6542d4e1733e3bef738792a 01cd025e46b43bffcfbf0fe656ec2982c89634a3 goodtech001 <goodnewsnnebedim@gmail.com> 1755175038 +0100	commit: vercel.json change
+01cd025e46b43bffcfbf0fe656ec2982c89634a3 8c4280bc1fff8e029f024e2a5a032f5e127f11b1 goodtech001 <goodnewsnnebedim@gmail.com> 1755178074 +0100	commit: vercel5
+8c4280bc1fff8e029f024e2a5a032f5e127f11b1 41ca51cb55174886ca2bf66648d86592f3b4c7f1 goodtech001 <goodnewsnnebedim@gmail.com> 1755178930 +0100	commit: changes
+41ca51cb55174886ca2bf66648d86592f3b4c7f1 bcd0a500253f2b85c30ff5ec34b5417ab524455d goodtech001 <goodnewsnnebedim@gmail.com> 1755179125 +0100	commit (merge): issues
+bcd0a500253f2b85c30ff5ec34b5417ab524455d 9f9d732be4bc41586232e66ce201be6c63ee5055 goodtech001 <goodnewsnnebedim@gmail.com> 1755179338 +0100	commit: issues1
+9f9d732be4bc41586232e66ce201be6c63ee5055 4e5becea4d696cb15b9038bf408401d0039a0e11 goodtech001 <goodnewsnnebedim@gmail.com> 1755179842 +0100	commit: issues2
+4e5becea4d696cb15b9038bf408401d0039a0e11 c9c237db54ed94af333aafd9d1534adf2b1b5d72 goodtech001 <goodnewsnnebedim@gmail.com> 1755183348 +0100	commit: second commit
+c9c237db54ed94af333aafd9d1534adf2b1b5d72 4ca4d57aeb0a1dacf06b2994c671b47828168efd goodtech001 <goodnewsnnebedim@gmail.com> 1755184330 +0100	commit (merge): build change
+4ca4d57aeb0a1dacf06b2994c671b47828168efd 41d37ab67cf30e2e5e5c469fb21e0ff3643d6220 goodtech001 <goodnewsnnebedim@gmail.com> 1755187708 +0100	commit: build changes
+41d37ab67cf30e2e5e5c469fb21e0ff3643d6220 ebf8d5e03ee4208d01a5f863936166ef8208b057 goodtech001 <goodnewsnnebedim@gmail.com> 1755216396 +0100	commit: ui changes
+ebf8d5e03ee4208d01a5f863936166ef8208b057 1f2b1f2a0d4093157ee580337a9cdabe71fdb6a1 goodtech001 <goodnewsnnebedim@gmail.com> 1755278748 +0100	commit: changes
+1f2b1f2a0d4093157ee580337a9cdabe71fdb6a1 8bd4314d1df533555073a1d4d0bd80938c711d81 goodtech001 <goodnewsnnebedim@gmail.com> 1755299978 +0100	commit: media changes
+8bd4314d1df533555073a1d4d0bd80938c711d81 094deb7b919b876a01a38de18e7f2287b4ddd1b7 goodtech001 <goodnewsnnebedim@gmail.com> 1755432676 +0100	pull origin main: Fast-forward
+094deb7b919b876a01a38de18e7f2287b4ddd1b7 305fcad3603273f780c2f162f8c2e37b84abb09f goodtech001 <goodnewsnnebedim@gmail.com> 1755522464 +0100	commit: neww change
+305fcad3603273f780c2f162f8c2e37b84abb09f 31cc71edd5a15a2a71bf0aa5e8dc1e17e5d52ccb goodtech001 <goodnewsnnebedim@gmail.com> 1755523476 +0100	commit (merge): resolved conflicts
+31cc71edd5a15a2a71bf0aa5e8dc1e17e5d52ccb 9b3421db0506144cda42839ff9528f96eb201f2b goodtech001 <goodnewsnnebedim@gmail.com> 1755530188 +0100	commit: error changes
+9b3421db0506144cda42839ff9528f96eb201f2b bb921eb573c378a5dcdd3af8be46b9b02d1b5e4e goodtech001 <goodnewsnnebedim@gmail.com> 1755530712 +0100	commit: little change
+bb921eb573c378a5dcdd3af8be46b9b02d1b5e4e 85064d7e4673d69855cc17a4434b4dcf90c3d8e0 goodtech001 <goodnewsnnebedim@gmail.com> 1755536780 +0100	commit: fix stuff
+85064d7e4673d69855cc17a4434b4dcf90c3d8e0 12c532b73966d78c4431cb33349b003ca8a3a5e5 goodtech001 <goodnewsnnebedim@gmail.com> 1755537109 +0100	commit: new addition
+12c532b73966d78c4431cb33349b003ca8a3a5e5 12c532b73966d78c4431cb33349b003ca8a3a5e5 goodtech001 <goodnewsnnebedim@gmail.com> 1755541368 +0100	reset: moving to HEAD
+12c532b73966d78c4431cb33349b003ca8a3a5e5 5a12b94b088da23ac19bfd555faa3ff96b32740d goodtech001 <goodnewsnnebedim@gmail.com> 1755541375 +0100	pull origin main: Fast-forward
+5a12b94b088da23ac19bfd555faa3ff96b32740d 354bd34dd9351d3cdae8a969abb89a8758607a95 goodtech001 <goodnewsnnebedim@gmail.com> 1755620223 +0100	commit: cta change
+354bd34dd9351d3cdae8a969abb89a8758607a95 5362b5303dc5f99826e1fc75ab272e7c27a7afd4 goodtech001 <goodnewsnnebedim@gmail.com> 1755620482 +0100	commit (merge): Merge branch 'main' of https://github.com/Goodtech001/Innercity
+5362b5303dc5f99826e1fc75ab272e7c27a7afd4 d793935aa42c116da5ffa58770f4209a04b311cb goodtech001 <goodnewsnnebedim@gmail.com> 1755681622 +0100	pull origin main: Fast-forward
+d793935aa42c116da5ffa58770f4209a04b311cb d793935aa42c116da5ffa58770f4209a04b311cb goodtech001 <goodnewsnnebedim@gmail.com> 1755775856 +0100	reset: moving to HEAD
+d793935aa42c116da5ffa58770f4209a04b311cb 93d9d14a1f6cd84f00ed189b4a08a656be54d71a goodtech001 <goodnewsnnebedim@gmail.com> 1755775867 +0100	pull origin main: Fast-forward
+93d9d14a1f6cd84f00ed189b4a08a656be54d71a ac3842071f6db3e197533824d1fcee8088043baf goodtech001 <goodnewsnnebedim@gmail.com> 1755781142 +0100	commit: pause on scroll
+ac3842071f6db3e197533824d1fcee8088043baf 74c8cf3416622447ac83233a35881107e7c334e4 goodtech001 <goodnewsnnebedim@gmail.com> 1755782061 +0100	pull origin main: Fast-forward
+74c8cf3416622447ac83233a35881107e7c334e4 5f09d26ab05207c664aeec4ba977f089b780826c goodtech001 <goodnewsnnebedim@gmail.com> 1755788382 +0100	commit: Thumbnail navigation arrow and cta change
+5f09d26ab05207c664aeec4ba977f089b780826c bcdedba4d1f158419a6af237eee0feb800a7a288 goodtech001 <goodnewsnnebedim@gmail.com> 1755790130 +0100	pull origin main: Fast-forward
+bcdedba4d1f158419a6af237eee0feb800a7a288 579a599806469a2224aedff4902080b655623278 goodtech001 <goodnewsnnebedim@gmail.com> 1755864070 +0100	commit: thumbnail videos
+579a599806469a2224aedff4902080b655623278 9dfdacb71a770cc5fe115e391d86a1bbc971ce26 goodtech001 <goodnewsnnebedim@gmail.com> 1755864271 +0100	commit (merge): Merge branch 'main' of https://github.com/Goodtech001/Innercity
+9dfdacb71a770cc5fe115e391d86a1bbc971ce26 d591d818a71b90b0e97dba47aece6eec155018f9 goodtech001 <goodnewsnnebedim@gmail.com> 1755865493 +0100	pull origin main: Fast-forward
+d591d818a71b90b0e97dba47aece6eec155018f9 1b3b21a5666ca2aad7dc7cdc6b1d784987b6f803 goodtech001 <goodnewsnnebedim@gmail.com> 1755984968 +0100	commit: sign-in and sign-up pages added
+1b3b21a5666ca2aad7dc7cdc6b1d784987b6f803 a2699344718618ebef18bf82fac9651d8752f03a goodtech001 <goodnewsnnebedim@gmail.com> 1756063237 +0100	pull origin main: Fast-forward
+a2699344718618ebef18bf82fac9651d8752f03a 5757a86cf10531a6cda0a43570723f00f0468ebc goodtech001 <goodnewsnnebedim@gmail.com> 1756067935 +0100	commit: ammendments
+5757a86cf10531a6cda0a43570723f00f0468ebc 9113baba9bdfa3ff2d9480007f93b892a97301a1 goodtech001 <goodnewsnnebedim@gmail.com> 1756139087 +0100	commit: sign-up and sign-in
+9113baba9bdfa3ff2d9480007f93b892a97301a1 f16074c287f981444ce4b944a7b4ad170eab744f goodtech001 <goodnewsnnebedim@gmail.com> 1756208344 +0100	commit: little changes
+f16074c287f981444ce4b944a7b4ad170eab744f c107332bc44a8a1a0ce23977a351bef46508b9b3 goodtech001 <goodnewsnnebedim@gmail.com> 1756208564 +0100	commit (merge): Merge branch 'main' of https://github.com/Goodtech001/Innercity
+c107332bc44a8a1a0ce23977a351bef46508b9b3 b1032c247443ecb1e291ece076bff1f79b9ad967 goodtech001 <goodnewsnnebedim@gmail.com> 1756738266 +0100	commit: refractor profile, campaing page and search
+b1032c247443ecb1e291ece076bff1f79b9ad967 c458dd01b7d11e7e2fe84c42a1752a9dba0741fd goodtech001 <goodnewsnnebedim@gmail.com> 1756741308 +0100	commit: refractor latest fundraiser error
+c458dd01b7d11e7e2fe84c42a1752a9dba0741fd d7472ebe102d36361550f2705c772fe2a66af2fd goodtech001 <goodnewsnnebedim@gmail.com> 1756994681 +0100	commit: latest change
+d7472ebe102d36361550f2705c772fe2a66af2fd 33688872f89350b553b3d465ce05540ba6780167 goodtech001 <goodnewsnnebedim@gmail.com> 1756995237 +0100	commit: latest
+33688872f89350b553b3d465ce05540ba6780167 bc5e6308ac9dfe45b8a67cf68204628af5ba75fe goodtech001 <goodnewsnnebedim@gmail.com> 1757016670 +0100	commit: resources
+bc5e6308ac9dfe45b8a67cf68204628af5ba75fe 1d4773aae4c3c15e1d8fe954cbd5203c0976d457 goodtech001 <goodnewsnnebedim@gmail.com> 1757016985 +0100	commit: resources
+1d4773aae4c3c15e1d8fe954cbd5203c0976d457 5d769fc8133d2ee38c8599658ed91fc9b87b5a8a goodtech001 <goodnewsnnebedim@gmail.com> 1757506556 +0100	commit: new additions
+5d769fc8133d2ee38c8599658ed91fc9b87b5a8a 40363f5b41f0b560780440aa9e08b6eb54e441fa goodtech001 <goodnewsnnebedim@gmail.com> 1757507294 +0100	commit: extra additions
+40363f5b41f0b560780440aa9e08b6eb54e441fa f5c0ea0239f4db0dc37ba3187c4540bc2547c125 goodtech001 <goodnewsnnebedim@gmail.com> 1757507382 +0100	commit: extra additions .
+f5c0ea0239f4db0dc37ba3187c4540bc2547c125 f61838cda57c7904b7c4f0586c578c030735dcb9 goodtech001 <goodnewsnnebedim@gmail.com> 1757517532 +0100	commit: extra
+f61838cda57c7904b7c4f0586c578c030735dcb9 191dc0eaf122666616f66762e939851a957add53 goodtech001 <goodnewsnnebedim@gmail.com> 1757518449 +0100	commit: adjustments
+191dc0eaf122666616f66762e939851a957add53 019f57123cfdd953eb8934d88a80ed12b4a0f7bc goodtech001 <goodnewsnnebedim@gmail.com> 1757597504 +0100	commit: adjustments 2
+019f57123cfdd953eb8934d88a80ed12b4a0f7bc 74ca6ee50ac997a218a58340a9faf2528e9d6265 goodtech001 <goodnewsnnebedim@gmail.com> 1757597995 +0100	commit: adjustments 3
+74ca6ee50ac997a218a58340a9faf2528e9d6265 e25fea553f029d608f7b9e95c646c10fd432bf1b goodtech001 <goodnewsnnebedim@gmail.com> 1757934814 +0100	commit: Renaming
+e25fea553f029d608f7b9e95c646c10fd432bf1b 720bd3eee97a7de7aa3874b303e50f3741765cc3 goodtech001 <goodnewsnnebedim@gmail.com> 1757936791 +0100	commit (merge): new adjustments
+720bd3eee97a7de7aa3874b303e50f3741765cc3 34fb4340506f3e49c63abe3db59c62b3b5c1f8bf goodtech001 <goodnewsnnebedim@gmail.com> 1757939527 +0100	pull origin main: Fast-forward
+34fb4340506f3e49c63abe3db59c62b3b5c1f8bf 2ddb6377c74e809d7127f2d72b0186c0de0a094a goodtech001 <goodnewsnnebedim@gmail.com> 1758024403 +0100	commit: newest change
+2ddb6377c74e809d7127f2d72b0186c0de0a094a 7145b0025ff5126d35fdb788cc3942edf88d735f goodtech001 <goodnewsnnebedim@gmail.com> 1758026978 +0100	commit (merge): Merge branch 'main' of https://github.com/Goodtech001/Innercity
+7145b0025ff5126d35fdb788cc3942edf88d735f 8ed4301946397d36a1a1d6476108809bacf3a81b goodtech001 <goodnewsnnebedim@gmail.com> 1758548122 +0100	pull origin main: Fast-forward
+8ed4301946397d36a1a1d6476108809bacf3a81b 591a36fd7d3da1d43c5f72b3b4333ea7aeb35cff goodtech001 <goodnewsnnebedim@gmail.com> 1758552642 +0100	commit: Change to the profile page
+591a36fd7d3da1d43c5f72b3b4333ea7aeb35cff 2b4e4db9bd309bbe4501aad17f7c09e35500a724 goodtech001 <goodnewsnnebedim@gmail.com> 1758560352 +0100	pull origin main: Fast-forward
+2b4e4db9bd309bbe4501aad17f7c09e35500a724 5d7dd01a03e65ecce8bf194df74ae91480a71267 goodtech001 <goodnewsnnebedim@gmail.com> 1758560425 +0100	commit: notification adjustments
+5d7dd01a03e65ecce8bf194df74ae91480a71267 d751aee883754bbedf53153e9f3da3585e898916 goodtech001 <goodnewsnnebedim@gmail.com> 1758626200 +0100	pull origin main: Fast-forward
+d751aee883754bbedf53153e9f3da3585e898916 aff189aab7d67834872d5542b1bdfb329545a8bb goodtech001 <goodnewsnnebedim@gmail.com> 1758630521 +0100	commit: Profile page changes
+aff189aab7d67834872d5542b1bdfb329545a8bb 4fca127aaf20bb63f5fd939b5836f78556de94e3 goodtech001 <goodnewsnnebedim@gmail.com> 1758634858 +0100	commit: notification changes
+4fca127aaf20bb63f5fd939b5836f78556de94e3 04086b48297d280af9940ebc431ba5d0f68b55bd goodtech001 <goodnewsnnebedim@gmail.com> 1758641292 +0100	pull origin main: Fast-forward
+04086b48297d280af9940ebc431ba5d0f68b55bd bd17d03e9320869980dc218f424bca878aecf535 goodtech001 <goodnewsnnebedim@gmail.com> 1758642520 +0100	commit: Profile change
+bd17d03e9320869980dc218f424bca878aecf535 2de0f23c7fe2288a22f02102287090cdfb61f6d0 goodtech001 <goodnewsnnebedim@gmail.com> 1758643251 +0100	pull origin main: Fast-forward
+2de0f23c7fe2288a22f02102287090cdfb61f6d0 e489af1ba843b1f5f278f467fa2e3f096c38900f goodtech001 <goodnewsnnebedim@gmail.com> 1758710773 +0100	pull origin main: Fast-forward
+e489af1ba843b1f5f278f467fa2e3f096c38900f 94db1323cc7f2f76672c51019dd300e2e75c38fa goodtech001 <goodnewsnnebedim@gmail.com> 1758885046 +0100	commit: CHANGES
+94db1323cc7f2f76672c51019dd300e2e75c38fa 2f81e879774515055e924a74beb94f82609d447e goodtech001 <goodnewsnnebedim@gmail.com> 1758885387 +0100	commit (merge): Merge branch 'main' of https://github.com/Goodtech001/Innercity
+2f81e879774515055e924a74beb94f82609d447e 3b3e6d9f6e724c7fb93c9d84a0c198d22dd525b3 goodtech001 <goodnewsnnebedim@gmail.com> 1758892750 +0100	pull --tags origin main: Fast-forward
+3b3e6d9f6e724c7fb93c9d84a0c198d22dd525b3 1e5544a4993c177fe92283ac6e43fac8dac9c5f5 goodtech001 <goodnewsnnebedim@gmail.com> 1758902116 +0100	pull origin main: Fast-forward
+1e5544a4993c177fe92283ac6e43fac8dac9c5f5 47e0e2a453f07cce0991b35884c47e98a2ebda4f goodtech001 <goodnewsnnebedim@gmail.com> 1758973741 +0100	commit: notification modal
+47e0e2a453f07cce0991b35884c47e98a2ebda4f f0e8b658f57cc9a0245384d835428204e04c1c56 goodtech001 <goodnewsnnebedim@gmail.com> 1759150562 +0100	commit: framer input
+f0e8b658f57cc9a0245384d835428204e04c1c56 a70b264a9175e1cd82e77eab085cc78c8f84af27 goodtech001 <goodnewsnnebedim@gmail.com> 1759151252 +0100	pull origin main: Fast-forward
+a70b264a9175e1cd82e77eab085cc78c8f84af27 01e3aa35d76967205d953e653f6dc8d6a0a8989d goodtech001 <goodnewsnnebedim@gmail.com> 1759154094 +0100	pull origin main: Fast-forward
+01e3aa35d76967205d953e653f6dc8d6a0a8989d 86cad206dbb7562987ae59371fa86c12d0fcc57a goodtech001 <goodnewsnnebedim@gmail.com> 1759238834 +0100	commit: campaign page ammendments
+86cad206dbb7562987ae59371fa86c12d0fcc57a 273a6ec7280da7922d33320cf331e8ad344cbe28 goodtech001 <goodnewsnnebedim@gmail.com> 1759323886 +0100	commit: avatar modal addition
+273a6ec7280da7922d33320cf331e8ad344cbe28 954eb9347eb2691797ec09f4707c813a67c259fb goodtech001 <goodnewsnnebedim@gmail.com> 1759422672 +0100	commit: avatar creation
+954eb9347eb2691797ec09f4707c813a67c259fb 3784f0577de99fc0cb5ba60274b58c123a780487 goodtech001 <goodnewsnnebedim@gmail.com> 1759749066 +0100	commit: Campaign details addition
+3784f0577de99fc0cb5ba60274b58c123a780487 665b481618c23135f0424e7dbaa9abad1182f45a goodtech001 <goodnewsnnebedim@gmail.com> 1759753072 +0100	commit: Campaign details addition2
+665b481618c23135f0424e7dbaa9abad1182f45a 51b870688e74e24274f67098199089b4399ee77e goodtech001 <goodnewsnnebedim@gmail.com> 1759757196 +0100	commit: vercel create-campaign-tabs error
+51b870688e74e24274f67098199089b4399ee77e 40a250b39e149d59bf8436e1954a1e129c2e45e7 goodtech001 <goodnewsnnebedim@gmail.com> 1759757717 +0100	commit: vercel create-campaign-tabs error
+40a250b39e149d59bf8436e1954a1e129c2e45e7 735db5e0e1564ef5d29b9c53b328b733ec3ad623 goodtech001 <goodnewsnnebedim@gmail.com> 1759758170 +0100	commit: vercel create-campaign-tabs error
+735db5e0e1564ef5d29b9c53b328b733ec3ad623 93945ea48562e0c89568277632648b1d299f0ffd goodtech001 <goodnewsnnebedim@gmail.com> 1759761785 +0100	commit: vercel check
+93945ea48562e0c89568277632648b1d299f0ffd 03140c52c87658481c1e53cfa638a15eaa607820 goodtech001 <goodnewsnnebedim@gmail.com> 1759762584 +0100	commit: vercel check
+03140c52c87658481c1e53cfa638a15eaa607820 d4ef0bcc497308383957e54bcb530105afde777d goodtech001 <goodnewsnnebedim@gmail.com> 1760614268 +0100	commit: error changes
+d4ef0bcc497308383957e54bcb530105afde777d 518d719ee700dec9a85ecb7cfdce26bcb1083431 goodtech001 <goodnewsnnebedim@gmail.com> 1760615754 +0100	commit: error change 2
+518d719ee700dec9a85ecb7cfdce26bcb1083431 0753091d867f0d209cf548b806294e77b553009c goodtech001 <goodnewsnnebedim@gmail.com> 1760619330 +0100	commit: error change 3
+0753091d867f0d209cf548b806294e77b553009c d9b68eca1be2dc335c4c675714afb3d23d75f951 goodtech001 <goodnewsnnebedim@gmail.com> 1760620859 +0100	commit: props change
+d9b68eca1be2dc335c4c675714afb3d23d75f951 bd94370805c599f094519dd5c7b9e6d0a3ca7f00 goodtech001 <goodnewsnnebedim@gmail.com> 1760621268 +0100	commit: props change 2
+bd94370805c599f094519dd5c7b9e6d0a3ca7f00 ecd2b1a390b7636b6643c5018a30c3206624a38b goodtech001 <goodnewsnnebedim@gmail.com> 1760621690 +0100	commit: vercel card-form error
+ecd2b1a390b7636b6643c5018a30c3206624a38b 5ef89957e2f17db1b98e0e71f3148a9ba0217e74 goodtech001 <goodnewsnnebedim@gmail.com> 1760623285 +0100	commit: vercel card-form error2
+5ef89957e2f17db1b98e0e71f3148a9ba0217e74 780cbd0f9b83201eb2e1e5c6be152e37c58b61ef goodtech001 <goodnewsnnebedim@gmail.com> 1760628219 +0100	commit: vercel card-form error3
+780cbd0f9b83201eb2e1e5c6be152e37c58b61ef f5b03a7a1cd08a4256dfb5e48933471bc0e7b92f goodtech001 <goodnewsnnebedim@gmail.com> 1760629757 +0100	commit: vercel card-form error4
+f5b03a7a1cd08a4256dfb5e48933471bc0e7b92f 454fb527fd9ccc67b8ca5afb1943ac2f80799756 goodtech001 <goodnewsnnebedim@gmail.com> 1760902524 +0100	commit: route change
+454fb527fd9ccc67b8ca5afb1943ac2f80799756 7795e4ba1f9f1c454886925ce2b5286b995393dc goodtech001 <goodnewsnnebedim@gmail.com> 1760904765 +0100	commit: route change 2
+7795e4ba1f9f1c454886925ce2b5286b995393dc 59afa9b41a948b2d8e197872dbd5645e4ce7fd1c goodtech001 <goodnewsnnebedim@gmail.com> 1760905435 +0100	commit: route change 3
+59afa9b41a948b2d8e197872dbd5645e4ce7fd1c 3d247a568d046eb5084c09404804252f0fc96430 goodtech001 <goodnewsnnebedim@gmail.com> 1760907221 +0100	commit: route change 4
+3d247a568d046eb5084c09404804252f0fc96430 6e1b910a85ee8e13ecb58b6bd631121d837bec0f goodtech001 <goodnewsnnebedim@gmail.com> 1760953821 +0100	commit: fundraiser-card route fix
+6e1b910a85ee8e13ecb58b6bd631121d837bec0f 45bb302bf0018e3ed629c40b1e2e8190cc223b99 goodtech001 <goodnewsnnebedim@gmail.com> 1760955102 +0100	commit: fundraiser-card route fix 2
+45bb302bf0018e3ed629c40b1e2e8190cc223b99 d7f1dd3fc49bc638fe9a799ea16b295456d50445 goodtech001 <goodnewsnnebedim@gmail.com> 1760955242 +0100	commit: fundraiser-card route fix 3
+d7f1dd3fc49bc638fe9a799ea16b295456d50445 43ee41f0b55c513f440d2d306c361c2342b69766 goodtech001 <goodnewsnnebedim@gmail.com> 1760957677 +0100	commit: fundraiser-card route fix 4
+43ee41f0b55c513f440d2d306c361c2342b69766 e438f3e699c5f5c4ea6b19995b0a12b4338e884c goodtech001 <goodnewsnnebedim@gmail.com> 1760958240 +0100	commit: fundraiser-card route fix 5
+e438f3e699c5f5c4ea6b19995b0a12b4338e884c 239352f43fa40101546c416feddddabfd67c5495 goodtech001 <goodnewsnnebedim@gmail.com> 1760976100 +0100	commit: fundraiser-card route fix 6
+239352f43fa40101546c416feddddabfd67c5495 739bc1c3564a5a6f1cddd7f32b3e0bb897ad0e53 goodtech001 <goodnewsnnebedim@gmail.com> 1760977653 +0100	commit: fundraiser-card route fix 7
+739bc1c3564a5a6f1cddd7f32b3e0bb897ad0e53 e3366d005bb9cd2e29fd9f8a8139f480c9e21d8b goodtech001 <goodnewsnnebedim@gmail.com> 1761049290 +0100	commit: campaign change
+e3366d005bb9cd2e29fd9f8a8139f480c9e21d8b 0871e0463eb80239119484d7dd832c652c8137d1 goodtech001 <goodnewsnnebedim@gmail.com> 1761049641 +0100	commit (merge): resolved issues
+0871e0463eb80239119484d7dd832c652c8137d1 c4f439dd1370dd12b05b68e3dfdab9930701fa89 goodtech001 <goodnewsnnebedim@gmail.com> 1761050166 +0100	commit: resolved issues 2
+c4f439dd1370dd12b05b68e3dfdab9930701fa89 19bb3783e526a0061d9355e8fa974b0ad7145b59 goodtech001 <goodnewsnnebedim@gmail.com> 1761059686 +0100	commit: category filtering
+19bb3783e526a0061d9355e8fa974b0ad7145b59 eb97921641a3d0ffb6b34abd9e0fc30328a12c53 goodtech001 <goodnewsnnebedim@gmail.com> 1761059849 +0100	commit (merge): category filteringg
+eb97921641a3d0ffb6b34abd9e0fc30328a12c53 64a2f524e1ef9f95945d35d9d56f9c39d01517b9 goodtech001 <goodnewsnnebedim@gmail.com> 1761060107 +0100	commit: category filteringgg
+64a2f524e1ef9f95945d35d9d56f9c39d01517b9 50f64a607d56d22ff9f9933416625699cbaac5cf goodtech001 <goodnewsnnebedim@gmail.com> 1761060488 +0100	commit: category filteringgg 1
+50f64a607d56d22ff9f9933416625699cbaac5cf 07c842e4c03d6621790dd8dbff02576455c4cbe2 goodtech001 <goodnewsnnebedim@gmail.com> 1761063499 +0100	pull origin main: Fast-forward
+07c842e4c03d6621790dd8dbff02576455c4cbe2 dc820192e07183f0d3d77a914c60159c52408063 goodtech001 <goodnewsnnebedim@gmail.com> 1761159599 +0100	commit: campaign detail id
+dc820192e07183f0d3d77a914c60159c52408063 a3f14c52536eca3b02fe62267d8a84984275bccc goodtech001 <goodnewsnnebedim@gmail.com> 1761159914 +0100	commit (merge): campaign detail id
+a3f14c52536eca3b02fe62267d8a84984275bccc b7dd5b3e334f4a2cf57aa87bcaebae8a59683249 goodtech001 <goodnewsnnebedim@gmail.com> 1761160419 +0100	commit: campaign detail id 1
+b7dd5b3e334f4a2cf57aa87bcaebae8a59683249 8d58516274d1b019bbe6de8d3dd5051a432d5b55 goodtech001 <goodnewsnnebedim@gmail.com> 1761212275 +0100	commit: campaign detail id 2
+8d58516274d1b019bbe6de8d3dd5051a432d5b55 cbcac4daba7a7d95c6c7d502fa0e2bf08a6fe529 goodtech001 <goodnewsnnebedim@gmail.com> 1761578674 +0100	commit: donate page
+cbcac4daba7a7d95c6c7d502fa0e2bf08a6fe529 d75ed66ac7e08e2abe1fa987fb098c38f3d95bb6 goodtech001 <goodnewsnnebedim@gmail.com> 1761580055 +0100	commit: donate page 2
+d75ed66ac7e08e2abe1fa987fb098c38f3d95bb6 034649e6e32de7af26574d34c083980d1b2a0e5e goodtech001 <goodnewsnnebedim@gmail.com> 1761819949 +0100	commit: donation
+034649e6e32de7af26574d34c083980d1b2a0e5e 31dd2146b1924ade157e948658288f566ab5691b goodtech001 <goodnewsnnebedim@gmail.com> 1761823957 +0100	commit: donation 2
+31dd2146b1924ade157e948658288f566ab5691b 4b0e9bc42815fd3a438dd3b54d820825e7eff53d goodtech001 <goodnewsnnebedim@gmail.com> 1761825997 +0100	commit: donation 3
+4b0e9bc42815fd3a438dd3b54d820825e7eff53d 64f26bfc5989ba81e4eccfdda47431b30c54c5ab goodtech001 <goodnewsnnebedim@gmail.com> 1761826596 +0100	commit: donation 4
+64f26bfc5989ba81e4eccfdda47431b30c54c5ab b235410bdddbbedfd50820f4dcd9f2a0942003ce goodtech001 <goodnewsnnebedim@gmail.com> 1769434348 +0100	commit: admin addition
+b235410bdddbbedfd50820f4dcd9f2a0942003ce 6bfa0ade0f3a9f809ef13c4e41caf2e8f2518307 goodtech001 <goodnewsnnebedim@gmail.com> 1769435132 +0100	commit: admin routing
+6bfa0ade0f3a9f809ef13c4e41caf2e8f2518307 6506846821e35e7b772b619d4aff68ee8dbc02cd goodtech001 <goodnewsnnebedim@gmail.com> 1769436084 +0100	commit: prisma/client
+6506846821e35e7b772b619d4aff68ee8dbc02cd c581b4f40e841834d3650ebd5fe710da73056eca goodtech001 <goodnewsnnebedim@gmail.com> 1769436976 +0100	commit: prisma generate
+c581b4f40e841834d3650ebd5fe710da73056eca cc46c315ca5f5a3da407aa5f96213835b5452529 goodtech001 <goodnewsnnebedim@gmail.com> 1769530097 +0100	commit: prisma
+cc46c315ca5f5a3da407aa5f96213835b5452529 13be741ddde679d3129011c984ea6cd4413990f5 goodtech001 <goodnewsnnebedim@gmail.com> 1770123228 +0100	commit: prisma bug
+13be741ddde679d3129011c984ea6cd4413990f5 7ae3c9cf46343da02fa25d30fa5daeb54d21d501 goodtech001 <goodnewsnnebedim@gmail.com> 1770129126 +0100	commit: prisma bug 2
+7ae3c9cf46343da02fa25d30fa5daeb54d21d501 2c07596f494c81b2aa3b27e9f3728e2f40738e7c goodtech001 <goodnewsnnebedim@gmail.com> 1771055110 +0100	commit: images change
+2c07596f494c81b2aa3b27e9f3728e2f40738e7c 0ee08deede0240cf58f2306cceca8d621da7aa55 goodtech001 <goodnewsnnebedim@gmail.com> 1771490574 +0100	commit: init
+0ee08deede0240cf58f2306cceca8d621da7aa55 4295afec17a32e0f6b70c9be7821fe8763fb3fc7 goodtech001 <goodnewsnnebedim@gmail.com> 1771491124 +0100	commit: init
+4295afec17a32e0f6b70c9be7821fe8763fb3fc7 e8560bdf22f999f05ed4d641cd702f997169b027 goodtech001 <goodnewsnnebedim@gmail.com> 1771493385 +0100	commit: init 2
+e8560bdf22f999f05ed4d641cd702f997169b027 924702d9dbeb4ce3a468a00fbcbcde771f0c67ec goodtech001 <goodnewsnnebedim@gmail.com> 1771493515 +0100	commit: init 3
+924702d9dbeb4ce3a468a00fbcbcde771f0c67ec 9000d21c334e20882e1d980bea21e0da37708bca goodtech001 <goodnewsnnebedim@gmail.com> 1771495801 +0100	commit: init 4
+9000d21c334e20882e1d980bea21e0da37708bca 2ad224499c4efe8f1ce01218573c8be78cc1d141 goodtech001 <goodnewsnnebedim@gmail.com> 1771496271 +0100	commit: init 5
+2ad224499c4efe8f1ce01218573c8be78cc1d141 b578f9345640263430f37d9a234d5693bfcbdcc6 goodtech001 <goodnewsnnebedim@gmail.com> 1771496686 +0100	commit: init 6
+b578f9345640263430f37d9a234d5693bfcbdcc6 28fa218070b2a5c488956fcf8759d799bb550850 goodtech001 <goodnewsnnebedim@gmail.com> 1771503178 +0100	commit: init 7
+28fa218070b2a5c488956fcf8759d799bb550850 c341359b640086d1fca3faeadb0f067fe1405484 goodtech001 <goodnewsnnebedim@gmail.com> 1771505655 +0100	commit: init 8
+c341359b640086d1fca3faeadb0f067fe1405484 bd76108b58e553526f1c10391290f2e091bf983e goodtech001 <goodnewsnnebedim@gmail.com> 1771506842 +0100	commit: init 9
+bd76108b58e553526f1c10391290f2e091bf983e 1b9011b2bed033485a70a3bd14efbd1abd6251bb goodtech001 <goodnewsnnebedim@gmail.com> 1771788486 +0100	commit: currency
+1b9011b2bed033485a70a3bd14efbd1abd6251bb f6cdc169274f6f8ea97ea31bd29ba0aed0bd9982 goodtech001 <goodnewsnnebedim@gmail.com> 1772713543 +0100	commit: donate spacing
+f6cdc169274f6f8ea97ea31bd29ba0aed0bd9982 6803b3d7548c43cd108d365c9b8f7cad187fc5f4 goodtech001 <goodnewsnnebedim@gmail.com> 1772800196 +0100	commit: changes
+6803b3d7548c43cd108d365c9b8f7cad187fc5f4 bf3cc0a7ef4292613cc937a0b61a99cafcd27ad5 goodtech001 <goodnewsnnebedim@gmail.com> 1774271526 +0100	commit: payment integration
+bf3cc0a7ef4292613cc937a0b61a99cafcd27ad5 192440ec00de94b5bda3b0eddabe3006f0c2ac70 goodtech001 <goodnewsnnebedim@gmail.com> 1774351249 +0100	commit: create campaign
+192440ec00de94b5bda3b0eddabe3006f0c2ac70 cb9b015f8718afc0d701f541323c833f563023df goodtech001 <goodnewsnnebedim@gmail.com> 1774365603 +0100	commit: admin campaign
+cb9b015f8718afc0d701f541323c833f563023df 27f205e176c5125d54491425c202e77ade452b04 goodtech001 <goodnewsnnebedim@gmail.com> 1775564315 +0100	commit: next change
+27f205e176c5125d54491425c202e77ade452b04 f9b1dccbe202bc72cd548d4be3f47ba9824a8b18 goodtech001 <goodnewsnnebedim@gmail.com> 1775573750 +0100	commit: latest commit
+f9b1dccbe202bc72cd548d4be3f47ba9824a8b18 efe19b8278a73e21d8e52ee6ea762f11439adbd2 goodtech001 <goodnewsnnebedim@gmail.com> 1775574129 +0100	commit: latest commit
+efe19b8278a73e21d8e52ee6ea762f11439adbd2 6b78dabfa560ca48fd13f5f605fe424eb680bb30 goodtech001 <goodnewsnnebedim@gmail.com> 1775574406 +0100	commit: latest commit
+6b78dabfa560ca48fd13f5f605fe424eb680bb30 ce56c3f693558b5ec048844a2e4cfad57575b6d3 goodtech001 <goodnewsnnebedim@gmail.com> 1775729229 +0100	commit: vercel fix
+ce56c3f693558b5ec048844a2e4cfad57575b6d3 8c6fd3d89d4b2eaf338b245d502716e9bc2ce542 goodtech001 <goodnewsnnebedim@gmail.com> 1775730164 +0100	commit: vercel fix 2
+8c6fd3d89d4b2eaf338b245d502716e9bc2ce542 9ae5d5f925e6954b62064ffa1ea58e217d08ee02 goodtech001 <goodnewsnnebedim@gmail.com> 1775730374 +0100	commit: vercel fix api key
+9ae5d5f925e6954b62064ffa1ea58e217d08ee02 2788999ec0f903daeabd1355fdf2b21d8b305e41 goodtech001 <goodnewsnnebedim@gmail.com> 1775730842 +0100	commit: vercel fix api
+2788999ec0f903daeabd1355fdf2b21d8b305e41 466ce314f402b2e960b27a7137f63940cb761f9c goodtech001 <goodnewsnnebedim@gmail.com> 1775731180 +0100	commit: open ai api key
+466ce314f402b2e960b27a7137f63940cb761f9c 396d600672aa9729ee2a655f947f832f02ca7b9d goodtech001 <goodnewsnnebedim@gmail.com> 1775738810 +0100	commit: open ai api key 2
+396d600672aa9729ee2a655f947f832f02ca7b9d 0b91fceb89bd9e2a4f360988acd345e79c65fe69 goodtech001 <goodnewsnnebedim@gmail.com> 1775823980 +0100	commit: vercel navigation
+0b91fceb89bd9e2a4f360988acd345e79c65fe69 98ce2315c57583c7ec95e78ebc36b693a8ba3cbe goodtech001 <goodnewsnnebedim@gmail.com> 1775832433 +0100	commit: f1-20
+98ce2315c57583c7ec95e78ebc36b693a8ba3cbe 48b13492c4fbe3b1f3942a42df2b1a8d522ecbd2 goodtech001 <goodnewsnnebedim@gmail.com> 1775892957 +0100	commit: changes
+48b13492c4fbe3b1f3942a42df2b1a8d522ecbd2 3e3bb0415dc69aafacd8c22d9cc7f745a6a892ef goodtech001 <goodnewsnnebedim@gmail.com> 1775911131 +0100	commit: create verification
+3e3bb0415dc69aafacd8c22d9cc7f745a6a892ef 851caebe369691eae69b6685e42630e0bdd7d992 goodtech001 <goodnewsnnebedim@gmail.com> 1776012765 +0100	commit: ui changes
+851caebe369691eae69b6685e42630e0bdd7d992 a76350fd1e5b0033cb8e32dc818ccfdd44bae20e goodtech001 <goodnewsnnebedim@gmail.com> 1776072571 +0100	commit: ui change
+a76350fd1e5b0033cb8e32dc818ccfdd44bae20e 59a3db7c8f4b2a64a581af9635f83e018b8005d3 goodtech001 <goodnewsnnebedim@gmail.com> 1776074755 +0100	commit: ui change2
