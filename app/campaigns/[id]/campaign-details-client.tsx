@@ -1,0 +1,159 @@
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import { Icon } from '@iconify/react'
+import { motion } from 'framer-motion'
+import PercentageBar from '@/components/percentage-bar'
+import PercentageCircle from '@/components/percentage-circle'
+import TopNavbar from '@/layouts/topnavbar'
+import { Campaign } from '@/types/Campaign'
+import Image from 'next/image'
+
+interface Props {
+  campaign: Campaign
+  progress: number
+  goal: number
+  raised: number
+}
+
+export default function CampaignDetailsClient({ campaign, progress, goal, raised }: Props) {
+  const [showShare, setShowShare] = useState(false)
+  const [email, setEmail] = useState('')
+  const [copied, setCopied] = useState(false)
+  console.log(setEmail)
+  const image = campaign.thumbnail_large
+    ? `https://fundraise.theinnercitymission.ngo/${campaign.thumbnail_large}`
+    : campaign.thumbnail?.url || '/placeholder.jpg'
+
+  const avatar = campaign.user?.avatar
+    ? `https://fundraise.theinnercitymission.ngo/${campaign.user?.avatar}`
+    : campaign.thumbnail?.url
+  console.log(avatar)
+  const campaignUrl =
+    typeof window !== 'undefined' ? `${window.location.origin}/campaigns/${campaign.id}` : ''
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(campaignUrl)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleSendEmail = () => {
+    const subject = encodeURIComponent(`Support: ${campaign.title}`)
+    const body = encodeURIComponent(`${campaign.title}\n${campaignUrl}`)
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`
+  }
+
+  console.log(handleSendEmail)
+
+  return (
+    <div className="bg-white text-black dark:bg-neutral-950 dark:text-white">
+      <TopNavbar />
+      <div className="container grid-cols-10 p-4 md:grid md:h-screen md:space-x-10">
+        <section className="col-span-6 h-[180vh] overflow-y-auto no-scrollbar md:h-auto">
+          <motion.div
+            initial={{ scale: 1.05, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="relative mb-6 overflow-hidden rounded-xl"
+          >
+            <Image
+              width={400}
+              height={400}
+              unoptimized
+              src={image}
+              alt={campaign.title}
+              className="h-auto max-h-[420px] w-full object-cover"
+            />
+          </motion.div>
+
+          <h1 className="mb-3 text-2xl font-semibold md:text-3xl">{campaign.title}</h1>
+
+          <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+            <div className="flex items-center gap-1 text-primary">
+              <Icon icon="mdi:tag" /> {campaign.category?.name || 'General'}
+            </div>
+            <div className="flex items-center gap-1">
+              <Icon icon="mdi:account" /> {campaign.user?.fullname || 'Anonymous'}
+            </div>
+          </div>
+
+          <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-gray-700 dark:text-gray-300">
+            {campaign.excerpt}
+          </div>
+        </section>
+
+        <div className="fixed bottom-6 w-11/12 rounded-2xl border border-gray-200 bg-white/80 p-4 shadow-xl backdrop-blur-md dark:border-white/10 dark:bg-white/5 md:relative md:top-0 md:col-span-4 md:w-full">
+          <div className="flex items-center justify-between border-b pb-3">
+            <div className="flex items-center gap-3">
+              <PercentageCircle progress={progress} />
+              <div>
+                <p className="text-lg font-semibold">${raised.toLocaleString()}</p>
+                <p className="text-xs text-gray-500">of ${goal.toLocaleString()}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <PercentageBar value={progress} />
+            <p className="mt-1 text-xs text-gray-500">{progress}% funded</p>
+          </div>
+
+          <div className="mt-6 space-y-3">
+            <Link
+              href={`/campaigns/${campaign.id}/donate`}
+              className="block w-full rounded-xl bg-primary py-3 text-center text-sm font-semibold text-white"
+            >
+              Donate now
+            </Link>
+            <button
+              onClick={() => setShowShare(true)}
+              className="flex w-full items-center justify-center gap-2 rounded-xl border py-3 text-sm"
+            >
+              <Icon icon="solar:share-bold" /> Share campaign
+            </button>
+          </div>
+
+          {/* CREATOR */}
+          <div className="mt-6 hidden items-center gap-3 rounded-xl bg-gray-50 p-3 dark:bg-white/5 md:flex">
+            <Image
+              src={avatar as string}
+              unoptimized
+              alt=""
+              height={40}
+              width={40}
+              className="rounded-full object-cover"
+            />
+            <div>
+              <p className="text-sm font-semibold">{campaign.user?.fullname}</p>
+              <p className="text-xs text-gray-500">Campaign creator</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Share Modal Logic stays here... */}
+      {showShare && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          {/* ... modal content ... */}
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 dark:bg-neutral-900">
+            <div className="mb-4 flex justify-between">
+              <h2 className="font-semibold">Share campaign</h2>
+              <button onClick={() => setShowShare(false)}>✕</button>
+            </div>
+            <div className="flex items-center gap-2 rounded-lg border p-2">
+              <input
+                value={campaignUrl}
+                readOnly
+                className="flex-1 bg-transparent text-sm outline-none"
+              />
+              <button onClick={handleCopy} className="text-sm text-primary">
+                {copied ? 'Copied' : 'Copy'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
