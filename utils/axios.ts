@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const instance = axios.create({
-  baseURL: 'https://fundraise-api.onrender.com/api/v1',
+  baseURL: 'https://fundraise-api.theinnercitymission.tv/api/v1',
 })
 
 instance.interceptors.request.use((config) => {
