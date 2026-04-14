@@ -162,11 +162,12 @@ export default function AdminUsersPage() {
           <option value="verified">Verified</option>
           <option value="not">Not Verified</option>
         </select>
-
-        <button onClick={() => openEmailModal(null, true)} className="btn-primary mb-4">
-          Send Email to All Users
-        </button>
+       
       </div>
+
+       {/* <button onClick={() => openEmailModal(null, true)} className="btn-primary mb-4">
+          Send Email to All Users
+        </button> */}
 
       <div className="overflow-x-auto rounded-xl border bg-white shadow-sm">
         <table className="w-full text-sm">
