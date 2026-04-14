@@ -84,7 +84,7 @@ function EspeeForm({campaign} : {campaign: Campaign}) {
   }
   return (
     <form onSubmit={startedPayment} className="mx-auto max-w-md p-4">
-      <p className="text-primary">Dear {campaign.user?.fullname},</p>
+      {/* <p className="text-primary">Dear {campaign.user?.fullname},</p> */}
       <small className="text-primary">
         Thank you for your sponsorship. You will now be redirected to our Espee gateway. After
         making your payment, kindly wait till you are redirected back to our website, so your
