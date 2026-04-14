@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
     return config
   },
   images: {
-    domains: ["res.cloudinary.com", "fundraise.theinnercitymission.ngo"],
+    domains: ["res.cloudinary.com", "fundraise.theinnercitymission.ngo", "fundraise-v2.theinnercitymission.ngo", "fundraise-v2.theinnercitymission.tv"],
     remotePatterns: [
       {
         protocol: 'https',
