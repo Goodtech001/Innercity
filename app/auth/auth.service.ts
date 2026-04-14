@@ -6,7 +6,7 @@ import { baseUrl, kingsChatClientId } from '@/constants'
 import { encryptClient } from "@/utils/crypt.client"
 
 export const postLoginService = async (credentials: { email: string; password: string }) => {
-  const response = await axios.post(`${baseUrl}/auth/login`, credentials)
+  const response = await axios.post("/auth/login", credentials)
   const res: IProfileRes = response.data
 
   if (response.status < 200 || response.status >= 300) {
@@ -17,20 +17,16 @@ export const postLoginService = async (credentials: { email: string; password: s
 }
 
 export const postLogoutService = async () => {
-  const response = await axios.post(`${baseUrl}/auth/signout`)
+  const response = await axios.post("/api/auth/logout")
 
-  if (response.status < 200 || response.status >= 300) {
-    const errorMessage =
-      response.data?.error?.message ||
-      response.data?.message ||
-      'Something went wrong'
+  const res = response.data;
 
-    throw new Error(errorMessage)
-  }
+    if (res.status < 200 || res.status >= 300) {
+        const errorMessage = res.error?.message || res.message || "Something went wrong";
+        throw new Error(errorMessage);
+    }
 
-  sessionStorage.clear()
-
-  return response.data
+    return response;
 }
 
 
@@ -118,7 +114,7 @@ export const getKingChatProfile = async ({
   accessToken: string
   refreshToken: string
 }) => {
-  const response = await axios.post(`${baseUrl}/auth/kingschat`, {
+  const response = await axios.post("/api/auth/kingschat", {
     accessToken,
     refreshToken,
   })

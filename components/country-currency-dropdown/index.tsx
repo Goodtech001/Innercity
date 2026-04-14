@@ -40,24 +40,42 @@ export default function CurrencyDropdown({ onChange }: Props) {
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const [selected, setSelected] = useState<Currency | null>(null)
 
-  useEffect(() => {
+ useEffect(() => {
     const fetchCurrencies = async () => {
       try {
         const res = await fetch(`${baseUrl}/currencies`)
-        const data = await res.json()
+        const result = await res.json()
 
-        const active = (data?.data || data).filter((c: Currency) => c.status === 1)
+        // ✅ Robust check: Ensure we are working with an array
+        const rawData = result?.data || result
+        const currencyArray = Array.isArray(rawData) ? rawData : []
+
+        // Filter active currencies safely
+        const active = currencyArray.filter((c: Currency) => c.status === 1)
 
         setCurrencies(active)
 
-        const saved = localStorage.getItem('currency')
+        if (active.length > 0) {
+          const saved = localStorage.getItem('currency')
+          let defaultCurrency = active[0]
 
-        const defaultCurrency = active.find((c: Currency) => c.code === saved) || active[0]
+          if (saved) {
+            try {
+              // Try to parse the saved currency if it's a JSON string
+              const parsedSaved = JSON.parse(saved)
+              defaultCurrency = active.find((c) => c.code === parsedSaved.code) || active[0]
+            } catch {
+              // Fallback if saved item is just a string code
+              defaultCurrency = active.find((c) => c.code === saved) || active[0]
+            }
+          }
 
-        setSelected(defaultCurrency)
-        onChange?.(defaultCurrency)
+          setSelected(defaultCurrency)
+          onChange?.(defaultCurrency)
+        }
       } catch (err) {
         console.error('Currency fetch failed', err)
+        setCurrencies([]) // Reset to empty array on error
       }
     }
 

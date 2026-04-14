@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 import { notFound } from 'next/navigation'
 import TopNavbar from '@/layouts/topnavbar'
@@ -14,13 +15,16 @@ export async function generateStaticParams() {
   try {
     const res = await fetch(`${baseUrl}/campaigns`)
     const result = await res.json()
-    const campaigns: Campaign[] = result?.data || result || []
+    
+    // Safety check: Ensure we actually have an array
+    const data = result?.data || result
+    const campaigns = Array.isArray(data) ? data : (data?.campaigns || [])
 
-    return campaigns.map((campaign) => ({
+    return campaigns.map((campaign: any) => ({
       id: campaign.id.toString(),
     }))
   } catch (error) {
-    console.error('Error generating static params for donate page:', error)
+    console.error("Params error:", error)
     return []
   }
 }

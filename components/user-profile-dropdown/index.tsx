@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 'use client'
@@ -27,8 +28,10 @@ type Props = {
 export default function UserProfileDropdown({ mobile, className, direction = 'right' }: Props) {
   const [isOpen, setIsOpen] = useState(false)
   const [user, setUser] = useState<TUser | null>(null)
-
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
+
+  // const router = useRouter()
 
   // ✅ Load user exactly like your navbar logic should
   useEffect(() => {
@@ -41,18 +44,38 @@ export default function UserProfileDropdown({ mobile, className, direction = 'ri
     setUser(parsed.user || parsed)
   }, [])
 
+  // const handleLogout = async () => {
+  //   try {
+  //     await postLogoutService()
+  //     sessionStorage.removeItem('course-training-profile')
+  //     localStorage.removeItem('token')
+  //     router.push('/')
+  //     window.location.reload()
+  //   } catch (error) {
+  //     console.error('Logout failed:', error)
+  //   }
+  // }
+
   const handleLogout = async () => {
     try {
+      setLoading(true)
+
+      // 1. Hits /api/auth/logout which calls removeSession()
       await postLogoutService()
-      sessionStorage.removeItem('course-training-profile')
-      localStorage.removeItem('token')
-      router.push('/')
-      window.location.reload()
-    } catch (error) {
-      console.error('Logout failed:', error)
+
+      // 2. Refresh the current route to clear server-component cache
+      // then redirect to login
+      router.refresh()
+      router.push('/auth/login')
+    } catch (error: any) {
+      console.error('Logout error:', error)
+      // Even if the API fails, it's often best to redirect
+      // as the session might already be expired
+      router.push('/sign-in')
+    } finally {
+      setLoading(false)
     }
   }
-
   const getInitials = (name?: string) => {
     if (!name) return 'U'
     const parts = name.trim().split(' ')
@@ -148,10 +171,14 @@ export default function UserProfileDropdown({ mobile, className, direction = 'ri
           <li>
             <button
               onClick={handleLogout}
+              disabled={loading}
               className="inline-flex w-full rounded px-4 py-2 text-red-500 hover:bg-ghost-white"
             >
-              <Icon icon="solar:logout-bold" className="mr-2 h-5 w-5" />
-              Logout
+              <Icon
+                icon={loading ? 'streamline-sharp:logout-2-solid' : 'streamline-sharp:logout-2-solid'}
+                className="mr-2 h-5 w-5"
+              />
+              {loading ? 'Processing...' : 'Logout'}
             </button>
           </li>
         </ul>

@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Icon } from "@iconify/react";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 /* =====================
    TYPES
 ===================== */
@@ -52,18 +54,7 @@ const countryCurrencyList: TCountryCurrency[] = [
 ];
 
 /* =====================
-   HELPERS
-===================== */
-
-function generateVoucherCode() {
-  const prefix = "FUND";
-  const year = new Date().getFullYear();
-  const random = Math.random().toString(36).substring(2, 8).toUpperCase();
-  return `${prefix}-${year}-${random}`;
-}
-
-/* =====================
-   COMPONENTS
+   DROPDOWN
 ===================== */
 
 function CountryCurrencyDropdown({
@@ -88,7 +79,7 @@ function CountryCurrencyDropdown({
 
       {open && (
         <div className="absolute z-20 mt-2 w-44 rounded-lg border bg-white shadow">
-          {countryCurrencyList.map(c => (
+          {countryCurrencyList.map((c) => (
             <button
               key={c.abv}
               onClick={() => {
@@ -115,22 +106,51 @@ export default function VoucherManagementPage() {
   const [amount, setAmount] = useState("");
   const [currency, setCurrency] = useState(countryCurrencyList[0]);
   const [vouchers, setVouchers] = useState<TVoucher[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const createVoucher = () => {
+  const createVoucher = async () => {
     if (!amount) return;
 
-    setVouchers(prev => [
-      {
-        code: generateVoucherCode(),
+    try {
+      setLoading(true);
+
+      const res = await fetch(`${baseUrl}/api/v1/voucher/generate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // ✅ using cookies
+        body: JSON.stringify({
+          amount: Number(amount),
+          currency: currency.abv,
+          count: 1,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error(data);
+        throw new Error(data?.message || "Failed to create voucher");
+      }
+
+      // adapt based on API response
+      const newVoucher: TVoucher = {
+        code: data?.code || data?.data?.code,
         amount: Number(amount),
         currency: currency.abv,
         used: false,
         createdAt: new Date().toISOString().split("T")[0],
-      },
-      ...prev,
-    ]);
+      };
 
-    setAmount("");
+      setVouchers((prev) => [newVoucher, ...prev]);
+
+      setAmount("");
+    } catch (err) {
+      console.error("Voucher creation failed:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const copyCode = (code: string) => {
@@ -156,7 +176,7 @@ export default function VoucherManagementPage() {
               <input
                 type="number"
                 value={amount}
-                onChange={e => setAmount(e.target.value)}
+                onChange={(e) => setAmount(e.target.value)}
                 placeholder="Amount"
                 className="w-full px-4 py-2 outline-none"
               />
@@ -166,9 +186,10 @@ export default function VoucherManagementPage() {
 
         <button
           onClick={createVoucher}
-          className="mt-4 rounded-lg bg-blue-600 px-6 py-2 text-white hover:bg-blue-700"
+          disabled={loading}
+          className="mt-4 rounded-lg bg-blue-600 px-6 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
         >
-          Generate Voucher
+          {loading ? "Generating..." : "Generate Voucher"}
         </button>
       </section>
 
@@ -187,7 +208,7 @@ export default function VoucherManagementPage() {
               </tr>
             </thead>
             <tbody className="divide-y">
-              {vouchers.map(v => (
+              {vouchers.map((v) => (
                 <tr key={v.code} className="hover:bg-gray-50">
                   <td className="py-3">
                     <span
@@ -200,7 +221,6 @@ export default function VoucherManagementPage() {
                     {v.code}
                     <button
                       onClick={() => copyCode(v.code)}
-                      title="Copy voucher code"
                       className="text-gray-400 hover:text-gray-700"
                     >
                       <Icon icon="mdi:content-copy" />
@@ -216,7 +236,9 @@ export default function VoucherManagementPage() {
           </table>
 
           {!vouchers.length && (
-            <p className="text-sm text-gray-500 mt-4">No vouchers created yet.</p>
+            <p className="text-sm text-gray-500 mt-4">
+              No vouchers created yet.
+            </p>
           )}
         </div>
       </section>
