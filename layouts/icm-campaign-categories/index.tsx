@@ -1,47 +1,139 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
+
+import { motion } from 'framer-motion'
 import Link from 'next/link'
-import React, { useRef, useState } from 'react'
-import dummyCategoryData from '@/json/dummy-category.json'
-import CampaignCategoryCard from '@/components/campaign-category-card'
-import { motion, useInView } from 'framer-motion'
+import { Icon } from '@iconify/react'
+// import { Campaign } from '@/types/Campaign'
 
-export default function ICMCampaignCategories() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-50px' })
-  const [activeCategory, setActiveCategory] = useState<string | null>(null)
+type Campaign = {
+  image: string | Blob | undefined
+  id: number
+  title: string
+  banner?: { url: string }
+  thumbnail?: { url: string }
+  category?: { name: string }
+  user?: { fullname: string; avatar?: string }
+  goal: number
+  raised: number
+  excerpt:string
+  endDate?: string
+  donorCount?: number
+  recentDonors?: { avatar?: string }[]
+  impactMetric?: string
+  thumbnail_large?: string
+}
 
+export default function CampaignShowcase({ campaign }: { campaign: Campaign }) {
+  const image = campaign.thumbnail_large
+    ? `https://fundraise.theinnercitymission.ngo/${campaign.thumbnail_large}`
+    : campaign.thumbnail?.url || '/placeholder.jpg'
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 40 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, ease: 'easeOut' }}
-    >
-      <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-        <div className="container py-8 pb-6 md:py-14 md:pb-8">
-          <div className="mb-8 flex items-end justify-between">
-            <h3 className="text-balance text-3xl font-bold text-dark md:text-4xl">
-              ICM <span className="hidden md:inline">Campaign</span> Categories
-            </h3>
-            <Link
-              className="font-semibold underline transition-colors hover:text-primary"
-              href={'/campaigns'}
-            >
-              See more <span className="hidden md:inline">category</span>
-            </Link>
+    <section className="relative overflow-hidden bg-gradient-to-br from-white via-[#f8fafc] to-[#eef2ff] py-20">
+
+      {/* Ambient glow */}
+      <div className="absolute -top-32 left-0 h-[300px] w-[300px] bg-primary/20 blur-3xl" />
+      <div className="absolute bottom-0 right-0 h-[300px] w-[300px] bg-blue-400/20 blur-3xl" />
+
+      <div className="container grid items-center gap-12 md:grid-cols-2">
+
+        {/* LEFT CONTENT */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+            Popular Campaign
+          </p>
+
+          <h2 className="mt-3 text-4xl font-extrabold leading-tight text-gray-900 md:text-5xl">
+            {campaign.title}
+          </h2>
+
+          <p className="mt-4 text-gray-600">
+            {campaign.excerpt}
+          </p>
+
+          {/* STATS */}
+          <div className="mt-6 flex flex-wrap gap-6 text-sm">
+            <div>
+              <p className="text-gray-400">Sponsors</p>
+              <p className="text-lg font-bold">100+ donors</p>
+            </div>
+
+            <div>
+              <p className="text-gray-400">Raised</p>
+              <p className="text-lg font-bold">${campaign.raised}</p>
+            </div>
+
+            <div>
+              <p className="text-gray-400">Goal</p>
+              <p className="text-lg font-bold">${campaign.goal}</p>
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-4 gap-y-8 md:grid-cols-4 md:gap-10 lg:gap-12">
-            {dummyCategoryData.map((data) => (
-              <CampaignCategoryCard
-                data={data}
-                key={data.id}
-                activeCategory={activeCategory}
-                setActiveCategory={setActiveCategory}
+
+          {/* CTA */}
+          <Link
+            href={`/campaigns/${campaign.id}`}
+            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-4 text-white shadow-lg transition hover:scale-[1.03]"
+          >
+            <Icon icon="solar:heart-bold" />
+            Support Campaign
+          </Link>
+        </motion.div>
+
+        {/* RIGHT VISUAL */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="relative"
+        >
+
+          {/* GLASS CARD */}
+          <div className="relative overflow-hidden rounded-3xl border border-white/30 bg-white/40 shadow-[0_20px_60px_rgba(0,0,0,0.1)] backdrop-blur-2xl">
+
+            {/* VIDEO / IMAGE */}
+            <div className="relative h-64 w-full">
+              <img
+                src={image}
+                className="h-full w-full object-cover"
               />
-            ))}
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+
+              {/* PLAY BUTTON */}
+              <button className="absolute left-4 bottom-4 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg">
+                <Icon icon="solar:play-bold" />
+              </button>
+            </div>
+
+            {/* PROGRESS */}
+            <div className="p-6">
+              <div className="h-2 w-full rounded-full bg-gray-200">
+                <div
+                  className="h-2 rounded-full bg-primary"
+                  style={{ width: `${(campaign.raised / campaign.goal) * 100}%` }}
+                />
+              </div>
+
+              <div className="mt-2 flex justify-between text-xs text-gray-500">
+                <span>{campaign.raised} raised</span>
+                <span>{campaign.goal} goal</span>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
-    </motion.div>
+
+          {/* FLOATING CARD */}
+          <div className="absolute -bottom-6 -right-6 rounded-2xl bg-white p-4 shadow-xl">
+            <p className="text-xs text-gray-500">Impact</p>
+            <p className="text-lg font-bold text-primary">7B+ meals</p>
+          </div>
+        </motion.div>
+      </div>
+    </section>
   )
 }

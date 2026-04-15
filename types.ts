@@ -33,6 +33,7 @@ export interface User {
   createdAt: string
   updatedAt: string
   __v: number
+  admin: boolean
 }
 
 export interface Session {
@@ -269,4 +270,5 @@ export type IGetUserServiceResUser = {
   createdAt: string
   updatedAt: string
   __v: number
+  admin:boolean
 }

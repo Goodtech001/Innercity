@@ -99,7 +99,7 @@ export default function LatestFundraisingCampaigns() {
   )
 }
 
-function CampaignCardSkeleton() {
+export function CampaignCardSkeleton() {
   return (
     <div className="animate-pulse space-y-4 rounded-xl border p-4">
       <div className="h-48 w-full rounded-lg bg-gray-200"></div>
