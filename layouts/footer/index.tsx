@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
@@ -9,6 +10,7 @@ import Image from 'next/image'
 import kingsChatIcon from '@/public/assets/icons/kings-chat-icon.png'
 import Logo from '@/components/logo'
 import axios from 'axios'
+import logo from "@/public/assets/icons/logo.png"
 
 const quickLinks = [
   { label: 'Create Your Campaign', link: '/campaigns/create' },
@@ -120,7 +122,8 @@ export default function Footer() {
       <div className="container flex flex-col justify-between gap-5 md:flex-row md:items-center">
         <div className="flex flex-col gap-6 md:flex-row">
           <Link href="/">
-            <Logo variant="white" className="w-24" />
+            {/* <Logo variant="white" className="w-24" /> */}
+            <Image src={logo} alt='logo' width={94}/>
           </Link>
           <div className="flex flex-col gap-2 text-sm">
             <p>
