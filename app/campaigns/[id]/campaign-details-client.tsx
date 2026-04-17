@@ -71,7 +71,7 @@ export default function CampaignDetailsClient({ campaign, progress, goal, raised
 
           <div className="flex flex-wrap gap-4 text-sm text-gray-500">
             <div className="flex items-center gap-1 text-primary">
-              <Icon icon="mdi:tag" /> {campaign.category?.name || 'General'}
+              <Icon icon="mdi:tag" /> {campaign.user?.location || 'General'}
             </div>
             <div className="flex items-center gap-1">
               <Icon icon="mdi:account" /> {campaign.user?.fullname || 'Anonymous'}

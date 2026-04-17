@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import React, { useState } from 'react'
 import Link from 'next/link'
@@ -7,16 +8,56 @@ import { useRouter } from 'next/navigation'
 import Input from '@/components/input'
 import { IInputState } from '@/components/input/useInput'
 import Logo from '@/components/logo'
+import { baseUrl } from '@/constants'
 
 function SignIn() {
   const [email, setEmail] = useState<IInputState>({ value: '' }) //?? optionally you can define the type to see the values that are available when interacted with
-//   const [password, setPassword] = useState({ value: '' })
-//   const router = useRouter()
+  //   const [password, setPassword] = useState({ value: '' })
+  //   const router = useRouter()
 
-//   const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
-//     e.preventDefault()
-//     router.push('/')
-//   }
+  //   const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
+  //     e.preventDefault()
+  //     router.push('/')
+  //   }
+
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!email.value) {
+      alert('Email is required')
+      return
+    }
+
+    try {
+      setLoading(true)
+
+      const res = await fetch(`${baseUrl}/auth/forgot-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email.value,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data?.message || 'Failed to send code')
+      }
+
+      // ✅ redirect to reset page with email
+      router.push(`/reset-password?email=${encodeURIComponent(email.value)}`)
+    } catch (err: any) {
+      alert(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="h-screen grid-cols-10 overflow-x-hidden overflow-y-hidden md:grid">
@@ -26,7 +67,7 @@ function SignIn() {
             <Logo variant="alt" className="w-24" />
           </Link>
 
-          <form  className="flex flex-col gap-4">
+          <form onSubmit={handleForgotPassword} className="flex flex-col gap-4">
             <h1 className="mb-5 text-center text-2xl font-bold md:text-left">Forgot Password</h1>
 
             <div className="">
@@ -43,13 +84,9 @@ function SignIn() {
               />
             </div>
 
-           
-
-            <button type="submit" id="submit" className="btn-primary mt-5">
-              Verify Email
+            <button type="submit" className="btn-primary mt-5" disabled={loading}>
+              {loading ? 'Sending...' : 'Verify Email'}
             </button>
-
-        
           </form>
         </div>
       </div>
