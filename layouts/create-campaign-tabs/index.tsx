@@ -1338,7 +1338,7 @@ export function PreviewCampaignTab({ goForward, formData }: any) {
                 maxWidth: '250px',
               }}
             >
-              {formData.excerpt}
+              Goodnews Nnebedim
             </p>
           )}
         </div>
