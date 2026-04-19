@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable jsx-a11y/alt-text */
 'use client'
@@ -27,12 +28,22 @@ type Campaign = {
 }
 
 export default function PremiumCampaignCard({ campaign }: { campaign: Campaign }) {
-  // 🎯 Calculate Total Donors from funders + payments
-  const totalDonors = useMemo(() => {
-    const fundersCount = campaign.funders?.length || 0;
-    const paymentsCount = campaign.payments?.length || 0;
-    return fundersCount + paymentsCount;
-  }, [campaign.funders, campaign.payments]);
+  // 🎯 Combine funders and payments to get unique donors and total count
+  const { totalDonors, displayAvatars } = useMemo(() => {
+    const combined = [...(campaign.funders || []), ...(campaign.payments || [])];
+    
+    // Extract unique avatars for social proof
+    const avatars = combined
+      .map(item => item.user?.avatar)
+      .filter(Boolean)
+      .map(avatar => `https://fundraise.theinnercitymission.ngo/${avatar}`)
+      .slice(0, 3);
+
+    return {
+      totalDonors: combined.length || campaign.donorCount || 0,
+      displayAvatars: avatars
+    };
+  }, [campaign.funders, campaign.payments, campaign.donorCount]);
 
   const image = campaign.thumbnail_large
     ? `https://fundraise.theinnercitymission.ngo/${campaign.thumbnail_large}`
@@ -165,21 +176,19 @@ export default function PremiumCampaignCard({ campaign }: { campaign: Campaign }
             {/* SOCIAL PROOF */}
             <div className="mt-4 flex items-center justify-between">
               <div className="flex -space-x-2">
-                {campaign.funders?.slice(0, 3).map((funder, i) => {
-                  // 🎯 Avatar formatting logic
-                  const user = funder.user;
-                  const avatar = user?.avatar 
-                    ? `https://fundraise.theinnercitymission.ngo/${user?.avatar}` 
-                    : '/avatar.png';
-
-                  return (
-                    <img
-                      key={i}
-                      src={avatar}
-                      className="h-7 w-7 rounded-full border-2 border-white object-cover"
-                    />
-                  )
-                })}
+                {displayAvatars.map((url, i) => (
+                  <img
+                    key={i}
+                    src={url}
+                    onError={(e) => (e.currentTarget.src = '/avatar.png')}
+                    className="h-7 w-7 rounded-full border-2 border-white object-cover"
+                  />
+                ))}
+                {displayAvatars.length === 0 && (
+                   <div className="h-7 w-7 rounded-full border-2 border-white bg-gray-200 flex items-center justify-center">
+                      <Icon icon="solar:user-bold" className="text-gray-400 text-xs" />
+                   </div>
+                )}
               </div>
 
               <p className="text-xs text-gray-500">
@@ -210,7 +219,6 @@ export default function PremiumCampaignCard({ campaign }: { campaign: Campaign }
     </motion.div>
   )
 }
-
 
 
 
