@@ -9,42 +9,36 @@ import { getUsersService, deleteUserService, sendManualEmailService } from '@/ap
 import { useRouter } from 'next/navigation'
 import templates from '@/json/admin-notification-templates.json'
 import { sendNotificationToUser } from '@/utils/notificationService'
-// import router from 'next/router'
+import clsx from 'clsx'
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
   const router = useRouter()
+  
+  // Modals & Drawers
+  const [selectedUser, setSelectedUser] = useState<any>(null)
   const [showNotificationModal, setShowNotificationModal] = useState(false)
-
+  const [showEmailModal, setShowEmailModal] = useState(false)
+  
+  // Filters
   const [search, setSearch] = useState('')
   const [adminFilter, setAdminFilter] = useState('all')
   const [verifiedFilter, setVerifiedFilter] = useState('all')
 
-  const [selectedUser, setSelectedUser] = useState<any>(null)
-
-  const [showEmailModal, setShowEmailModal] = useState(false)
-  // const [selectedUser, setSelectedUser] = useState<any>(null)
+  // Email State
   const [sendToAll, setSendToAll] = useState(false)
-
   const [subject, setSubject] = useState('')
   const [message, setMessage] = useState('')
   const [sending, setSending] = useState(false)
 
-  const openEmailModal = (user?: any, all = false) => {
-    setSelectedUser(user || null)
-    setSendToAll(all)
-    setShowEmailModal(true)
-  }
-
   const itemsPerPage = 10
 
   const getInitials = (name: string) => {
-    if (!name) return ''
+    if (!name) return 'U'
     const parts = name.trim().split(' ')
-    if (parts.length === 1) return parts[0][0].toUpperCase()
-    return parts[0][0].toUpperCase() + parts[parts.length - 1][0].toUpperCase()
+    return parts.length === 1 ? parts[0][0].toUpperCase() : parts[0][0].toUpperCase() + parts[parts.length - 1][0].toUpperCase()
   }
 
   const fetchUsers = async () => {
@@ -58,14 +52,10 @@ export default function AdminUsersPage() {
     }
   }
 
-  useEffect(() => {
-    fetchUsers()
-  }, [])
+  useEffect(() => { fetchUsers() }, [])
 
   const handleDelete = async (id: number) => {
-    const confirmDelete = confirm('Delete this user?')
-    if (!confirmDelete) return
-
+    if (!confirm('Are you sure you want to delete this user?')) return
     try {
       await deleteUserService(id)
       setUsers((prev) => prev.filter((u) => u.id !== id))
@@ -74,396 +64,280 @@ export default function AdminUsersPage() {
     }
   }
 
+  // Restored Email Logic
   const handleSendEmail = async () => {
-  try {
-    setSending(true)
+    try {
+      setSending(true)
+      let recipients: string | string[]
+      if (sendToAll) {
+        recipients = users.map((u: any) => u.email)
+      } else {
+        recipients = selectedUser.email
+      }
 
-    let recipients: string | string[]
+      await sendManualEmailService({
+        to: recipients,
+        subject,
+        message,
+      })
 
-    if (sendToAll) {
-      recipients = users.map((u: any) => u.email)
-    } else {
-      recipients = selectedUser.email
+      alert('Email sent successfully ✅')
+      setShowEmailModal(false)
+      setSubject('')
+      setMessage('')
+    } catch (err: any) {
+      alert(err.message || 'Failed to send email')
+    } finally {
+      setSending(false)
     }
-
-    await sendManualEmailService({
-      to: recipients,
-      subject,
-      message,
-    })
-
-    alert('Email sent successfully ✅')
-    setShowEmailModal(false)
-    setSubject('')
-    setMessage('')
-  } catch (err: any) {
-    console.error(err)
-    alert(err.message)
-  } finally {
-    setSending(false)
   }
-}
 
-  // ✅ FILTERING (does NOT affect design)
+  const openEmailModal = (user?: any, all = false) => {
+    setSelectedUser(user || null)
+    setSendToAll(all)
+    setShowEmailModal(true)
+  }
+
   const filteredUsers = users
-    .filter((user) => {
+    .filter((u) => {
       const q = search.toLowerCase()
-      return (
-        user.fullname?.toLowerCase().includes(q) ||
-        user.email?.toLowerCase().includes(q) ||
-        user.username?.toLowerCase().includes(q)
-      )
+      return u.fullname?.toLowerCase().includes(q) || u.email?.toLowerCase().includes(q) || u.username?.toLowerCase().includes(q)
     })
-    .filter((user) => {
-      if (adminFilter === 'all') return true
-      return adminFilter === 'admin' ? user.admin === true : user.admin === false
-    })
-    .filter((user) => {
-      if (verifiedFilter === 'all') return true
-      return verifiedFilter === 'verified'
-        ? user.emailVerified === true
-        : user.emailVerified === false
-    })
+    .filter((u) => adminFilter === 'all' ? true : adminFilter === 'admin' ? u.admin === true : u.admin === false)
+    .filter((u) => verifiedFilter === 'all' ? true : verifiedFilter === 'verified' ? u.emailVerified === true : u.emailVerified === false)
 
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage)
-
   const paginatedUsers = filteredUsers.slice((page - 1) * itemsPerPage, page * itemsPerPage)
 
   return (
-    <div className="md:p-8">
-      <h1 className="mb-6 text-2xl font-bold">Users</h1>
-
-      {/* 🔎 Search + Filters (minimal, clean, no design disruption) */}
-      <div className="mb-6 flex gap-3">
-        <input
-          type="text"
-          placeholder="Search user..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-64 rounded-lg border px-3 py-2 text-sm"
-        />
-
-        <select
-          value={adminFilter}
-          onChange={(e) => setAdminFilter(e.target.value)}
-          className="rounded-lg border px-5 py-2 text-sm"
+    <div className="p-4 md:p-8 max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+        <div>
+          <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Users</h1>
+          <p className="text-gray-500 text-sm">Manage account status and communications.</p>
+        </div>
+        <button 
+          onClick={() => openEmailModal(null, true)}
+          className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-lg shadow-blue-100"
         >
+          <Icon icon="solar:letter-bold" width={20} />
+          Email All Users
+        </button>
+      </div>
+
+      {/* Filters */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="relative col-span-1 sm:col-span-2">
+          <Icon icon="solar:magnifer-linear" className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl" />
+          <input
+            type="text"
+            placeholder="Search users..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-11 pr-4 py-3 bg-white border border-gray-100 rounded-2xl text-sm outline-none shadow-sm"
+          />
+        </div>
+        <select value={adminFilter} onChange={(e) => setAdminFilter(e.target.value)} className="bg-white border border-gray-100 px-4 py-3 rounded-2xl text-sm shadow-sm">
           <option value="all">Roles</option>
           <option value="admin">Admin</option>
           <option value="user">User</option>
         </select>
-
-        <select
-          value={verifiedFilter}
-          onChange={(e) => setVerifiedFilter(e.target.value)}
-          className="rounded-lg border px-3 py-2 text-sm"
-        >
+        <select value={verifiedFilter} onChange={(e) => setVerifiedFilter(e.target.value)} className="bg-white border border-gray-100 px-4 py-3 rounded-2xl text-sm shadow-sm">
           <option value="all">All Status</option>
           <option value="verified">Verified</option>
           <option value="not">Not Verified</option>
         </select>
-       
       </div>
 
-       {/* <button onClick={() => openEmailModal(null, true)} className="btn-primary mb-4">
-          Send Email to All Users
-        </button> */}
-
-      <div className="overflow-x-auto rounded-xl border bg-white shadow-sm">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-left text-gray-600">
-            <tr>
-              <th className="p-4">User</th>
-              <th className="p-4">Email</th>
-              <th className="p-4">Telephone</th>
-              <th className="p-4">Role</th>
-              <th className="p-4">Verified</th>
-              <th className="p-4">Created</th>
-              <th className="p-4 text-right">Action</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {loading ? (
+      {/* Table & Mobile Cards */}
+      <div className="bg-white border border-gray-100 rounded-[2rem] shadow-xl overflow-hidden">
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full text-left">
+            <thead className="bg-gray-50/50 border-b border-gray-100 text-gray-500 font-bold text-xs uppercase tracking-widest">
               <tr>
-                <td colSpan={7} className="p-6 text-center">
-                  Loading...
-                </td>
+                <th className="px-6 py-5">User</th>
+                <th className="px-6 py-5">Email</th>
+                <th className="px-6 py-5">Telephone</th>
+                <th className="px-6 py-5">Role</th>
+                <th className="px-6 py-5">Verified</th>
+                <th className="px-6 py-5">Created</th>
+                <th className="px-6 py-5 text-right">Action</th>
               </tr>
-            ) : paginatedUsers.length === 0 ? (
-              <tr>
-                <td colSpan={7} className="p-6 text-center">
-                  No users found
-                </td>
-              </tr>
-            ) : (
-              paginatedUsers.map((user) => (
-                <tr
-                  key={user.id}
-                  className="cursor-pointer border-t transition hover:bg-gray-50"
-                  onClick={() => setSelectedUser(user)}
-                >
-                  <td className="p-4">
+            </thead>
+            <tbody className="divide-y divide-gray-50">
+              {loading ? (
+                <tr><td colSpan={7} className="p-10 text-center text-gray-400">Loading...</td></tr>
+              ) : paginatedUsers.map((user) => (
+                <tr key={user.id} className="hover:bg-blue-50/30 transition-colors cursor-pointer" onClick={() => setSelectedUser(user)}>
+                  <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      {user.avatar ? (
-                        <img src={user.avatar} className="h-10 w-10 rounded-full object-cover" />
-                      ) : (
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 font-semibold text-white shadow-sm">
-                          {getInitials(user.fullname)}
-                        </div>
-                      )}
-
+                      <div className="h-10 w-10 rounded-full overflow-hidden">
+                        {user.avatar ? <img src={user.avatar} className="h-full w-full object-cover" /> : 
+                          <div className="h-full w-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">{getInitials(user.fullname)}</div>
+                        }
+                      </div>
                       <div>
-                        <div className="font-medium">{user.fullname}</div>
-                        <div className="text-xs text-gray-500">@{user.username}</div>
+                        <p className="font-bold text-gray-900">{user.fullname}</p>
+                        <p className="text-xs text-gray-400">@{user.username}</p>
                       </div>
                     </div>
                   </td>
-
-                  <td className="p-4">{user.email}</td>
-
-                  <td className="p-4">{user.telephone}</td>
-
-                  <td className="p-4">
-                    {user.admin ? (
-                      <span className="rounded-full bg-purple-100 px-2 py-1 text-xs text-purple-600">
-                        Admin
-                      </span>
-                    ) : (
-                      <span className="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-600">
-                        User
-                      </span>
-                    )}
+                  <td className="px-6 py-4 text-sm">{user.email}</td>
+                  <td className="px-6 py-4 text-sm">{user.telephone}</td>
+                  <td className="px-6 py-4">
+                    <span className={clsx("px-2.5 py-1 rounded-full text-[10px] font-bold uppercase", user.admin ? "bg-amber-100 text-amber-600" : "bg-gray-100 text-gray-600")}>
+                      {user.admin ? 'Admin' : 'User'}
+                    </span>
                   </td>
-
-                  <td className="p-4">
-                    {user.emailVerified ? (
-                      <span className="text-sm text-green-600">✓ Verified</span>
-                    ) : (
-                      <span className="text-sm text-red-500">Not Verified</span>
-                    )}
+                  <td className="px-6 py-4">
+                    {user.emailVerified ? <span className="text-green-600 text-sm font-medium">✓ Verified</span> : <span className="text-red-400 text-sm">Not Verified</span>}
                   </td>
-
-                  <td className="p-4 text-gray-500">
-                    {new Date(user.created_at).toLocaleDateString()}
-                  </td>
-
-                  <td className="p-4 text-right" onClick={(e) => e.stopPropagation()}>
-                    <button
-                      onClick={() => handleDelete(user.id)}
-                      className="text-red-500 hover:text-red-700"
-                    >
+                  <td className="px-6 py-4 text-sm text-gray-500">{new Date(user.created_at).toLocaleDateString()}</td>
+                  <td className="px-6 py-4 text-right" onClick={(e) => e.stopPropagation()}>
+                    <button onClick={() => handleDelete(user.id)} className="text-gray-400 hover:text-red-500 transition-colors">
                       <Icon icon="solar:trash-bin-trash-bold" width={20} />
                     </button>
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile Cards */}
+        <div className="md:hidden divide-y divide-gray-100">
+          {paginatedUsers.map((user) => (
+            <div key={user.id} className="p-4" onClick={() => setSelectedUser(user)}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full overflow-hidden">
+                    {user.avatar ? <img src={user.avatar} className="h-full w-full object-cover" /> : <div className="h-full w-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">{getInitials(user.fullname)}</div>}
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">{user.fullname}</p>
+                    <p className="text-[10px] text-gray-400">{user.email}</p>
+                  </div>
+                </div>
+                <Icon icon="solar:alt-arrow-right-linear" className="text-gray-300" />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Pagination (unchanged) */}
+      {/* Pagination */}
       <div className="mt-6 flex justify-center gap-2">
         {Array.from({ length: totalPages }).map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setPage(i + 1)}
-            className={`rounded px-3 py-1 ${
-              page === i + 1 ? 'bg-primary text-white' : 'bg-gray-200'
-            }`}
-          >
+          <button key={i} onClick={() => setPage(i + 1)} className={clsx("px-4 py-2 rounded-xl text-sm font-bold transition-all", page === i + 1 ? "bg-blue-600 text-white" : "bg-white border border-gray-100")}>
             {i + 1}
           </button>
         ))}
       </div>
 
-      {/* ✅ User Detail Drawer */}
+      {/* User Detail Drawer */}
       {selectedUser && (
-        <div className="fixed inset-0 z-50 flex">
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            onClick={() => setSelectedUser(null)}
-          />
-
-          {/* Drawer */}
-          <div className="animate-slideIn relative ml-auto flex h-full w-[420px] flex-col bg-white shadow-2xl">
-            {/* Header */}
-            <div className="relative bg-gradient-to-r from-primary to-purple-600 p-6 text-white">
-              <button onClick={() => setSelectedUser(null)} className="absolute right-4 top-4">
+        <div className="fixed inset-0 z-[100] flex">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setSelectedUser(null)} />
+          <div className="relative ml-auto flex h-full w-full max-w-[420px] flex-col bg-white shadow-2xl">
+            {/* Drawer Header */}
+            <div className="p-8 bg-gray-900 text-white relative">
+              <button onClick={() => setSelectedUser(null)} className="absolute top-6 right-6 text-white/60 hover:text-white">
                 <Icon icon="solar:close-circle-bold" width={24} />
               </button>
-
               <div className="flex items-center gap-4">
-                {selectedUser.avatar ? (
-                  <img
-                    src={selectedUser.avatar}
-                    className="h-20 w-20 rounded-full border-4 border-white object-cover shadow"
-                  />
-                ) : (
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white text-2xl font-bold text-primary shadow">
-                    {getInitials(selectedUser.fullname)}
-                  </div>
-                )}
-
+                <div className="h-16 w-16 rounded-2xl border-2 border-white/20 overflow-hidden">
+                  {selectedUser.avatar ? <img src={selectedUser.avatar} className="h-full w-full object-cover" /> : <div className="h-full w-full bg-blue-500 flex items-center justify-center font-bold text-xl">{getInitials(selectedUser.fullname)}</div>}
+                </div>
                 <div>
-                  <h2 className="text-xl font-semibold">{selectedUser.fullname}</h2>
-                  <p className="text-sm opacity-90">@{selectedUser.username}</p>
-
-                  <div className="mt-2 flex gap-2">
-                    {selectedUser.admin && (
-                      <span className="rounded-full bg-white/20 px-2 py-1 text-xs">Admin</span>
-                    )}
-                    {selectedUser.emailVerified && (
-                      <span className="rounded-full bg-green-500 px-2 py-1 text-xs">Verified</span>
-                    )}
-                    {selectedUser.status === 'suspended' && (
-                      <span className="rounded-full bg-red-500 px-2 py-1 text-xs">Suspended</span>
-                    )}
-                  </div>
+                  <h2 className="text-xl font-bold">{selectedUser.fullname}</h2>
+                  <p className="text-blue-400 text-sm">@{selectedUser.username}</p>
                 </div>
               </div>
             </div>
 
-            {/* Body */}
-            <div className="flex-1 space-y-6 overflow-y-auto p-6 text-sm">
-              <div>
-                <h3 className="mb-2 font-semibold text-gray-700">Personal Information</h3>
-                <div className="space-y-2 text-gray-600">
-                  <p>
-                    <strong>Email:</strong> {selectedUser.email}
-                  </p>
-                  <p>
-                    <strong>Telephone:</strong> {selectedUser.telephone}
-                  </p>
-                  <p>
-                    <strong>Birthday:</strong> {selectedUser.birthday}
-                  </p>
-                  <p>
-                    <strong>Created:</strong> {new Date(selectedUser.created_at).toLocaleString()}
-                  </p>
+            {/* Drawer Body */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+              <section className="space-y-3">
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Personal Info</h3>
+                <div className="grid grid-cols-1 gap-3 bg-gray-50 p-4 rounded-2xl">
+                   <p className="text-sm"><strong>Email:</strong> {selectedUser.email}</p>
+                   <p className="text-sm"><strong>Phone:</strong> {selectedUser.telephone || 'N/A'}</p>
+                   <p className="text-sm"><strong>Birthday:</strong> {selectedUser.birthday || 'N/A'}</p>
+                   <p className="text-sm"><strong>Joined:</strong> {new Date(selectedUser.created_at).toLocaleString()}</p>
                 </div>
-              </div>
+              </section>
 
-              {/* Toggle Admin */}
-              <div className="flex items-center justify-between border-t pt-4">
-                <span className="font-medium text-gray-700">Admin Access</span>
+              <section className="space-y-3">
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Controls</h3>
+                
+                {/* Admin Toggle */}
+                <div className="flex items-center justify-between p-4 border border-gray-100 rounded-2xl">
+                  <span className="text-sm font-semibold">Admin Access</span>
+                  <button 
+                    onClick={() => {
+                      const newAdmin = !selectedUser.admin;
+                      setUsers(prev => prev.map(u => u.id === selectedUser.id ? {...u, admin: newAdmin} : u));
+                      setSelectedUser((prev: any) => ({ ...prev, admin: newAdmin }));
+                    }}
+                    className={clsx("h-6 w-11 rounded-full relative transition-colors", selectedUser.admin ? "bg-blue-600" : "bg-gray-300")}
+                  >
+                    <div className={clsx("absolute top-1 left-1 bg-white h-4 w-4 rounded-full transition-transform", selectedUser.admin && "translate-x-5")} />
+                  </button>
+                </div>
 
-                <button
-                  onClick={() => {
-                    setUsers((prev) =>
-                      prev.map((u) => (u.id === selectedUser.id ? { ...u, admin: !u.admin } : u)),
-                    )
+                <div className="grid grid-cols-2 gap-2">
+                  <button onClick={() => setShowNotificationModal(true)} className="flex items-center justify-center gap-2 py-3 bg-gray-50 rounded-xl text-xs font-bold hover:bg-gray-100">
+                    <Icon icon="solar:bell-bold" className="text-blue-600" /> Notify
+                  </button>
+                  <button onClick={() => openEmailModal(selectedUser, false)} className="flex items-center justify-center gap-2 py-3 bg-gray-50 rounded-xl text-xs font-bold hover:bg-gray-100">
+                    <Icon icon="solar:letter-bold" className="text-blue-600" /> Email
+                  </button>
+                </div>
 
-                    setSelectedUser((prev: any) => ({
-                      ...prev,
-                      admin: !prev.admin,
-                    }))
-                  }}
-                  className={`relative h-6 w-12 rounded-full transition ${
-                    selectedUser.admin ? 'bg-purple-600' : 'bg-gray-300'
-                  }`}
+                <button 
+                  onClick={() => router.push(`/admin/all-staff/${selectedUser.id}/transactions`)}
+                  className="w-full py-4 bg-blue-600 text-white rounded-2xl text-xs font-bold shadow-lg shadow-blue-50"
                 >
-                  <span
-                    className={`absolute left-1 top-1 h-4 w-4 rounded-full bg-white transition ${
-                      selectedUser.admin ? 'translate-x-6' : ''
-                    }`}
-                  />
+                  View Transactions
                 </button>
-              </div>
-              <button
-                onClick={() =>
-                  router.push(
-                    `/admin/all-staff/${selectedUser.id}/transactions?name=${selectedUser.fullname}&avatar=${selectedUser.avatar}`,
-                  )
-                }
-                className="btn-white mt-3 text-xs"
-              >
-                View Transaction History
-              </button>
 
-              <button
-                onClick={() => setShowNotificationModal(true)}
-                className="btn-white mt-3 text-xs"
-              >
-                Send Notification
-              </button>
-              <button
-                onClick={() => openEmailModal(users)}
-                className="text-sm btn-white mt-3"
-              >
-                Send Email
-              </button>
-
-              {/* Suspend / Activate */}
-              <div className="flex items-center justify-between border-t pt-4">
-                <span className="font-medium text-gray-700">Account Status</span>
-
-                <button
+                <button 
                   onClick={() => {
-                    const newStatus = selectedUser.status === 'suspended' ? 'active' : 'suspended'
-
-                    setUsers((prev) =>
-                      prev.map((u) => (u.id === selectedUser.id ? { ...u, status: newStatus } : u)),
-                    )
-
-                    setSelectedUser((prev: any) => ({
-                      ...prev,
-                      status: newStatus,
-                    }))
+                    const newStatus = selectedUser.status === 'suspended' ? 'active' : 'suspended';
+                    setUsers(prev => prev.map(u => u.id === selectedUser.id ? {...u, status: newStatus} : u));
+                    setSelectedUser((prev: any) => ({ ...prev, status: newStatus }));
                   }}
-                  className={`rounded-full px-4 py-1.5 text-xs ${
-                    selectedUser.status === 'suspended'
-                      ? 'bg-green-100 text-green-600'
-                      : 'bg-red-100 text-red-600'
-                  }`}
+                  className={clsx("w-full py-4 rounded-2xl text-xs font-bold transition-all", selectedUser.status === 'suspended' ? "bg-green-100 text-green-700" : "bg-red-50 text-red-600")}
                 >
-                  {selectedUser.status === 'suspended' ? 'Activate' : 'Suspend'}
+                  {selectedUser.status === 'suspended' ? 'Activate Account' : 'Suspend Account'}
                 </button>
-              </div>
+              </section>
             </div>
           </div>
-
-          {/* Animation */}
-          <style jsx>{`
-            .animate-slideIn {
-              animation: slideIn 0.3s ease-out forwards;
-            }
-            @keyframes slideIn {
-              from {
-                transform: translateX(100%);
-              }
-              to {
-                transform: translateX(0);
-              }
-            }
-          `}</style>
         </div>
       )}
 
-      {/* notification drawer */}
+      {/* Restored Notification Modal */}
       {showNotificationModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="w-[420px] rounded-xl bg-white p-6 shadow-xl">
-            <h2 className="mb-4 text-lg font-semibold">
-              Send Notification to {selectedUser.fullname}
-            </h2>
-
-            <div className="space-y-3">
+        <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/40 p-4">
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+            <div className="flex items-center justify-between mb-4">
+               <h2 className="text-lg font-bold">Send Notification</h2>
+               <button onClick={() => setShowNotificationModal(false)}><Icon icon="solar:close-circle-bold" className="text-gray-400" width={24} /></button>
+            </div>
+            <div className="space-y-2 max-h-[400px] overflow-y-auto no-scrollbar">
               {templates.map((template) => (
                 <button
                   key={template.id}
                   onClick={() => {
                     sendNotificationToUser(selectedUser.id, template)
                     setShowNotificationModal(false)
-                    alert('Notification sent successfully 🚀')
+                    alert('Notification queued 🚀')
                   }}
-                  className="w-full rounded-lg border p-3 text-left transition hover:bg-gray-50"
+                  className="w-full rounded-xl border border-gray-100 p-4 text-left hover:bg-blue-50 transition-colors group"
                 >
-                  <p className="font-semibold text-primary">{template.title}</p>
-
-                  <p className="text-sm text-gray-600">{template.description}</p>
+                  <p className="font-bold text-blue-600 text-sm group-hover:text-blue-700">{template.title}</p>
+                  <p className="text-xs text-gray-500 mt-1">{template.description}</p>
                 </button>
               ))}
             </div>
@@ -471,37 +345,37 @@ export default function AdminUsersPage() {
         </div>
       )}
 
+      {/* Restored Email Modal */}
       {showEmailModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-lg rounded-xl bg-white p-6">
-            <h2 className="mb-4 text-lg font-bold">
-              {sendToAll ? 'Send Email to All Users' : `Send Email to ${selectedUser?.email}`}
+        <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/40 p-4">
+          <div className="w-full max-w-lg rounded-2xl bg-white p-8 shadow-2xl">
+            <h2 className="mb-2 text-xl font-bold">
+              {sendToAll ? 'Broadcast Email' : `Email: ${selectedUser?.email}`}
             </h2>
+            <p className="text-gray-500 text-sm mb-6">{sendToAll ? 'This email will be sent to every user in the database.' : 'Send a manual message to this user.'}</p>
 
-            {/* SUBJECT */}
             <input
-              placeholder="Subject"
+              placeholder="Email Subject"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              className="mb-3 w-full rounded border p-2"
+              className="mb-4 w-full rounded-xl border border-gray-200 p-4 text-sm outline-none focus:border-blue-500 transition-all"
             />
 
-            {/* MESSAGE */}
             <textarea
-              placeholder="Write your message (HTML supported)"
+              placeholder="Message Content (HTML Supported)"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className="mb-4 h-32 w-full rounded border p-2"
+              className="mb-6 h-48 w-full rounded-xl border border-gray-200 p-4 text-sm outline-none focus:border-blue-500 transition-all resize-none"
             />
 
-            {/* ACTIONS */}
-            <div className="flex justify-end gap-2">
-              <button onClick={() => setShowEmailModal(false)} className="btn-white">
-                Cancel
-              </button>
-
-              <button disabled={sending} onClick={handleSendEmail} className="btn-primary">
-                {sending ? 'Sending...' : 'Send Email'}
+            <div className="flex justify-end gap-3">
+              <button onClick={() => setShowEmailModal(false)} className="px-6 py-3 rounded-xl font-bold text-gray-500 hover:bg-gray-50">Cancel</button>
+              <button 
+                disabled={sending || !subject || !message} 
+                onClick={handleSendEmail} 
+                className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold disabled:opacity-50 shadow-lg shadow-blue-100"
+              >
+                {sending ? 'Sending...' : 'Send Message'}
               </button>
             </div>
           </div>
