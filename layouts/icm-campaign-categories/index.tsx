@@ -18,7 +18,7 @@ type Campaign = {
   user?: { fullname: string; avatar?: string }
   goal: number
   raised: number
-  excerpt:string
+  excerpt: string
   endDate?: string
   donorCount?: number
   recentDonors?: { avatar?: string }[]
@@ -32,36 +32,36 @@ export default function CampaignShowcase({ campaign }: { campaign: Campaign }) {
     : campaign.thumbnail?.url || '/placeholder.jpg'
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-white via-[#f8fafc] to-[#eef2ff] py-20">
-
       {/* Ambient glow */}
       <div className="absolute -top-32 left-0 h-[300px] w-[300px] bg-primary/20 blur-3xl" />
       <div className="absolute bottom-0 right-0 h-[300px] w-[300px] bg-blue-400/20 blur-3xl" />
 
       <div className="container grid items-center gap-12 md:grid-cols-2">
-
         {/* LEFT CONTENT */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-            Popular Campaign
-          </p>
+          <div className="mb-3 flex items-center gap-2">
+            <div className="rounded-lg bg-amber-100 p-1.5 text-amber-600">
+              <Icon icon="solar:star-bold" width={16} />
+            </div>
+            <p className="text-sm font-black uppercase tracking-widest text-amber-600">
+              Featured Campaign
+            </p>
+          </div>
 
-          <h2 className="mt-3 text-4xl font-extrabold leading-tight text-gray-900 md:text-5xl">
+          <h2 className="text-3xl font-extrabold leading-tight text-gray-900 md:text-5xl">
             {campaign.title}
           </h2>
-
-          <p className="mt-4 text-gray-600">
-            {campaign.excerpt}
-          </p>
+          <p className="mt-4 text-gray-600">{campaign.excerpt}</p>
 
           {/* STATS */}
           <div className="mt-6 flex flex-wrap gap-6 text-sm">
             <div>
               <p className="text-gray-400">Sponsors</p>
-              <p className="text-lg font-bold">100+ donors</p>
+              <p className="text-lg font-bold">+ donors</p>
             </div>
 
             <div>
@@ -92,21 +92,16 @@ export default function CampaignShowcase({ campaign }: { campaign: Campaign }) {
           transition={{ duration: 0.6 }}
           className="relative"
         >
-
           {/* GLASS CARD */}
           <div className="relative overflow-hidden rounded-3xl border border-white/30 bg-white/40 shadow-[0_20px_60px_rgba(0,0,0,0.1)] backdrop-blur-2xl">
-
             {/* VIDEO / IMAGE */}
             <div className="relative h-64 w-full">
-              <img
-                src={image}
-                className="h-full w-full object-cover"
-              />
+              <img src={image} className="h-full w-full object-cover" />
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
               {/* PLAY BUTTON */}
-              <button className="absolute left-4 bottom-4 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg">
+              <button className="absolute bottom-4 left-4 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg">
                 <Icon icon="solar:play-bold" />
               </button>
             </div>

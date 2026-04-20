@@ -22,7 +22,7 @@ export default function PartnersCorners() {
       try {
         const data = await getTestimonialsService()
         setTestimonials(data.data || data)
-         setLoading(false)
+        setLoading(false)
       } catch (err) {
         console.error('Failed to fetch testimonials', err)
       }
@@ -55,9 +55,13 @@ export default function PartnersCorners() {
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, ease: 'easeOut' }}
     >
-      <section>
-        <div className="container pb-8 md:py-2 md:pb-8">
-          <h3 className="mb-8 text-balance text-center text-3xl font-bold text-dark md:text-4xl">
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-[#f8fafc] to-[#eef2ff] py-20">
+        {/* Ambient glow */}
+        <div className="absolute -top-32 left-0 h-[300px] w-[300px] bg-primary/20 blur-3xl" />
+        <div className="absolute bottom-0 right-0 h-[300px] w-[300px] bg-blue-400/20 blur-3xl" />
+
+        <div className="mt-15 container pb-8 md:py-2 md:pb-8">
+          <h3 className="mb-8 mt-10 text-balance text-center text-3xl font-bold text-dark md:text-4xl">
             Partner&apos;s Spotlight
           </h3>
         </div>

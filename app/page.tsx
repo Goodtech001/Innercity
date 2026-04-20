@@ -27,8 +27,8 @@ export default function Home() {
       <BenefitsMetricsStrip />
       <LatestFundraisingCampaigns />
       <IcmCampaign/>
-      <FAQPage/>
       <GemSponsoredSection />
+      {/* <FAQPage/> */}
       <TopFundraisersVideo />
       <PartnersCorners />
       <DiscoverMoreCategories />

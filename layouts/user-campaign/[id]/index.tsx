@@ -60,7 +60,7 @@ export default function UserCampaignsPage() {
       {/* Stats Dashboard */}
       <div className="grid gap-6 md:grid-cols-3">
         <StatCard icon="mdi:bullhorn" label="My Campaigns" value={stats.totalCampaigns} />
-        <StatCard icon="solar:money-bag-bold" label="Total Raised" value={`₦${stats.totalRaised.toLocaleString()}`} />
+        <StatCard icon="solar:money-bag-bold" label="Total Raised" value={`$${stats.totalRaised.toLocaleString()}`} />
         <StatCard icon="fa:users" label="Total Donors" value={stats.totalDonors} />
       </div>
 
@@ -89,7 +89,7 @@ export default function UserCampaignsPage() {
               </div>
               <div className="p-4">
                 <h3 className="line-clamp-1 font-bold text-gray-800">{campaign.title}</h3>
-                <p className="mt-2 text-xs font-bold text-primary">₦{Number(campaign.raised).toLocaleString()} raised</p>
+                <p className="mt-2 text-xs font-bold text-primary">${Number(campaign.raised).toLocaleString()} raised</p>
               </div>
             </div>
           )
@@ -114,8 +114,8 @@ export default function UserCampaignsPage() {
             <h2 className="mb-4 text-2xl font-black text-gray-900">{selectedCampaign.title}</h2>
 
             <div className="mb-8 grid grid-cols-3 gap-4">
-              <MiniStat label="Goal" value={`₦${Number(selectedCampaign.goal).toLocaleString()}`} />
-              <MiniStat label="Raised" value={`₦${Number(selectedCampaign.raised || 0).toLocaleString()}`} />
+              <MiniStat label="Goal" value={`$${Number(selectedCampaign.goal).toLocaleString()}`} />
+              <MiniStat label="Raised" value={`$${Number(selectedCampaign.raised || 0).toLocaleString()}`} />
               <MiniStat label="Total Donors" value={[...(selectedCampaign.funders || []), ...(selectedCampaign.payments || [])].length} />
             </div>
 
@@ -152,7 +152,7 @@ export default function UserCampaignsPage() {
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="text-sm font-black text-green-600">₦{Number(donor.amount).toLocaleString()}</p>
+                            <p className="text-sm font-black text-green-600">${Number(donor.amount).toLocaleString()}</p>
                             <p className={`text-[9px] font-bold uppercase ${donor.status === 'success' ? 'text-blue-500' : 'text-orange-400'}`}>
                               {donor.status || 'completed'}
                             </p>

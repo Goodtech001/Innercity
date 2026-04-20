@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { Icon } from '@iconify/react'
 import { baseUrl } from '@/constants'
 import clsx from 'clsx'
+import toast from 'react-hot-toast'
 
 export default function AdminCampaignsPage() {
   const [campaigns, setCampaigns] = useState<any[]>([])
@@ -14,6 +15,7 @@ export default function AdminCampaignsPage() {
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [selectedCampaign, setSelectedCampaign] = useState<any>(null)
+  const [isToggling, setIsToggling] = useState(false)
 
   useEffect(() => {
     fetchCampaigns()
@@ -264,95 +266,161 @@ export default function AdminCampaignsPage() {
       </div>
 
       {/* Detail Drawer */}
-     {selectedCampaign && (
-  <div className="fixed inset-0 z-[100] flex">
-    <div
-      className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in"
-      onClick={() => setSelectedCampaign(null)}
-    />
-    <div className="animate-in slide-in-from-right relative ml-auto flex h-full w-full max-w-[500px] flex-col bg-white shadow-2xl duration-300">
-      <div className="relative h-64 w-full">
-        <img
-          src={
-            selectedCampaign.thumbnail_large
-              ? `https://fundraise.theinnercitymission.ngo/${selectedCampaign.thumbnail_large}`
-              : selectedCampaign.ecard_image || selectedCampaign.thumbnail?.url || '/placeholder.jpg'
-          }
-          className="h-full w-full object-cover"
-          alt={selectedCampaign.title || 'Campaign thumbnail'}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-        <button
-          onClick={() => setSelectedCampaign(null)}
-          className="absolute right-6 top-6 text-white/70 hover:text-white"
-        >
-          <Icon icon="solar:close-circle-bold" width={32} />
-        </button>
-        <div className="absolute bottom-6 left-6 right-6">
-          <p className="text-xs font-bold uppercase tracking-widest text-blue-400">
-            {selectedCampaign.category?.name}
-          </p>
-          <h2 className="line-clamp-2 text-xl font-bold text-white">
-            {selectedCampaign.title}
-          </h2>
-        </div>
-      </div>
-
-      <div className="flex-1 space-y-8 overflow-y-auto p-8 no-scrollbar">
-        <div className="grid grid-cols-3 gap-4">
-          <div className="rounded-2xl bg-gray-50 p-4 text-center">
-            <p className="text-[10px] font-bold uppercase text-gray-400">Donors</p>
-            <p className="text-lg font-black">{selectedCampaign.donor_count || 0}</p>
-          </div>
-          <div className="col-span-2 rounded-2xl bg-gray-50 p-4 text-center">
-            <p className="text-[10px] font-bold uppercase text-gray-400">Goal Progress</p>
-            <p className="text-lg font-black text-green-600">
-              ₦{Number(selectedCampaign.raised).toLocaleString()}{' '}
-              <span className="text-sm font-normal text-gray-300">
-                / ₦{Number(selectedCampaign.goal).toLocaleString()}
-              </span>
-            </p>
-          </div>
-        </div>
-
-        <section>
-          <h3 className="mb-3 text-xs font-black uppercase tracking-widest text-gray-400">
-            Description
-          </h3>
-          <p className="text-sm leading-relaxed text-gray-600">
-            {selectedCampaign.description ||
-              'No detailed description provided for this campaign.'}
-          </p>
-        </section>
-
-        <section className="rounded-[2rem] border border-blue-100/50 bg-blue-50 p-6">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-lg font-bold text-white">
-              {selectedCampaign.user?.fullname?.charAt(0)}
+      {selectedCampaign && (
+        <div className="fixed inset-0 z-[100] flex">
+          <div
+            className="animate-in fade-in absolute inset-0 bg-black/40 backdrop-blur-sm"
+            onClick={() => setSelectedCampaign(null)}
+          />
+          <div className="animate-in slide-in-from-right relative ml-auto flex h-full w-full max-w-[500px] flex-col bg-white shadow-2xl duration-300">
+            <div className="relative h-64 w-full">
+              <img
+                src={
+                  selectedCampaign.thumbnail_large
+                    ? `https://fundraise.theinnercitymission.ngo/${selectedCampaign.thumbnail_large}`
+                    : selectedCampaign.ecard_image ||
+                      selectedCampaign.thumbnail?.url ||
+                      '/placeholder.jpg'
+                }
+                className="h-full w-full object-cover"
+                alt={selectedCampaign.title || 'Campaign thumbnail'}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+              <button
+                onClick={() => setSelectedCampaign(null)}
+                className="absolute right-6 top-6 text-white/70 hover:text-white"
+              >
+                <Icon icon="solar:close-circle-bold" width={32} />
+              </button>
+              <div className="absolute bottom-6 left-6 right-6">
+                <p className="text-xs font-bold uppercase tracking-widest text-blue-400">
+                  {selectedCampaign.category?.name}
+                </p>
+                <h2 className="line-clamp-2 text-xl font-bold text-white">
+                  {selectedCampaign.title}
+                </h2>
+              </div>
             </div>
-            <div>
-              <p className="text-[10px] font-bold uppercase text-blue-400">
-                Campaign Manager
-              </p>
-              <p className="font-bold text-blue-900">
-                {selectedCampaign.user?.fullname || 'Anonymous Sponsor'}
-              </p>
+
+            <div className="flex-1 space-y-8 overflow-y-auto p-8 no-scrollbar">
+              <div className="grid grid-cols-3 gap-4">
+                <div className="rounded-2xl bg-gray-50 p-4 text-center">
+                  <p className="text-[10px] font-bold uppercase text-gray-400">Donors</p>
+                  <p className="text-lg font-black">{selectedCampaign.donor_count || 0}</p>
+                </div>
+                <div className="col-span-2 rounded-2xl bg-gray-50 p-4 text-center">
+                  <p className="text-[10px] font-bold uppercase text-gray-400">Goal Progress</p>
+                  <p className="text-lg font-black text-green-600">
+                    ₦{Number(selectedCampaign.raised).toLocaleString()}{' '}
+                    <span className="text-sm font-normal text-gray-300">
+                      / ₦{Number(selectedCampaign.goal).toLocaleString()}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              <section>
+                <h3 className="mb-3 text-xs font-black uppercase tracking-widest text-gray-400">
+                  Description
+                </h3>
+                <p className="text-sm leading-relaxed text-gray-600">
+                  {selectedCampaign.excerpt ||
+                    'No detailed description provided for this campaign.'}
+                </p>
+              </section>
+
+              <section className="rounded-[2rem] border border-blue-100/50 bg-blue-50 p-6">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-lg font-bold text-white">
+                    {selectedCampaign.user?.fullname?.charAt(0)}
+                  </div>
+
+                  <div>
+                    <p className="text-[10px] font-bold uppercase text-blue-400">
+                      Campaign Manager
+                    </p>
+                    <p className="font-bold text-blue-900">
+                      {selectedCampaign.user?.fullname || 'Anonymous Sponsor'}
+                    </p>
+                    <p className="text-sm text-blue-900">
+                      {selectedCampaign.user?.email || 'Anonymous Sponsor'}
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              {/* featured Toggle */}
+              <div className="flex items-center justify-between rounded-[1.5rem] border border-blue-50 bg-blue-50/30 p-5">
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`rounded-lg p-2 ${selectedCampaign.featured ? 'bg-amber-100 text-amber-600' : 'bg-gray-100 text-gray-400'}`}
+                  >
+                    <Icon
+                      icon={selectedCampaign.featured ? 'solar:star-bold' : 'solar:star-linear'}
+                      width={20}
+                    />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-gray-900">Featured Campaign</p>
+                    <p className="text-[10px] font-medium uppercase tracking-wider text-gray-500">
+                      Highlight on homepage
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  disabled={isToggling}
+                  onClick={async () => {
+                    try {
+                      setIsToggling(true)
+                      const newFeaturedStatus = !selectedCampaign.featured
+
+                      // 1. Optional: API Call to persist the change
+                      // await axios.patch(`${baseUrl}/campaigns/${selectedCampaign.id}`, { featured: newFeaturedStatus });
+
+                      // 2. Update Local State List
+                      setCampaigns((prev: any[]) =>
+                        prev.map((c) =>
+                          c.id === selectedCampaign.id ? { ...c, featured: newFeaturedStatus } : c,
+                        ),
+                      )
+
+                      // 3. Update Selected Campaign View
+                      setSelectedCampaign((prev: any) => ({ ...prev, featured: newFeaturedStatus }))
+
+                      toast.success(
+                        newFeaturedStatus ? 'Campaign marked as Featured' : 'Removed from Featured',
+                      )
+                    } catch (err) {
+                      toast.error('Failed to update status')
+                    } finally {
+                      setIsToggling(false)
+                    }
+                  }}
+                  className={`relative h-7 w-12 rounded-full shadow-inner transition-all duration-300 ${
+                    selectedCampaign.featured ? 'bg-blue-600' : 'bg-gray-300'
+                  } ${isToggling ? 'cursor-not-allowed opacity-50' : ''}`}
+                >
+                  <div
+                    className={`absolute left-1 top-1 h-5 w-5 rounded-full bg-white shadow-md transition-transform duration-300 ${
+                      selectedCampaign.featured ? 'translate-x-5' : ''
+                    }`}
+                  />
+                </button>
+              </div>
+
+              <div className="flex gap-3">
+                <button className="flex-1 rounded-2xl bg-gray-900 py-4 text-sm font-bold text-white transition-all hover:bg-gray-800">
+                  Edit Details
+                </button>
+                <button className="rounded-2xl bg-red-50 px-6 py-4 text-sm font-bold text-red-600 transition-all hover:bg-red-100">
+                  <Icon icon="solar:trash-bin-trash-bold" width={20} />
+                </button>
+              </div>
             </div>
           </div>
-        </section>
-
-        <div className="flex gap-3">
-          <button className="flex-1 rounded-2xl bg-gray-900 py-4 text-sm font-bold text-white transition-all hover:bg-gray-800">
-            Edit Details
-          </button>
-          <button className="rounded-2xl bg-red-50 px-6 py-4 text-sm font-bold text-red-600 transition-all hover:bg-red-100">
-            <Icon icon="solar:trash-bin-trash-bold" width={20} />
-          </button>
         </div>
-      </div>
-    </div>
-  </div>
-)}
+      )}
     </div>
   )
 }

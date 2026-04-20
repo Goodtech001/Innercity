@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
@@ -175,7 +176,7 @@ export default function CampaignDetailsClient({ campaign, progress, goal, raised
           <div className="mt-6 hidden items-center gap-3 rounded-xl bg-gray-50 p-3 dark:bg-white/5 md:flex">
             {user?.avatar || user?.photo ? (
           <img
-            src={user.avatar || user.photo}
+            src={avatar ||  user.avatar || user.photo}
             alt={user.fullname || 'User avatar'}
             // Added aspect-square and flex-shrink-0 to prevent squashing
             className={`aspect-square flex-shrink-0 rounded-full border border-gray-200 object-cover ${mobile ? 'h-10 w-10' : 'h-10 w-10'}`}

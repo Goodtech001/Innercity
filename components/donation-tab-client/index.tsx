@@ -133,7 +133,7 @@ export default function DonationTabsClient({
           <div className="flex items-center gap-3">
             {user?.avatar || user?.photo ? (
               <img
-                src={user.avatar || user.photo}
+                src={avatar || user.avatar || user.photo}
                 alt={user.fullname || 'User avatar'}
                 // Added aspect-square and flex-shrink-0 to prevent squashing
                 className={`aspect-square flex-shrink-0 rounded-full border border-gray-200 object-cover ${mobile ? 'h-10 w-10' : 'h-10 w-10'}`}
