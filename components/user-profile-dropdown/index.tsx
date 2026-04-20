@@ -4,7 +4,7 @@
 'use client'
 
 import { Icon } from '@iconify/react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { postLogoutService } from '@/app/auth/auth.service'
@@ -31,41 +31,41 @@ export default function UserProfileDropdown({ mobile, className, direction = 'ri
   const router = useRouter()
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    // 1. Prioritize the profile object, NOT the raw token
-    const stored = localStorage.getItem('course-training-profile') || 
-                   sessionStorage.getItem('course-training-profile')
-    
-    if (!stored) {
-      console.log("DEBUG: No user data found in storage.")
-      return
-    }
+  const loadUserData = useCallback(() => {
+    const stored =
+      localStorage.getItem('course-training-profile') ||
+      sessionStorage.getItem('course-training-profile')
+
+    if (!stored) return
 
     try {
-      // 2. Safely check if the data is even JSON before parsing
-      if (!stored.startsWith('{')) {
-        console.log("DEBUG: Stored data is a raw string (token), skipping parse.")
-        return
-      }
+      if (!stored.startsWith('{')) return
 
       const parsed = JSON.parse(stored)
-      
-      // Handle nested or flat structure
       const userData = parsed.user || parsed
-
-      console.log("DEBUG - Raw User Data:", userData)
-      
-
-      // Exact check for the property "admin": true
       const isAdmin = userData.admin === true || userData.admin === 1
-
-      console.log("DEBUG - Admin Check Result:", isAdmin)
 
       setUser({ ...userData, admin: isAdmin })
     } catch (error) {
-      console.error("Failed to parse user session:", error)
+      console.error('Failed to parse user session:', error)
     }
   }, [])
+
+  useEffect(() => {
+    // Initial load
+    loadUserData()
+
+    // Listen for changes made in other components (like GlassProfile)
+    window.addEventListener('storage', loadUserData)
+    
+    // Custom event listener for same-window updates
+    window.addEventListener('profileUpdate', loadUserData)
+
+    return () => {
+      window.removeEventListener('storage', loadUserData)
+      window.removeEventListener('profileUpdate', loadUserData)
+    }
+  }, [loadUserData])
 
   const handleLogout = async () => {
     try {
@@ -73,10 +73,10 @@ export default function UserProfileDropdown({ mobile, className, direction = 'ri
       await postLogoutService()
       sessionStorage.removeItem('course-training-profile')
       localStorage.removeItem('course-training-profile')
+      localStorage.removeItem('token')
       router.refresh()
       router.push('/auth/login')
     } catch (error: any) {
-      console.error('Logout error:', error)
       router.push('/sign-in')
     } finally {
       setLoading(false)
@@ -96,52 +96,55 @@ export default function UserProfileDropdown({ mobile, className, direction = 'ri
     <div className={`relative flex h-fit w-fit flex-col ${className}`}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="z-10 inline-flex items-center gap-2 rounded-full text-sm font-medium hover:opacity-80 transition-opacity"
+        className="z-10 inline-flex items-center gap-2 rounded-full text-sm font-medium transition-opacity hover:opacity-80"
       >
         {user?.avatar || user?.photo ? (
           <img
             src={user.avatar || user.photo}
-            className={`rounded-full border border-gray-200 object-cover ${mobile ? 'h-10 w-10' : 'h-9 w-9'}`}
+            alt={user.fullname || 'User avatar'}
+            // Added aspect-square and flex-shrink-0 to prevent squashing
+            className={`aspect-square flex-shrink-0 rounded-full border border-gray-200 object-cover ${mobile ? 'h-10 w-10' : 'h-10 w-10'}`}
           />
         ) : (
           <div
-            className={`relative flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-blue-400 to-gray-500 font-semibold text-white shadow-md ${mobile ? 'h-8 w-8 text-sm' : 'h-10 w-10 text-xs'}`}
+            className={`relative flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-blue-400 to-gray-500 font-semibold text-white shadow-md flex-shrink-0 ${mobile ? 'h-8 w-8 text-sm' : 'h-10 w-10 text-xs'}`}
           >
             <span className="animate-shine absolute inset-0 rounded-full bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent)]"></span>
             {getInitials(displayName)}
           </div>
         )}
 
-        <span className="hidden max-w-[100px] truncate font-medium sm:block">{displayName}</span>
-        <Icon icon={'mynaui:chevron-down-solid'} className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <Icon
+          icon={'mynaui:chevron-down-solid'}
+          className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+        />
       </button>
 
       {isOpen && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} />
-          
           <div
-            className={`absolute top-full mt-2 z-20 w-52 rounded-xl border border-gray-100 bg-white p-2 shadow-xl ring-1 ring-black/5 ${direction === 'right' ? 'right-0' : 'left-0'}`}
+            className={`absolute top-full z-20 mt-2 w-52 rounded-xl border border-gray-100 bg-white p-2 shadow-xl ring-1 ring-black/5 ${direction === 'right' ? 'right-0' : 'left-0'}`}
           >
-            <div className="px-4 py-2 border-b border-gray-50 mb-1">
-               <p className="text-[10px] font-bold uppercase text-gray-400">Account</p>
+            <div className="mb-1 border-b border-gray-50 px-4 py-2">
+              <p className="text-[10px] font-bold uppercase text-gray-400">Account</p>
+              <p className="truncate text-xs font-medium text-gray-900">{displayName}</p>
             </div>
-            
+
             <ul className="space-y-1">
               <li>
                 <Link href="/profile?tab=profile" onClick={() => setIsOpen(false)}>
-                  <button className="flex w-full items-center rounded-lg px-3 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                  <button className="flex w-full items-center rounded-lg px-3 py-2 text-gray-700 transition-colors hover:bg-blue-50 hover:text-blue-600">
                     <Icon icon="solar:user-bold" className="mr-3 h-5 w-5" />
                     Profile
                   </button>
                 </Link>
               </li>
 
-              {/* ADMIN BUTTON */}
               {user?.admin && (
                 <li>
                   <Link href="/admin" onClick={() => setIsOpen(false)}>
-                    <button className="flex w-full items-center rounded-lg px-3 py-2 text-amber-600 hover:bg-amber-50 transition-colors font-semibold">
+                    <button className="flex w-full items-center rounded-lg px-3 py-2 font-semibold text-amber-600 transition-colors hover:bg-amber-50">
                       <Icon icon="ri:admin-fill" className="mr-3 h-5 w-5" />
                       Admin Dashboard
                     </button>
@@ -151,36 +154,18 @@ export default function UserProfileDropdown({ mobile, className, direction = 'ri
 
               <li>
                 <Link href="/profile?tab=campaigns" onClick={() => setIsOpen(false)}>
-                  <button className="flex w-full items-center rounded-lg px-3 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                  <button className="flex w-full items-center rounded-lg px-3 py-2 text-gray-700 transition-colors hover:bg-blue-50 hover:text-blue-600">
                     <Icon icon="ri:funds-fill" className="mr-3 h-5 w-5" />
                     My Campaigns
                   </button>
                 </Link>
               </li>
 
-              <li>
-                <Link href="/profile?tab=notifications" onClick={() => setIsOpen(false)}>
-                  <button className="flex w-full items-center rounded-lg px-3 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
-                    <Icon icon="bxs:notification" className="mr-3 h-5 w-5" />
-                    Notification
-                  </button>
-                </Link>
-              </li>
-
-              <li>
-                <Link href="/profile?tab=chat" onClick={() => setIsOpen(false)}>
-                  <button className="flex w-full items-center rounded-lg px-3 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
-                    <Icon icon="material-symbols-light:chat" className="mr-3 h-5 w-5" />
-                    Chat
-                  </button>
-                </Link>
-              </li>
-
-              <li className="pt-1 border-t border-gray-50">
+              <li className="border-t border-gray-50 pt-1">
                 <button
                   onClick={handleLogout}
                   disabled={loading}
-                  className="flex w-full items-center rounded-lg px-3 py-2 text-red-500 hover:bg-red-50 transition-colors"
+                  className="flex w-full items-center rounded-lg px-3 py-2 text-red-500 transition-colors hover:bg-red-50"
                 >
                   <Icon
                     icon={loading ? 'line-md:loading-twotone-loop' : 'solar:logout-3-bold'}

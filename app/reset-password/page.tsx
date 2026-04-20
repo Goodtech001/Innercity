@@ -2,13 +2,14 @@
 'use client'
 
 import { useSearchParams, useRouter } from 'next/navigation'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect, Suspense } from 'react'
 import Logo from '@/components/logo'
 import Link from 'next/link'
 import { AnimatedTooltip } from '@/components/ui/animated-tooltip'
 import people from '@/json/people.json'
 
-export default function ResetPasswordPremium() {
+// 1️⃣ Create a separate component for the form logic
+function ResetForm() {
   const params = useSearchParams()
   const router = useRouter()
 
@@ -22,13 +23,12 @@ export default function ResetPasswordPremium() {
   const [timer, setTimer] = useState(30)
 
   // 🔁 Countdown timer
-  useState(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       setTimer((prev) => (prev > 0 ? prev - 1 : 0))
     }, 1000)
-
     return () => clearInterval(interval)
-  })
+  }, [])
 
   const handleCodeChange = (value: string, index: number) => {
     if (!/^[0-9]*$/.test(value)) return
@@ -50,7 +50,6 @@ export default function ResetPasswordPremium() {
 
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault()
-
     const finalCode = code.join('')
 
     if (!email || finalCode.length < 6 || !password) {
@@ -60,12 +59,9 @@ export default function ResetPasswordPremium() {
 
     try {
       setLoading(true)
-
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASEURL}/auth/reset-password`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email,
           code: finalCode,
@@ -74,10 +70,8 @@ export default function ResetPasswordPremium() {
       })
 
       const data = await res.json()
-
       if (!res.ok) throw new Error(data?.message)
 
-      // ✅ Smooth success
       alert('Password reset successful')
       router.push('/sign-in')
     } catch (err: any) {
@@ -89,20 +83,69 @@ export default function ResetPasswordPremium() {
 
   const resendCode = async () => {
     if (timer > 0) return
-
     try {
       await fetch(`${process.env.NEXT_PUBLIC_API_BASEURL}/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       })
-
       setTimer(30)
     } catch (err) {
       console.error(err)
     }
   }
 
+  return (
+    <>
+      <h1 className="mb-2 text-3xl font-bold">Reset Password</h1>
+      <p className="mb-6 text-gray-500">
+        Enter the 6-digit code sent to <span className="font-medium">{email || 'your email'}</span>
+      </p>
+
+      <form onSubmit={handleReset} className="space-y-6">
+        <div className="flex gap-2">
+          {code.map((digit, index) => (
+            <input
+              key={index}
+              ref={(el) => { inputsRef.current[index] = el }}
+              value={digit}
+              onChange={(e) => handleCodeChange(e.target.value, index)}
+              onKeyDown={(e) => handleKeyDown(e, index)}
+              maxLength={1}
+              className="h-12 w-12 rounded-lg border text-center text-lg focus:ring-2 focus:ring-blue-500"
+            />
+          ))}
+        </div>
+
+        <input
+          type="password"
+          placeholder="New password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full rounded-lg border px-4 py-3"
+        />
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-lg bg-blue-600 py-3 font-medium text-white hover:bg-blue-700 transition disabled:opacity-50"
+        >
+          {loading ? 'Resetting...' : 'Reset Password'}
+        </button>
+      </form>
+
+      <div className="mt-4 text-sm text-gray-500">
+        Didn’t receive code?{' '}
+        <button onClick={resendCode} className="font-medium text-blue-600 disabled:text-gray-400" disabled={timer > 0}>
+          {timer > 0 ? `Resend in ${timer}s` : 'Resend'}
+        </button>
+      </div>
+    </>
+  )
+}
+
+// 2️⃣ The main Page component wraps everything in Suspense
+export default function ResetPasswordPremium() {
   return (
     <div className="grid min-h-screen md:grid-cols-2">
       {/* LEFT */}
@@ -111,72 +154,24 @@ export default function ResetPasswordPremium() {
           <Logo variant="alt" className="w-24" />
         </Link>
 
-        <h1 className="mb-2 text-3xl font-bold">Reset Password</h1>
-        <p className="mb-6 text-gray-500">
-          Enter the 6-digit code sent to <span className="font-medium">{email}</span>
-        </p>
-
-        <form onSubmit={handleReset} className="space-y-6">
-          {/* OTP */}
-          <div className="flex gap-2">
-            {code.map((digit, index) => (
-              <input
-                key={index}
-                ref={(el) => {
-                  inputsRef.current[index] = el
-                }}
-                value={digit}
-                onChange={(e) => handleCodeChange(e.target.value, index)}
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                maxLength={1}
-                className="h-12 w-12 rounded-lg border text-center text-lg focus:ring-2 focus:ring-blue-500"
-              />
-            ))}
-          </div>
-
-          {/* Password */}
-          <input
-            type="password"
-            placeholder="New password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-lg border px-4 py-3"
-          />
-
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-lg bg-blue-600 py-3 font-medium text-white hover:bg-blue-700"
-          >
-            {loading ? 'Resetting...' : 'Reset Password'}
-          </button>
-        </form>
-
-        {/* Resend */}
-        <div className="mt-4 text-sm text-gray-500">
-          Didn’t receive code?{' '}
-          <button onClick={resendCode} className="font-medium text-blue-600" disabled={timer > 0}>
-            {timer > 0 ? `Resend in ${timer}s` : 'Resend'}
-          </button>
-        </div>
+        <Suspense fallback={<div className="animate-pulse text-gray-400">Loading reset details...</div>}>
+          <ResetForm />
+        </Suspense>
       </div>
 
       {/* RIGHT */}
-      {/* <div className="hidden bg-gradient-to-br from-blue-600 to-indigo-700 md:block" /> */}
-      <div className="bg-sign-in  hidden h-screen items-center bg-cover bg-center text-white md:block">
-              <div className="flex h-screen flex-col justify-center md:mx-20 lg:mx-40">
-                <h1 className="max-w-md text-5xl font-bold">Together, we can make a difference.</h1>
-                <p className="mt-5 text-sm">
-                  Every small act of kindness begins here. Join our community to give, share, or ignite
-                  your own fundraiser today. Create an account to support inspiring causes and launch your
-                  own impactful campaign.
-                </p>
-                <div className="flex w-full">
-                  <AnimatedTooltip items={people} />
-                </div>
-              </div>
-            </div>
+      <div className="bg-sign-in hidden h-screen items-center bg-cover bg-center text-white md:block">
+        <div className="flex h-screen flex-col justify-center md:mx-20 lg:mx-40">
+          <h1 className="max-w-md text-5xl font-bold">Together, we can make a difference.</h1>
+          <p className="mt-5 text-sm">
+            Every small act of kindness begins here. Join our community to give, share, or ignite
+            your own fundraiser today.
+          </p>
+          <div className="mt-6 flex w-full">
+            <AnimatedTooltip items={people} />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

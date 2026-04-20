@@ -1025,30 +1025,39 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
   }, [images, formData.category_id])
 
   const generateAvatarCard = async (file: File) => {
-    try {
-      const token = localStorage.getItem('token')
-      const form = new FormData()
-      form.append('name', formData.title || 'Campaign')
-      form.append('userImage', file) 
-      form.append('excerpt', formData.excerpt || '')
+  try {
+    const token = localStorage.getItem('token')
+    
+    // 🎯 Retrieve user's name from stored profile
+    const storedUser = localStorage.getItem('course-training-profile')
+    const parsedUser = storedUser ? JSON.parse(storedUser) : null
+    const userName = parsedUser?.user?.fullname || parsedUser?.fullname || 'User'
 
-      const res = await fetch(
-        `${baseUrl}/card-template/generate/category/${formData.category_id}`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: form,
+    const form = new FormData()
+    // Changed from formData.title to userName
+    form.append('name', userName) 
+    form.append('userImage', file) 
+    form.append('excerpt', formData.excerpt || '')
+
+    const res = await fetch(
+      `${baseUrl}/card-template/generate/category/${formData.category_id}`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      )
-      const data = await res.json()
-      if (!res.ok) return null
-      return data?.id
-    } catch (err) {
-      return null
-    }
+        body: form,
+      },
+    )
+    
+    const data = await res.json()
+    if (!res.ok) return null
+    return data?.id
+  } catch (err) {
+    console.error("Avatar Card Generation Error:", err)
+    return null
   }
+}
 
   const uploadImage = async (file: File) => {
     const token = localStorage.getItem('token')
