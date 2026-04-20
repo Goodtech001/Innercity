@@ -114,7 +114,7 @@ export const getKingChatProfile = async ({
   accessToken: string
   refreshToken: string
 }) => {
-  const response = await axios.post("/api/auth/kingschat", {
+  const response = await axios.post("/auth/kingschat", {
     accessToken,
     refreshToken,
   })
