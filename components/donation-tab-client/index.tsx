@@ -46,6 +46,7 @@ export default function DonationTabsClient({
   const scrollRef = useRef<HTMLDivElement>(null)
   const params = useParams()
   const [user, setUser] = useState<TUser | null>(null)
+  const [amount, setAmount] = useState<number>(0);
 
   const loadUserData = useCallback(() => {
     const stored =
@@ -107,9 +108,9 @@ export default function DonationTabsClient({
       case 4:
         return <PaystackForm campaign={campaign} />
       case 5:
-        return <VoucherForm campaignId={campaign} />
+        return  <VoucherForm campaignId={campaign?.id} />
       case 6:
-        return <BankTransfer />
+        return <BankTransfer campaign={campaign} amount={amount} />
       default:
         return null
     }

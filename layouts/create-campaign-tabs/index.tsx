@@ -1135,7 +1135,7 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
         </label>
 
         <div className="mb-2.5 flex w-fit flex-wrap items-center gap-2 gap-y-3 text-sm font-semibold text-primary">
-          <button
+          {/* <button
             className="flex items-center gap-1.5 rounded-md p-1 hover:bg-primary/15"
             onClick={openModal}
           >
@@ -1149,7 +1149,8 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
           >
             <Icon className="text-base" icon={'solar:gallery-wide-bold'} />
             <p>Browse Our Resources</p>
-          </Link>
+          </Link> */}
+          <p className='text-gray-500 font-normal'>Note: Each category has an e-card atttached to them , kindly input your image and click next step for the picture chosen and ecard to merge.</p>
         </div>
 
         <FileUpload
