@@ -3,18 +3,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { baseUrl } from '@/constants'
 import { Icon } from '@iconify/react'
 
 export default function UserCampaignsPage() {
   const [campaigns, setCampaigns] = useState<any[]>([])
   const [selectedCampaign, setSelectedCampaign] = useState<any>(null)
-  const [stats, setStats] = useState({
-    totalCampaigns: 0,
-    totalRaised: 0,
-    totalDonors: 0,
-  })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -33,24 +28,6 @@ export default function UserCampaignsPage() {
           (c: any) => String(c.user?.id) === String(userId),
         )
 
-        /* ===== Dashboard Stats ===== */
-
-        const totalRaised = userCampaigns.reduce(
-          (sum: number, c: any) => sum + Number(c.raisedAmount || 0),
-          0,
-        )
-
-        const totalDonors = userCampaigns.reduce(
-          (sum: number, c: any) => sum + Number(c.donorCount || 0),
-          0,
-        )
-
-        setStats({
-          totalCampaigns: userCampaigns.length,
-          totalRaised,
-          totalDonors,
-        })
-
         setCampaigns(userCampaigns)
       } catch (err) {
         console.error(err)
@@ -62,161 +39,149 @@ export default function UserCampaignsPage() {
     fetchCampaigns()
   }, [])
 
+  // 🎯 Combine funders and payments for stats
+  const stats = useMemo(() => {
+    return campaigns.reduce((acc, c) => {
+      acc.totalCampaigns += 1;
+      acc.totalRaised += Number(c.raised || 0);
+      
+      const uniqueDonors = new Set([
+        ...(c.funders || []).map((f: any) => f.user?.id),
+        ...(c.payments || []).map((p: any) => p.user?.id)
+      ].filter(Boolean));
+
+      acc.totalDonors += uniqueDonors.size || Number(c.donorCount || 0);
+      return acc;
+    }, { totalCampaigns: 0, totalRaised: 0, totalDonors: 0 });
+  }, [campaigns]);
+
   return (
     <div className="space-y-8 p-6">
-      {/* ========================= */}
-      {/* Campaign Stats Dashboard */}
-      {/* ========================= */}
-
+      {/* Stats Dashboard */}
       <div className="grid gap-6 md:grid-cols-3">
         <StatCard icon="mdi:bullhorn" label="My Campaigns" value={stats.totalCampaigns} />
-
-        <StatCard
-          icon="solar:money-bag-bold"
-          label="Total Raised"
-          value={`₦${stats.totalRaised.toLocaleString()}`}
-        />
-
+        <StatCard icon="solar:money-bag-bold" label="Total Raised" value={`₦${stats.totalRaised.toLocaleString()}`} />
         <StatCard icon="fa:users" label="Total Donors" value={stats.totalDonors} />
       </div>
 
-      {/* ========================= */}
+      {loading && <p className="text-gray-500 animate-pulse text-center py-10">Loading your campaigns...</p>}
+
       {/* Campaign Grid */}
-      {/* ========================= */}
-
-      {loading && <p>Loading campaigns...</p>}
-
-      {!loading && campaigns.length === 0 && (
-        <div className="py-20 text-center">
-          <h3 className="text-xl font-semibold">No created campaigns</h3>
-
-          <p className="text-gray-500">You haven&apos;t created a campaign yet</p>
-        </div>
-      )}
-
       <div className="grid gap-6 md:grid-cols-3">
         {campaigns.map((campaign) => {
           const banner = campaign.thumbnail_large
             ? `https://fundraise.theinnercitymission.ngo/${campaign.thumbnail_large}`
-            : campaign.thumbnail?.url
+            : campaign.thumbnail?.url;
+          
+          const combinedDonors = [...(campaign.funders || []), ...(campaign.payments || [])];
+
           return (
             <div
               key={campaign.id}
               onClick={() => setSelectedCampaign(campaign)}
-              className="cursor-pointer overflow-hidden rounded-xl border transition hover:shadow-lg"
+              className="group cursor-pointer overflow-hidden rounded-2xl border bg-white transition hover:shadow-xl"
             >
-              <img src={banner} className="h-44 w-full object-cover" />
-
-              <div className="space-y-1 p-4">
-                <h3 className="line-clamp-2 font-semibold">{campaign.title}</h3>
-
-                <p className="text-sm text-gray-500">
-                  Goal: {Number(campaign.goal).toLocaleString()}
-                </p>
-
-                <p className="text-sm font-medium text-primary">
-                  Raised: {Number(campaign.raised ).toLocaleString()}
-                </p>
+              <div className="relative h-44 w-full">
+                <img src={banner} className="h-full w-full object-cover transition group-hover:scale-105" />
+                <div className="absolute top-2 right-2 rounded-full bg-black/70 px-3 py-1 text-[10px] font-bold text-white backdrop-blur-md">
+                   {combinedDonors.length} CONTRIBUTIONS
+                </div>
+              </div>
+              <div className="p-4">
+                <h3 className="line-clamp-1 font-bold text-gray-800">{campaign.title}</h3>
+                <p className="mt-2 text-xs font-bold text-primary">₦{Number(campaign.raised).toLocaleString()} raised</p>
               </div>
             </div>
           )
         })}
       </div>
 
-      {/* ========================= */}
-      {/* Campaign Modal */}
-      {/* ========================= */}
-
+      {/* Campaign Detail Modal */}
       {selectedCampaign && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          {/* backdrop */}
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedCampaign(null)} />
 
-          <div className="absolute inset-0 bg-black/40" onClick={() => setSelectedCampaign(null)} />
-
-          {/* modal */}
-
-          <div className="animate-slideUp relative max-h-[80vh] w-[600px] overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
-            <button onClick={() => setSelectedCampaign(null)} className="absolute right-4 top-4">
-              <Icon icon="solar:close-circle-bold" width={24} />
+          <div className="animate-slideUp relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl">
+            <button onClick={() => setSelectedCampaign(null)} className="absolute right-6 top-6 z-10 rounded-full bg-white/80 p-1">
+              <Icon icon="solar:close-circle-bold" width={28} className="text-gray-400" />
             </button>
 
             <img
-              src={
-                selectedCampaign.thumbnail_large
-                  ? `https://fundraise.theinnercitymission.ngo/${selectedCampaign.thumbnail_large}`
-                  : selectedCampaign.thumbnail?.url
-              }
-              className="mb-4 h-56 w-full rounded-xl object-cover"
+              src={selectedCampaign.thumbnail_large ? `https://fundraise.theinnercitymission.ngo/${selectedCampaign.thumbnail_large}` : selectedCampaign.thumbnail?.url}
+              className="mb-6 h-60 w-full rounded-2xl object-cover"
             />
 
-            <h2 className="mb-2 text-2xl font-bold">{selectedCampaign.title}</h2>
+            <h2 className="mb-4 text-2xl font-black text-gray-900">{selectedCampaign.title}</h2>
 
-            <p className="mb-4 text-gray-500">{selectedCampaign.excerpt}</p>
-
-            {/* campaign stats */}
-
-            <div className="mb-6 grid grid-cols-3 gap-4">
-              <MiniStat label="Goal" value={`${Number(selectedCampaign.goal).toLocaleString()}`} />
-
-              <MiniStat
-                label="Raised"
-                value={`${Number(selectedCampaign.raised || 0).toLocaleString()}`}
-              />
-
-              <MiniStat label="Donors" value={selectedCampaign.donorCount || 0} />
+            <div className="mb-8 grid grid-cols-3 gap-4">
+              <MiniStat label="Goal" value={`₦${Number(selectedCampaign.goal).toLocaleString()}`} />
+              <MiniStat label="Raised" value={`₦${Number(selectedCampaign.raised || 0).toLocaleString()}`} />
+              <MiniStat label="Total Donors" value={[...(selectedCampaign.funders || []), ...(selectedCampaign.payments || [])].length} />
             </div>
 
-            {/* donors placeholder */}
+            {/* COMBINED DONORS LIST */}
+            <div className="rounded-2xl bg-gray-50 p-5">
+              <h3 className="mb-4 font-bold text-gray-800">Recent Contributions</h3>
+              <div className="space-y-3">
+                {(() => {
+                  const allDonors = [...(selectedCampaign.funders || []), ...(selectedCampaign.payments || [])]
+                    .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
 
-            <div className="rounded-xl border p-4">
-              <h3 className="mb-3 font-semibold">Donors</h3>
+                  return allDonors.length > 0 ? (
+                    allDonors.map((donor: any, idx: number) => {
+                      const user = donor.user;
+                      const avatar = user?.avatar 
+                        ? `https://fundraise.theinnercitymission.ngo/${user?.avatar}` 
+                        : null;
 
-              <p className="text-sm text-gray-500">Donor list will appear here</p>
+                      return (
+                        <div key={idx} className="flex items-center justify-between rounded-xl bg-white p-3 shadow-sm">
+                          <div className="flex items-center gap-3">
+                            <div className="h-10 w-10 overflow-hidden rounded-full border border-gray-100">
+                              {avatar ? (
+                                <img src={avatar} className="h-full w-full object-cover" />
+                              ) : (
+                                <div className="flex h-full w-full items-center justify-center bg-gray-100 text-gray-400">
+                                  <Icon icon="solar:user-bold" />
+                                </div>
+                              )}
+                            </div>
+                            <div>
+                              <p className="text-sm font-bold text-gray-800">{user?.fullname || 'Anonymous'}</p>
+                              <p className="text-[10px] text-gray-400 uppercase">{donor.method || donor.payment_channel || 'donation'}</p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm font-black text-green-600">₦{Number(donor.amount).toLocaleString()}</p>
+                            <p className={`text-[9px] font-bold uppercase ${donor.status === 'success' ? 'text-blue-500' : 'text-orange-400'}`}>
+                              {donor.status || 'completed'}
+                            </p>
+                          </div>
+                        </div>
+                      )
+                    })
+                  ) : (
+                    <p className="text-center text-sm text-gray-400 py-4">No contributions found.</p>
+                  );
+                })()}
+              </div>
             </div>
-
-            {/* edit button */}
-
-            <button className="mt-6 w-full rounded-lg bg-primary py-2 text-white">
-              Edit Campaign
-            </button>
           </div>
-
-          <style jsx>{`
-            .animate-slideUp {
-              animation: slideUp 0.25s ease-out forwards;
-            }
-
-            @keyframes slideUp {
-              from {
-                transform: translateY(40px);
-                opacity: 0;
-              }
-              to {
-                transform: translateY(0);
-                opacity: 1;
-              }
-            }
-          `}</style>
         </div>
       )}
     </div>
   )
 }
 
-/* ========================= */
-/* UI Components */
-/* ========================= */
-
 function StatCard({ icon, label, value }: { icon: string; label: string; value: any }) {
   return (
-    <div className="flex items-center gap-4 rounded-xl border bg-white p-4">
-      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-        <Icon icon={icon} />
+    <div className="flex items-center gap-4 rounded-2xl border bg-white p-5 shadow-sm">
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <Icon icon={icon} width={24} />
       </div>
-
       <div>
-        <p className="text-sm text-gray-500">{label}</p>
-        <p className="text-xl font-bold">{value}</p>
+        <p className="text-xs font-bold text-gray-400 uppercase tracking-tight">{label}</p>
+        <p className="text-xl font-black text-gray-900">{value}</p>
       </div>
     </div>
   )
@@ -224,14 +189,12 @@ function StatCard({ icon, label, value }: { icon: string; label: string; value: 
 
 function MiniStat({ label, value }: { label: string; value: any }) {
   return (
-    <div className="rounded-lg border p-3 text-center">
-      <p className="text-xs text-gray-500">{label}</p>
-
-      <p className="font-semibold">{value}</p>
+    <div className="rounded-xl border bg-white p-3 text-center shadow-sm">
+      <p className="text-[9px] font-bold uppercase text-gray-400">{label}</p>
+      <p className="text-sm font-black text-gray-800">{value}</p>
     </div>
   )
 }
-
 ///* eslint-disable jsx-a11y/alt-text */
 // /* eslint-disable @typescript-eslint/no-explicit-any */
 // 'use client'

@@ -10,7 +10,7 @@ import { baseUrl } from '@/constants'
 import CountryCurrencyDropdown, { Currency } from '../country-currency-dropdown'
 import { Campaign } from '@/types/Campaign'
 
-function PaystackForm({campaign} : {campaign: Campaign}) {
+function PaystackForm({ campaign }: { campaign: Campaign }) {
   const params = useParams()
   const campaignId = Number(params?.id)
 
@@ -18,7 +18,10 @@ function PaystackForm({campaign} : {campaign: Campaign}) {
   const [email, setEmail] = useState('')
   const [userId, setUserId] = useState<number | null>(null)
   const [loading, setLoading] = useState(false)
-  const [currency, setCurrency] = useState<Currency  | null>(null)
+  const [currency, setCurrency] = useState<Currency | null>(null)
+  const [showGuestModal, setShowGuestModal] = useState(false)
+  const [guestEmail, setGuestEmail] = useState('')
+  const [guestName, setGuestName] = useState('')
 
   // ✅ SAME USER FETCH PATTERN AS STRIPE
   useEffect(() => {
@@ -41,8 +44,14 @@ function PaystackForm({campaign} : {campaign: Campaign}) {
   const startPayment = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!campaignId || !email || !userId || !amount) {
+    if (!campaignId || !amount) {
       alert('Missing payment information')
+      return
+    }
+
+    // If user not logged in → trigger modal
+    if (!email) {
+      setShowGuestModal(true)
       return
     }
 
@@ -57,11 +66,11 @@ function PaystackForm({campaign} : {campaign: Campaign}) {
         body: JSON.stringify({
           campaignId,
           amount: Number(amount),
-          currency: currency?. code ,
-          email,
-          userId,
+          currency: currency?.code,
+          email: email || guestEmail,
+          userId: userId || null, // 👈 allow null
+          donorName: guestName || null, // optional
           callback_url: `${window.location.origin}/payments/verify`,
-
         }),
       })
 
@@ -115,6 +124,60 @@ function PaystackForm({campaign} : {campaign: Campaign}) {
         <button type="submit" className="btn-primary mt-4 w-fit" disabled={loading}>
           {loading ? 'Processing...' : 'Donate'}
         </button>
+
+        {showGuestModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+            <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+              <h2 className="mb-2 text-lg font-bold">Continue as Guest</h2>
+              <p className="mb-4 text-sm text-gray-500">
+                Enter your details to complete your donation.
+              </p>
+
+              <input
+                type="text"
+                placeholder="Full Name (optional)"
+                value={guestName}
+                onChange={(e) => setGuestName(e.target.value)}
+                className="mb-3 w-full rounded border p-2"
+              />
+
+              <input
+                type="email"
+                placeholder="Email Address"
+                value={guestEmail}
+                onChange={(e) => setGuestEmail(e.target.value)}
+                className="mb-4 w-full rounded border p-2"
+                required
+              />
+
+              <div className="flex justify-end gap-2">
+                <button onClick={() => setShowGuestModal(false)} className="px-4 py-2 text-sm">
+                  Cancel
+                </button>
+
+                <button
+                  onClick={() => {
+                    if (!guestEmail) {
+                      alert('Email is required')
+                      return
+                    }
+
+                    setEmail(guestEmail)
+                    setShowGuestModal(false)
+
+                    // 🔥 Retry payment automatically
+                    setTimeout(() => {
+                      document.querySelector('form')?.requestSubmit()
+                    }, 100)
+                  }}
+                  className="btn-primary px-4 py-2 text-sm"
+                >
+                  Continue to Payment
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </form>
   )

@@ -32,6 +32,7 @@ const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     )
 
     localStorage.setItem('token', data.token)
+    console.log('LOGIN RESPONSE USER:', data.user)
 
     router.push('/')
   } catch (err: any) {

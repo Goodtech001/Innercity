@@ -18,6 +18,7 @@ export interface Campaign {
     fullname: string
     avatar: string
     created_at:string
+    location:string
   }
 
   category?: {

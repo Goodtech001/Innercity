@@ -4,7 +4,7 @@
 'use client'
 
 import { Icon } from '@iconify/react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { postLogoutService } from '@/app/auth/auth.service'
@@ -16,7 +16,7 @@ type TUser = {
   email?: string
   avatar?: string
   photo?: string
-  admin?: boolean
+  admin?: boolean | number
 }
 
 type Props = {
@@ -31,51 +31,58 @@ export default function UserProfileDropdown({ mobile, className, direction = 'ri
   const router = useRouter()
   const [loading, setLoading] = useState(false)
 
-  // const router = useRouter()
+  const loadUserData = useCallback(() => {
+    const stored =
+      localStorage.getItem('course-training-profile') ||
+      sessionStorage.getItem('course-training-profile')
 
-  // ✅ Load user exactly like your navbar logic should
-  useEffect(() => {
-    const stored = sessionStorage.getItem('course-training-profile')
     if (!stored) return
 
-    const parsed = JSON.parse(stored)
+    try {
+      if (!stored.startsWith('{')) return
 
-    // IMPORTANT: match your login storage structure
-    setUser(parsed.user || parsed)
+      const parsed = JSON.parse(stored)
+      const userData = parsed.user || parsed
+      const isAdmin = userData.admin === true || userData.admin === 1
+
+      setUser({ ...userData, admin: isAdmin })
+    } catch (error) {
+      console.error('Failed to parse user session:', error)
+    }
   }, [])
 
-  // const handleLogout = async () => {
-  //   try {
-  //     await postLogoutService()
-  //     sessionStorage.removeItem('course-training-profile')
-  //     localStorage.removeItem('token')
-  //     router.push('/')
-  //     window.location.reload()
-  //   } catch (error) {
-  //     console.error('Logout failed:', error)
-  //   }
-  // }
+  useEffect(() => {
+    // Initial load
+    loadUserData()
+
+    // Listen for changes made in other components (like GlassProfile)
+    window.addEventListener('storage', loadUserData)
+    
+    // Custom event listener for same-window updates
+    window.addEventListener('profileUpdate', loadUserData)
+
+    return () => {
+      window.removeEventListener('storage', loadUserData)
+      window.removeEventListener('profileUpdate', loadUserData)
+    }
+  }, [loadUserData])
 
   const handleLogout = async () => {
     try {
       setLoading(true)
-
-      // 1. Hits /api/auth/logout which calls removeSession()
       await postLogoutService()
-
-      // 2. Refresh the current route to clear server-component cache
-      // then redirect to login
+      sessionStorage.removeItem('course-training-profile')
+      localStorage.removeItem('course-training-profile')
+      localStorage.removeItem('token')
       router.refresh()
       router.push('/auth/login')
     } catch (error: any) {
-      console.error('Logout error:', error)
-      // Even if the API fails, it's often best to redirect
-      // as the session might already be expired
       router.push('/sign-in')
     } finally {
       setLoading(false)
     }
   }
+
   const getInitials = (name?: string) => {
     if (!name) return 'U'
     const parts = name.trim().split(' ')
@@ -83,106 +90,94 @@ export default function UserProfileDropdown({ mobile, className, direction = 'ri
     return parts[0][0].toUpperCase() + parts[parts.length - 1][0].toUpperCase()
   }
 
-  const displayName = user?.fullname || 'User'
+  const displayName = user?.fullname || user?.username || 'User'
 
   return (
-    <div className={`min- relative flex h-fit w-fit flex-col ${className}`}>
-      {/* Trigger */}
+    <div className={`relative flex h-fit w-fit flex-col ${className}`}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="z-10 inline-flex items-center gap-2 rounded-full text-sm font-medium"
+        className="z-10 inline-flex items-center gap-2 rounded-full text-sm font-medium transition-opacity hover:opacity-80"
       >
-        {/* Avatar or Initials (MATCHES ADMIN PAGE STYLE) */}
-        {user?.avatar ? (
+        {user?.avatar || user?.photo ? (
           <img
-            src={user.avatar}
-            className={`rounded-full object-cover ${mobile ? 'h-10 w-10' : 'h-9 w-9'}`}
+            src={user.avatar || user.photo}
+            alt={user.fullname || 'User avatar'}
+            // Added aspect-square and flex-shrink-0 to prevent squashing
+            className={`aspect-square flex-shrink-0 rounded-full border border-gray-200 object-cover ${mobile ? 'h-10 w-10' : 'h-10 w-10'}`}
           />
         ) : (
           <div
-            className={`relative flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-blue-400 to-gray-500 font-semibold text-white shadow-md ${mobile ? 'h-8 w-8 text-sm' : 'h-10 w-10 text-xs'}`}
+            className={`relative flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-blue-400 to-gray-500 font-semibold text-white shadow-md flex-shrink-0 ${mobile ? 'h-8 w-8 text-sm' : 'h-10 w-10 text-xs'}`}
           >
             <span className="animate-shine absolute inset-0 rounded-full bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent)]"></span>
             {getInitials(displayName)}
           </div>
         )}
 
-        <Icon icon={'mynaui:chevron-down-solid'} className="h-4 w-4" />
-
-        <span className="hidden max-w-10 truncate font-medium sm:block">{displayName}</span>
+        <Icon
+          icon={'mynaui:chevron-down-solid'}
+          className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+        />
       </button>
 
-      {/* Dropdown */}
-      <div
-        className={`absolute -bottom-48 z-20 w-52 rounded shadow-sm ${
-          isOpen ? 'block' : 'hidden'
-        } ${direction === 'right' ? 'right-0' : 'left-0'}`}
-      >
-        <ul className="rounded-md border-2 bg-white p-2 text-sm ring-2">
-          <li>
-            <Link href="/profile?tab=profile">
-              <button className="inline-flex w-full rounded px-4 py-2 hover:bg-ghost-white">
-                <Icon icon="solar:user-bold" className="mr-2 h-5 w-5" />
-                Profile
-              </button>
-            </Link>
-          </li>
+      {isOpen && (
+        <>
+          <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} />
+          <div
+            className={`absolute top-full z-20 mt-2 w-52 rounded-xl border border-gray-100 bg-white p-2 shadow-xl ring-1 ring-black/5 ${direction === 'right' ? 'right-0' : 'left-0'}`}
+          >
+            <div className="mb-1 border-b border-gray-50 px-4 py-2">
+              <p className="text-[10px] font-bold uppercase text-gray-400">Account</p>
+              <p className="truncate text-xs font-medium text-gray-900">{displayName}</p>
+            </div>
 
-          <li>
-            <Link href="/profile?tab=campaigns">
-              <button className="inline-flex w-full rounded px-4 py-2 hover:bg-ghost-white">
-                <Icon icon="ri:funds-fill" className="mr-2 h-5 w-5" />
-                My Campaigns
-              </button>
-            </Link>
-          </li>
+            <ul className="space-y-1">
+              <li>
+                <Link href="/profile?tab=profile" onClick={() => setIsOpen(false)}>
+                  <button className="flex w-full items-center rounded-lg px-3 py-2 text-gray-700 transition-colors hover:bg-blue-50 hover:text-blue-600">
+                    <Icon icon="solar:user-bold" className="mr-3 h-5 w-5" />
+                    Profile
+                  </button>
+                </Link>
+              </li>
 
-          <li>
-            <Link href="/profile?tab=notifications">
-              <button className="inline-flex w-full rounded px-4 py-2 hover:bg-ghost-white">
-                <Icon icon="bxs:notification" className="mr-2 h-5 w-5" />
-                Notification
-              </button>
-            </Link>
-          </li>
+              {user?.admin && (
+                <li>
+                  <Link href="/admin" onClick={() => setIsOpen(false)}>
+                    <button className="flex w-full items-center rounded-lg px-3 py-2 font-semibold text-amber-600 transition-colors hover:bg-amber-50">
+                      <Icon icon="ri:admin-fill" className="mr-3 h-5 w-5" />
+                      Admin Dashboard
+                    </button>
+                  </Link>
+                </li>
+              )}
 
-          <li>
-            <Link href="/profile?tab=chat">
-              <button className="inline-flex w-full rounded px-4 py-2 hover:bg-ghost-white">
-                <Icon icon="material-symbols-light:chat" className="mr-2 h-5 w-5" />
-                Chat
-              </button>
-            </Link>
-          </li>
+              <li>
+                <Link href="/profile?tab=campaigns" onClick={() => setIsOpen(false)}>
+                  <button className="flex w-full items-center rounded-lg px-3 py-2 text-gray-700 transition-colors hover:bg-blue-50 hover:text-blue-600">
+                    <Icon icon="ri:funds-fill" className="mr-3 h-5 w-5" />
+                    My Campaigns
+                  </button>
+                </Link>
+              </li>
 
-          {/* ✅ ADMIN BUTTON (Now Guaranteed To Work) */}
-          {user?.admin === true && (
-            <li>
-              <Link href="/admin">
-                <button className="inline-flex w-full rounded px-4 py-2 hover:bg-ghost-white">
-                  <Icon icon="ri:admin-fill" className="mr-2 h-5 w-5" />
-                  Admin
+              <li className="border-t border-gray-50 pt-1">
+                <button
+                  onClick={handleLogout}
+                  disabled={loading}
+                  className="flex w-full items-center rounded-lg px-3 py-2 text-red-500 transition-colors hover:bg-red-50"
+                >
+                  <Icon
+                    icon={loading ? 'line-md:loading-twotone-loop' : 'solar:logout-3-bold'}
+                    className="mr-3 h-5 w-5"
+                  />
+                  {loading ? 'Logging out...' : 'Logout'}
                 </button>
-              </Link>
-            </li>
-          )}
-
-          {/* Logout */}
-          <li>
-            <button
-              onClick={handleLogout}
-              disabled={loading}
-              className="inline-flex w-full rounded px-4 py-2 text-red-500 hover:bg-ghost-white"
-            >
-              <Icon
-                icon={loading ? 'streamline-sharp:logout-2-solid' : 'streamline-sharp:logout-2-solid'}
-                className="mr-2 h-5 w-5"
-              />
-              {loading ? 'Processing...' : 'Logout'}
-            </button>
-          </li>
-        </ul>
-      </div>
+              </li>
+            </ul>
+          </div>
+        </>
+      )}
     </div>
   )
 }

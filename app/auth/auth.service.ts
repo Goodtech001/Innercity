@@ -6,7 +6,7 @@ import { baseUrl, kingsChatClientId } from '@/constants'
 import { encryptClient } from "@/utils/crypt.client"
 
 export const postLoginService = async (credentials: { email: string; password: string }) => {
-  const response = await axios.post("/auth/login", credentials)
+  const response = await axios.post(`${baseUrl}/auth/login`, credentials)
   const res: IProfileRes = response.data
 
   if (response.status < 200 || response.status >= 300) {
@@ -114,7 +114,7 @@ export const getKingChatProfile = async ({
   accessToken: string
   refreshToken: string
 }) => {
-  const response = await axios.post("/api/auth/kingschat", {
+  const response = await axios.post("/auth/kingschat", {
     accessToken,
     refreshToken,
   })

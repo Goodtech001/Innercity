@@ -60,11 +60,17 @@ function CampaignsContent() {
       const res = await fetch(`${baseUrl}/campaigns`)
       const data = await res.json()
 
+      // Ensure we are working with an array
       const campaignsArray = Array.isArray(data) ? data : data.data || data.campaigns || []
 
-       const sortedCampaigns = campaignsArray.sort(
-        (a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-      )
+      const sortedCampaigns = [...campaignsArray].sort((a, b) => {
+        // Convert to time, defaulting to 0 if date is missing
+        const dateA = a.created_at ? new Date(a.created_at).getTime() : 0
+        const dateB = b.created_at ? new Date(b.created_at).getTime() : 0
+        
+        // Newest (larger timestamp) first
+        return dateB - dateA 
+      })
 
       setCampaigns(sortedCampaigns)
     } catch (error) {
