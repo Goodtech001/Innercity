@@ -15,6 +15,7 @@ import CtaSection from '@/layouts/cta-section'
 import DiscoverMoreCategories from '@/layouts/discover-more-campaigns'
 import PartnersCorners from '@/layouts/partners-corners'
 import IcmCampaign from '@/layouts/icm-campaigns'
+import FAQPage from '@/layouts/faq'
 
 export default function Home() {
 
@@ -26,6 +27,7 @@ export default function Home() {
       <BenefitsMetricsStrip />
       <LatestFundraisingCampaigns />
       <IcmCampaign/>
+      <FAQPage/>
       <GemSponsoredSection />
       <TopFundraisersVideo />
       <PartnersCorners />

@@ -5,6 +5,7 @@ import HowItWorks from '@/layouts/how-it-works'
 import DiscoverMoreCategories from '@/layouts/discover-more-campaigns'
 import CtaSection from '@/layouts/cta-section'
 import Footer from '@/layouts/footer'
+import FAQPage from '@/layouts/faq'
 
 export default function HeroSection() {
   return (
@@ -12,6 +13,7 @@ export default function HeroSection() {
       <TopNavbar />
       <AboutHero />
       <HowItWorks />
+      <FAQPage/>
       <DiscoverMoreCategories />
       <CtaSection />
       <Footer />

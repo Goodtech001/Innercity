@@ -1,15 +1,19 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client"
+'use client'
 
-import { useEffect, useState } from "react"
-import { baseUrl } from "@/constants"
+import { useEffect, useState } from 'react'
+import { Icon } from '@iconify/react'
+import { baseUrl } from '@/constants'
+import clsx from 'clsx'
 
 export default function AdminCampaignsPage() {
-
   const [campaigns, setCampaigns] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [selectedCampaign, setSelectedCampaign] = useState<any>(null)
 
   useEffect(() => {
     fetchCampaigns()
@@ -17,217 +21,338 @@ export default function AdminCampaignsPage() {
 
   const fetchCampaigns = async () => {
     try {
-
       const res = await fetch(`${baseUrl}/campaigns`)
       const data = await res.json()
-
-      const campaignsArray =
-        Array.isArray(data) ? data : data.data || data.campaigns || []
-
+      const campaignsArray = Array.isArray(data) ? data : data.data || data.campaigns || []
       setCampaigns(campaignsArray)
-
     } catch (error) {
-      console.error("Campaign fetch error:", error)
+      console.error('Campaign fetch error:', error)
     } finally {
       setLoading(false)
     }
   }
 
-  const filteredCampaigns = campaigns.filter((c) =>
-    c.title?.toLowerCase().includes(search.toLowerCase())
-  )
-
   const getStatus = (campaign: any) => {
-
     const now = new Date()
     const end = new Date(campaign.period)
-
-    if (campaign.raised >= campaign.goal) return "Completed"
-    if (end < now) return "Expired"
-
-    return "Active"
+    if (campaign.raised >= campaign.goal) return 'Completed'
+    if (end < now) return 'Expired'
+    return 'Active'
   }
 
+  const filteredCampaigns = campaigns
+    .filter((c) => c.title?.toLowerCase().includes(search.toLowerCase()))
+    .filter((c) => (statusFilter === 'all' ? true : getStatus(c) === statusFilter))
+
   return (
-    <div className="p-8">
-
-      {/* HEADER */}
-
-      <div className="mb-6 flex items-center justify-between">
-
-        <h1 className="text-2xl font-bold">
-          Campaign Dashboard
-        </h1>
-
-        <input
-          placeholder="Search campaigns..."
-          value={search}
-          onChange={(e)=>setSearch(e.target.value)}
-          className="border px-3 py-2 rounded-md text-sm"
-        />
-
+    <div className="mx-auto max-w-7xl p-4 md:p-8">
+      {/* Header */}
+      <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-center">
+        <div>
+          <h1 className="text-2xl font-extrabold tracking-tight text-gray-900">
+            Campaign Dashboard
+          </h1>
+          <p className="text-sm text-gray-500">Monitor fundraising progress and campaign status.</p>
+        </div>
+        <div className="flex rounded-2xl border border-blue-100 bg-blue-50 p-1.5">
+          <div className="px-4 py-2 text-center">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-blue-400">
+              Total Active
+            </p>
+            <p className="text-lg font-black text-blue-700">
+              {campaigns.filter((c) => getStatus(c) === 'Active').length}
+            </p>
+          </div>
+        </div>
       </div>
 
-      {loading ? (
-        <p>Loading campaigns...</p>
-      ) : (
+      {/* Search & Filters */}
+      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="relative md:col-span-2">
+          <Icon
+            icon="solar:magnifer-linear"
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-xl text-gray-400"
+          />
+          <input
+            placeholder="Search campaign title..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full rounded-2xl border border-gray-100 bg-white py-3.5 pl-12 pr-4 text-sm shadow-sm outline-none transition-all focus:ring-2 focus:ring-blue-500/20"
+          />
+        </div>
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="rounded-2xl border border-gray-100 bg-white px-4 py-3.5 text-sm font-semibold text-gray-600 shadow-sm outline-none"
+        >
+          <option value="all">All Status</option>
+          <option value="Active">Active</option>
+          <option value="Completed">Completed</option>
+          <option value="Expired">Expired</option>
+        </select>
+      </div>
 
-        <div className="overflow-x-auto rounded-lg border">
-
-          <table className="w-full text-sm">
-
-            <thead className="bg-gray-100 text-left">
-
-              <tr className="font-semibold">
-
-                <th className="p-4">Campaign</th>
-                <th className="p-4">Goal</th>
-                <th className="p-4">Raised</th>
-                <th className="p-4">Donors</th>
-                <th className="p-4">Progress</th>
-                <th className="p-4">Status</th>
-                <th className="p-4">Actions</th>
-
+      {/* Data Section */}
+      <div className="overflow-hidden rounded-[2.5rem] border border-gray-100 bg-white shadow-xl shadow-gray-200/50">
+        {/* Desktop View */}
+        <div className="hidden overflow-x-auto lg:block">
+          <table className="w-full text-left">
+            <thead className="border-b border-gray-100 bg-gray-50/50 text-[10px] font-bold uppercase tracking-widest text-gray-400">
+              <tr>
+                <th className="px-6 py-5">Campaign Info</th>
+                <th className="px-6 py-5">Funding Goal</th>
+                <th className="px-6 py-5">Donors</th>
+                <th className="px-6 py-5">Progress</th>
+                <th className="px-6 py-5 text-right">Status</th>
               </tr>
-
             </thead>
+            <tbody className="divide-y divide-gray-50">
+              {loading ? (
+                <tr>
+                  <td colSpan={5} className="p-20 text-center text-gray-400">
+                    Loading campaigns...
+                  </td>
+                </tr>
+              ) : (
+                filteredCampaigns.map((campaign) => {
+                  const status = getStatus(campaign)
+                  const progress = Math.min(
+                    Math.round(((campaign.raised || 0) / (campaign.goal || 1)) * 100),
+                    100,
+                  )
 
-            <tbody>
-
-              {filteredCampaigns.map((campaign) => {
-
-                const raised = campaign.raised || 0
-                const goal = campaign.goal || 1
-
-                const progress = Math.min(
-                  Math.round((raised / goal) * 100),
-                  100
-                )
-
-                const status = getStatus(campaign)
-
-                return (
-
-                  <tr
-                    key={campaign.id}
-                    className="border-t hover:bg-gray-50"
-                  >
-
-                    {/* CAMPAIGN */}
-
-                    <td className="p-4">
-
-                      <div className="flex items-center gap-3">
-
-                        <img
-                          src={campaign.ecard_image || campaign.campaign_image}
-                          className="h-12 w-16 rounded object-cover"
-                          alt=""
-                        />
-
-                        <div>
-
-                          <p className="font-semibold">
-                            {campaign.title}
-                          </p>
-
-                          <p className="text-xs text-gray-500">
-                            {campaign.category?.name || "No category"}
-                          </p>
-
+                  return (
+                    <tr
+                      key={campaign.id}
+                      className="group cursor-pointer transition-colors hover:bg-blue-50/30"
+                      onClick={() => setSelectedCampaign(campaign)}
+                    >
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-4">
+                          <img
+                            src={
+                              campaign.thumbnail_large
+                                ? `https://fundraise.theinnercitymission.ngo/${campaign.thumbnail_large}`
+                                : campaign.ecard_image ||
+                                  campaign.thumbnail?.url ||
+                                  '/placeholder.jpg'
+                            }
+                            className="h-12 w-20 rounded-xl object-cover shadow-sm transition-transform group-hover:scale-105"
+                            alt={campaign.title || 'Campaign thumbnail'}
+                          />
+                          <div>
+                            <p className="line-clamp-1 text-sm font-bold text-gray-900">
+                              {campaign.title}
+                            </p>
+                            <p className="text-[10px] font-bold uppercase tracking-tight text-blue-500">
+                              {campaign.category?.name || 'Global Cause'}
+                            </p>
+                          </div>
                         </div>
-
-                      </div>
-
-                    </td>
-
-                    {/* GOAL */}
-
-                    <td className="p-4">
-                      ${goal.toLocaleString()}
-                    </td>
-
-                    {/* RAISED */}
-
-                    <td className="p-4">
-                      ${raised.toLocaleString()}
-                    </td>
-
-                    {/* DONORS */}
-
-                    <td className="p-4">
-                      {campaign.donor_count || 0}
-                    </td>
-
-                    {/* PROGRESS */}
-
-                    <td className="p-4 w-60">
-
-                      <div className="w-full bg-gray-200 h-2 rounded">
-
-                        <div
-                          className="bg-green-500 h-2 rounded"
-                          style={{ width: `${progress}%` }}
-                        />
-
-                      </div>
-
-                      <p className="text-xs mt-1">
-                        {progress}%
-                      </p>
-
-                    </td>
-
-                    {/* STATUS */}
-
-                    <td className="p-4">
-
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-semibold
-                        ${
-                          status === "Active"
-                            ? "bg-green-100 text-green-700"
-                            : status === "Completed"
-                            ? "bg-blue-100 text-blue-700"
-                            : "bg-red-100 text-red-700"
-                        }`}
-                      >
-                        {status}
-                      </span>
-
-                    </td>
-
-                    {/* ACTIONS */}
-
-                    <td className="p-4">
-
-                      <div className="flex gap-2">
-
-                        <button className="px-3 py-1 text-xs bg-gray-200 rounded">
-                          View
-                        </button>
-
-                        <button className="px-3 py-1 text-xs bg-blue-500 text-white rounded">
-                          Edit
-                        </button>
-
-                      </div>
-
-                    </td>
-
-                  </tr>
-
-                )
-              })}
-
+                      </td>
+                      <td className="px-6 py-4">
+                        <p className="text-sm font-black text-gray-900">
+                          ${Number(campaign.raised).toLocaleString()}
+                        </p>
+                        <p className="text-[10px] font-medium text-gray-400">
+                          of ${Number(campaign.goal).toLocaleString()}
+                        </p>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-1.5">
+                          <Icon
+                            icon="solar:users-group-rounded-bold-duotone"
+                            className="text-gray-400"
+                            width={18}
+                          />
+                          <span className="text-sm font-bold text-gray-700">
+                            {campaign.donor_count || 0}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="w-32">
+                          <div className="mb-1 flex justify-between">
+                            <span className="text-[10px] font-black text-gray-400">
+                              {progress}%
+                            </span>
+                          </div>
+                          <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
+                            <div
+                              className={clsx(
+                                'h-full transition-all duration-1000',
+                                progress >= 100 ? 'bg-blue-600' : 'bg-green-500',
+                              )}
+                              style={{ width: `${progress}%` }}
+                            />
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <span
+                          className={clsx(
+                            'rounded-full border px-3 py-1.5 text-[10px] font-bold',
+                            status === 'Active'
+                              ? 'border-green-100 bg-green-50 text-green-600'
+                              : status === 'Completed'
+                                ? 'border-blue-100 bg-blue-50 text-blue-600'
+                                : 'border-red-100 bg-red-50 text-red-600',
+                          )}
+                        >
+                          {status.toUpperCase()}
+                        </span>
+                      </td>
+                    </tr>
+                  )
+                })
+              )}
             </tbody>
-
           </table>
-
         </div>
 
-      )}
+        {/* Mobile Cards */}
+        <div className="divide-y divide-gray-50 lg:hidden">
+          {filteredCampaigns.map((campaign) => {
+            const status = getStatus(campaign)
+            const progress = Math.min(
+              Math.round(((campaign.raised || 0) / (campaign.goal || 1)) * 100),
+              100,
+            )
+            return (
+              <div
+                key={campaign.id}
+                className="p-5 active:bg-gray-50"
+                onClick={() => setSelectedCampaign(campaign)}
+              >
+                <div className="mb-4 flex gap-4">
+                  <img
+                    src={campaign.ecard_image || campaign.campaign_image}
+                    className="h-16 w-24 rounded-2xl object-cover"
+                  />
+                  <div className="flex-1">
+                    <span
+                      className={clsx(
+                        'mb-1 inline-block rounded-full border px-2 py-0.5 text-[9px] font-black',
+                        status === 'Active'
+                          ? 'border-green-100 text-green-600'
+                          : 'border-gray-100 text-gray-400',
+                      )}
+                    >
+                      {status}
+                    </span>
+                    <p className="line-clamp-2 text-sm font-bold leading-tight text-gray-900">
+                      {campaign.title}
+                    </p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4 rounded-2xl bg-gray-50 p-4">
+                  <div>
+                    <p className="text-[10px] font-bold uppercase text-gray-400">Raised</p>
+                    <p className="text-sm font-black text-gray-900">
+                      ₦{Number(campaign.raised).toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[10px] font-bold uppercase text-gray-400">Progress</p>
+                    <p className="text-sm font-black text-blue-600">{progress}%</p>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
 
+      {/* Detail Drawer */}
+     {selectedCampaign && (
+  <div className="fixed inset-0 z-[100] flex">
+    <div
+      className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in"
+      onClick={() => setSelectedCampaign(null)}
+    />
+    <div className="animate-in slide-in-from-right relative ml-auto flex h-full w-full max-w-[500px] flex-col bg-white shadow-2xl duration-300">
+      <div className="relative h-64 w-full">
+        <img
+          src={
+            selectedCampaign.thumbnail_large
+              ? `https://fundraise.theinnercitymission.ngo/${selectedCampaign.thumbnail_large}`
+              : selectedCampaign.ecard_image || selectedCampaign.thumbnail?.url || '/placeholder.jpg'
+          }
+          className="h-full w-full object-cover"
+          alt={selectedCampaign.title || 'Campaign thumbnail'}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+        <button
+          onClick={() => setSelectedCampaign(null)}
+          className="absolute right-6 top-6 text-white/70 hover:text-white"
+        >
+          <Icon icon="solar:close-circle-bold" width={32} />
+        </button>
+        <div className="absolute bottom-6 left-6 right-6">
+          <p className="text-xs font-bold uppercase tracking-widest text-blue-400">
+            {selectedCampaign.category?.name}
+          </p>
+          <h2 className="line-clamp-2 text-xl font-bold text-white">
+            {selectedCampaign.title}
+          </h2>
+        </div>
+      </div>
+
+      <div className="flex-1 space-y-8 overflow-y-auto p-8 no-scrollbar">
+        <div className="grid grid-cols-3 gap-4">
+          <div className="rounded-2xl bg-gray-50 p-4 text-center">
+            <p className="text-[10px] font-bold uppercase text-gray-400">Donors</p>
+            <p className="text-lg font-black">{selectedCampaign.donor_count || 0}</p>
+          </div>
+          <div className="col-span-2 rounded-2xl bg-gray-50 p-4 text-center">
+            <p className="text-[10px] font-bold uppercase text-gray-400">Goal Progress</p>
+            <p className="text-lg font-black text-green-600">
+              ₦{Number(selectedCampaign.raised).toLocaleString()}{' '}
+              <span className="text-sm font-normal text-gray-300">
+                / ₦{Number(selectedCampaign.goal).toLocaleString()}
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <section>
+          <h3 className="mb-3 text-xs font-black uppercase tracking-widest text-gray-400">
+            Description
+          </h3>
+          <p className="text-sm leading-relaxed text-gray-600">
+            {selectedCampaign.description ||
+              'No detailed description provided for this campaign.'}
+          </p>
+        </section>
+
+        <section className="rounded-[2rem] border border-blue-100/50 bg-blue-50 p-6">
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-lg font-bold text-white">
+              {selectedCampaign.user?.fullname?.charAt(0)}
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase text-blue-400">
+                Campaign Manager
+              </p>
+              <p className="font-bold text-blue-900">
+                {selectedCampaign.user?.fullname || 'Anonymous Sponsor'}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div className="flex gap-3">
+          <button className="flex-1 rounded-2xl bg-gray-900 py-4 text-sm font-bold text-white transition-all hover:bg-gray-800">
+            Edit Details
+          </button>
+          <button className="rounded-2xl bg-red-50 px-6 py-4 text-sm font-bold text-red-600 transition-all hover:bg-red-100">
+            <Icon icon="solar:trash-bin-trash-bold" width={20} />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   )
 }

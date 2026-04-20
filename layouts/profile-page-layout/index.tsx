@@ -79,7 +79,7 @@ export default function ProfilePageLayout() {
     },
     {
       id: 3,
-      title: 'Notifications',
+      title: 'Notify',
       slug: 'notifications',
       description: 'See updates you should be aware of',
       icon: 'bxs:notification',
@@ -110,8 +110,10 @@ export default function ProfilePageLayout() {
     },
     {
       step: 3,
-      name: 'notifications',
-      component: () => <Notifications user={user} />,
+      name: 'notify',
+      component: () => <Notifications user={user} onClose={function (): void {
+        throw new Error('Function not implemented.')
+      } } />,
     },
     {
       step: 4,

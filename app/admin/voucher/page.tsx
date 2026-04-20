@@ -7,9 +7,6 @@ import { baseUrl } from '@/constants'
 import { toast } from 'react-hot-toast'
 import axios from 'axios'
 
-/* =====================
-    TYPES & CONSTANTS
-===================== */
 type TVoucher = {
   id: number
   amount: number
@@ -30,11 +27,8 @@ type TVoucher = {
 const currencies = ['NGN', 'USD', 'ZAR', 'GBP', 'EUR']
 
 export default function VoucherManagementPage() {
-  // State for Table
   const [vouchers, setVouchers] = useState<TVoucher[]>([])
   const [fetching, setFetching] = useState(true)
-
-  // State for Modal & Generation
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [amount, setAmount] = useState('')
   const [currency, setCurrency] = useState('NGN')
@@ -43,34 +37,18 @@ export default function VoucherManagementPage() {
   const fetchVouchers = async () => {
     try {
       setFetching(true)
-
-      // 1. Get the token
       const stored = sessionStorage.getItem('course-training-profile')
       const parsed = stored ? JSON.parse(stored) : null
       const token = parsed?.token
 
-      if (!token) {
-        console.warn('No token found in session storage')
-        // You might want to redirect to login here
-      }
-
-      // 2. Use Axios (No need for .json())
       const res = await axios.get(`${baseUrl}/voucher`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       })
 
-      // 3. Axios puts the response body in 'res.data'
-      // Based on your Postman, the array is inside a 'data' property
       const result = res.data
       const actualData = result?.data || result
-
       setVouchers(Array.isArray(actualData) ? actualData : [])
     } catch (err: any) {
-      console.error('Fetch error:', err)
-
-      // If it's a 401, the token is likely expired
       if (err.response?.status === 401) {
         toast.error('Session expired. Please login again.')
       } else {
@@ -81,9 +59,7 @@ export default function VoucherManagementPage() {
     }
   }
 
-  useEffect(() => {
-    fetchVouchers()
-  }, [])
+  useEffect(() => { fetchVouchers() }, [])
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -91,40 +67,22 @@ export default function VoucherManagementPage() {
 
     try {
       setIsGenerating(true)
-
-      // 1. Get token from storage (matching your fetchVouchers fix)
       const stored = sessionStorage.getItem('course-training-profile')
       const parsed = stored ? JSON.parse(stored) : null
       const token = parsed?.token
 
-      // 2. Use Axios for the POST request
-      const res = await axios.post(
+      await axios.post(
         `${baseUrl}/voucher/generate`,
-        {
-          amount: Number(amount),
-          currency,
-          count: 1,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
+        { amount: Number(amount), currency, count: 1 },
+        { headers: { Authorization: `Bearer ${token}` } }
       )
-
-      // 3. Axios automatically parses JSON into res.data
-      const result = res.data
 
       toast.success('Voucher Created!')
       setIsModalOpen(false)
       setAmount('')
-
-      // Refresh the list to show the new voucher
       fetchVouchers()
     } catch (err: any) {
-      // Axios error handling
       const msg = err.response?.data?.message || err.message || 'Generation failed'
-      console.error('Voucher creation failed:', msg)
       toast.error(msg)
     } finally {
       setIsGenerating(false)
@@ -132,136 +90,144 @@ export default function VoucherManagementPage() {
   }
 
   return (
-    <div className="relative min-h-screen space-y-6 p-4 md:p-8">
-      <header className="flex items-center justify-between">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8">
+      {/* Header Area */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Voucher System</h1>
-          <p className="text-sm text-gray-500">Managing {vouchers.length} total records</p>
+          <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Voucher System</h1>
+          <p className="text-gray-500 text-sm font-medium">Tracking {vouchers.length} active and used records</p>
         </div>
-        <button onClick={fetchVouchers} className="rounded-full p-2 hover:bg-gray-100">
-          <Icon icon="mdi:refresh" className={fetching ? 'animate-spin' : ''} width={24} />
+        <button 
+          onClick={fetchVouchers} 
+          className="flex items-center gap-2 rounded-2xl bg-white border border-gray-100 px-5 py-2.5 text-sm font-bold text-gray-600 shadow-sm hover:bg-gray-50 transition-all active:scale-95"
+        >
+          <Icon icon="solar:restart-bold" className={fetching ? 'animate-spin' : ''} width={18} />
+          Refresh List
         </button>
-      </header>
+      </div>
 
-      {/* VOUCHER TABLE */}
-      <section className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#0B0F19]">
+      {/* VOUCHER TABLE CARD */}
+      <div className="bg-white border border-gray-100 rounded-[2.5rem] shadow-xl shadow-gray-200/50 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-zinc-50 text-[10px] font-bold uppercase text-gray-500 dark:bg-white/5">
+          <table className="w-full text-left">
+            <thead className="bg-gray-50/50 border-b border-gray-100 text-gray-400 font-bold text-[10px] uppercase tracking-widest">
               <tr>
-                <th className="p-4">ID</th>
-                <th className="p-4">Status</th>
-                <th className="p-4">Full Code</th>
-                <th className="p-4">PIN Segments</th>
-                <th className="p-4">Value</th>
-                <th className="p-4">Created At</th>
+                <th className="px-6 py-5">Status</th>
+                <th className="px-6 py-5">Full Voucher Code</th>
+                <th className="px-6 py-5">Pin Segments</th>
+                <th className="px-6 py-5">Value</th>
+                <th className="px-6 py-5">Created</th>
               </tr>
             </thead>
-            <tbody className="divide-y dark:divide-white/5">
-              {vouchers.map((v) => (
-                <tr key={v.id} className="hover:bg-gray-50 dark:hover:bg-white/5">
-                  <td className="p-4 font-mono text-gray-400">#{v.id}</td>
-                  <td className="p-4">
-                    <span
-                      className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
-                        v.used ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'
-                      }`}
-                    >
-                      {v.used ? 'USED' : 'AVAILABLE'}
+            <tbody className="divide-y divide-gray-50">
+              {fetching ? (
+                <tr><td colSpan={5} className="p-20 text-center text-gray-400 animate-pulse">Loading secure vouchers...</td></tr>
+              ) : vouchers.map((v) => (
+                <tr key={v.id} className="hover:bg-blue-50/30 transition-colors group">
+                  <td className="px-6 py-4">
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter ${
+                      v.used ? 'bg-red-50 text-red-500' : 'bg-green-50 text-green-600'
+                    }`}>
+                      <span className={`mr-1.5 h-1.5 w-1.5 rounded-full ${v.used ? 'bg-red-500' : 'bg-green-600'}`} />
+                      {v.used ? 'Used' : 'Available'}
                     </span>
                   </td>
-                  <td className="p-4 font-mono font-bold tracking-wider">{v.voucher}</td>
-                  <td className="p-4">
-                    <div className="flex gap-1">
+                  <td className="px-6 py-4">
+                    <span className="font-mono text-sm font-bold text-gray-900 bg-gray-100 px-3 py-1.5 rounded-xl border border-gray-200/50 tracking-widest">
+                      {v.voucher}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex gap-1.5">
                       {[v.pin1, v.pin2, v.pin3, v.pin4].map((p, i) => (
-                        <span
-                          key={i}
-                          className="rounded bg-gray-100 px-1.5 text-[10px] dark:bg-white/10"
-                        >
+                        <span key={i} className="text-[11px] font-black text-blue-600 bg-blue-50/50 border border-blue-100/50 px-2 py-1 rounded-lg">
                           {p}
                         </span>
                       ))}
                     </div>
                   </td>
-                  <td className="p-4 font-semibold">
-                    {v.currency} {v.amount.toLocaleString()}
+                  <td className="px-6 py-4">
+                    <div className="flex flex-col">
+                      <span className="text-sm font-black text-gray-900">{v.currency} {v.amount.toLocaleString()}</span>
+                    </div>
                   </td>
-                  <td className="p-4 text-xs text-gray-500">
-                    {new Date(v.created_at).toLocaleDateString()}
+                  <td className="px-6 py-4 text-[11px] font-medium text-gray-400">
+                    {new Date(v.created_at).toLocaleDateString(undefined, { dateStyle: 'medium' })}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-      </section>
+      </div>
 
-      {/* FLOATING ACTION BUTTON (FAB) */}
+      {/* Floating Action Button */}
       <button
         onClick={() => setIsModalOpen(true)}
-        className="fixed bottom-8 right-8 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white shadow-2xl transition-transform hover:scale-110 hover:bg-blue-700 active:scale-95"
+        className="fixed bottom-10 right-10 z-50 flex h-16 w-16 items-center justify-center rounded-[2rem] bg-gray-900 text-white shadow-2xl shadow-gray-900/40 transition-all hover:scale-110 active:scale-95 group"
       >
-        <Icon icon="mdi:plus" width={32} />
+        <Icon icon="solar:add-circle-bold" width={28} className="group-hover:rotate-90 transition-transform duration-300" />
       </button>
 
-      {/* MODAL OVERLAY */}
+      {/* GENERATION MODAL */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            onClick={() => !isGenerating && setIsModalOpen(false)}
-          />
-
-          {/* Modal Content */}
-          <div className="animate-in fade-in zoom-in relative w-full max-w-md rounded-3xl border border-white/10 bg-white p-8 shadow-2xl duration-200 dark:bg-[#0B0F19]">
-            <h2 className="mb-2 text-xl font-bold">Generate New Voucher</h2>
-            <p className="mb-6 text-sm text-gray-500">
-              Enter the value for the single-use voucher.
-            </p>
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in" onClick={() => !isGenerating && setIsModalOpen(false)} />
+          <div className="relative w-full max-w-md space-y-6 rounded-[2.5rem] bg-white p-8 shadow-2xl animate-in zoom-in-95 duration-200">
+            <div>
+              <h2 className="text-2xl font-black text-gray-900 tracking-tight">Generate Voucher</h2>
+              <p className="text-xs text-gray-400 font-medium">Create a new secure pin for training payments.</p>
+            </div>
 
             <form onSubmit={handleGenerate} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-bold uppercase text-gray-400">Currency</label>
-                <select
-                  value={currency}
-                  onChange={(e) => setCurrency(e.target.value)}
-                  className="w-full rounded-xl border border-zinc-200 bg-gray-50 p-3 outline-none focus:ring-2 focus:ring-blue-500 dark:border-white/10 dark:bg-white/5"
-                >
-                  {currencies.map((c) => (
-                    <option key={c} value={c}>
-                      {c}
-                    </option>
-                  ))}
-                </select>
+                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Currency</label>
+                <div className="relative">
+                   <select
+                    value={currency}
+                    onChange={(e) => setCurrency(e.target.value)}
+                    className="w-full appearance-none rounded-2xl border border-gray-100 bg-gray-50 px-4 py-3.5 text-sm outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-bold"
+                  >
+                    {currencies.map((c) => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                  <Icon icon="solar:alt-arrow-down-linear" className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold uppercase text-gray-400">Amount</label>
-                <input
-                  type="number"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  placeholder="e.g. 5000"
-                  className="w-full rounded-xl border border-zinc-200 bg-gray-50 p-3 outline-none focus:ring-2 focus:ring-blue-500 dark:border-white/10 dark:bg-white/5"
-                />
+                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Amount</label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-sm">{currency}</span>
+                  <input
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder="0.00"
+                    className="w-full rounded-2xl border border-gray-100 bg-gray-50 pl-14 pr-4 py-3.5 text-sm outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-black text-blue-600"
+                  />
+                </div>
               </div>
 
               <div className="flex gap-3 pt-4">
-                <button
-                  type="button"
-                  onClick={() => setIsModalOpen(false)}
+                <button 
+                  type="button" 
                   disabled={isGenerating}
-                  className="flex-1 rounded-xl border border-gray-200 px-6 py-3 text-sm font-medium transition-colors hover:bg-gray-50"
+                  onClick={() => setIsModalOpen(false)} 
+                  className="flex-1 px-4 py-4 text-sm font-bold text-gray-400 hover:text-gray-600 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isGenerating}
-                  className="flex-1 rounded-xl bg-blue-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-blue-500/30 transition-colors hover:bg-blue-700 disabled:opacity-50"
+                  className="flex-[2] rounded-2xl bg-blue-600 px-4 py-4 text-sm font-bold text-white shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all flex items-center justify-center gap-2"
                 >
-                  {isGenerating ? 'Processing...' : 'Create'}
+                  {isGenerating ? (
+                    <>
+                      <Icon icon="solar:restart-bold" className="animate-spin" />
+                      Creating...
+                    </>
+                  ) : 'Generate Now'}
                 </button>
               </div>
             </form>

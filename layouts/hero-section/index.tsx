@@ -65,7 +65,7 @@ export default function HeroSection() {
           <div className="mt-8 flex flex-wrap gap-4">
             <button
               onClick={handleClick}
-              className="relative overflow-hidden rounded-xl px-6 py-3 font-medium bg-black text-white hover:scale-[1.02] active:scale-95 transition"
+              className="relative overflow-hidden rounded-xl px-6 py-3 font-medium bg-blue-600 text-white hover:scale-[1.02] active:scale-95 transition"
             >
               Start a campaign
             </button>
