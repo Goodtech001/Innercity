@@ -107,7 +107,7 @@ export default function DonationTabsClient({
       case 4:
         return <PaystackForm campaign={campaign} />
       case 5:
-        return <VoucherForm campaignId={campaign} />
+        return  <VoucherForm campaignId={campaign?.id} />
       case 6:
         return <BankTransfer />
       default:

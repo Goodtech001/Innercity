@@ -7,7 +7,7 @@ import { toast } from 'react-hot-toast'
 import { baseUrl } from '@/constants'
 
 interface VoucherFormProps {
-  campaignId: any
+  campaignId: string | number;
 }
 
 function VoucherForm({ campaignId }: VoucherFormProps) {
