@@ -165,7 +165,9 @@ export default async function CampaignDonatePage({ params }: CampaignPageProps) 
 
         {/* DONATION TABS - Pass the campaign data to the client component */}
         <div className="mt-10">
-          <DonationTabsClient campaign={campaign} espees={espees} paystack={paystack} />
+          <DonationTabsClient campaign={campaign} espees={espees} paystack={paystack} mobile={{
+            mobile: undefined,
+          }} />
         </div>
       </div>
     </div>

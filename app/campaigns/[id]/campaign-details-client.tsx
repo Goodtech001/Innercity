@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Icon } from '@iconify/react'
 import { motion } from 'framer-motion'
@@ -15,12 +15,24 @@ interface Props {
   progress: number
   goal: number
   raised: number
+  mobile?: boolean
 }
 
-export default function CampaignDetailsClient({ campaign, progress, goal, raised }: Props) {
+type TUser = {
+  id?: number
+  fullname?: string
+  username?: string
+  email?: string
+  avatar?: string
+  photo?: string
+  admin?: boolean | number
+}
+
+export default function CampaignDetailsClient({ campaign, progress, goal, raised, mobile }: Props) {
   const [showShare, setShowShare] = useState(false)
   const [email, setEmail] = useState('')
   const [copied, setCopied] = useState(false)
+  const [user, setUser] = useState<TUser | null>(null)
   console.log(setEmail)
   const image = campaign.thumbnail_large
     ? `https://fundraise.theinnercitymission.ngo/${campaign.thumbnail_large}`
@@ -46,6 +58,51 @@ export default function CampaignDetailsClient({ campaign, progress, goal, raised
   }
 
   console.log(handleSendEmail)
+
+    const loadUserData = useCallback(() => {
+    const stored =
+      localStorage.getItem('course-training-profile') ||
+      sessionStorage.getItem('course-training-profile')
+
+    if (!stored) return
+
+    try {
+      if (!stored.startsWith('{')) return
+
+      const parsed = JSON.parse(stored)
+      const userData = parsed.user || parsed
+      const isAdmin = userData.admin === true || userData.admin === 1
+
+      setUser({ ...userData, admin: isAdmin })
+    } catch (error) {
+      console.error('Failed to parse user session:', error)
+    }
+  }, [])
+
+  useEffect(() => {
+    // Initial load
+    loadUserData()
+
+    // Listen for changes made in other components (like GlassProfile)
+    window.addEventListener('storage', loadUserData)
+    
+    // Custom event listener for same-window updates
+    window.addEventListener('profileUpdate', loadUserData)
+
+    return () => {
+      window.removeEventListener('storage', loadUserData)
+      window.removeEventListener('profileUpdate', loadUserData)
+    }
+  }, [loadUserData])
+
+  const getInitials = (name?: string) => {
+    if (!name) return 'U'
+    const parts = name.trim().split(' ')
+    if (parts.length === 1) return parts[0][0].toUpperCase()
+    return parts[0][0].toUpperCase() + parts[parts.length - 1][0].toUpperCase()
+  }
+
+  const displayName = user?.fullname || user?.username || 'User'
 
   return (
     <div className="bg-white text-black dark:bg-neutral-950 dark:text-white">
@@ -116,14 +173,21 @@ export default function CampaignDetailsClient({ campaign, progress, goal, raised
 
           {/* CREATOR */}
           <div className="mt-6 hidden items-center gap-3 rounded-xl bg-gray-50 p-3 dark:bg-white/5 md:flex">
-            <Image
-              src={avatar as string}
-              unoptimized
-              alt=""
-              height={40}
-              width={40}
-              className="rounded-full object-cover"
-            />
+            {user?.avatar || user?.photo ? (
+          <img
+            src={user.avatar || user.photo}
+            alt={user.fullname || 'User avatar'}
+            // Added aspect-square and flex-shrink-0 to prevent squashing
+            className={`aspect-square flex-shrink-0 rounded-full border border-gray-200 object-cover ${mobile ? 'h-10 w-10' : 'h-10 w-10'}`}
+          />
+        ) : (
+          <div
+            className={`relative flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-blue-400 to-gray-500 font-semibold text-white shadow-md flex-shrink-0 ${mobile ? 'h-8 w-8 text-sm' : 'h-10 w-10 text-xs'}`}
+          >
+            <span className="animate-shine absolute inset-0 rounded-full bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent)]"></span>
+            {getInitials(displayName)}
+          </div>
+        )}
             <div>
               <p className="text-sm font-semibold">{campaign.user?.fullname}</p>
               <p className="text-xs text-gray-500">Campaign creator</p>
