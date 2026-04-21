@@ -154,7 +154,7 @@ export default function ProfilePageLayout() {
     <>
       {' '}
       <div className="container h-fit">
-        <div className="mb-3 flex items-center justify-between border-b py-1.5 pt-6">
+        <div className="mb-3 flex items-center justify-between border-b py-1.5 pt-6 mt-10">
           <h3 className="text-balance text-3xl font-bold text-dark md:text-4xl">
             {tabs[activeStep - 1].title}
           </h3>

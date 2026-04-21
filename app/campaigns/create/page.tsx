@@ -98,7 +98,7 @@ export default function CreateCampaignPage() {
     <>
       <TopNavbar />
 
-      <div className="container h-fit">
+      <div className="container h-fit mt-10">
         <div className="mb-3 flex items-center justify-between border-b py-1.5 pt-6">
           <h3 className="text-balance text-3xl font-bold text-dark md:text-4xl">
             Create <span className="hidden md:inline">Fundraising</span> Campaign

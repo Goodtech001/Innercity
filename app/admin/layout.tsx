@@ -11,7 +11,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <TopNavbar />
       </div>
       
-      <div className="flex pt-16"> {/* pt-16 matches the height of TopNavbar */}
+      <div className="flex pt-16 mt-10"> {/* pt-16 matches the height of TopNavbar */}
         <AdminSidebar />
         
         <main className="flex-1 p-4 md:p-8">
