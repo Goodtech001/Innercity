@@ -49,11 +49,13 @@ export default function GlassProfile({ user }: any) {
     setLoading(true)
     try {
       // 1. Get Token (Checking both common storage locations)
-      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-      
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token')
+      // Inside handleSave in GlassProfile.tsx
+      window.dispatchEvent(new Event('profileUpdate')) // This triggers the listener in your dropdown
+
       if (!token) {
-        toast.error("Session expired. Please login again.");
-        return;
+        toast.error('Session expired. Please login again.')
+        return
       }
 
       let finalAvatarUrl = avatar
@@ -62,11 +64,11 @@ export default function GlassProfile({ user }: any) {
       if (selectedFile) {
         const uploadData = new FormData()
         uploadData.append('file', selectedFile)
-        
-        const uploadRes = await fetch(`${baseUrl}/uploads`, { 
+
+        const uploadRes = await fetch(`${baseUrl}/uploads`, {
           method: 'POST',
-          headers: { 'Authorization': `Bearer ${token}` }, // Most APIs need auth for uploads too
-          body: uploadData 
+          headers: { Authorization: `Bearer ${token}` }, // Most APIs need auth for uploads too
+          body: uploadData,
         })
         const uploadJson = await uploadRes.json()
         // Adjust this based on your API response structure (e.g., uploadJson.data.url)
@@ -78,7 +80,7 @@ export default function GlassProfile({ user }: any) {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` 
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           fullname: formData.fullName,
@@ -96,34 +98,34 @@ export default function GlassProfile({ user }: any) {
 
       if (response.ok) {
         toast.success('Profile updated successfully!')
-        
+
         // 4. Update Local Session Data so changes reflect immediately on refresh
-        const storageKeys = ['course-training-profile', 'user']; // Check common keys
-        storageKeys.forEach(key => {
-          const stored = localStorage.getItem(key) || sessionStorage.getItem(key);
+        const storageKeys = ['course-training-profile', 'user'] // Check common keys
+        storageKeys.forEach((key) => {
+          const stored = localStorage.getItem(key) || sessionStorage.getItem(key)
           if (stored) {
-            const parsed = JSON.parse(stored);
+            const parsed = JSON.parse(stored)
             // Deep merge user data
-            const updatedUser = { 
-                ...(parsed.user || parsed), 
-                fullname: formData.fullName,
-                username: formData.username,
-                bio: formData.bio,
-                telephone: formData.phone,
-                location: formData.location,
-                avatar: finalAvatarUrl 
-            };
-            
-            const newData = parsed.user ? { ...parsed, user: updatedUser } : updatedUser;
-            localStorage.setItem(key, JSON.stringify(newData));
-            sessionStorage.setItem(key, JSON.stringify(newData));
+            const updatedUser = {
+              ...(parsed.user || parsed),
+              fullname: formData.fullName,
+              username: formData.username,
+              bio: formData.bio,
+              telephone: formData.phone,
+              location: formData.location,
+              avatar: finalAvatarUrl,
+            }
+
+            const newData = parsed.user ? { ...parsed, user: updatedUser } : updatedUser
+            localStorage.setItem(key, JSON.stringify(newData))
+            sessionStorage.setItem(key, JSON.stringify(newData))
           }
-        });
+        })
       } else {
         toast.error(result.message || 'Failed to update profile')
       }
     } catch (error) {
-      console.error("Save Error:", error)
+      console.error('Save Error:', error)
       toast.error('Connection error. Please try again.')
     } finally {
       setLoading(false)
@@ -141,19 +143,31 @@ export default function GlassProfile({ user }: any) {
           x.set(e.clientX - rect.left - rect.width / 2)
           y.set(e.clientY - rect.top - rect.height / 2)
         }}
-        onMouseLeave={() => { x.set(0); y.set(0) }}
+        onMouseLeave={() => {
+          x.set(0)
+          y.set(0)
+        }}
         style={{ rotateX, rotateY, transformPerspective: 1200 }}
         className="mx-auto max-w-5xl rounded-3xl border border-white/40 bg-white/50 p-8 shadow-[0_20px_80px_rgba(0,0,0,0.08)] backdrop-blur-2xl"
       >
-        <div className="md:flex items-center md:justify-start justify-center gap-6 border-b border-white/30 pb-6">
+        <div className="items-center justify-center gap-6 border-b border-white/30 pb-6 md:flex md:justify-start">
           <div className="relative">
             <div className="h-[90px] w-[90px] overflow-hidden rounded-full ring-4 ring-white/40">
-                <img src={avatar} className="h-full w-full object-cover" />
+              <img src={avatar} className="h-full w-full object-cover" />
             </div>
-            <button onClick={handleAvatarClick} className="absolute bottom-0 right-0 rounded-full bg-white p-2 shadow-lg transition hover:scale-110">
+            <button
+              onClick={handleAvatarClick}
+              className="absolute bottom-0 right-0 rounded-full bg-white p-2 shadow-lg transition hover:scale-110"
+            >
               <Icon icon="mdi:camera" />
             </button>
-            <input ref={fileInputRef} type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleAvatarChange}
+              className="hidden"
+            />
           </div>
 
           <div>
@@ -190,11 +204,14 @@ export default function GlassProfile({ user }: any) {
         </div>
 
         <div className="mt-10 flex justify-end gap-3">
-          <button onClick={() => window.location.reload()} className="rounded-xl border border-white/30 bg-white/50 px-6 py-2 text-sm hover:bg-white/70">
+          <button
+            onClick={() => window.location.reload()}
+            className="rounded-xl border border-white/30 bg-white/50 px-6 py-2 text-sm hover:bg-white/70"
+          >
             Cancel
           </button>
 
-          <button 
+          <button
             onClick={handleSave}
             disabled={loading}
             className="flex items-center gap-2 rounded-xl bg-primary px-6 py-2 text-sm font-semibold text-white shadow-lg transition hover:scale-[1.02] disabled:opacity-70"

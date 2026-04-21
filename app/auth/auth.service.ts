@@ -42,6 +42,7 @@ export const postRegisterService = async (credentials: {
   password: string
   telephone?: string
   birthday?: string
+  location?: string
 }) => {
   const response = await axios.post(`${baseUrl}/auth/register`, credentials)
   const res: IProfileRes = response.data

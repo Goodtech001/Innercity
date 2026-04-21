@@ -32,20 +32,28 @@ export default function UserProfileDropdown({ mobile, className, direction = 'ri
   const [loading, setLoading] = useState(false)
 
   const loadUserData = useCallback(() => {
+    // 1. Check BOTH storage types for the specific key
     const stored =
       localStorage.getItem('course-training-profile') ||
       sessionStorage.getItem('course-training-profile')
 
-    if (!stored) return
+    if (!stored) {
+      setUser(null)
+      return
+    }
 
     try {
-      if (!stored.startsWith('{')) return
-
       const parsed = JSON.parse(stored)
-      const userData = parsed.user || parsed
-      const isAdmin = userData.admin === true || userData.admin === 1
 
-      setUser({ ...userData, admin: isAdmin })
+      // 2. Handle nested "user" object or flat object
+      // Your profile page saves as { ...parsed, user: updatedUser }
+      const userData = parsed.user ? parsed.user : parsed
+
+      // 3. Prevent old cached data from showing by validating the ID exists
+      if (userData && userData.id) {
+        const isAdmin = userData.admin === true || userData.admin === 1 || userData.admin === '1'
+        setUser({ ...userData, admin: isAdmin })
+      }
     } catch (error) {
       console.error('Failed to parse user session:', error)
     }
@@ -57,7 +65,7 @@ export default function UserProfileDropdown({ mobile, className, direction = 'ri
 
     // Listen for changes made in other components (like GlassProfile)
     window.addEventListener('storage', loadUserData)
-    
+
     // Custom event listener for same-window updates
     window.addEventListener('profileUpdate', loadUserData)
 
@@ -107,7 +115,7 @@ export default function UserProfileDropdown({ mobile, className, direction = 'ri
           />
         ) : (
           <div
-            className={`relative flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-blue-400 to-gray-500 font-semibold text-white shadow-md flex-shrink-0 ${mobile ? 'h-8 w-8 text-sm' : 'h-10 w-10 text-xs'}`}
+            className={`relative flex flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-blue-400 to-gray-500 font-semibold text-white shadow-md ${mobile ? 'h-8 w-8 text-sm' : 'h-10 w-10 text-xs'}`}
           >
             <span className="animate-shine absolute inset-0 rounded-full bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent)]"></span>
             {getInitials(displayName)}

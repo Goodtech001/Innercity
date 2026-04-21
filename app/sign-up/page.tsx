@@ -24,6 +24,7 @@ export default function SignUp() {
   const [email, setEmail] = useState('')
   const [birthday, setBirthday] = useState('')
   const [password, setPassword] = useState('')
+  const [location, setLocation] = useState('')
   const router = useRouter()
 
   const [loading, setLoading] = useState(false)
@@ -40,6 +41,7 @@ export default function SignUp() {
         password,
         telephone: `+${telephone}`,
         birthday,
+        location
       })
 
       sessionStorage.setItem('course-training-profile', JSON.stringify(data))
@@ -139,8 +141,10 @@ export default function SignUp() {
                 containerClass="input-field border-text/25 flex items-center !border bg-transparent px-0 py-0"
               />
             </div>
+              
+              <div className="grid grid-cols-2 gap-2">
 
-            <div className="flex flex-col">
+                 <div className="flex flex-col">
               <label className="label" htmlFor="password">
                 Password*
               </label>
@@ -154,6 +158,23 @@ export default function SignUp() {
                 className="rounded border-2 border-gray-300"
               />
             </div>
+
+             <div className="flex flex-col">
+              <label className="label" htmlFor="password">
+                Location*
+              </label>
+              <input
+                name="location"
+                onChange={(e) => setLocation(e.target.value)}
+                value={location}
+                type="text"
+                required
+                placeholder="Enter your Location..."
+                className="rounded border-2 border-gray-300"
+              />
+            </div>
+              </div>
+           
 
             <button type="submit" id="submit" className="btn-primary mt-5">
               {loading ? 'Creating...' : 'Create Account'}
