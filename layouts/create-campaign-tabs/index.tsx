@@ -1019,13 +1019,21 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
     try {
       const token = localStorage.getItem('token')
 
-      // 🎯 Retrieve user's name from stored profile
-      const storedUser = localStorage.getItem('course-training-profile')
+      // 🎯 Retrieve user's name with more robust fallback checks
+      const storedUser = localStorage.getItem('course-training-profile') || localStorage.getItem('user')
       const parsedUser = storedUser ? JSON.parse(storedUser) : null
-      const userName = parsedUser?.user?.fullname || parsedUser?.fullname || 'User'
+      
+      // Check multiple possible paths for the name
+      const userName = 
+        parsedUser?.user?.fullname || 
+        parsedUser?.fullname || 
+        parsedUser?.name || 
+        formData?.user?.fullname || // Check if it's already in your state
+        'User'
+
+      console.log('Generating card for:', userName) // Debugging for Vercel logs
 
       const form = new FormData()
-      // Changed from formData.title to userName
       form.append('name', userName)
       form.append('userImage', file)
       form.append('excerpt', formData.excerpt || '')
@@ -1042,7 +1050,11 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
       )
 
       const data = await res.json()
-      if (!res.ok) return null
+      if (!res.ok) {
+        console.error('API Error:', data)
+        return null
+      }
+      
       return data?.id
     } catch (err) {
       console.error('Avatar Card Generation Error:', err)
