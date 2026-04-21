@@ -251,7 +251,7 @@ export default function AdminCampaignsPage() {
                   <div>
                     <p className="text-[10px] font-bold uppercase text-gray-400">Raised</p>
                     <p className="text-sm font-black text-gray-900">
-                      ₦{Number(campaign.raised).toLocaleString()}
+                      ${Number(campaign.raised).toLocaleString()}
                     </p>
                   </div>
                   <div className="text-right">
@@ -350,6 +350,7 @@ export default function AdminCampaignsPage() {
               </section>
 
               {/* featured Toggle */}
+              {/* Featured Toggle */}
               <div className="flex items-center justify-between rounded-[1.5rem] border border-blue-50 bg-blue-50/30 p-5">
                 <div className="flex items-center gap-3">
                   <div
@@ -370,36 +371,14 @@ export default function AdminCampaignsPage() {
 
                 <button
                   disabled={isToggling}
-                  onClick={async () => {
-                    try {
-                      setIsToggling(true)
-                      const newFeaturedStatus = !selectedCampaign.featured
-
-                      // 1. Optional: API Call to persist the change
-                      // await axios.patch(`${baseUrl}/campaigns/${selectedCampaign.id}`, { featured: newFeaturedStatus });
-
-                      // 2. Update Local State List
-                      setCampaigns((prev: any[]) =>
-                        prev.map((c) =>
-                          c.id === selectedCampaign.id ? { ...c, featured: newFeaturedStatus } : c,
-                        ),
-                      )
-
-                      // 3. Update Selected Campaign View
-                      setSelectedCampaign((prev: any) => ({ ...prev, featured: newFeaturedStatus }))
-
-                      toast.success(
-                        newFeaturedStatus ? 'Campaign marked as Featured' : 'Removed from Featured',
-                      )
-                    } catch (err) {
-                      toast.error('Failed to update status')
-                    } finally {
-                      setIsToggling(false)
-                    }
+                  onClick={() => {
+                    // Just update local state for now
+                    const newStatus = !selectedCampaign.featured
+                    setSelectedCampaign({ ...selectedCampaign, featured: newStatus })
                   }}
                   className={`relative h-7 w-12 rounded-full shadow-inner transition-all duration-300 ${
                     selectedCampaign.featured ? 'bg-blue-600' : 'bg-gray-300'
-                  } ${isToggling ? 'cursor-not-allowed opacity-50' : ''}`}
+                  }`}
                 >
                   <div
                     className={`absolute left-1 top-1 h-5 w-5 rounded-full bg-white shadow-md transition-transform duration-300 ${
@@ -409,13 +388,64 @@ export default function AdminCampaignsPage() {
                 </button>
               </div>
 
-              <div className="flex gap-3">
-                <button className="flex-1 rounded-2xl bg-gray-900 py-4 text-sm font-bold text-white transition-all hover:bg-gray-800">
-                  Edit Details
+              {/* Action Buttons */}
+              <div className="flex flex-col gap-3">
+                <button
+                  disabled={isToggling}
+                  onClick={async () => {
+                    try {
+                      setIsToggling(true)
+                      const token = localStorage.getItem('token')
+
+                      // Ensure we extract the ID if category is an object
+                      const categoryId =
+                        selectedCampaign.category?.id || selectedCampaign.category_id
+
+                      const res = await fetch(`${baseUrl}/campaigns`, {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                          Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({
+                          id: Number(selectedCampaign.id),
+                          category_id: Number(categoryId), // Explicitly cast to Number to satisfy constraints
+                          featured: selectedCampaign.featured,
+                          title: selectedCampaign.title,
+                          goal: Number(selectedCampaign.goal),
+                          published: selectedCampaign.published ?? true,
+                        }),
+                      })
+
+                      if (res.ok) {
+                        toast.success('Campaign updated successfully!')
+                        setCampaigns((prev) =>
+                          prev.map((c) => (c.id === selectedCampaign.id ? selectedCampaign : c)),
+                        )
+                      } else {
+                        const errorData = await res.json()
+                        // This will help you see if other validation errors occur
+                        toast.error(errorData.message || 'Update failed')
+                      }
+                    } catch (err) {
+                      toast.error('Failed to save changes')
+                    } finally {
+                      setIsToggling(false)
+                    }
+                  }}
+                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 py-4 text-sm font-bold text-white transition-all hover:bg-blue-700 disabled:opacity-50"
+                >
+                  {isToggling ? <Icon icon="line-md:loading-twotone-loop" /> : 'Save Changes'}
                 </button>
-                <button className="rounded-2xl bg-red-50 px-6 py-4 text-sm font-bold text-red-600 transition-all hover:bg-red-100">
-                  <Icon icon="solar:trash-bin-trash-bold" width={20} />
-                </button>
+
+                <div className="flex gap-3">
+                  <button className="flex-1 rounded-2xl bg-gray-900 py-4 text-sm font-bold text-white transition-all hover:bg-gray-800">
+                    Edit All Details
+                  </button>
+                  <button className="rounded-2xl bg-red-50 px-6 py-4 text-sm font-bold text-red-600 transition-all hover:bg-red-100">
+                    <Icon icon="solar:trash-bin-trash-bold" width={20} />
+                  </button>
+                </div>
               </div>
             </div>
           </div>

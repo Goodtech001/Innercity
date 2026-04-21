@@ -158,8 +158,8 @@ export function CampaignInformationTab({ goForward, formData, setFormData }: For
   return (
     <div className="lg:max-w-3xl">
       {/* ✅ SHOW FULL PAGE LOADER WHEN LOADING */}
-      {(loading ) && (
-        <FullPageLoader message={loading ? "Processing campaign..." : "Saving campaign..."} />
+      {loading && (
+        <FullPageLoader message={loading ? 'Processing campaign...' : 'Saving campaign...'} />
       )}
 
       <div className="flex grid-cols-2 flex-col gap-4 md:grid">
@@ -174,7 +174,7 @@ export function CampaignInformationTab({ goForward, formData, setFormData }: For
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Aiding the Homeless"
-            className="w-full rounded-lg border-2 border-gray-300 outline-none p-2"
+            className="w-full rounded-lg border-2 border-gray-300 p-2 outline-none"
           />
         </div>
 
@@ -249,9 +249,9 @@ export function CampaignInformationTab({ goForward, formData, setFormData }: For
         </div>
       </div>
 
-      <button 
-        onClick={handleCreateCampaign} 
-        disabled={loading} 
+      <button
+        onClick={handleCreateCampaign}
+        disabled={loading}
         className="btn-primary mt-5 flex w-fit items-center justify-center gap-2 !px-10 disabled:opacity-70"
       >
         Next Step
@@ -952,8 +952,6 @@ export function CampaignInformationTab({ goForward, formData, setFormData }: For
 //   )
 // }
 
-
-
 export function UploadImageTab({ goForward, goBack, formData, setFormData }: FormTabsProps) {
   const [images, setImages] = useState<File[]>([])
   const { isModalClosed, openModal, closeModal } = useModal()
@@ -971,7 +969,7 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
 
   useEffect(() => {
     if (!images.length) return
-    if (!formData?.category_id) return 
+    if (!formData?.category_id) return
 
     const processImage = async () => {
       try {
@@ -1018,39 +1016,39 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
   }, [images, formData.category_id])
 
   const generateAvatarCard = async (file: File) => {
-  try {
-    const token = localStorage.getItem('token')
-    
-    // 🎯 Retrieve user's name from stored profile
-    const storedUser = localStorage.getItem('course-training-profile')
-    const parsedUser = storedUser ? JSON.parse(storedUser) : null
-    const userName = parsedUser?.user?.fullname || parsedUser?.fullname || 'User'
+    try {
+      const token = localStorage.getItem('token')
 
-    const form = new FormData()
-    // Changed from formData.title to userName
-    form.append('name', userName) 
-    form.append('userImage', file) 
-    form.append('excerpt', formData.excerpt || '')
+      // 🎯 Retrieve user's name from stored profile
+      const storedUser = localStorage.getItem('course-training-profile')
+      const parsedUser = storedUser ? JSON.parse(storedUser) : null
+      const userName = parsedUser?.user?.fullname || parsedUser?.fullname || 'User'
 
-    const res = await fetch(
-      `${baseUrl}/card-template/generate/category/${formData.category_id}`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const form = new FormData()
+      // Changed from formData.title to userName
+      form.append('name', userName)
+      form.append('userImage', file)
+      form.append('excerpt', formData.excerpt || '')
+
+      const res = await fetch(
+        `${baseUrl}/card-template/generate/category/${formData.category_id}`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: form,
         },
-        body: form,
-      },
-    )
-    
-    const data = await res.json()
-    if (!res.ok) return null
-    return data?.id
-  } catch (err) {
-    console.error("Avatar Card Generation Error:", err)
-    return null
+      )
+
+      const data = await res.json()
+      if (!res.ok) return null
+      return data?.id
+    } catch (err) {
+      console.error('Avatar Card Generation Error:', err)
+      return null
+    }
   }
-}
 
   const uploadImage = async (file: File) => {
     const token = localStorage.getItem('token')
@@ -1077,7 +1075,7 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
       }
 
       if (!formData?.id) return
-      
+
       // ✅ LOADING LOGIC
       if (!formData.thumbnail_id) return
 
@@ -1104,6 +1102,18 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
 
       if (!res.ok) throw new Error('Update failed')
 
+      // ✅ EXTRACT THUMBNAIL URL FROM RESPONSE
+      const data = await res.json()
+      const updatedCampaign = data.data || data // Adjust based on your API nesting
+
+      // If you need to store it in your formData state for the next step:
+      if (updatedCampaign.thumbnail?.url) {
+        setFormData((prev: any) => ({
+          ...prev,
+          thumbnail_url: updatedCampaign.thumbnail.url,
+        }))
+      }
+
       goForward()
     } catch (err) {
       alert('Failed to update campaign')
@@ -1116,7 +1126,9 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
     <div className="lg:max-w-3xl">
       {/* ✅ FULL PAGE LOADER FOR BOTH PROCESSING AND FINAL SAVING */}
       {(loading || isProcessing) && (
-        <FullPageLoader message={isProcessing ? "Processing image assets..." : "Saving campaign..."} />
+        <FullPageLoader
+          message={isProcessing ? 'Processing image assets...' : 'Saving campaign...'}
+        />
       )}
 
       <div className="col-span-2">
@@ -1143,7 +1155,10 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
             <Icon className="text-base" icon={'solar:gallery-wide-bold'} />
             <p>Browse Our Resources</p>
           </Link> */}
-          <p className='text-gray-500 font-normal'>Note: Each category has an e-card atttached to them , kindly input your image and click next step for the picture chosen and ecard to merge.</p>
+          <p className="font-normal text-gray-500">
+            Note: Each category has an e-card atttached to them , kindly input your image and click
+            next step for the picture chosen and ecard to merge.
+          </p>
         </div>
 
         <FileUpload
@@ -1174,7 +1189,11 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
       </div>
 
       {/* --- CROPPER & AVATAR MODALS --- */}
-      <Modal className="max-w-xl rounded-xl bg-white p-5 md:w-full" closeModal={closeModal} isModalClosed={isModalClosed}>
+      <Modal
+        className="max-w-xl rounded-xl bg-white p-5 md:w-full"
+        closeModal={closeModal}
+        isModalClosed={isModalClosed}
+      >
         <div className="p-4">
           <p className="mb-2 text-lg font-bold text-black">Create Avatar</p>
           <FileUpload
@@ -1195,7 +1214,11 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
         </div>
       </Modal>
 
-      <Modal isModalClosed={!isCropModalOpen} closeModal={() => setIsCropModalOpen(false)} className="max-w-3xl rounded-xl bg-white p-10">
+      <Modal
+        isModalClosed={!isCropModalOpen}
+        closeModal={() => setIsCropModalOpen(false)}
+        className="max-w-3xl rounded-xl bg-white p-10"
+      >
         <div className="relative h-96">
           {images[0] && (
             <Cropper
@@ -1224,7 +1247,11 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
         </div>
       </Modal>
 
-      <Modal isModalClosed={!isPreviewOpen} closeModal={() => setIsPreviewOpen(false)} className="max-w-xl rounded-xl bg-white p-5">
+      <Modal
+        isModalClosed={!isPreviewOpen}
+        closeModal={() => setIsPreviewOpen(false)}
+        className="max-w-xl rounded-xl bg-white p-5"
+      >
         <div className="flex flex-col items-center">
           <AvatarCard
             cardImageSrc={avatar.src}
@@ -1253,23 +1280,15 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
 
 export function PreviewCampaignTab({ goForward, formData }: any) {
   const [loading, setLoading] = useState(false)
+  const [imageLoading, setImageLoading] = useState(true) // ✅ Track image loading
   const [showSuccessModal, setShowSuccessModal] = useState(false)
 
   const handlePublish = async () => {
     setLoading(true)
-
     try {
       const token = localStorage.getItem('token')
-
       if (!token) {
         alert('Please login again')
-        setLoading(false)
-        return
-      }
-
-      if (!formData?.id) {
-        alert('Campaign ID missing')
-        setLoading(false)
         return
       }
 
@@ -1293,17 +1312,9 @@ export function PreviewCampaignTab({ goForward, formData }: any) {
         body: JSON.stringify(payload),
       })
 
-      const data = await res.json()
-
-      if (!res.ok) {
-        throw new Error(data?.message || 'Publish failed')
-      }
-
-      // ✅ TRIGGER SUCCESS MODAL
+      if (!res.ok) throw new Error('Publish failed')
       setShowSuccessModal(true)
-      
     } catch (err: any) {
-      console.error('Publish failed:', err)
       alert(err.message || 'Failed to publish campaign')
     } finally {
       setLoading(false)
@@ -1311,38 +1322,55 @@ export function PreviewCampaignTab({ goForward, formData }: any) {
   }
 
   const template = formData?.template || null
-  const templateImage = formData.thumbnail?.url || '/assets/images/fundraise-banner-example.jpg'
+  // ✅ Prioritize the uploaded thumbnail, removed the hardcoded default banner
+  const displayImage = formData.thumbnail_url || formData.thumbnail?.url
 
   return (
     <div className="relative">
       {/* ======================
-          ECARD PREVIEW
+          ECARD PREVIEW CONTAINER
       ======================= */}
-      <div className="mb-3 flex aspect-2 w-full items-center justify-center overflow-hidden rounded-lg bg-gray-100">
-        <div className="relative w-full max-w-[400px]">
-          {templateImage && (
+      <div className="relative mb-3 flex aspect-[2/1] w-full items-center justify-center overflow-hidden rounded-lg bg-gray-200">
+        {/* ✅ LOADER: Shows while the image is fetching */}
+        {imageLoading && displayImage && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-gray-50">
+            <div className="flex flex-col items-center gap-2">
+              <Icon icon="line-md:loading-twotone-loop" className="text-3xl text-primary" />
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                Loading Preview...
+              </p>
+            </div>
+          </div>
+        )}
+
+        <div className="relative h-full w-full">
+          {displayImage ? (
             <img
-              src={templateImage}
-              width={1400}
-              height={600}
-              alt="ecard-template"
-              className="w-full object-cover"
+              src={displayImage}
+              alt="campaign-banner"
+              className="h-full w-full object-cover" // ✅ Fills the side/container
+              onLoad={() => setImageLoading(false)}
+              onError={() => setImageLoading(false)}
             />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-gray-100 text-gray-400">
+              <p className="text-sm">No image uploaded</p>
+            </div>
           )}
 
-          {formData?.excerpt && (
+          {/* Text Overlays */}
+          {formData?.excerpt && !imageLoading && (
             <p
+              className="pointer-events-none absolute"
               style={{
-                position: 'absolute',
-                left: template?.excerptX || 200,
-                top: template?.excerptY || 400,
-                color: template?.textColor || 'black',
+                left: template?.excerptX || '50%',
+                top: template?.excerptY || '70%',
+                color: template?.textColor || 'white',
                 fontWeight: 'bold',
-                maxWidth: '250px',
+                textShadow: '0px 2px 4px rgba(0,0,0,0.5)', // Better visibility over images
+                maxWidth: '80%',
               }}
-            >
-              Goodnews Nnebedim
-            </p>
+            ></p>
           )}
         </div>
       </div>
@@ -1353,6 +1381,7 @@ export function PreviewCampaignTab({ goForward, formData }: any) {
 
       <hr className="my-3 border border-textcolor/50" />
 
+      {/* ... Rest of your UI (Stats, Progress Bar, Description) ... */}
       <div className="mt-3 flex flex-wrap items-center justify-between gap-8 gap-y-4 rounded-lg bg-complementary px-3 py-2 text-sm">
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2 font-semibold">
@@ -1361,13 +1390,10 @@ export function PreviewCampaignTab({ goForward, formData }: any) {
             <p className="font-normal">End Date: {formData.period || 'Not selected'}</p>
           </div>
           <div className="flex items-center gap-2 font-semibold">
-            <p>Goal: <span className="text-primary">${formData.goal || '0'}</span></p>
+            <p>
+              Goal: <span className="text-primary">${formData.goal || '0'}</span>
+            </p>
           </div>
-        </div>
-
-        <div className="max-w-[200px] flex-1">
-          <p className="mb-1 text-xs font-semibold text-primary">0%</p>
-          <PercentageBar value={0} className="h-3" />
         </div>
       </div>
 
@@ -1383,38 +1409,26 @@ export function PreviewCampaignTab({ goForward, formData }: any) {
         >
           {loading ? 'Publishing...' : 'Publish Campaign'}
         </button>
-
-        <button
-          type="button"
-          onClick={() => console.log('Saved Draft:', formData)}
-          className="btn-white w-fit truncate !px-10"
-        >
-          Save as Draft
-        </button>
       </div>
 
-      {/* ======================
-          SUCCESS MODAL
-      ======================= */}
+      {/* Success Modal remains the same */}
       {showSuccessModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-          <div className="w-full max-w-sm rounded-2xl bg-white p-8 text-center shadow-2xl animate-in fade-in zoom-in duration-300">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+          <div className="animate-in fade-in zoom-in w-full max-w-sm rounded-2xl bg-white p-8 text-center shadow-2xl duration-300">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600">
               <Icon icon="solar:check-circle-bold" className="h-10 w-10" />
             </div>
-            
+
             <h2 className="mb-2 text-2xl font-bold text-gray-900">Success!</h2>
             <p className="mb-8 text-gray-500">Your campaign is now live and ready for donations.</p>
 
             <div className="flex flex-col gap-3">
               <Link href="/profile?tab=campaigns">
-                <button className="btn-primary w-full py-3">
-                  Go to My Campaigns
-                </button>
+                <button className="btn-primary w-full py-3">Go to My Campaigns</button>
               </Link>
-              
+
               <Link href="/">
-                <button className="w-full py-2 text-sm font-medium text-gray-500 hover:text-gray-800 transition-colors">
+                <button className="w-full py-2 text-sm font-medium text-gray-500 transition-colors hover:text-gray-800">
                   Back to Home
                 </button>
               </Link>
