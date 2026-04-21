@@ -1017,24 +1017,31 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
 
   const generateAvatarCard = async (file: File) => {
     try {
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token')
 
-      // 🎯 Retrieve user's name with more robust fallback checks
-      const storedUser = localStorage.getItem('course-training-profile') || localStorage.getItem('user')
+      // 1. Check the exact keys used in your GlassProfile component
+      const profileKey = 'course-training-profile'
+      const userKey = 'user'
+
+      const storedProfile = localStorage.getItem(profileKey) || sessionStorage.getItem(profileKey)
+      const storedUser = localStorage.getItem(userKey) || sessionStorage.getItem(userKey)
+
+      const parsedProfile = storedProfile ? JSON.parse(storedProfile) : null
       const parsedUser = storedUser ? JSON.parse(storedUser) : null
-      
-      // Check multiple possible paths for the name
-      const userName = 
-        parsedUser?.user?.fullname || 
-        parsedUser?.fullname || 
-        parsedUser?.name || 
-        formData?.user?.fullname || // Check if it's already in your state
+
+      // 2. Extract fullname based on the structure saved in handleSave
+      // Your profile component saves it as: { user: { fullname: "..." } } OR { fullname: "..." }
+      const userName =
+        parsedProfile?.user?.fullname ||
+        parsedProfile?.fullname ||
+        parsedUser?.user?.fullname ||
+        parsedUser?.fullname ||
         'User'
 
-      console.log('Generating card for:', userName) // Debugging for Vercel logs
+      console.log('DEBUG: Generating e-card for name:', userName)
 
       const form = new FormData()
-      form.append('name', userName)
+      form.append('name', userName) // This matches the 'fullName' field from GlassProfile
       form.append('userImage', file)
       form.append('excerpt', formData.excerpt || '')
 
@@ -1050,11 +1057,12 @@ export function UploadImageTab({ goForward, goBack, formData, setFormData }: For
       )
 
       const data = await res.json()
+
       if (!res.ok) {
-        console.error('API Error:', data)
+        console.error('E-card generation failed:', data)
         return null
       }
-      
+
       return data?.id
     } catch (err) {
       console.error('Avatar Card Generation Error:', err)
