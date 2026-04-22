@@ -61,6 +61,11 @@ export default function VoucherManagementPage() {
 
   useEffect(() => { fetchVouchers() }, [])
 
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
+    toast.success('Voucher copied!')
+  }
+
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!amount) return toast.error('Please enter an amount')
@@ -94,20 +99,74 @@ export default function VoucherManagementPage() {
       {/* Header Area */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Voucher System</h1>
+          <h1 className="text-3xl font-black text-gray-900 tracking-tight">Voucher System</h1>
           <p className="text-gray-500 text-sm font-medium">Tracking {vouchers.length} active and used records</p>
         </div>
         <button 
           onClick={fetchVouchers} 
-          className="flex items-center gap-2 rounded-2xl bg-white border border-gray-100 px-5 py-2.5 text-sm font-bold text-gray-600 shadow-sm hover:bg-gray-50 transition-all active:scale-95"
+          className="flex items-center gap-2 self-start rounded-2xl bg-white border border-gray-100 px-5 py-2.5 text-sm font-bold text-gray-600 shadow-sm hover:bg-gray-50 transition-all active:scale-95"
         >
           <Icon icon="solar:restart-bold" className={fetching ? 'animate-spin' : ''} width={18} />
           Refresh List
         </button>
+
+        <button
+        onClick={() => setIsModalOpen(true)}
+        className="fixed right-10 bottom-10  z-50 md:flex h-16 w-16 items-center justify-center rounded-[2rem] bg-gray-900 text-white shadow-2xl shadow-gray-900/40 transition-all hover:scale-110 active:scale-95 group hidden "
+      >
+        <Icon icon="solar:add-circle-bold" width={28} className="group-hover:rotate-90 transition-transform duration-300" />
+      </button>
       </div>
 
-      {/* VOUCHER TABLE CARD */}
-      <div className="bg-white border border-gray-100 rounded-[2.5rem] shadow-xl shadow-gray-200/50 overflow-hidden">
+      {/* ✅ MOBILE VIEW: Grid of Cards (Hidden on Desktop) */}
+      <div className="grid grid-cols-1 gap-4 md:hidden">
+        {fetching ? (
+          <div className="p-10 text-center text-gray-400 animate-pulse">Loading secure vouchers...</div>
+        ) : vouchers.map((v) => (
+          <div key={v.id} className="relative overflow-hidden rounded-[2rem] bg-white p-5 border border-gray-100 shadow-sm">
+            <div className="flex justify-between items-start mb-4">
+               <div>
+                  <p className="text-[10px] font-black uppercase text-gray-400 tracking-widest">Amount</p>
+                  <h4 className="text-xl font-black text-gray-900">{v.currency} {v.amount.toLocaleString()}</h4>
+               </div>
+               <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter ${
+                v.used ? 'bg-red-50 text-red-500' : 'bg-green-50 text-green-600'
+              }`}>
+                {v.used ? 'Used' : 'Available'}
+              </span>
+            </div>
+
+            <div className="space-y-3">
+               <div>
+                  <p className="text-[10px] font-black uppercase text-gray-400 mb-1">Full Code</p>
+                  <div 
+                    onClick={() => copyToClipboard(v.voucher)}
+                    className="flex items-center justify-between bg-gray-50 border border-dashed border-gray-200 rounded-xl px-4 py-2 cursor-pointer active:bg-gray-100 transition-colors"
+                  >
+                    <span className="font-mono font-bold text-gray-800 tracking-widest text-sm">{v.voucher}</span>
+                    <Icon icon="solar:copy-bold" className="text-gray-400" />
+                  </div>
+               </div>
+
+               <div className="flex justify-between items-end">
+                  <div className="flex gap-1">
+                    {[v.pin1, v.pin2, v.pin3, v.pin4].map((p, i) => (
+                      <span key={i} className="text-[10px] font-black text-blue-600 bg-blue-50 px-2 py-1 rounded-md">
+                        {p}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="text-[10px] font-medium text-gray-400">
+                    {new Date(v.created_at).toLocaleDateString()}
+                  </p>
+               </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ✅ DESKTOP VIEW: Table (Hidden on Mobile) */}
+      <div className="hidden md:block bg-white border border-gray-100 rounded-[2.5rem] shadow-xl shadow-gray-200/50 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead className="bg-gray-50/50 border-b border-gray-100 text-gray-400 font-bold text-[10px] uppercase tracking-widest">
@@ -121,7 +180,7 @@ export default function VoucherManagementPage() {
             </thead>
             <tbody className="divide-y divide-gray-50">
               {fetching ? (
-                <tr><td colSpan={5} className="p-20 text-center text-gray-400 animate-pulse">Loading secure vouchers...</td></tr>
+                <tr><td colSpan={5} className="p-20 text-center text-gray-400">Loading...</td></tr>
               ) : vouchers.map((v) => (
                 <tr key={v.id} className="hover:bg-blue-50/30 transition-colors group">
                   <td className="px-6 py-4">
@@ -133,9 +192,13 @@ export default function VoucherManagementPage() {
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="font-mono text-sm font-bold text-gray-900 bg-gray-100 px-3 py-1.5 rounded-xl border border-gray-200/50 tracking-widest">
+                    <div 
+                      onClick={() => copyToClipboard(v.voucher)}
+                      className="inline-flex items-center gap-3 font-mono text-sm font-bold text-gray-900 bg-gray-100 px-3 py-1.5 rounded-xl border border-gray-200/50 tracking-widest cursor-pointer hover:bg-gray-200 transition-all"
+                    >
                       {v.voucher}
-                    </span>
+                      <Icon icon="solar:copy-bold" className="text-gray-400" />
+                    </div>
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex gap-1.5">
@@ -147,9 +210,7 @@ export default function VoucherManagementPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="flex flex-col">
-                      <span className="text-sm font-black text-gray-900">{v.currency} {v.amount.toLocaleString()}</span>
-                    </div>
+                    <span className="text-sm font-black text-gray-900">{v.currency} {v.amount.toLocaleString()}</span>
                   </td>
                   <td className="px-6 py-4 text-[11px] font-medium text-gray-400">
                     {new Date(v.created_at).toLocaleDateString(undefined, { dateStyle: 'medium' })}
@@ -164,16 +225,16 @@ export default function VoucherManagementPage() {
       {/* Floating Action Button */}
       <button
         onClick={() => setIsModalOpen(true)}
-        className="fixed bottom-10 right-10 z-50 flex h-16 w-16 items-center justify-center rounded-[2rem] bg-gray-900 text-white shadow-2xl shadow-gray-900/40 transition-all hover:scale-110 active:scale-95 group"
+        className="fixed bottom-4 md:bottom-10  left-10 z-50 flex h-16 w-16 items-center justify-center rounded-[2rem] bg-gray-900 text-white shadow-2xl shadow-gray-900/40 transition-all hover:scale-110 active:scale-95 group md:hidden "
       >
         <Icon icon="solar:add-circle-bold" width={28} className="group-hover:rotate-90 transition-transform duration-300" />
       </button>
 
-      {/* GENERATION MODAL */}
+      {/* Modal remains the same */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in" onClick={() => !isGenerating && setIsModalOpen(false)} />
-          <div className="relative w-full max-w-md space-y-6 rounded-[2.5rem] bg-white p-8 shadow-2xl animate-in zoom-in-95 duration-200">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => !isGenerating && setIsModalOpen(false)} />
+          <div className="relative w-full max-w-md space-y-6 rounded-[2.5rem] bg-white p-8 shadow-2xl">
             <div>
               <h2 className="text-2xl font-black text-gray-900 tracking-tight">Generate Voucher</h2>
               <p className="text-xs text-gray-400 font-medium">Create a new secure pin for training payments.</p>
@@ -186,7 +247,7 @@ export default function VoucherManagementPage() {
                    <select
                     value={currency}
                     onChange={(e) => setCurrency(e.target.value)}
-                    className="w-full appearance-none rounded-2xl border border-gray-100 bg-gray-50 px-4 py-3.5 text-sm outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-bold"
+                    className="w-full appearance-none rounded-2xl border border-gray-100 bg-gray-50 px-4 py-3.5 text-sm outline-none font-bold"
                   >
                     {currencies.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
@@ -203,7 +264,7 @@ export default function VoucherManagementPage() {
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="0.00"
-                    className="w-full rounded-2xl border border-gray-100 bg-gray-50 pl-14 pr-4 py-3.5 text-sm outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-black text-blue-600"
+                    className="w-full rounded-2xl border border-gray-100 bg-gray-50 pl-14 pr-4 py-3.5 text-sm outline-none font-black text-blue-600"
                   />
                 </div>
               </div>
@@ -213,7 +274,7 @@ export default function VoucherManagementPage() {
                   type="button" 
                   disabled={isGenerating}
                   onClick={() => setIsModalOpen(false)} 
-                  className="flex-1 px-4 py-4 text-sm font-bold text-gray-400 hover:text-gray-600 transition-colors"
+                  className="flex-1 px-4 py-4 text-sm font-bold text-gray-400 hover:text-gray-600"
                 >
                   Cancel
                 </button>
@@ -222,12 +283,7 @@ export default function VoucherManagementPage() {
                   disabled={isGenerating}
                   className="flex-[2] rounded-2xl bg-blue-600 px-4 py-4 text-sm font-bold text-white shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all flex items-center justify-center gap-2"
                 >
-                  {isGenerating ? (
-                    <>
-                      <Icon icon="solar:restart-bold" className="animate-spin" />
-                      Creating...
-                    </>
-                  ) : 'Generate Now'}
+                  {isGenerating ? 'Creating...' : 'Generate Now'}
                 </button>
               </div>
             </form>
