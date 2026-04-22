@@ -9,6 +9,7 @@ import { motion, useInView } from 'framer-motion'
 import { baseUrl } from '@/constants'
 import ball from '@/public/assets/images/ball-new.png'
 import Image from 'next/image'
+import { Icon } from '@iconify/react/dist/iconify.js'
 
 export default function LatestFundraisingCampaigns() {
   const ref = useRef(null)
@@ -51,32 +52,41 @@ export default function LatestFundraisingCampaigns() {
     >
       <section>
         <div className="container py-8 pb-6 md:py-14 md:pb-8">
-          <div className="mb-10 flex items-end justify-between gap-4">
-            {/* LEFT TITLE BLOCK */}
-            <div>
-              <h3 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white md:text-4xl">
-                Latest <span className="text-zinc-500 dark:text-zinc-400">Fundraising</span>{' '}
-                Campaigns
-              </h3>
+          <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+  {/* LEFT TITLE BLOCK */}
+  <div className="max-w-2xl">
+    {/* Subtle Accent Tag */}
+    <div className="mb-3 flex items-center gap-2">
+      <span className="h-1 w-8 rounded-full bg-primary" />
+      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">
+        Active Impact
+      </span>
+    </div>
 
-              <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                Discover active campaigns and support meaningful causes
-              </p>
-            </div>
+    <h3 className="text-3xl font-black leading-tight tracking-tighter text-zinc-900 dark:text-white md:text-5xl">
+      Latest <span className="text-blue-600 font-light italic">Fundraising</span> Campaigns
+    </h3>
 
-            {/* RIGHT CTA */}
-            <Link
-              href="/campaigns"
-              className="group relative inline-flex items-center gap-2 text-sm font-medium text-zinc-700 transition-colors hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
-            >
-              <span className="underline decoration-zinc-300 underline-offset-4 transition group-hover:decoration-zinc-900 dark:decoration-white/20 dark:group-hover:decoration-white">
-                See all campaigns
-              </span>
+    <p className="mt-3 max-w-md text-base leading-relaxed text-zinc-500 dark:text-zinc-400 md:text-lg">
+      Discover active campaigns and support <span className="text-zinc-900 dark:text-zinc-200 font-medium">meaningful causes</span> around the world.
+    </p>
+  </div>
 
-              {/* subtle arrow like Stripe */}
-              <span className="transition-transform group-hover:translate-x-1">→</span>
-            </Link>
-          </div>
+  {/* RIGHT CTA */}
+  <div className="flex shrink-0 items-center">
+    <Link
+      href="/campaigns"
+      className="group flex items-center gap-3 rounded-full border border-zinc-200 bg-white px-6 py-3 text-sm font-bold text-zinc-900 shadow-sm transition-all hover:border-zinc-900 hover:bg-zinc-900 hover:text-white dark:border-zinc-800 dark:bg-zinc-950 dark:text-white dark:hover:border-white dark:hover:bg-white dark:hover:text-black"
+    >
+      <span>Explore All</span>
+      <Icon 
+        icon="solar:arrow-right-up-linear" 
+        className="transition-transform duration-300 group-hover:rotate-45" 
+        width={18} 
+      />
+    </Link>
+  </div>
+</div>
 
           <div className="grid grid-cols-1 gap-10 px-4 py-6 md:grid-cols-3 md:px-6">
             {loading

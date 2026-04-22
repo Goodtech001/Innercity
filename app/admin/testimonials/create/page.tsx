@@ -1,9 +1,10 @@
-'use client'
+"use client"
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Icon } from '@iconify/react'
 import { createTestimonialService, uploadFileService } from '@/app/auth/auth.service'
+import { toast } from 'react-hot-toast'
 
 export default function CreateTestimonialPage() {
   const router = useRouter()
@@ -20,18 +21,12 @@ export default function CreateTestimonialPage() {
     rating: 5,
   })
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-  ) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0]
-    if (!selected) return
-
-    setFile(selected)
-    setPreview(URL.createObjectURL(selected))
+    if (selected) {
+      setFile(selected)
+      setPreview(URL.createObjectURL(selected))
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -40,7 +35,6 @@ export default function CreateTestimonialPage() {
 
     try {
       let uploadId = null
-
       if (file) {
         const uploadRes = await uploadFileService(file)
         uploadId = uploadRes.id
@@ -51,132 +45,127 @@ export default function CreateTestimonialPage() {
         avatarUploadId: uploadId,
       })
 
+      toast.success("Testimonial Created!")
       router.push('/admin/testimonials')
     } catch (err) {
-      console.error(err)
-      alert('Failed to create testimonial')
+      toast.error('Failed to create testimonial')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="mx-auto max-w-3xl">
-        {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-800">Create Testimonial</h1>
-            <p className="text-sm text-gray-500">Add a new partner testimonial to the platform</p>
+    <div className="min-h-screen bg-[#f8fafc] p-6">
+      <div className="mx-auto max-w-2xl">
+        <button
+          onClick={() => router.back()}
+          className="mb-4 flex items-center gap-1 text-sm font-medium text-gray-500 hover:text-primary transition"
+        >
+          <Icon icon="solar:alt-arrow-left-linear" />
+          Back to list
+        </button>
+
+        <div className="rounded-3xl border border-white bg-white/70 p-8 shadow-xl backdrop-blur-md">
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold text-gray-900">Create New Testimonial</h1>
+            <p className="text-gray-500">Capture the impact stories of your partners.</p>
           </div>
 
-          <button
-            onClick={() => router.back()}
-            className="flex items-center gap-2 text-sm text-gray-600 hover:text-black"
-          >
-            <Icon icon="solar:arrow-left-linear" />
-            Back
-          </button>
-        </div>
-
-        {/* Card */}
-        <div className="rounded-2xl border bg-white p-8 shadow-sm">
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Image Upload */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">Profile Image</label>
-
-              <div className="flex items-center gap-6">
-                <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border bg-gray-100">
+            {/* Custom Upload Area */}
+            <div className="flex flex-col items-center justify-center space-y-4">
+              <div className="group relative h-28 w-28">
+                <div className="h-full w-full overflow-hidden rounded-full border-4 border-white shadow-lg">
                   {preview ? (
                     <img src={preview} className="h-full w-full object-cover" />
                   ) : (
-                    <Icon icon="solar:user-bold" className="text-3xl text-gray-400" />
+                    <div className="flex h-full w-full items-center justify-center bg-gray-100 text-gray-300">
+                      <Icon icon="solar:user-bold" width={48} />
+                    </div>
                   )}
                 </div>
-
-                <input type="file" onChange={handleFileChange} className="text-sm" />
+                <label className="absolute bottom-0 right-0 cursor-pointer rounded-full bg-primary p-2 text-white shadow-md transition hover:scale-110">
+                  <Icon icon="solar:camera-add-bold" />
+                  <input type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
+                </label>
               </div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-gray-400">Upload Profile Photo</p>
             </div>
 
-            {/* Grid Fields */}
-            <div className="grid gap-6 md:grid-cols-2">
-              <div>
-                <label className="text-sm font-medium text-gray-700">Name</label>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-1">
+                <label className="text-xs font-bold uppercase text-gray-400 px-1">Full Name</label>
                 <input
                   name="clientName"
-                  onChange={handleChange}
-                  className="mt-1 w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
                   required
+                  placeholder="e.g. John Doe"
+                  className="w-full rounded-2xl border border-gray-100 bg-gray-50 px-4 py-3 text-sm outline-none transition focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10"
+                  onChange={(e) => setForm({ ...form, clientName: e.target.value })}
                 />
               </div>
 
-              <div>
-                <label className="text-sm font-medium text-gray-700">Location</label>
+              <div className="space-y-1">
+                <label className="text-xs font-bold uppercase text-gray-400 px-1">Location</label>
                 <input
                   name="location"
-                  onChange={handleChange}
-                  className="mt-1 w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-700">Donated Amount</label>
-                <input
-                  name="donatedAmount"
-                  onChange={handleChange}
-                  className="mt-1 w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-700">Donations Count</label>
-                <input
-                  name="donations"
-                  onChange={handleChange}
-                  className="mt-1 w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="e.g. Lagos, Nigeria"
+                  className="w-full rounded-2xl border border-gray-100 bg-gray-50 px-4 py-3 text-sm outline-none transition focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10"
+                  onChange={(e) => setForm({ ...form, location: e.target.value })}
                 />
               </div>
             </div>
 
-            {/* Message */}
-            <div>
-              <label className="text-sm font-medium text-gray-700">Testimonial Message</label>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-1">
+                <label className="text-xs font-bold uppercase text-gray-400 px-1">Amount Given</label>
+                <div className="relative">
+                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
+                   <input
+                    name="donatedAmount"
+                    placeholder="1,000"
+                    className="w-full rounded-2xl border border-gray-100 bg-gray-50 py-3 pl-8 pr-4 text-sm outline-none transition focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10"
+                    onChange={(e) => setForm({ ...form, donatedAmount: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold uppercase text-gray-400 px-1">Impact Rating</label>
+                <select
+                  name="rating"
+                  className="w-full rounded-2xl border border-gray-100 bg-gray-50 px-4 py-3 text-sm outline-none transition focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10"
+                  onChange={(e) => setForm({ ...form, rating: Number(e.target.value) })}
+                >
+                  <option value={5}>⭐⭐⭐⭐⭐ (Perfect)</option>
+                  <option value={4}>⭐⭐⭐⭐ (Great)</option>
+                  <option value={3}>⭐⭐⭐ (Good)</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs font-bold uppercase text-gray-400 px-1">Testimonial Message</label>
               <textarea
                 name="content"
-                rows={4}
-                onChange={handleChange}
-                className="mt-1 w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
                 required
+                rows={4}
+                placeholder="What did they have to say about the campaign?"
+                className="w-full rounded-2xl border border-gray-100 bg-gray-50 px-4 py-3 text-sm outline-none transition focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10"
+                onChange={(e) => setForm({ ...form, content: e.target.value })}
               />
             </div>
 
-            {/* Rating */}
-            <div>
-              <label className="text-sm font-medium text-gray-700">Rating</label>
-              <select
-                name="rating"
-                onChange={handleChange}
-                className="mt-1 w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
-              >
-                {[5, 4, 3, 2, 1].map((r) => (
-                  <option key={r} value={r}>
-                    {r} Stars
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Submit */}
-            <div className="pt-4">
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full rounded-xl bg-primary py-3 font-medium text-white transition hover:opacity-90 disabled:opacity-50"
-              >
-                {loading ? 'Creating...' : 'Create Testimonial'}
-              </button>
-            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-sm font-bold text-white shadow-lg transition hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
+            >
+              {loading ? (
+                <Icon icon="line-md:loading-twotone-loop" className="text-xl" />
+              ) : (
+                "Publish Testimonial"
+              )}
+            </button>
           </form>
         </div>
       </div>

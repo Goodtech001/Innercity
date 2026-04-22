@@ -2,7 +2,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 import React, { Suspense, useEffect, useState } from 'react'
-import campaigns from '@/json/dummy-campaigns.json'
 import { Campaign } from '@/types/Campaign'
 import TopNavbar from '@/layouts/topnavbar'
 import Footer from '@/layouts/footer'
@@ -12,44 +11,45 @@ import FundraiseCampaignCard from '@/components/fundraise-campaign-card'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import useTopnavbar from '@/layouts/topnavbar/useTopnavbar'
 import food from '@/public/assets/images/food-7bmc.jpg'
-// import education from '@/public/assets/images/women-empowerment-gathering.jpg'
 import women from '@/public/assets/images/women-empowerment-gathering.jpg'
 import community from '@/public/assets/images/community-development-construction.jpg'
 import Image from 'next/image'
 import { baseUrl } from '@/constants'
-// import useTopnavbar from '@/layouts/topnavbar/useTopnavbar'
 
 function CampaignsContent() {
   const searchParams = useSearchParams()
+  const router = useRouter()
+
+  const CATEGORY_MAP: Record<string, number[]> = {
+    food: [32, 30, 38, 40],
+    education: [33, 37],
+    women: [31],
+    community: [35, 36, 25, 29],
+  }
+
+  // Get search and category from URL
   const query = searchParams.get('query')?.toLowerCase() || ''
-  const category = searchParams.get('category')
-
-  // const filteredCampaignsByQuery = (campaigns as unknown as Campaign[]).filter((campaign) =>
-  //   campaign.title.toLowerCase().includes(query.toLowerCase()),
-  // )
-  const [activeCategory, setActiveCategory] = useState<string | null>(null)
-
-  // const filteredCampaigns = category
-  //   ? filteredCampaignsByQuery.filter((campaign) => campaign.category === category)
-  //   : filteredCampaignsByQuery
+  const categoryParam = searchParams.get('category')?.toLowerCase() || ''
 
   const { setSubMenuClicked } = useTopnavbar()
-  const handleSubMenuClick = (path: string) => {
-    setActiveCategory(path)
-    router.push(path)
-    setSubMenuClicked(path)
-  }
-  // const [activeStep, setActiveStep] = useState(1)
-
-  const router = useRouter()
-  const baseButton =
-    'btn-white flex items-center truncate px-4 py-2 text-xs font-light border border-transparent text-textcolor rounded-md transition-all duration-200 md:px-5 md:py-2'
-
-  const activeGlow =
-    'border-blue-200 border text-primary shadow-[0_0_8px_rgba(0,123,255,0.7)] bg-primary/10'
-
   const [campaigns, setCampaigns] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+
+  // Handle Category Clicks
+  const handleCategoryClick = (categoryName: string) => {
+    // If clicking same category, clear it (toggle), else set it
+    const newCategory = categoryParam === categoryName ? '' : categoryName
+    const params = new URLSearchParams(searchParams.toString())
+
+    if (newCategory) {
+      params.set('category', newCategory)
+    } else {
+      params.delete('category')
+    }
+
+    router.push(`?${params.toString()}`)
+    setSubMenuClicked(newCategory)
+  }
 
   useEffect(() => {
     fetchCampaigns()
@@ -57,19 +57,15 @@ function CampaignsContent() {
 
   const fetchCampaigns = async () => {
     try {
+      setLoading(true)
       const res = await fetch(`${baseUrl}/campaigns`)
       const data = await res.json()
-
-      // Ensure we are working with an array
       const campaignsArray = Array.isArray(data) ? data : data.data || data.campaigns || []
 
       const sortedCampaigns = [...campaignsArray].sort((a, b) => {
-        // Convert to time, defaulting to 0 if date is missing
         const dateA = a.created_at ? new Date(a.created_at).getTime() : 0
         const dateB = b.created_at ? new Date(b.created_at).getTime() : 0
-        
-        // Newest (larger timestamp) first
-        return dateB - dateA 
+        return dateB - dateA
       })
 
       setCampaigns(sortedCampaigns)
@@ -79,6 +75,24 @@ function CampaignsContent() {
       setLoading(false)
     }
   }
+
+  // ✅ FILTERING LOGIC
+  // ✅ UPDATED FILTERING LOGIC FOR MULTIPLE IDs
+  const filteredCampaigns = campaigns.filter((campaign) => {
+    // 1. Search Filter
+    const matchesSearch =
+      campaign.title?.toLowerCase().includes(query) ||
+      campaign.description?.toLowerCase().includes(query)
+
+    // 2. Category Filter (Handles multiple IDs)
+    const targetIds = categoryParam ? CATEGORY_MAP[categoryParam] : null
+
+    const matchesCategory = targetIds ? targetIds.includes(Number(campaign.category_id)) : true
+
+    return matchesSearch && matchesCategory
+  })
+
+  const activeGlow = 'ring-4 ring-primary ring-offset-2 border-primary shadow-lg'
 
   if (loading) {
     return (
@@ -93,7 +107,7 @@ function CampaignsContent() {
   return (
     <div>
       <div className="container !h-auto">
-        <div className="mb-3 items-center justify-between border-b py-1.5 pt-6 md:flex">
+        <div className="mb-3 mt-10 items-center justify-between border-b py-1.5 pt-6 md:flex">
           <h3 className="text-balance text-2xl font-bold text-dark md:text-4xl">
             Fundraising Campaigns
           </h3>
@@ -101,83 +115,102 @@ function CampaignsContent() {
         </div>
 
         <div className="mt-3 flex w-full justify-center overflow-x-auto no-scrollbar md:justify-between">
-          <div className="space- flex justify-center gap-4 text-sm md:mb-0 md:gap-4 md:space-x-2">
-            <button onClick={() => handleSubMenuClick('?category=food')}>
-              <div className="flex flex-col items-center justify-center">
+          <div className="flex justify-center gap-4 text-sm md:mb-0 md:gap-4">
+            {/* Category: Food */}
+            <button onClick={() => handleCategoryClick('food')}>
+              <div className="flex flex-col items-center justify-center gap-1">
                 <Image
                   src={food}
                   alt="food"
-                  className={`h-10 w-10 rounded-full object-cover font-light ${
-                    activeCategory === '?category=food' ? activeGlow : ''
+                  className={`h-12 w-12 rounded-full object-cover transition-all ${
+                    categoryParam === 'food' ? activeGlow : 'opacity-70 hover:opacity-100'
                   }`}
                 />
-                <p>Food</p>
+                <p
+                  className={`text-xs font-bold ${categoryParam === 'food' ? 'text-primary' : 'text-gray-500'}`}
+                >
+                  Food
+                </p>
               </div>
             </button>
-            <button onClick={() => handleSubMenuClick('?category=education')}>
-              <div className="flex flex-col items-center justify-center">
+
+            {/* Category: Education */}
+            <button onClick={() => handleCategoryClick('education')}>
+              <div className="flex flex-col items-center justify-center gap-1">
                 <Image
                   src={community}
                   alt="education"
-                  className={`h-10 w-10 rounded-full object-cover font-light ${
-                    activeCategory === '?category=food' ? activeGlow : ''
+                  className={`h-12 w-12 rounded-full object-cover transition-all ${
+                    categoryParam === 'education' ? activeGlow : 'opacity-70 hover:opacity-100'
                   }`}
                 />
-                <p>Education</p>
+                <p
+                  className={`text-xs font-bold ${categoryParam === 'education' ? 'text-primary' : 'text-gray-500'}`}
+                >
+                  Education
+                </p>
               </div>
             </button>
-            <button onClick={() => handleSubMenuClick('?category=women')}>
-              <div className="flex flex-col items-center justify-center">
+
+            {/* Category: Women */}
+            <button onClick={() => handleCategoryClick('women')}>
+              <div className="flex flex-col items-center justify-center gap-1">
                 <Image
                   src={women}
                   alt="women"
-                  className={`h-10 w-10 rounded-full object-cover font-light ${
-                    activeCategory === '?category=food' ? activeGlow : ''
+                  className={`h-12 w-12 rounded-full object-cover transition-all ${
+                    categoryParam === 'women' ? activeGlow : 'opacity-70 hover:opacity-100'
                   }`}
                 />
-                <p>Women</p>
+                <p
+                  className={`text-xs font-bold ${categoryParam === 'women' ? 'text-primary' : 'text-gray-500'}`}
+                >
+                  Women
+                </p>
               </div>
             </button>
-            <button onClick={() => handleSubMenuClick('?category=community')}>
-              <div className="flex flex-col items-center justify-center">
+
+            {/* Category: Community */}
+            <button onClick={() => handleCategoryClick('community')}>
+              <div className="flex flex-col items-center justify-center gap-1">
                 <Image
                   src={community}
                   alt="community"
-                  className={`h-10 w-10 rounded-full object-cover font-light ${
-                    activeCategory === '?category=food' ? activeGlow : ''
+                  className={`h-12 w-12 rounded-full object-cover transition-all ${
+                    categoryParam === 'community' ? activeGlow : 'opacity-70 hover:opacity-100'
                   }`}
                 />
-                <p className="">Community</p>
+                <p
+                  className={`text-xs font-bold ${categoryParam === 'community' ? 'text-primary' : 'text-gray-500'}`}
+                >
+                  Community
+                </p>
               </div>
             </button>
           </div>
 
-          <div className="flex text-black">
-            <h1 className="hidden font-semibold text-black md:block">Sort by</h1>
-            <Icon
-              icon="iconamoon:arrow-down-2"
-              width="24"
-              height="24"
-              className="hidden md:block"
-            />
-          </div>
-        </div>
-
-        <div className="mt-2 flex flex-col justify-between space-y-5 md:flex-row md:space-y-0">
-          <div className="flex justify-between">
-            <div className="flex space-x-4 md:space-x-5"></div>
-            <div className="flex text-black">
-              <h1 className="hidden text-sm font-semibold text-black">Sort by</h1>
-              <Icon icon="iconamoon:arrow-down-2" width="20" height="20" className="hidden" />
-            </div>
+          <div className="hidden items-center gap-1 text-black md:flex">
+            <h1 className="font-semibold">Sort by</h1>
+            <Icon icon="iconamoon:arrow-down-2" width="24" height="24" />
           </div>
         </div>
       </div>
 
+      {/* Grid displays the FILTERED campaigns */}
       <div className="grid grid-cols-1 gap-6 px-6 py-10 md:grid-cols-3 md:px-14">
-        {campaigns.map((campaign) => (
-          <FundraiseCampaignCard key={campaign.id} campaign={campaign} />
-        ))}
+        {filteredCampaigns.length > 0 ? (
+          filteredCampaigns.map((campaign) => (
+            <FundraiseCampaignCard key={campaign.id} campaign={campaign} />
+          ))
+        ) : (
+          <div className="col-span-full py-20 text-center text-gray-500">
+            <Icon
+              icon="solar:magnifer-zoom-out-bold"
+              className="mx-auto mb-4 text-4xl opacity-20"
+            />
+            <p className="text-lg font-medium">No campaigns found for this selection.</p>
+          </div>
+        )}
       </div>
     </div>
   )
@@ -187,7 +220,7 @@ export default function MoreFundraisingCampaigns() {
   return (
     <div>
       <TopNavbar />
-      <Suspense fallback={<div className="p-4 text-gray-500">Loading campaigns...</div>}>
+      <Suspense fallback={<div className="p-4 text-gray-500">Loading...</div>}>
         <CampaignsContent />
       </Suspense>
       <Footer />
@@ -198,16 +231,11 @@ export default function MoreFundraisingCampaigns() {
 function CampaignCardSkeleton() {
   return (
     <div className="animate-pulse rounded-xl border bg-white shadow-sm">
-      {/* Image */}
       <div className="h-48 w-full rounded-t-xl bg-gray-200"></div>
-
-      {/* Content */}
       <div className="space-y-3 p-4">
         <div className="h-4 w-3/4 rounded bg-gray-200"></div>
         <div className="h-4 w-1/2 rounded bg-gray-200"></div>
-
         <div className="mt-4 h-2 w-full rounded bg-gray-200"></div>
-
         <div className="flex justify-between pt-3">
           <div className="h-4 w-16 rounded bg-gray-200"></div>
           <div className="h-4 w-16 rounded bg-gray-200"></div>

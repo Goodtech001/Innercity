@@ -101,9 +101,9 @@ export default function CampaignShowcase({ campaign }: { campaign: Campaign }) {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
               {/* PLAY BUTTON */}
-              <button className="absolute bottom-4 left-4 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg">
+              {/* <button className="absolute bottom-4 left-4 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg">
                 <Icon icon="solar:play-bold" />
-              </button>
+              </button> */}
             </div>
 
             {/* PROGRESS */}
@@ -123,7 +123,7 @@ export default function CampaignShowcase({ campaign }: { campaign: Campaign }) {
           </div>
 
           {/* FLOATING CARD */}
-          <div className="absolute -bottom-6 -right-6 rounded-2xl bg-white p-4 shadow-xl">
+          <div className="absolute md:-bottom-14 -bottom-14 right-7 md:-right-6 rounded-2xl bg-white p-4 shadow-xl">
             <p className="text-xs text-gray-500">Impact</p>
             <p className="text-lg font-bold text-primary">7B+ meals</p>
           </div>

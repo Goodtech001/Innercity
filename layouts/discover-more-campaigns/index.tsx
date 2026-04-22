@@ -29,6 +29,7 @@ export default function DiscoverMoreCategories() {
                 <CategoryLinkButton2 />
                 <CategoryLinkButton3 />
                 <CategoryLinkButton4 />
+                <CategoryLinkButton5 />
                 <CategoryLinkButton />
               </div>
             </Marquee>
@@ -38,6 +39,7 @@ export default function DiscoverMoreCategories() {
                 <CategoryLinkButton2 />
                 <CategoryLinkButton3 />
                 <CategoryLinkButton4 />
+                <CategoryLinkButton5 />
                 <CategoryLinkButton />
               </div>
             </Marquee>
@@ -75,7 +77,16 @@ const CategoryLinkButton3 = () => {
 const CategoryLinkButton4 = () => {
   return (
     <button className="rounded-lg border-2 border-textcolor/25 bg-white px-8 py-3 text-center text-textcolor shadow-[0px_0px_6px_1px_rgba(0,_0,_0,_0.1)] hover:border-primary hover:text-primary md:text-base">
-      <p className="font-medium !leading-[100%]">#endofpoverty</p>
+      <p className="font-medium !leading-[100%]">#EndChildPovertyNow</p>
+    </button>
+  )
+}
+
+
+const CategoryLinkButton5 = () => {
+  return (
+    <button className="rounded-lg border-2 border-textcolor/25 bg-white px-8 py-3 text-center text-textcolor shadow-[0px_0px_6px_1px_rgba(0,_0,_0,_0.1)] hover:border-primary hover:text-primary md:text-base">
+      <p className="font-medium !leading-[100%]">Emergency Food Response</p>
     </button>
   )
 }
