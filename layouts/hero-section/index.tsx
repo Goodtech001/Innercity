@@ -1,3 +1,114 @@
+// 'use client'
+
+// import { useEffect, useState } from 'react'
+// import { motion } from 'framer-motion'
+// import Image from 'next/image'
+
+// import img1 from '@/public/assets/images/hungry.jpg'
+// import img2 from '@/public/assets/images/chuka2.jpg'
+// import img3 from '@/public/assets/images/sponsor.jpg'
+
+// export default function Hero() {
+//   const images = [img1, img2, img3]
+
+//   const [current, setCurrent] = useState(0)
+
+//   // auto slide
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       setCurrent((prev) => (prev + 1) % images.length)
+//     }, 6000)
+
+//     return () => clearInterval(interval)
+//   }, [images.length])
+
+//   return (
+//     <section className="relative h-screen w-full overflow-hidden bg-black">
+      
+//       {/* BACKGROUND SLIDES */}
+//       {images.map((img, i) => (
+//         <motion.div
+//           key={i}
+//           className="absolute inset-0"
+//           initial={{ opacity: 0, scale: 1.1 }}
+//           animate={{
+//             opacity: i === current ? 1 : 0,
+//             scale: i === current ? 1.05 : 1.1,
+//           }}
+//           transition={{ duration: 1.5 }}
+//         >
+//           <Image
+//             src={img}
+//             alt=""
+//             fill
+//             priority
+//             className="object-cover"
+//           />
+//         </motion.div>
+//       ))}
+
+//       {/* DARK OVERLAY */}
+//       <div className="absolute inset-0 bg-black/60" />
+
+//       {/* CONTENT (CENTERED) */}
+//       <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white px-6">
+        
+//         <motion.h1
+//           key={current} // sync text change with image
+//           initial={{ opacity: 0, y: 30 }}
+//           animate={{ opacity: 1, y: 0 }}
+//           transition={{ duration: 0.8 }}
+//           className="max-w-4xl text-4xl font-bold leading-tight md:text-6xl"
+//         >
+//           Where generosity becomes{' '}
+//           <span className="text-primary">real impact</span>
+//         </motion.h1>
+
+//         <motion.p
+//           initial={{ opacity: 0, y: 20 }}
+//           animate={{ opacity: 1, y: 0 }}
+//           transition={{ delay: 0.2 }}
+//           className="mt-6 max-w-2xl text-lg text-gray-200"
+//         >
+//           Every second, people are giving. Your donation flows directly to children who need it most.
+//         </motion.p>
+
+//         <div className="mt-8 flex flex-wrap justify-center gap-4">
+//           <button className="rounded-lg bg-primary px-6 py-3 font-semibold shadow-lg hover:scale-105 transition">
+//             Start a campaign
+//           </button>
+
+//           <button className="rounded-lg border border-white/40 px-6 py-3 hover:bg-white/10 transition">
+//             Explore campaigns
+//           </button>
+//         </div>
+//       </div>
+
+//       {/* INDICATORS */}
+//       <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-2">
+//         {images.map((_, i) => (
+//           <button
+//             key={i}
+//             onClick={() => setCurrent(i)}
+//             className={`h-1 w-10 rounded-full transition ${
+//               i === current ? 'bg-white' : 'bg-white/30'
+//             }`}
+//           />
+//         ))}
+//       </div>
+//     </section>
+//   )
+// }
+
+
+
+
+
+
+
+
+
+
 'use client'
 
 import React, { useRef } from 'react'
@@ -32,7 +143,7 @@ export default function HeroSection() {
       </div>
 
       {/* GRID */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.04)_1px,transparent_1px)] bg-[size:40px_40px]" />
+      {/* <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.04)_1px,transparent_1px)] bg-[size:40px_40px]" /> */}
 
       <div
         ref={ref}

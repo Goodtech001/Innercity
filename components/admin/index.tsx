@@ -28,6 +28,7 @@ const links = [
     ],
   },
   { href: '/admin/voucher', label: 'Vouchers', icon: 'solar:ticket-sale-bold-duotone' },
+   { href: '/admin/resources', label: 'Resources', icon: 'grommet-icons:resources' },
   { href: '/admin/complaints', label: 'Messages', icon: 'solar:chat-round-dots-bold-duotone' },
   {
     href: '/admin/all-staff',

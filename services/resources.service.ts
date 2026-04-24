@@ -1,21 +1,22 @@
+import { baseUrl } from '@/constants'
 import axios from 'axios'
 
 export interface GetResourcesServiceResponse {
+  id: number
   name: string
-  type: string
-  src: string
-  tags: string[]
+  description: string
+  asset_id: number
+  asset: {
+    id: number
+    url: string
+    type: string // "e-card", etc.
+    resourceType: string // "image", "video"
+  }
 }
 
-export const getResourcesService = async () => {
-  const response = await axios.get(`https://emis-server.onrender.com/resources`)
-  const res = response.data
-
-  if (res.status < 200 || res.status >= 300) {
-    const errorMessage = res.error?.message || res.message || 'Something went wrong'
-    throw new Error(errorMessage)
-  }
-
-  const data: GetResourcesServiceResponse[] = res
+export const getResourcesService = async (): Promise<GetResourcesServiceResponse[]> => {
+  const response = await axios.get(`${baseUrl}/resources`)
+  // Based on your JSON, it's an array directly or inside response.data
+  const data = response.data?.data || response.data
   return data
 }

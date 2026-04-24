@@ -48,6 +48,9 @@ export default function DonationTabsClient({
   const [user, setUser] = useState<TUser | null>(null)
   const [amount, setAmount] = useState<number>(0);
 
+  // const params = useParams();
+const id = params.id;
+
   const loadUserData = useCallback(() => {
     const stored =
       localStorage.getItem('course-training-profile') ||
@@ -104,9 +107,9 @@ export default function DonationTabsClient({
       case 2:
         return <StripeForm />
       case 3:
-        return <PaypalForm />
+        return <PaypalForm campaignId={null} />
       case 4:
-        return <PaystackForm campaign={campaign} />
+        return <PaypalForm campaignId={campaign?.id}  />
       case 5:
         return  <VoucherForm campaignId={campaign?.id} />
       case 6:
