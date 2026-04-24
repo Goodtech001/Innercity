@@ -92,7 +92,7 @@ export const loginWithKingsChat = async () => {
 
     const kcLogin = await kingsChatWebSdk.login({
       scopes: ['profile', 'message', 'conference_call', 'send_chat_message'],
-      clientId: kingsChatClientId,
+      clientId: kingsChatClientId || '',
     })
 
     const profile = await getKingChatProfile({
