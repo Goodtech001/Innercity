@@ -162,15 +162,14 @@ export default function HeroSection() {
           </div>
 
           <h1 className="text-4xl md:text-6xl font-semibold leading-tight text-gray-900">
-            Where generosity becomes{' '}
+            Make every moment A lifetime {' '}
             <span className="bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">
-              real impact
+              of impact.
             </span>
           </h1>
 
           <p className="mt-5 max-w-lg text-gray-600 text-base md:text-lg">
-            Every second, people are giving. Our system ensures every donation
-            flows seamlessly to those who need it most.
+           Transform your birthdays, anniversaries, and special milestones into life-changing opportunities for indigent children and families in dire need .
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">
