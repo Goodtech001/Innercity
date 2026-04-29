@@ -68,8 +68,7 @@ function ResourcePage() {
               Media <span className="text-blue-600">Assets</span>
             </h1>
             <p className="text-lg font-medium leading-relaxed text-gray-500">
-              Access high-quality campaign resources, videos, and visual materials to support and
-              share our community initiatives.
+              Access Downloadable inspiring videos and graphics to help promote your fundraising campaign and maximize impact.
             </p>
           </div>
         </div>

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import React, { useState, useEffect } from 'react'
@@ -18,17 +19,18 @@ function BankTransfer({ campaign, amount }: BankTransferProps) {
   const [proofImage, setProofImage] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   
-  // User context
   const [email, setEmail] = useState('')
   const [userId, setUserId] = useState<number | null>(null)
+  const [token, setToken] = useState('')
 
   useEffect(() => {
-    const stored = sessionStorage.getItem('course-training-profile') || localStorage.getItem('course-training-profile')
+    const stored = localStorage.getItem('course-training-profile') || sessionStorage.getItem('course-training-profile')
     if (stored) {
       const parsed = JSON.parse(stored)
-      const user = parsed?.user || parsed
-      setEmail(user?.email || '')
-      setUserId(user?.id || null)
+      const userData = parsed?.user || parsed
+      setEmail(userData?.email || '')
+      setUserId(userData?.id ? Number(userData.id) : null)
+      setToken(parsed?.token || '')
     }
   }, [])
 
@@ -42,6 +44,7 @@ function BankTransfer({ campaign, amount }: BankTransferProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
     if (!proofImage || !depositorName) {
       return toast.error('Please provide depositor name and payment receipt')
     }
@@ -49,29 +52,38 @@ function BankTransfer({ campaign, amount }: BankTransferProps) {
     try {
       setLoading(true)
 
-      // 1. Upload to Cloudinary (Standard implementation)
+      // 1. Use YOUR internal upload endpoint
       const formData = new FormData()
       formData.append('file', proofImage)
-      formData.append('upload_preset', 'fundraise_preset') // Replace with your actual preset
 
-      const cloudRes = await axios.post(
-        `https://api.cloudinary.com/v1_1/dowwocxkv/image/upload`, 
-        formData
-      )
-      const proofImageUrl = cloudRes.data.secure_url
+      const uploadRes = await axios.post(`${baseUrl}/uploads`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
+        }
+      })
 
-      // 2. Submit to your Backend based on Postman screenshot
+      // Get URL from your backend response structure (asset.url or data.url)
+      const proofImageUrl = uploadRes.data?.asset?.url || uploadRes.data?.url || uploadRes.data?.data?.url
+
+      if (!proofImageUrl) {
+        throw new Error('Failed to retrieve image URL from upload')
+      }
+
+      // 2. Submit to Backend - Following Postman Guide Exactly
       const payload = {
-        campaignId: campaign?.id,
+        campaignId: Number(campaign?.id),
         amount: Number(amount),
         currency: "NGN",
         depositor_name: depositorName,
         email: email,
-        userId: userId,
-        proofImageUrl: proofImageUrl
+        userId: userId ? Number(userId) : null,
+        proofImageUrl: proofImageUrl 
       }
 
-      const res = await axios.post(`${baseUrl}/bank-transfers`, payload)
+      const res = await axios.post(`${baseUrl}/bank-transfers`, payload, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
 
       if (res.status === 200 || res.status === 201) {
         toast.success('Transfer details submitted for verification!')
@@ -122,6 +134,7 @@ function BankTransfer({ campaign, amount }: BankTransferProps) {
           <div className="relative group">
             <input
               type="file"
+              required
               accept="image/*"
               onChange={handleFileChange}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
@@ -147,7 +160,7 @@ function BankTransfer({ campaign, amount }: BankTransferProps) {
           {loading ? (
             <>
               <Icon icon="solar:restart-bold" className="animate-spin" />
-              Verifying...
+              Submitting...
             </>
           ) : (
             'Submit Proof of Payment'
