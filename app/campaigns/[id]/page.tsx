@@ -3,8 +3,9 @@ import { Campaign } from '@/types/Campaign'
 // import CampaignDetailsClient from './CampaignDetailsClient'
 import { calculateProgress } from '@/utils/percentage'
 import CampaignDetailsClient from './campaign-details-client'
+import { baseUrl } from '@/constants'
 
-const baseUrl = 'https://fundraise-api.onrender.com/api/v1'
+// const baseUrl = 'https://fundraise-api.onrender.com/api/v1'
 
 // 1. generateStaticParams does NOT need to await params (it's the generator)
 export async function generateStaticParams() {

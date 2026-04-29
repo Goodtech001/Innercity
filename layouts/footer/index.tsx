@@ -43,7 +43,7 @@ export default function Footer() {
       setError(null)
       setMessage(null)
 
-      await axios.post('https://fundraise-api.onrender.com/api/v1/newsletter/subscribe', { email })
+      await axios.post('https://fundraise-api.theinnercitymission.tv/api/v1/newsletter/subscribe', { email })
 
       // setMessage(data.message)
 

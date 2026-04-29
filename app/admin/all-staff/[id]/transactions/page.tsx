@@ -113,7 +113,7 @@ export default function UserTransactionsPage() {
     doc.text(String(transactions.length), pageWidth - 30, 42, { align: 'right' })
 
     doc.text(`Total Amount:`, pageWidth - 80, 49)
-    doc.text(`₦${totalDonated.toLocaleString()}`, pageWidth - 30, 49, {
+    doc.text(`$${totalDonated.toLocaleString()}`, pageWidth - 30, 49, {
       align: 'right',
     })
 
@@ -138,7 +138,7 @@ export default function UserTransactionsPage() {
       tx.campaign?.title || '-',
       tx.method?.toUpperCase(),
       tx.status?.toUpperCase(),
-      `₦${Number(tx.amount).toLocaleString()}`,
+      `$${Number(tx.amount).toLocaleString()}`,
     ])
 
     // ===== TABLE =====

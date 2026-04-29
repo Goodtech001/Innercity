@@ -41,39 +41,50 @@ export default function UserCampaignsPage() {
 
   // 🎯 Combine funders and payments for stats
   const stats = useMemo(() => {
-    return campaigns.reduce((acc, c) => {
-      acc.totalCampaigns += 1;
-      acc.totalRaised += Number(c.raised || 0);
-      
-      const uniqueDonors = new Set([
-        ...(c.funders || []).map((f: any) => f.user?.id),
-        ...(c.payments || []).map((p: any) => p.user?.id)
-      ].filter(Boolean));
+    return campaigns.reduce(
+      (acc, c) => {
+        acc.totalCampaigns += 1
+        acc.totalRaised += Number(c.raised || 0)
 
-      acc.totalDonors += uniqueDonors.size || Number(c.donorCount || 0);
-      return acc;
-    }, { totalCampaigns: 0, totalRaised: 0, totalDonors: 0 });
-  }, [campaigns]);
+        const uniqueDonors = new Set(
+          [
+            ...(c.funders || []).map((f: any) => f.user?.id),
+            ...(c.payments || []).map((p: any) => p.user?.id),
+          ].filter(Boolean),
+        )
+
+        acc.totalDonors += uniqueDonors.size || Number(c.donorCount || 0)
+        return acc
+      },
+      { totalCampaigns: 0, totalRaised: 0, totalDonors: 0 },
+    )
+  }, [campaigns])
 
   return (
     <div className="space-y-8 p-6">
       {/* Stats Dashboard */}
       <div className="grid gap-6 md:grid-cols-3">
         <StatCard icon="mdi:bullhorn" label="My Campaigns" value={stats.totalCampaigns} />
-        <StatCard icon="solar:money-bag-bold" label="Total Raised" value={`$${stats.totalRaised.toLocaleString()}`} />
+        <StatCard
+          icon="solar:money-bag-bold"
+          label="Total Raised"
+          value={`$${stats.totalRaised.toLocaleString()}`}
+        />
         <StatCard icon="fa:users" label="Total Donors" value={stats.totalDonors} />
       </div>
 
-      {loading && <p className="text-gray-500 animate-pulse text-center py-10">Loading your campaigns...</p>}
+      {loading && (
+        <p className="animate-pulse py-10 text-center text-gray-500">Loading your campaigns...</p>
+      )}
 
       {/* Campaign Grid */}
       <div className="grid gap-6 md:grid-cols-3">
         {campaigns.map((campaign) => {
           const banner = campaign.thumbnail_large
             ? `https://fundraise.theinnercitymission.ngo/${campaign.thumbnail_large}`
-            : campaign.thumbnail?.url;
-          
-          const combinedDonors = [...(campaign.funders || []), ...(campaign.payments || [])];
+            : campaign.thumbnail?.url
+
+          const combinedDonors = [...(campaign.funders || []), ...(campaign.payments || [])]
 
           return (
             <div
@@ -82,14 +93,19 @@ export default function UserCampaignsPage() {
               className="group cursor-pointer overflow-hidden rounded-2xl border bg-white transition hover:shadow-xl"
             >
               <div className="relative h-44 w-full">
-                <img src={banner} className="h-full w-full object-cover transition group-hover:scale-105" />
-                <div className="absolute top-2 right-2 rounded-full bg-black/70 px-3 py-1 text-[10px] font-bold text-white backdrop-blur-md">
-                   {combinedDonors.length} CONTRIBUTIONS
+                <img
+                  src={banner}
+                  className="h-full w-full object-cover transition group-hover:scale-105"
+                />
+                <div className="absolute right-2 top-2 rounded-full bg-black/70 px-3 py-1 text-[10px] font-bold text-white backdrop-blur-md">
+                  {combinedDonors.length} CONTRIBUTIONS
                 </div>
               </div>
               <div className="p-4">
                 <h3 className="line-clamp-1 font-bold text-gray-800">{campaign.title}</h3>
-                <p className="mt-2 text-xs font-bold text-primary">${Number(campaign.raised).toLocaleString()} raised</p>
+                <p className="mt-2 text-xs font-bold text-primary">
+                  ${Number(campaign.raised).toLocaleString()} raised
+                </p>
               </div>
             </div>
           )
@@ -99,15 +115,25 @@ export default function UserCampaignsPage() {
       {/* Campaign Detail Modal */}
       {selectedCampaign && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedCampaign(null)} />
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setSelectedCampaign(null)}
+          />
 
           <div className="animate-slideUp relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl">
-            <button onClick={() => setSelectedCampaign(null)} className="absolute right-6 top-6 z-10 rounded-full bg-white/80 p-1">
+            <button
+              onClick={() => setSelectedCampaign(null)}
+              className="absolute right-6 top-6 z-10 rounded-full bg-white/80 p-1"
+            >
               <Icon icon="solar:close-circle-bold" width={28} className="text-gray-400" />
             </button>
 
             <img
-              src={selectedCampaign.thumbnail_large ? `https://fundraise.theinnercitymission.ngo/${selectedCampaign.thumbnail_large}` : selectedCampaign.thumbnail?.url}
+              src={
+                selectedCampaign.thumbnail_large
+                  ? `https://fundraise.theinnercitymission.ngo/${selectedCampaign.thumbnail_large}`
+                  : selectedCampaign.thumbnail?.url
+              }
               className="mb-6 h-60 w-full rounded-2xl object-cover"
             />
 
@@ -115,8 +141,16 @@ export default function UserCampaignsPage() {
 
             <div className="mb-8 grid grid-cols-3 gap-4">
               <MiniStat label="Goal" value={`$${Number(selectedCampaign.goal).toLocaleString()}`} />
-              <MiniStat label="Raised" value={`$${Number(selectedCampaign.raised || 0).toLocaleString()}`} />
-              <MiniStat label="Total Donors" value={[...(selectedCampaign.funders || []), ...(selectedCampaign.payments || [])].length} />
+              <MiniStat
+                label="Raised"
+                value={`$${Number(selectedCampaign.raised || 0).toLocaleString()}`}
+              />
+              <MiniStat
+                label="Total Donors"
+                value={
+                  [...(selectedCampaign.funders || []), ...(selectedCampaign.payments || [])].length
+                }
+              />
             </div>
 
             {/* COMBINED DONORS LIST */}
@@ -124,18 +158,26 @@ export default function UserCampaignsPage() {
               <h3 className="mb-4 font-bold text-gray-800">Recent Contributions</h3>
               <div className="space-y-3">
                 {(() => {
-                  const allDonors = [...(selectedCampaign.funders || []), ...(selectedCampaign.payments || [])]
-                    .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+                  const allDonors = [
+                    ...(selectedCampaign.funders || []),
+                    ...(selectedCampaign.payments || []),
+                  ].sort(
+                    (a, b) =>
+                      new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime(),
+                  )
 
                   return allDonors.length > 0 ? (
                     allDonors.map((donor: any, idx: number) => {
-                      const user = donor.user;
-                      const avatar = user?.avatar 
-                        ? `https://fundraise.theinnercitymission.ngo/${user?.avatar}` 
-                        : null;
+                      const user = donor.user
+                      const avatar = user?.avatar
+                        ? `https://fundraise.theinnercitymission.ngo/${user?.avatar}`
+                        : null
 
                       return (
-                        <div key={idx} className="flex items-center justify-between rounded-xl bg-white p-3 shadow-sm">
+                        <div
+                          key={idx}
+                          className="flex items-center justify-between rounded-xl bg-white p-3 shadow-sm"
+                        >
                           <div className="flex items-center gap-3">
                             <div className="h-10 w-10 overflow-hidden rounded-full border border-gray-100">
                               {avatar ? (
@@ -147,13 +189,21 @@ export default function UserCampaignsPage() {
                               )}
                             </div>
                             <div>
-                              <p className="text-sm font-bold text-gray-800">{user?.fullname || 'Anonymous'}</p>
-                              <p className="text-[10px] text-gray-400 uppercase">{donor.method || donor.payment_channel || 'donation'}</p>
+                              <p className="text-sm font-bold text-gray-800">
+                                {user?.fullname || 'Anonymous'}
+                              </p>
+                              <p className="text-[10px] uppercase text-gray-400">
+                                {donor.method || donor.payment_channel || 'donation'}
+                              </p>
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="text-sm font-black text-green-600">${Number(donor.amount).toLocaleString()}</p>
-                            <p className={`text-[9px] font-bold uppercase ${donor.status === 'success' ? 'text-blue-500' : 'text-orange-400'}`}>
+                            <p className="text-sm font-black text-green-600">
+                              ${Number(donor.amount).toLocaleString()}
+                            </p>
+                            <p
+                              className={`text-[9px] font-bold uppercase ${donor.status === 'success' ? 'text-blue-500' : 'text-orange-400'}`}
+                            >
                               {donor.status || 'completed'}
                             </p>
                           </div>
@@ -161,8 +211,10 @@ export default function UserCampaignsPage() {
                       )
                     })
                   ) : (
-                    <p className="text-center text-sm text-gray-400 py-4">No contributions found.</p>
-                  );
+                    <p className="py-4 text-center text-sm text-gray-400">
+                      No contributions found.
+                    </p>
+                  )
                 })()}
               </div>
             </div>
@@ -180,7 +232,7 @@ function StatCard({ icon, label, value }: { icon: string; label: string; value: 
         <Icon icon={icon} width={24} />
       </div>
       <div>
-        <p className="text-xs font-bold text-gray-400 uppercase tracking-tight">{label}</p>
+        <p className="text-xs font-bold uppercase tracking-tight text-gray-400">{label}</p>
         <p className="text-xl font-black text-gray-900">{value}</p>
       </div>
     </div>
@@ -293,7 +345,7 @@ function MiniStat({ label, value }: { label: string; value: any }) {
 //                 <h3 className="line-clamp-2 text-lg font-semibold">{campaign.title}</h3>
 
 //                 <p className="mt-1 text-sm text-gray-500">
-//                   Goal: ₦{Number(campaign.goal).toLocaleString()}
+//                   Goal: {Number(campaign.goal).toLocaleString()}
 //                 </p>
 
 //                 <p className="mt-1 text-sm font-medium text-primary">

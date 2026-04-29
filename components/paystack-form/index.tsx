@@ -2,13 +2,11 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
-import espees from '@/public/assets/images/espees.png'
-import { getUsersService } from '@/app/auth/auth.service'
 import { useParams } from 'next/navigation'
 import { baseUrl } from '@/constants'
 import CountryCurrencyDropdown, { Currency } from '../country-currency-dropdown'
 import { Campaign } from '@/types/Campaign'
+import { Icon } from '@iconify/react'
 
 function PaystackForm({ campaign }: { campaign: Campaign }) {
   const params = useParams()
@@ -23,15 +21,11 @@ function PaystackForm({ campaign }: { campaign: Campaign }) {
   const [guestEmail, setGuestEmail] = useState('')
   const [guestName, setGuestName] = useState('')
 
-  // ✅ SAME USER FETCH PATTERN AS STRIPE
   useEffect(() => {
     try {
       const stored = sessionStorage.getItem('course-training-profile')
-
       if (!stored) return
-
       const parsed = JSON.parse(stored)
-
       const user = parsed?.user
 
       setEmail(user?.email || '')
@@ -41,145 +35,151 @@ function PaystackForm({ campaign }: { campaign: Campaign }) {
     }
   }, [])
 
-  const startPayment = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const startPayment = async (e?: React.FormEvent, guestData?: { email: string; name: string }) => {
+    if (e) e.preventDefault()
+
+    const finalEmail = guestData?.email || email
+    const finalName = guestData?.name || guestName
 
     if (!campaignId || !amount) {
       alert('Missing payment information')
       return
     }
 
-    // If user not logged in → trigger modal
-    if (!email) {
+    if (!finalEmail) {
       setShowGuestModal(true)
       return
     }
 
     try {
       setLoading(true)
-
       const res = await fetch(`${baseUrl}/payments/initialize/paystack`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           campaignId,
           amount: Number(amount),
-          currency: currency?.code,
-          email: email || guestEmail,
-          userId: userId || null, // 👈 allow null
-          donorName: guestName || null, // optional
+          currency: currency?.code || 'NGN',
+          email: finalEmail,
+          userId: userId || null,
+          donorName: finalName || null,
           callback_url: `${window.location.origin}/payments/verify`,
         }),
       })
 
       const data = await res.json()
+      if (!res.ok) throw new Error(JSON.stringify(data))
 
-      console.log('PAYSTACK RESPONSE:', res.status, data)
-
-      if (!res.ok) {
-        throw new Error(JSON.stringify(data))
-      }
-
-      // Redirect to Paystack
       window.location.href = data.authorization_url
     } catch (error: any) {
       console.error(error)
-      alert(error.message)
+      alert('Could not initialize payment. Please try again.')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <form onSubmit={startPayment} className="mx-auto max-w-md p-4">
-      {/* <p className="text-primary">Dear {campaign.user?.fullname},</p> */}
+    <div className="mx-auto max-w-md p-4">
+      {/* ESPEE-STYLE INFO CARD */}
+      <div className="mb-8 rounded-2xl bg-blue-50 p-5 border-l-4 border-[#00a2ed]">
+        <p className="text-sm font-medium text-blue-800 leading-relaxed">
+          You are sponsoring <span className="font-bold text-[#00a2ed]">&quot;{campaign.title}&quot;</span>. 
+          Please wait to be redirected back after payment to confirm your seed.
+        </p>
+      </div>
 
-      <small className="text-primary">
-        Thank you for your sponsorship. You will now be redirected to our payment gateway. After
-        making your payment kindly wait to be redirected back so your donation can be credited.
-      </small>
+      <form onSubmit={startPayment} className="space-y-6">
+        <div>
+          <label className="mb-2 block text-[11px] font-black uppercase tracking-widest text-gray-400 ml-1">
+            Donation Amount
+          </label>
 
-      <div className="mb-4 mt-6">
-        <label className="mb-2 block text-sm font-medium">Pledged Amount</label>
-
-        <div className="flex w-full">
-          <input
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className="block w-full rounded-l border border-gray-300 p-2"
-            required
-          />
-
-          <div className="flex space-x-1 rounded-r border bg-gray-200 p-2 pr-7">
-            <CountryCurrencyDropdown
-              // value={currency}
-              onChange={(value: Currency) => setCurrency(value)}
+          <div className="flex w-full overflow-hidden rounded-2xl border-2 border-gray-100 bg-gray-50 focus-within:border-[#00a2ed] focus-within:bg-white transition-all">
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="1000"
+              className="w-full bg-transparent p-4 font-bold text-gray-900 outline-none"
+              required
             />
+
+            <div className="flex items-center bg-gray-100 px-4 border-l border-gray-100">
+              <CountryCurrencyDropdown
+                onChange={(value: Currency) => setCurrency(value)}
+              />
+            </div>
           </div>
         </div>
 
-        <button type="submit" className="btn-primary mt-4 w-fit" disabled={loading}>
-          {loading ? 'Processing...' : 'Donate'}
+        <button 
+          type="submit" 
+          disabled={loading}
+          className="w-full rounded-2xl bg-[#00a2ed] py-5 text-sm font-black uppercase tracking-widest text-white shadow-xl shadow-blue-100 transition-all hover:bg-blue-500 active:scale-95 disabled:opacity-50"
+        >
+          {loading ? 'Connecting to Secure Gateway...' : 'Proceed to Payment'}
         </button>
+      </form>
 
-        {showGuestModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-            <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
-              <h2 className="mb-2 text-lg font-bold">Continue as Guest</h2>
-              <p className="mb-4 text-sm text-gray-500">
-                Enter your details to complete your donation.
-              </p>
-
-              <input
-                type="text"
-                placeholder="Full Name (optional)"
-                value={guestName}
-                onChange={(e) => setGuestName(e.target.value)}
-                className="mb-3 w-full rounded border p-2"
-              />
-
-              <input
-                type="email"
-                placeholder="Email Address"
-                value={guestEmail}
-                onChange={(e) => setGuestEmail(e.target.value)}
-                className="mb-4 w-full rounded border p-2"
-                required
-              />
-
-              <div className="flex justify-end gap-2">
-                <button onClick={() => setShowGuestModal(false)} className="px-4 py-2 text-sm">
-                  Cancel
-                </button>
-
-                <button
-                  onClick={() => {
-                    if (!guestEmail) {
-                      alert('Email is required')
-                      return
-                    }
-
-                    setEmail(guestEmail)
-                    setShowGuestModal(false)
-
-                    // 🔥 Retry payment automatically
-                    setTimeout(() => {
-                      document.querySelector('form')?.requestSubmit()
-                    }, 100)
-                  }}
-                  className="btn-primary px-4 py-2 text-sm"
-                >
-                  Continue to Payment
-                </button>
+      {/* GUEST MODAL - ESPEE STYLE */}
+      {showGuestModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0a1b2d]/80 p-4 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="w-full max-w-sm rounded-[2.5rem] bg-white p-10 shadow-2xl">
+            <div className="mb-8 text-center">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-3xl bg-blue-50 text-[#00a2ed]">
+                <Icon icon="solar:user-id-bold-duotone" width={36} />
               </div>
+              <h2 className="text-2xl font-black text-gray-900 tracking-tight">Donor Info</h2>
+              <p className="text-xs text-gray-400 mt-2 font-medium">Identify your donation for the campaign records.</p>
+            </div>
+
+            <div className="space-y-4">
+              <div className="space-y-1">
+                <label className="text-[10px] font-black uppercase text-gray-400 ml-1 tracking-widest">Full Name</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Brother John"
+                  value={guestName}
+                  onChange={(e) => setGuestName(e.target.value)}
+                  className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4 text-sm outline-none focus:ring-2 focus:ring-[#00a2ed]/20"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[10px] font-black uppercase text-gray-400 ml-1 tracking-widest">Email Address</label>
+                <input
+                  type="email"
+                  placeholder="name@email.com"
+                  value={guestEmail}
+                  onChange={(e) => setGuestEmail(e.target.value)}
+                  className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4 text-sm outline-none focus:ring-2 focus:ring-[#00a2ed]/20"
+                  required
+                />
+              </div>
+
+              <button
+                onClick={() => {
+                  if (!guestEmail) return alert('Email is required');
+                  startPayment(undefined, { email: guestEmail, name: guestName });
+                }}
+                disabled={loading}
+                className="mt-4 w-full rounded-2xl bg-gray-900 py-4 text-xs font-black uppercase tracking-widest text-white shadow-lg transition-all hover:bg-black active:scale-95"
+              >
+                {loading ? 'Initializing...' : 'Continue to Paystack'}
+              </button>
+
+              <button 
+                onClick={() => setShowGuestModal(false)}
+                className="w-full pt-2 text-[10px] font-bold uppercase tracking-widest text-gray-300 hover:text-red-400 transition-colors"
+              >
+                Cancel
+              </button>
             </div>
           </div>
-        )}
-      </div>
-    </form>
+        </div>
+      )}
+    </div>
   )
 }
 

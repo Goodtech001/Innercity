@@ -7,8 +7,11 @@ import espees from '@/public/assets/images/espees.png'
 import paystack from '@/public/assets/images/paystackk.png'
 import DonatePercentageCircle from '@/components/donate-percentage-circle'
 import { Campaign } from '@/types/Campaign'
+import { baseUrl } from '@/constants'
+import { PayPalScriptProvider } from '@paypal/react-paypal-js'
+import { PaypalProvider } from '@/components/providers/paypal-provider'
 
-const baseUrl = 'https://fundraise-api.onrender.com/api/v1'
+// const baseUrl = 'https://fundraise-api.onrender.com/api/v1'
 
 // 1. Pre-generate paths for all campaigns so they are static on Vercel
 export async function generateStaticParams() {
@@ -162,12 +165,17 @@ export default async function CampaignDonatePage({ params }: CampaignPageProps) 
             </div>
           </div>
         </div>
-
+{/* PaypalClientProvider */}
         {/* DONATION TABS - Pass the campaign data to the client component */}
         <div className="mt-10">
-          <DonationTabsClient campaign={campaign} espees={espees} paystack={paystack} mobile={{
-            mobile: undefined,
-          }} />
+         <PaypalProvider>
+        <DonationTabsClient 
+          campaign={campaign} 
+          espees={espees} 
+          paystack={paystack} 
+          mobile={{ mobile: undefined }} 
+        />
+      </PaypalProvider>
         </div>
       </div>
     </div>

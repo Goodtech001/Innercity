@@ -49,7 +49,7 @@ export default function DonationTabsClient({
   const [amount, setAmount] = useState<number>(0);
 
   // const params = useParams();
-const id = params.id;
+const id = Array.isArray(params.id) ? params.id[0] : params.id || null;
 
   const loadUserData = useCallback(() => {
     const stored =
@@ -107,9 +107,9 @@ const id = params.id;
       case 2:
         return <StripeForm />
       case 3:
-        return <PaypalForm campaignId={null} />
+        return <PaypalForm campaignId={id} />
       case 4:
-        return <PaypalForm campaignId={campaign?.id}  />
+        return <PaystackForm campaign={campaign}  />
       case 5:
         return  <VoucherForm campaignId={campaign?.id} />
       case 6:

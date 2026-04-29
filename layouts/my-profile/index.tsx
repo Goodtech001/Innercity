@@ -85,12 +85,12 @@ export default function GlassProfile({ user }: any) {
         body: JSON.stringify({
           fullname: formData.fullName,
           username: formData.username,
-          bio: formData.bio,
-          telephone: formData.phone,
+          bio:      formData.bio,
+          telephone:formData.phone,
           birthday: formData.birthday,
           location: formData.location,
-          country: formData.country,
-          avatar: finalAvatarUrl,
+          country:  formData.country,
+          avatar:   finalAvatarUrl,
         }),
       })
 

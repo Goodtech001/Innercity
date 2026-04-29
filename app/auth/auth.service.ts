@@ -33,7 +33,7 @@ export const postLogoutService = async () => {
 // ---------------- GOOGLE
 export const loginWithGoogle = () => {
   window.location.href =
-   "https://fundraise-api.onrender.com/api/v1/auth/google"
+   "https://fundraise-api.theinnercitymission.tv/api/v1/auth/google"
 }
 
 export const postRegisterService = async (credentials: {

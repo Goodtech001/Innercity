@@ -7,6 +7,7 @@ import 'swiper/css'
 import 'swiper/css/free-mode'
 import 'swiper/css/pagination'
 import 'react-phone-input-2/lib/style.css'
+import { PaypalProvider } from '@/components/providers/paypal-provider'
 
 export const metadata: Metadata = {
   title: 'The InnerCity Mission Gifting Platform',
@@ -29,7 +30,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body id="root" className={`scroll-smooth antialiased`}>
-        {children}
+        <PaypalProvider>
+          {children}
+        </PaypalProvider>
         <div id="modal-root"></div>
         <div id="portal"></div>
         <Analytics />

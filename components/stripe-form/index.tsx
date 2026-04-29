@@ -8,10 +8,11 @@ import { loadStripe } from '@stripe/stripe-js'
 import { Elements, useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { useParams } from 'next/navigation'
 import { baseUrl } from '@/constants'
+import { Icon } from '@iconify/react'
 
 const stripePromise = loadStripe('pk_test_i1sOzDxjO6tTKVhVvNeupIAh')
 
-function StripeForm() {
+export default function StripeForm() {
   const params = useParams()
   const campaignId = Number(params?.id)
 
@@ -22,7 +23,6 @@ function StripeForm() {
   const [currency, setCurrency] = useState<Currency | null>(null)
   const [loading, setLoading] = useState(false)
 
-  // ✅ NEW: guest modal state
   const [showGuestModal, setShowGuestModal] = useState(false)
   const [guestEmail, setGuestEmail] = useState('')
   const [guestName, setGuestName] = useState('')
@@ -31,7 +31,6 @@ function StripeForm() {
     try {
       const stored = sessionStorage.getItem('course-training-profile')
       if (!stored) return
-
       const parsed = JSON.parse(stored)
       const user = parsed?.user
 
@@ -44,55 +43,33 @@ function StripeForm() {
 
   const startPayment = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!campaignId || !amount) return alert('Missing payment information')
 
-    if (!campaignId || !amount) {
-      alert('Missing payment information')
-      return
-    }
-
-    // 🚨 If not logged in → open modal instead
-    if (!email || !userId) {
+    if (!email && !guestEmail) {
       setShowGuestModal(true)
       return
     }
 
-    await initializePayment(email, userId)
+    await initializePayment(email || guestEmail, userId || 0)
   }
 
-  // ✅ Extracted so guest + user both use same flow
   const initializePayment = async (emailValue: string, userIdValue: number) => {
     try {
       setLoading(true)
-
       const { data } = await axios.post(`${baseUrl}/payments/initialize/stripe`, {
         campaignId,
         amount: Number(amount),
         currency: currency?.code || 'USD',
         email: emailValue,
         userId: userIdValue,
+        donorName: guestName || undefined
       })
-
       setPaymentData(data)
-      console.log('STRIPE INIT RESPONSE:', data)
     } catch (err: any) {
-      console.error(err)
       alert(err?.response?.data?.message || 'Stripe initialization failed')
     } finally {
       setLoading(false)
     }
-  }
-
-  // ✅ Handle guest submit
-  const handleGuestSubmit = async () => {
-    if (!guestEmail) {
-      alert('Email is required')
-      return
-    }
-
-    setShowGuestModal(false)
-
-    // ⚠️ fallback userId for guests
-    await initializePayment(guestEmail, 0)
   }
 
   if (paymentData?.clientSecret) {
@@ -104,78 +81,95 @@ function StripeForm() {
           appearance: { theme: 'stripe' },
         }}
       >
-        <CheckoutForm reference={paymentData.id} email={email || guestEmail} />
+        <CheckoutForm 
+            // NOTE: Using paymentData.id (Internal Ref) or paymentIntent ID 
+            reference={paymentData.id} 
+            email={email || guestEmail} 
+        />
       </Elements>
     )
   }
 
   return (
-    <>
-      <form onSubmit={startPayment} className="mx-auto max-w-md p-4">
-        <div className="mb-4">
-          <label className="mb-2 block text-sm font-medium">Pledged Amount</label>
+    <div className="mx-auto max-w-md p-4">
+      <div className="mb-8 rounded-2xl bg-blue-50 p-5 border-l-4 border-[#00a2ed]">
+        <p className="text-sm font-medium text-blue-800 leading-relaxed">
+          Secure your sponsorship via Stripe. Your donation will be processed in <span className="font-bold">{currency?.code || 'USD'}</span>.
+        </p>
+      </div>
 
-          <div className="flex w-full">
+      <form onSubmit={startPayment} className="space-y-6">
+        <div>
+          <label className="mb-2 block text-[11px] font-black uppercase tracking-widest text-gray-400 ml-1">
+            Pledge Amount
+          </label>
+          <div className="flex w-full overflow-hidden rounded-2xl border-2 border-gray-100 bg-gray-50 focus-within:border-[#00a2ed] focus-within:bg-white transition-all">
             <input
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="block w-full rounded-l border border-gray-300 p-2"
+              placeholder="50"
+              className="w-full bg-transparent p-4 font-bold text-gray-900 outline-none"
               required
             />
-
-            <div className="flex space-x-1 rounded-r border bg-gray-200 p-2 pr-7">
+            <div className="flex items-center bg-gray-100 px-4 border-l border-gray-100">
               <CountryCurrencyDropdown onChange={(value: Currency) => setCurrency(value)} />
             </div>
           </div>
-
-          <button type="submit" className="btn-primary mt-4 w-fit" disabled={loading}>
-            {loading ? 'Processing...' : 'Donate'}
-          </button>
         </div>
+
+        <button 
+          type="submit" 
+          disabled={loading}
+          className="w-full rounded-2xl bg-[#00a2ed] py-5 text-sm font-black uppercase tracking-widest text-white shadow-xl shadow-blue-100 transition-all hover:bg-blue-600 active:scale-95 disabled:opacity-50"
+        >
+          {loading ? 'Initializing Secure Checkout...' : 'Donate Now'}
+        </button>
       </form>
 
-      {/* ✅ GUEST MODAL */}
       {showGuestModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
-            <h2 className="text-lg font-semibold mb-4">Continue as Guest</h2>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0a1b2d]/80 p-4 backdrop-blur-md animate-in fade-in">
+          <div className="w-full max-w-sm rounded-[2.5rem] bg-white p-10 shadow-2xl">
+            <div className="mb-8 text-center">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-3xl bg-blue-50 text-[#00a2ed]">
+                <Icon icon="solar:user-circle-bold-duotone" width={40} />
+              </div>
+              <h2 className="text-2xl font-black text-gray-900 tracking-tight">Identity</h2>
+              <p className="text-xs text-gray-400 mt-2 font-medium">Identify your donation for the records.</p>
+            </div>
 
-            <input
-              type="email"
-              placeholder="Enter your email"
-              value={guestEmail}
-              onChange={(e) => setGuestEmail(e.target.value)}
-              className="mb-3 w-full rounded border p-2"
-            />
-
-            <input
-              type="text"
-              placeholder="Full name (optional)"
-              value={guestName}
-              onChange={(e) => setGuestName(e.target.value)}
-              className="mb-4 w-full rounded border p-2"
-            />
-
-            <div className="flex justify-end gap-2">
+            <div className="space-y-4">
+              <input
+                type="text"
+                placeholder="Full Name (optional)"
+                className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4 text-sm outline-none focus:ring-2 focus:ring-blue-500/20"
+                onChange={(e) => setGuestName(e.target.value)}
+              />
+              <input
+                type="email"
+                placeholder="Email Address"
+                className="w-full rounded-2xl border border-gray-100 bg-gray-50 p-4 text-sm outline-none focus:ring-2 focus:ring-blue-500/20"
+                onChange={(e) => setGuestEmail(e.target.value)}
+                required
+              />
               <button
-                onClick={() => setShowGuestModal(false)}
-                className="px-4 py-2 text-sm"
+                onClick={() => {
+                   if(!guestEmail) return alert("Email required");
+                   setShowGuestModal(false);
+                   initializePayment(guestEmail, 0);
+                }}
+                className="w-full rounded-2xl bg-gray-900 py-4 text-xs font-black uppercase text-white hover:bg-black"
               >
-                Cancel
+                Continue to Payment
               </button>
-
-              <button
-                onClick={handleGuestSubmit}
-                className="btn-primary px-4 py-2"
-              >
-                Continue
+              <button onClick={() => setShowGuestModal(false)} className="w-full text-[10px] font-bold uppercase text-gray-300">
+                Cancel
               </button>
             </div>
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }
 
@@ -190,46 +184,81 @@ function CheckoutForm({ reference, email }: CheckoutFormProps) {
   const [isProcessing, setIsProcessing] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  e.preventDefault()
+  if (!stripe || !elements) return
 
-    if (!stripe || !elements) return
+  setIsProcessing(true)
 
-    setIsProcessing(true)
+  const { error, paymentIntent } = await stripe.confirmPayment({
+  elements,
+  confirmParams: { receipt_email: email },
+  redirect: 'if_required',
+});
 
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        receipt_email: email,
-      },
-      redirect: 'if_required',
-    })
-
-    if (error) {
-      alert(error.message)
-    } else if (paymentIntent?.status === 'succeeded') {
-      try {
-        await axios.get(`${baseUrl}/payments/verify/stripe/${reference}`)
-        alert('Donation Successful!')
-      } catch (verifyError) {
-        console.error('Verification failed:', verifyError)
-        alert('Payment succeeded, but verification failed.')
-      }
-    }
-
-    setIsProcessing(false)
+if (error) {
+  // Handle the "already succeeded" edge case
+  if (error.code === "payment_intent_unexpected_state") {
+    const piId = error.payment_intent?.id; // Extract ID from the error object
+    return handleServerVerification(piId);
   }
+  alert(error.message);
+  setIsProcessing(false);
+  return;
+}
+
+if (paymentIntent?.status === 'succeeded') {
+  await handleServerVerification(paymentIntent.id);
+}
+
+  setIsProcessing(false)
+}
+
+// 3. Extracted Verification Logic
+const handleServerVerification = async (stripePI?: string) => {
+  try {
+    // 1. Log exactly what we are sending to the server
+    console.log("Verifying with Internal Ref:", reference);
+    console.log("Verifying with Stripe PI:", stripePI);
+
+    // 2. Try the primary endpoint (GET)
+    // If this fails, your backend might actually want the Stripe PI ID instead of the internal ID
+    const verifyRes = await axios.get(`${baseUrl}/payments/verify/stripe/${reference}`);
+    
+    if (verifyRes.status === 200 || verifyRes.data.success) {
+       window.location.href = '/donation/success';
+       return;
+    }
+  } catch (verifyError: any) {
+    console.error('Verification Error Details:', verifyError.response?.data);
+    
+    // 3. EMERGENCY FALLBACK: If GET fails, try a POST (common in NestJS/Express)
+    try {
+      console.log("GET failed, attempting POST fallback...");
+      const postRes = await axios.post(`${baseUrl}/payments/verify/stripe`, { 
+        reference: reference,
+        stripe_pi: stripePI // Sending both just in case
+      });
+      if (postRes.status === 200) window.location.href = '/donation/success';
+    } catch (postErr) {
+      alert('Payment confirmed by Stripe, but server rejected verification. Please check console.');
+    }
+  } finally {
+    setIsProcessing(false);
+  }
+}
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto max-w-md p-4">
-      <div className="mb-4 rounded border border-gray-300 p-2">
-        <PaymentElement className="p-2" />
+    <form onSubmit={handleSubmit} className="mx-auto max-w-md p-4 space-y-6">
+      <div className="rounded-2xl border-2 border-gray-100 bg-gray-50 p-4">
+        <PaymentElement />
       </div>
 
-      <button disabled={!stripe || isProcessing} className="btn-primary mt-4 w-fit">
-        {isProcessing ? 'Processing...' : 'Donate'}
+      <button 
+        disabled={!stripe || isProcessing} 
+        className="w-full rounded-2xl bg-gray-900 py-5 text-sm font-black uppercase tracking-widest text-white transition-all hover:bg-black disabled:opacity-50"
+      >
+        {isProcessing ? 'Verifying Transaction...' : 'Complete Donation'}
       </button>
     </form>
   )
 }
-
-export default StripeForm

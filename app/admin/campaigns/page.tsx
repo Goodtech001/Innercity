@@ -311,9 +311,9 @@ export default function AdminCampaignsPage() {
                 <div className="col-span-2 rounded-2xl bg-gray-50 p-4 text-center">
                   <p className="text-[10px] font-bold uppercase text-gray-400">Goal Progress</p>
                   <p className="text-lg font-black text-green-600">
-                    ₦{Number(selectedCampaign.raised).toLocaleString()}{' '}
+                    ${Number(selectedCampaign.raised).toLocaleString()}{' '}
                     <span className="text-sm font-normal text-gray-300">
-                      / ₦{Number(selectedCampaign.goal).toLocaleString()}
+                      / ${Number(selectedCampaign.goal).toLocaleString()}
                     </span>
                   </p>
                 </div>

@@ -70,7 +70,7 @@ export default function FeaturedSleekCard({ campaign }: { campaign: any }) {
                 </div>
                 <div>
                     <p className="text-[8px] font-black uppercase tracking-tighter text-gray-400">Raised</p>
-                    <p className="text-xs font-black text-gray-900">₦{Number(campaign.raised).toLocaleString()}</p>
+                    <p className="text-xs font-black text-gray-900">${Number(campaign.raised).toLocaleString()}</p>
                 </div>
              </div>
           </div>
@@ -91,7 +91,7 @@ export default function FeaturedSleekCard({ campaign }: { campaign: any }) {
             </div>
           </div>
 
-          {/* ⚡ Senior Level Progress UI */}
+          
           <div className="mt-6 flex items-center gap-4">
              <div className="relative flex-1">
                 {/* Track */}

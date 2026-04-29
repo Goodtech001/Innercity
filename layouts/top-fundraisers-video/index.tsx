@@ -140,7 +140,7 @@ export default function TopFundraisersVideo() {
             >
               <div>
                 <p className="text-xs text-slate-500">Live Impact</p>
-                <p className="font-semibold text-slate-800">₦2.4M raised from this story</p>
+                <p className="font-semibold text-slate-800">$2.4M raised from this story</p>
               </div>
               <div className="flex items-center gap-1 text-green-600 text-sm font-semibold">
                 <Icon icon="mdi:trending-up" /> +12%

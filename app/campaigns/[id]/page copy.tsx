@@ -12,9 +12,10 @@ import PercentageCircle from '@/components/percentage-circle'
 import TopNavbar from '@/layouts/topnavbar'
 import { motion } from 'framer-motion'
 import { calculateProgress } from '@/utils/percentage'
+import { baseUrl } from '@/constants'
 // import { log } from 'console'
 
-const baseUrl = 'https://fundraise-api.onrender.com/api/v1'
+// const baseUrl = 'https://fundraise-api.onrender.com/api/v1'
 export const dynamic = 'force-dynamic'
 
 export default function CampaignDetailsPage() {

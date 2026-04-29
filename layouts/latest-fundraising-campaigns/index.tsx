@@ -64,7 +64,7 @@ export default function LatestFundraisingCampaigns() {
     </div>
 
     <h3 className="text-3xl font-black leading-tight tracking-tighter text-zinc-900 dark:text-white md:text-5xl">
-      Latest <span className="text-blue-600 font-light italic">Fundraising</span> Campaigns
+      Latest <span className="text-blue-600 font-light ">Fundraising</span> Campaigns
     </h3>
 
     <p className="mt-3 max-w-md text-base leading-relaxed text-zinc-500 dark:text-zinc-400 md:text-lg">

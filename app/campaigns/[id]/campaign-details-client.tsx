@@ -10,6 +10,7 @@ import PercentageCircle from '@/components/percentage-circle'
 import TopNavbar from '@/layouts/topnavbar'
 import { Campaign } from '@/types/Campaign'
 import Image from 'next/image'
+import ShareModal from '@/components/share'
 
 interface Props {
   campaign: Campaign
@@ -199,25 +200,32 @@ export default function CampaignDetailsClient({ campaign, progress, goal, raised
 
       {/* Share Modal Logic stays here... */}
       {showShare && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          {/* ... modal content ... */}
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 dark:bg-neutral-900">
-            <div className="mb-4 flex justify-between">
-              <h2 className="font-semibold">Share campaign</h2>
-              <button onClick={() => setShowShare(false)}>✕</button>
-            </div>
-            <div className="flex items-center gap-2 rounded-lg border p-2">
-              <input
-                value={campaignUrl}
-                readOnly
-                className="flex-1 bg-transparent text-sm outline-none"
-              />
-              <button onClick={handleCopy} className="text-sm text-primary">
-                {copied ? 'Copied' : 'Copy'}
-              </button>
-            </div>
-          </div>
-        </div>
+        // <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+        //   {/* ... modal content ... */}
+        //   <div className="w-full max-w-md rounded-2xl bg-white p-6 dark:bg-neutral-900">
+        //     <div className="mb-4 flex justify-between">
+        //       <h2 className="font-semibold">Share campaign</h2>
+        //       <button onClick={() => setShowShare(false)}>✕</button>
+        //     </div>
+        //     <div className="flex items-center gap-2 rounded-lg border p-2">
+        //       <input
+        //         value={campaignUrl}
+        //         readOnly
+        //         className="flex-1 bg-transparent text-sm outline-none"
+        //       />
+        //       <button onClick={handleCopy} className="text-sm text-primary">
+        //         {copied ? 'Copied' : 'Copy'}
+        //       </button>
+        //     </div>
+        //   </div>
+        // </div>
+        <ShareModal 
+  showShare={showShare} 
+  setShowShare={setShowShare} 
+  campaignUrl={`https://innercity-82st.vercel.app/${campaign.id}`}
+  campaignTitle={campaign.title}
+  campaignImage={image}
+/>
       )}
     </div>
   )
