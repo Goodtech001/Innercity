@@ -117,7 +117,7 @@ export default function PremiumCampaignCard({ campaign }: { campaign: Campaign }
           )}
 
           {isCompleted && (
-            <div className="absolute bottom-3 left-3 rounded-full bg-green-500 px-3 py-1 text-xs font-bold text-white shadow-lg">
+            <div className="absolute top-3 right-3 rounded-full bg-green-500 px-3 py-1 text-xs font-bold text-white shadow-lg">
               🎉 Funded
             </div>
           )}
