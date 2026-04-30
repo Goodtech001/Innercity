@@ -233,7 +233,7 @@ export default function CampaignDetailsClient({ campaign, progress, goal, raised
         <ShareModal
           showShare={showShare}
           setShowShare={setShowShare}
-          campaignUrl={`https://innercity-82st.vercel.app/${campaign.id}`}
+          campaignUrl={`https://innercity-82st.vercel.app/campaigns/${campaign.id}`}
           campaignTitle={campaign.title}
           campaignImage={image}
         />

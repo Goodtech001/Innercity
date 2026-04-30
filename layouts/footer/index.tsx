@@ -132,7 +132,7 @@ export default function Footer() {
             <p>
               An Initiative of{' '}
               <a target="_blank" href="https://theinnercitymission.ngo/" className="underline">
-                The Innercity Mission.
+                The InnerCity Mission.
               </a>
             </p>
           </div>
