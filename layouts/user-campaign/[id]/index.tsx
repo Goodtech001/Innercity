@@ -68,7 +68,7 @@ export default function UserCampaignsPage() {
     if (!selectedCampaign) return
     setUpdating(true)
     try {
-      await axios.put(`${baseUrl}/campaigns/${selectedCampaign.id}`, editForm, {
+      await axios.post(`${baseUrl}/campaigns/${selectedCampaign.id}`, editForm, {
         headers: { Authorization: `Bearer ${token}` }
       })
       toast.success('Campaign updated successfully!')
