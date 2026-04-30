@@ -1,28 +1,43 @@
 /* eslint-disable jsx-a11y/alt-text */
+
 /* eslint-disable @next/next/no-img-element */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client'
 
 import React, { useEffect, useState } from 'react'
+
 import Link from 'next/link'
+
 import useTopnavbar, { leftMenu, rightMenu } from './useTopnavbar'
+
 import CountryCurrencyDropdown from '@/components/country-currency-dropdown'
+
 import Logo from '@/components/logo'
+
 import { Icon } from '@iconify/react'
+
 import UserProfileDropdown from '@/components/user-profile-dropdown'
+
 import { useRouter } from 'next/navigation'
 
 export default function TopNavbar() {
   const [user, setUser] = useState<any>(null)
+
   const router = useRouter()
 
   /* ================================
+
      LOAD USER FROM SESSION STORAGE
+
   ================================= */
+
   useEffect(() => {
     const loadUser = () => {
       try {
         const stored = sessionStorage.getItem('course-training-profile')
+
         if (!stored) return setUser(null)
 
         const parsed = JSON.parse(stored)
@@ -34,12 +49,15 @@ export default function TopNavbar() {
         }
       } catch (err) {
         console.error('Navbar auth parse error:', err)
+
         setUser(null)
       }
     }
+
     console.log('Navbar user:', user)
 
     loadUser()
+
     window.addEventListener('storage', loadUser)
 
     return () => window.removeEventListener('storage', loadUser)
@@ -47,25 +65,34 @@ export default function TopNavbar() {
 
   const {
     setNavOpen,
+
     getActiveUrl,
+
     setSubMenuClicked,
+
     subMenuClicked,
+
     navOpen,
+
     pathName,
+
     navListRef,
   } = useTopnavbar()
 
   const handleSubMenuClick = (path: string) => {
     router.push(path)
+
     setSubMenuClicked(path)
   }
 
   return (
     <>
       {/* ===================== DESKTOP NAV ===================== */}
+
       <nav className="fixed left-0 top-0 z-20 w-full border-b-2 bg-light/25 py-2 text-dark/75 backdrop-blur-sm">
         <div className="wrapper flex items-center justify-between gap-3 lg:container">
           {/* LEFT */}
+
           <span className="block md:hidden">
             {user ? <UserProfileDropdown direction="left" /> : <CountryCurrencyDropdown />}
           </span>
@@ -85,6 +112,7 @@ export default function TopNavbar() {
                   className="flex items-center gap-2 font-medium hover:underline"
                 >
                   {menu.title}
+
                   {menu.subMenus && <Icon icon="mynaui:chevron-down-solid" className="h-4 w-4" />}
                 </Link>
 
@@ -112,11 +140,13 @@ export default function TopNavbar() {
           </ul>
 
           {/* LOGO */}
+
           <Link href="/">
-            <Logo className="w-20 h-20" variant="alt" />
+            <Logo className="h-20 w-20" variant="alt" />
           </Link>
 
           {/* RIGHT */}
+
           <ul className="hidden items-center gap-8 text-sm md:flex">
             {rightMenu.map((menu, index) => (
               <li
@@ -130,12 +160,13 @@ export default function TopNavbar() {
                   className="flex items-center gap-2 font-medium hover:underline"
                 >
                   {menu.title}
+
                   {menu.subMenus && <Icon icon="mynaui:chevron-down-solid" className="h-4 w-4" />}
                 </Link>
 
                 {menu.subMenus && (
                   <ol
-                     className={`absolute left-0 h-0 min-w-60 overflow-hidden rounded-md bg-light text-sm shadow ${subMenuClicked == menu.subPath && '!h-fit'}`}
+                    className={`absolute left-0 h-0 min-w-60 overflow-hidden rounded-md bg-light text-sm shadow ${subMenuClicked == menu.subPath && '!h-fit'}`}
                   >
                     {menu.subMenus.map((subMenu, i) => (
                       <li key={i}>
@@ -169,6 +200,7 @@ export default function TopNavbar() {
           </ul>
 
           {/* MOBILE MENU BTN */}
+
           <button onClick={() => setNavOpen((p) => !p)} className="md:hidden">
             <Icon icon="eva:menu-fill" className="text-4xl" />
           </button>
@@ -176,9 +208,11 @@ export default function TopNavbar() {
       </nav>
 
       {/* SPACER */}
+
       <div className="pb-16" />
 
       {/* ===================== MOBILE SLIDE ===================== */}
+
       <div
         className={`fixed inset-0 z-20 bg-dark/50 text-textcolor backdrop-blur-sm transition-all duration-500 ease-in-out md:hidden ${navOpen ? 'visible clip-path-slide-top-down' : 'invisible delay-200 clip-path-close'}`}
       >
@@ -187,6 +221,7 @@ export default function TopNavbar() {
         >
           <div className="flex items-center justify-between">
             <Logo variant="alt" className="w-24" />
+
             <button onClick={() => setNavOpen(false)}>
               <Icon icon="eva:close-fill" className="text-3xl" />
             </button>
@@ -205,6 +240,7 @@ export default function TopNavbar() {
                   className="flex items-center gap-2 font-medium hover:underline"
                 >
                   {menu.title}
+
                   {menu.subMenus && <Icon icon="mynaui:chevron-down-solid" className="h-4 w-4" />}
                 </Link>
 

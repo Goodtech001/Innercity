@@ -11,6 +11,7 @@ import TopNavbar from '@/layouts/topnavbar'
 import { Campaign } from '@/types/Campaign'
 import Image from 'next/image'
 import ShareModal from '@/components/share'
+import { formatDate } from '@/utils/format-date'
 
 interface Props {
   campaign: Campaign
@@ -61,7 +62,7 @@ export default function CampaignDetailsClient({ campaign, progress, goal, raised
 
   console.log(handleSendEmail)
 
-    const loadUserData = useCallback(() => {
+  const loadUserData = useCallback(() => {
     const stored =
       localStorage.getItem('course-training-profile') ||
       sessionStorage.getItem('course-training-profile')
@@ -87,7 +88,7 @@ export default function CampaignDetailsClient({ campaign, progress, goal, raised
 
     // Listen for changes made in other components (like GlassProfile)
     window.addEventListener('storage', loadUserData)
-    
+
     // Custom event listener for same-window updates
     window.addEventListener('profileUpdate', loadUserData)
 
@@ -109,8 +110,8 @@ export default function CampaignDetailsClient({ campaign, progress, goal, raised
   return (
     <div className="bg-white text-black dark:bg-neutral-950 dark:text-white">
       <TopNavbar />
-      <div className="container grid-cols-10 p-4 md:grid md:h-screen md:space-x-10">
-        <section className="col-span-6 h-[180vh] overflow-y-auto no-scrollbar md:h-auto">
+      <div className="container mt-10 grid-cols-10 p-4 md:grid md:h-screen md:space-x-10">
+        <section className="col-span-6 h-[140vh] overflow-y-auto no-scrollbar md:h-auto">
           <motion.div
             initial={{ scale: 1.05, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -151,11 +152,21 @@ export default function CampaignDetailsClient({ campaign, progress, goal, raised
                 <p className="text-xs text-gray-500">of ${goal.toLocaleString()}</p>
               </div>
             </div>
+            <Icon icon="fluent:save-copy-20-regular" width="28" height="28" className='text-gray-400 cursor-pointer'/>
+          </div>
+
+          <div className="flex justify-between text-sm mt-4">
+            <p>
+              <span className='font-medium'>Created at:{' '}</span>
+              {campaign.created_at ? formatDate(campaign.created_at).commaDateFormat : 'N/A'}
+            </p>
+            <p className='text-gray-200'>|</p>
+            <p><span className='font-medium'>End:</span> {campaign.period ? formatDate(campaign.period).commaDateFormat : 'N/A'}</p>
           </div>
 
           <div className="mt-4">
-            <PercentageBar value={progress} />
-            <p className="mt-1 text-xs text-gray-500">{progress}% funded</p>
+            {/* <PercentageBar value={progress} /> */}
+            {/* <p className="mt-1 text-xs text-gray-500">{progress}% funded</p> */}
           </div>
 
           <div className="mt-6 space-y-3">
@@ -176,20 +187,20 @@ export default function CampaignDetailsClient({ campaign, progress, goal, raised
           {/* CREATOR */}
           <div className="mt-6 hidden items-center gap-3 rounded-xl bg-gray-50 p-3 dark:bg-white/5 md:flex">
             {user?.avatar || user?.photo ? (
-          <img
-            src={avatar ||  user.avatar || user.photo}
-            alt={user.fullname || 'User avatar'}
-            // Added aspect-square and flex-shrink-0 to prevent squashing
-            className={`aspect-square flex-shrink-0 rounded-full border border-gray-200 object-cover ${mobile ? 'h-10 w-10' : 'h-10 w-10'}`}
-          />
-        ) : (
-          <div
-            className={`relative flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-blue-400 to-gray-500 font-semibold text-white shadow-md flex-shrink-0 ${mobile ? 'h-8 w-8 text-sm' : 'h-10 w-10 text-xs'}`}
-          >
-            <span className="animate-shine absolute inset-0 rounded-full bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent)]"></span>
-            {getInitials(displayName)}
-          </div>
-        )}
+              <img
+                src={avatar || user.avatar || user.photo}
+                alt={user.fullname || 'User avatar'}
+                // Added aspect-square and flex-shrink-0 to prevent squashing
+                className={`aspect-square flex-shrink-0 rounded-full border border-gray-200 object-cover ${mobile ? 'h-10 w-10' : 'h-10 w-10'}`}
+              />
+            ) : (
+              <div
+                className={`relative flex flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-blue-400 to-gray-500 font-semibold text-white shadow-md ${mobile ? 'h-8 w-8 text-sm' : 'h-10 w-10 text-xs'}`}
+              >
+                <span className="animate-shine absolute inset-0 rounded-full bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent)]"></span>
+                {getInitials(displayName)}
+              </div>
+            )}
             <div>
               <p className="text-sm font-semibold">{campaign.user?.fullname}</p>
               <p className="text-xs text-gray-500">Campaign creator</p>
@@ -219,13 +230,13 @@ export default function CampaignDetailsClient({ campaign, progress, goal, raised
         //     </div>
         //   </div>
         // </div>
-        <ShareModal 
-  showShare={showShare} 
-  setShowShare={setShowShare} 
-  campaignUrl={`https://innercity-82st.vercel.app/${campaign.id}`}
-  campaignTitle={campaign.title}
-  campaignImage={image}
-/>
+        <ShareModal
+          showShare={showShare}
+          setShowShare={setShowShare}
+          campaignUrl={`https://innercity-82st.vercel.app/${campaign.id}`}
+          campaignTitle={campaign.title}
+          campaignImage={image}
+        />
       )}
     </div>
   )

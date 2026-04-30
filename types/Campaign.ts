@@ -12,6 +12,7 @@ export interface Campaign {
   ecard_image?: string
   thumbnail_large?: string
   banner_id?:string
+  created_at?:string
 
   user?: {
     id: number
