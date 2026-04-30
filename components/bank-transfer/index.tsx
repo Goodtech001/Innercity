@@ -16,12 +16,16 @@ interface BankTransferProps {
 function BankTransfer({ campaign, amount }: BankTransferProps) {
   const [loading, setLoading] = useState(false)
   const [depositorName, setDepositorName] = useState('')
+  const [localAmount, setLocalAmount] = useState(amount || '') // Editable amount
   const [proofImage, setProofImage] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   
   const [email, setEmail] = useState('')
   const [userId, setUserId] = useState<number | null>(null)
   const [token, setToken] = useState('')
+
+  // Modal State
+  const [modal, setModal] = useState({ isOpen: false, type: 'success' as 'success' | 'error', message: '' })
 
   useEffect(() => {
     const stored = localStorage.getItem('course-training-profile') || sessionStorage.getItem('course-training-profile')
@@ -45,14 +49,13 @@ function BankTransfer({ campaign, amount }: BankTransferProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!proofImage || !depositorName) {
-      return toast.error('Please provide depositor name and payment receipt')
+    if (!proofImage || !depositorName || !localAmount) {
+      return toast.error('Please fill in all fields and provide a receipt')
     }
 
     try {
       setLoading(true)
 
-      // 1. Use YOUR internal upload endpoint
       const formData = new FormData()
       formData.append('file', proofImage)
 
@@ -63,17 +66,13 @@ function BankTransfer({ campaign, amount }: BankTransferProps) {
         }
       })
 
-      // Get URL from your backend response structure (asset.url or data.url)
       const proofImageUrl = uploadRes.data?.asset?.url || uploadRes.data?.url || uploadRes.data?.data?.url
 
-      if (!proofImageUrl) {
-        throw new Error('Failed to retrieve image URL from upload')
-      }
+      if (!proofImageUrl) throw new Error('Failed to upload image')
 
-      // 2. Submit to Backend - Following Postman Guide Exactly
       const payload = {
         campaignId: Number(campaign?.id),
-        amount: Number(amount),
+        amount: Number(localAmount),
         currency: "NGN",
         depositor_name: depositorName,
         email: email,
@@ -86,14 +85,14 @@ function BankTransfer({ campaign, amount }: BankTransferProps) {
       })
 
       if (res.status === 200 || res.status === 201) {
-        toast.success('Transfer details submitted for verification!')
+        setModal({ isOpen: true, type: 'success', message: 'Transfer details submitted for verification!' })
         setPreview(null)
         setProofImage(null)
         setDepositorName('')
       }
     } catch (error: any) {
       console.error('Submission Error:', error)
-      toast.error(error?.response?.data?.message || 'Failed to submit transfer proof')
+      setModal({ isOpen: true, type: 'error', message: error?.response?.data?.message || 'Failed to submit transfer proof' })
     } finally {
       setLoading(false)
     }
@@ -113,10 +112,21 @@ function BankTransfer({ campaign, amount }: BankTransferProps) {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Added Amount Input */}
         <div>
-          <label className="block text-[10px] font-black uppercase text-gray-400 mb-1.5 ml-1">
-            Depositor Name
-          </label>
+          <label className="block text-[10px] font-black uppercase text-gray-400 mb-1.5 ml-1">Amount</label>
+          <input
+            type="number"
+            required
+            value={localAmount}
+            onChange={(e) => setLocalAmount(e.target.value)}
+            placeholder="Enter amount"
+            className="w-full rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500/20 font-medium"
+          />
+        </div>
+
+        <div>
+          <label className="block text-[10px] font-black uppercase text-gray-400 mb-1.5 ml-1">Depositor Name</label>
           <input
             type="text"
             required
@@ -128,17 +138,9 @@ function BankTransfer({ campaign, amount }: BankTransferProps) {
         </div>
 
         <div>
-          <label className="block text-[10px] font-black uppercase text-gray-400 mb-1.5 ml-1">
-            Upload Receipt (Proof of Payment)
-          </label>
+          <label className="block text-[10px] font-black uppercase text-gray-400 mb-1.5 ml-1">Upload Receipt</label>
           <div className="relative group">
-            <input
-              type="file"
-              required
-              accept="image/*"
-              onChange={handleFileChange}
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-            />
+            <input type="file" required accept="image/*" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
             <div className="border-2 border-dashed border-gray-200 rounded-2xl p-6 flex flex-col items-center justify-center bg-gray-50 group-hover:border-blue-400 transition-colors">
               {preview ? (
                 <img src={preview} alt="Preview" className="h-32 w-full object-cover rounded-lg" />
@@ -152,27 +154,24 @@ function BankTransfer({ campaign, amount }: BankTransferProps) {
           </div>
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-2xl bg-gray-900 py-4 text-sm font-bold text-white shadow-xl transition-all hover:bg-gray-800 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
-        >
-          {loading ? (
-            <>
-              <Icon icon="solar:restart-bold" className="animate-spin" />
-              Submitting...
-            </>
-          ) : (
-            'Submit Proof of Payment'
-          )}
+        <button type="submit" disabled={loading} className="w-full rounded-2xl bg-gray-900 py-4 text-sm font-bold text-white shadow-xl transition-all hover:bg-gray-800 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2">
+          {loading ? <><Icon icon="solar:restart-bold" className="animate-spin" /> Submitting...</> : 'Submit Proof of Payment'}
         </button>
       </form>
 
-      <div className="text-center space-y-1">
-        <p className="text-[10px] text-gray-400 font-medium italic">
-          For assistance, please call Ruthelle: +2348083842789
-        </p>
-      </div>
+      {/* Modal */}
+      {modal.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-2xl">
+            <div className={`mx-auto flex h-16 w-16 items-center justify-center rounded-full ${modal.type === 'success' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
+              <Icon icon={modal.type === 'success' ? 'eva:checkmark-fill' : 'eva:alert-triangle-fill'} className="text-4xl" />
+            </div>
+            <h3 className="mt-4 text-lg font-bold text-gray-800">{modal.type === 'success' ? 'Submitted Successfully' : 'Oops!'}</h3>
+            <p className="mt-2 text-sm text-gray-600">{modal.message}</p>
+            <button onClick={() => setModal({ ...modal, isOpen: false })} className="mt-6 w-full rounded-lg bg-gray-900 py-3 font-bold text-white">Close</button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

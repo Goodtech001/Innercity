@@ -30,7 +30,7 @@ function PaymentSuccessContent() {
   const verifyOnBackend = async () => {
     try {
       // Hits your verification endpoint to update the campaign "raised" total
-      await axios.get(`${baseUrl}/payments/verify/${reference}`)
+      await axios.get(`${baseUrl}/payments/verify/paystack/${reference}`)
       setStatus('success')
       setMessage('Thank you! Your donation has been recorded.')
     } catch (err: any) {
