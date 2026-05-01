@@ -70,6 +70,19 @@ export default function PremiumCampaignCard({ campaign }: { campaign: Campaign }
 
   if (!campaign?.id) return null;
 
+  const getImageUrl = (campaign: any) => {
+  // 1. Check if thumbnail_large exists
+  if (campaign.thumbnail_large) {
+    // If it already starts with http, return as is
+    if (campaign.thumbnail_large.startsWith('http')) return campaign.thumbnail_large;
+    // Otherwise prepend the base URL
+    return `https://fundraise.theinnercitymission.ngo/${campaign.thumbnail_large}`;
+  }
+  // 2. Fallback to thumbnail object or string
+  return campaign.thumbnail?.url || campaign.thumbnail || '';
+};
+
+
   return (
     <motion.div
       onMouseMove={(e) => {
@@ -94,7 +107,7 @@ export default function PremiumCampaignCard({ campaign }: { campaign: Campaign }
             className="h-full w-full"
           >
             <Image
-              src={image as string}
+              src={getImageUrl(campaign)} 
               alt={campaign.title}
               unoptimized
               fill
@@ -102,6 +115,11 @@ export default function PremiumCampaignCard({ campaign }: { campaign: Campaign }
               priority={false}
             />
           </motion.div>
+
+          {/* <img 
+  src={getImageUrl(campaign)} 
+  className="h-full w-full object-cover transition group-hover:scale-105" 
+/> */}
 
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
@@ -53,6 +54,17 @@ export default function CampaignDetailsClient({ campaign, progress, goal, raised
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
+  const getImageUrl = (campaign: any) => {
+  // 1. Check if thumbnail_large exists
+  if (campaign.thumbnail_large) {
+    // If it already starts with http, return as is
+    if (campaign.thumbnail_large.startsWith('http')) return campaign.thumbnail_large;
+    // Otherwise prepend the base URL
+    return `https://fundraise.theinnercitymission.ngo/${campaign.thumbnail_large}`;
+  }
+  // 2. Fallback to thumbnail object or string
+  return campaign.thumbnail?.url || campaign.thumbnail || '';
+};
 
   const handleSendEmail = () => {
     const subject = encodeURIComponent(`Support: ${campaign.title}`)
@@ -121,7 +133,7 @@ export default function CampaignDetailsClient({ campaign, progress, goal, raised
               width={400}
               height={400}
               unoptimized
-              src={image}
+              src={getImageUrl(campaign)} 
               alt={campaign.title}
               className="h-auto max-h-[420px] w-full object-cover"
             />

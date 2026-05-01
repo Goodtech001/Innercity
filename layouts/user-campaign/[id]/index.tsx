@@ -16,7 +16,14 @@ export default function UserCampaignsPage() {
 
   // Edit State
   const [isEditing, setIsEditing] = useState(false)
-  const [editForm, setEditForm] = useState({ title: '', goal: '', excerpt: '', period: '', thumbnail_large: '' })
+  const [editForm, setEditForm] = useState({
+    title: '',
+    goal: '',
+    excerpt: '',
+    period: '',
+    thumbnail_large: '',
+    category_id: '',
+  })
   const [updating, setUpdating] = useState(false)
   const [uploadingImage, setUploadingImage] = useState(false)
   const [token, setToken] = useState('')
@@ -31,7 +38,9 @@ export default function UserCampaignsPage() {
 
         const res = await axios.get(`${baseUrl}/campaigns`)
         const campaignsArray = res.data?.data?.data || res.data?.data || res.data || []
-        const userCampaigns = campaignsArray.filter((c: any) => String(c.user?.id) === String(userId))
+        const userCampaigns = campaignsArray.filter(
+          (c: any) => String(c.user?.id) === String(userId),
+        )
         setCampaigns(userCampaigns)
       } catch (err) {
         console.error(err)
@@ -45,14 +54,14 @@ export default function UserCampaignsPage() {
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
-    
+
     setUploadingImage(true)
     const formData = new FormData()
     formData.append('file', file)
 
     try {
       const res = await axios.post(`${baseUrl}/uploads`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${token}` }
+        headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${token}` },
       })
       const url = res.data?.asset?.url || res.data?.url || res.data?.data?.url
       setEditForm({ ...editForm, thumbnail_large: url })
@@ -68,8 +77,15 @@ export default function UserCampaignsPage() {
     if (!selectedCampaign) return
     setUpdating(true)
     try {
-      await axios.post(`${baseUrl}/campaigns/${selectedCampaign.id}`, editForm, {
-        headers: { Authorization: `Bearer ${token}` }
+      // Ensuring category_id is sent as a number
+      const payload = {
+        ...editForm,
+        id: selectedCampaign.id,
+        category_id: Number(editForm.category_id),
+      }
+
+      await axios.post(`${baseUrl}/campaigns`, payload, {
+        headers: { Authorization: `Bearer ${token}` },
       })
       toast.success('Campaign updated successfully!')
       setIsEditing(false)
@@ -83,31 +99,66 @@ export default function UserCampaignsPage() {
   }
 
   const stats = useMemo(() => {
-    return campaigns.reduce((acc, c) => {
+    return campaigns.reduce(
+      (acc, c) => {
         acc.totalCampaigns += 1
         acc.totalRaised += Number(c.raised || 0)
-        const uniqueDonors = new Set([...(c.funders || []).map((f: any) => f.user?.id), ...(c.payments || []).map((p: any) => p.user?.id)].filter(Boolean))
+        const uniqueDonors = new Set(
+          [
+            ...(c.funders || []).map((f: any) => f.user?.id),
+            ...(c.payments || []).map((p: any) => p.user?.id),
+          ].filter(Boolean),
+        )
         acc.totalDonors += uniqueDonors.size || Number(c.donorCount || 0)
         return acc
-      }, { totalCampaigns: 0, totalRaised: 0, totalDonors: 0 }
+      },
+      { totalCampaigns: 0, totalRaised: 0, totalDonors: 0 },
     )
   }, [campaigns])
+
+  const getImageUrl = (campaign: any) => {
+    // 1. Check if thumbnail_large exists
+    if (campaign.thumbnail_large) {
+      // If it already starts with http, return as is
+      if (campaign.thumbnail_large.startsWith('http')) return campaign.thumbnail_large
+      // Otherwise prepend the base URL
+      return `https://fundraise.theinnercitymission.ngo/${campaign.thumbnail_large}`
+    }
+    // 2. Fallback to thumbnail object or string
+    return campaign.thumbnail?.url || campaign.thumbnail || ''
+  }
 
   return (
     <div className="space-y-8 p-6">
       <div className="grid gap-6 md:grid-cols-3">
         <StatCard icon="mdi:bullhorn" label="My Campaigns" value={stats.totalCampaigns} />
-        <StatCard icon="solar:money-bag-bold" label="Total Raised" value={`$${stats.totalRaised.toLocaleString()}`} />
+        <StatCard
+          icon="solar:money-bag-bold"
+          label="Total Raised"
+          value={`$${stats.totalRaised.toLocaleString()}`}
+        />
         <StatCard icon="fa:users" label="Total Donors" value={stats.totalDonors} />
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
         {campaigns.map((campaign) => (
-          <div key={campaign.id} onClick={() => { setSelectedCampaign(campaign); setIsEditing(false); }} className="group cursor-pointer overflow-hidden rounded-2xl border bg-white transition hover:shadow-xl">
+          <div
+            key={campaign.id}
+            onClick={() => {
+              setSelectedCampaign(campaign)
+              setIsEditing(false)
+            }}
+            className="group cursor-pointer overflow-hidden rounded-2xl border bg-white transition hover:shadow-xl"
+          >
             <div className="relative h-44 w-full">
-              <img src={campaign.thumbnail_large ? `https://fundraise.theinnercitymission.ngo/${campaign.thumbnail_large}` : campaign.thumbnail?.url} className="h-full w-full object-cover transition group-hover:scale-105" />
+              <img
+                src={getImageUrl(campaign)}
+                className="h-full w-full object-cover transition group-hover:scale-105"
+              />
             </div>
-            <div className="p-4"><h3 className="line-clamp-1 font-bold">{campaign.title}</h3></div>
+            <div className="p-4">
+              <h3 className="line-clamp-1 font-bold">{campaign.title}</h3>
+            </div>
           </div>
         ))}
       </div>
@@ -125,6 +176,7 @@ export default function UserCampaignsPage() {
                 <input type="number" className="w-full p-3 border rounded-xl" placeholder="Goal" value={editForm.goal} onChange={e => setEditForm({...editForm, goal: e.target.value})} />
                 <textarea className="w-full p-3 border rounded-xl h-24" placeholder="Excerpt" value={editForm.excerpt} onChange={e => setEditForm({...editForm, excerpt: e.target.value})} />
                 <input type="date" className="w-full p-3 border rounded-xl" value={editForm.period} onChange={e => setEditForm({...editForm, period: e.target.value})} />
+                <input type="number" className="w-full p-3 border rounded-xl" placeholder="Category ID" value={editForm.category_id} onChange={e => setEditForm({...editForm, category_id: e.target.value})} />
                 
                 <div className="p-4 border-2 border-dashed rounded-xl text-center">
                     <input type="file" onChange={handleImageUpload} className="hidden" id="img-upload" />
@@ -140,7 +192,7 @@ export default function UserCampaignsPage() {
               </div>
             ) : (
               <>
-                <img src={selectedCampaign.thumbnail_large ? `https://fundraise.theinnercitymission.ngo/${selectedCampaign.thumbnail_large}` : selectedCampaign.thumbnail?.url} className="mb-6 h-60 w-full rounded-2xl object-cover" />
+                <img src={getImageUrl(selectedCampaign)} className="mb-6 h-60 w-full rounded-2xl object-cover" />
                 <h2 className="text-2xl font-black text-gray-900 mb-2">{selectedCampaign.title}</h2>
                 <p className="text-sm text-gray-500 mb-6">{selectedCampaign.excerpt}</p>
                 
@@ -150,7 +202,7 @@ export default function UserCampaignsPage() {
                   <MiniStat label="Ends" value={selectedCampaign.period ? new Date(selectedCampaign.period).toLocaleDateString() : 'N/A'} />
                 </div>
 
-                <button onClick={() => { setEditForm({title: selectedCampaign.title, goal: selectedCampaign.goal, excerpt: selectedCampaign.excerpt || '', period: selectedCampaign.period || '', thumbnail_large: selectedCampaign.thumbnail_large || ''}); setIsEditing(true); }} className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 shadow-xl hover:bg-blue-700 transition">
+                <button onClick={() => { setEditForm({title: selectedCampaign.title, goal: selectedCampaign.goal, excerpt: selectedCampaign.excerpt || '', period: selectedCampaign.period || '', thumbnail_large: selectedCampaign.thumbnail_large || '', category_id: selectedCampaign.category_id || ''}); setIsEditing(true); }} className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 shadow-xl hover:bg-blue-700 transition">
                    <Icon icon="solar:pen-bold" /> Edit Campaign
                 </button>
               </>
@@ -165,7 +217,9 @@ export default function UserCampaignsPage() {
 function StatCard({ icon, label, value }: { icon: string; label: string; value: any }) {
   return (
     <div className="flex items-center gap-4 rounded-2xl border bg-white p-5 shadow-sm">
-      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary"><Icon icon={icon} width={24} /></div>
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <Icon icon={icon} width={24} />
+      </div>
       <div>
         <p className="text-xs font-bold uppercase tracking-tight text-gray-400">{label}</p>
         <p className="text-xl font-black text-gray-900">{value}</p>
